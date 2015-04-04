@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AudioToolbox
 
 class RecentViewController: UIViewController {
     
@@ -17,9 +18,13 @@ class RecentViewController: UIViewController {
     
     var recentLocation: Recent!
     
+    // Sound ID's
+    var tapAudioEffect: SystemSoundID = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.clearColor()
+        initSound()
         initUIElements()
     }
     
@@ -36,14 +41,32 @@ class RecentViewController: UIViewController {
         })
     }
     
+    func initSound() {
+        var tapSoundPath = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("Satisfying Click", ofType: "wav")!)
+        //var locationSoundPath = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("Satisfying Click", ofType: "wav")!)
+        
+        AudioServicesCreateSystemSoundID(tapSoundPath! as CFURLRef, &tapAudioEffect)
+        //AudioServicesCreateSystemSoundID(locationSoundPath! as CFURLRef, &locationAudioEffect)
+    }
+    
     func initUIElements() {
-        locationLabel = UILabel(frame: CGRectMake(CGRectGetMidX(view.frame) - 310 / 2, 120, 310, 155))
-        locationLabel.font = UIFont(name: "Berlin", size: 37.0)
-        locationLabel.numberOfLines = 0
-        locationLabel.lineBreakMode = .ByWordWrapping
-        locationLabel.textAlignment = .Center
-        locationLabel.textColor = UIColor.whiteColor()
-        view.addSubview(locationLabel)
+        if RADevice.getDeviceName() == "iPhone4" {
+            locationLabel = UILabel(frame: CGRectMake(CGRectGetMidX(view.frame) - 310 / 2, 35, 310, 155))
+            locationLabel.font = UIFont(name: "Berlin", size: 37.0)
+            locationLabel.numberOfLines = 0
+            locationLabel.lineBreakMode = .ByWordWrapping
+            locationLabel.textAlignment = .Center
+            locationLabel.textColor = UIColor.whiteColor()
+            view.addSubview(locationLabel)
+        } else {
+            locationLabel = UILabel(frame: CGRectMake(CGRectGetMidX(view.frame) - 310 / 2, 120, 310, 155))
+            locationLabel.font = UIFont(name: "Berlin", size: 37.0)
+            locationLabel.numberOfLines = 0
+            locationLabel.lineBreakMode = .ByWordWrapping
+            locationLabel.textAlignment = .Center
+            locationLabel.textColor = UIColor.whiteColor()
+            view.addSubview(locationLabel)
+        }
         
         coordLabel = UILabel(frame: CGRect(x: CGRectGetMidX(view.frame) - 310 / 2, y: locationLabel.frame.origin.y + CGRectGetHeight(locationLabel.frame) + 25, width: 310, height: 95))
         coordLabel.font = UIFont(name: "Berlin", size: 23.0)
@@ -69,6 +92,7 @@ class RecentViewController: UIViewController {
     }
     
     func deleteAction(sender:UIButton!) {
+        AudioServicesPlaySystemSound(tapAudioEffect)
         let alertController = UIAlertController(title: "Delete Location?", message: "This cannot be undone.", preferredStyle: .Alert)
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { _ in

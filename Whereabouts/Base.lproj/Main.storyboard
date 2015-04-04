@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="eDe-jd-yrd">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1514" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="qd3-6X-tzo">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -10,6 +10,51 @@
         </mutableArray>
     </customFonts>
     <scenes>
+        <!--Splash Screen View Controller-->
+        <scene sceneID="FCZ-cL-E1s">
+            <objects>
+                <viewController id="qd3-6X-tzo" customClass="SplashScreenViewController" customModule="Whereabouts" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="k1E-Ty-PAR"/>
+                        <viewControllerLayoutGuide type="bottom" id="ZPy-a2-9Yv"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="lqz-mw-pKy">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ryan Ackermann" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Xf-Gk-m5s">
+                                <rect key="frame" x="16" y="518" width="288" height="30"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="15"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Are you sure of your Whereabouts?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8kq-BB-Y5m">
+                                <rect key="frame" x="16" y="231" width="288" height="94"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="25"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="8kq-BB-Y5m" firstAttribute="trailing" secondItem="lqz-mw-pKy" secondAttribute="trailingMargin" id="5Ru-nO-W3X"/>
+                            <constraint firstItem="1Xf-Gk-m5s" firstAttribute="top" secondItem="8kq-BB-Y5m" secondAttribute="bottom" constant="193" id="Bv5-jz-NMm"/>
+                            <constraint firstItem="8kq-BB-Y5m" firstAttribute="top" secondItem="k1E-Ty-PAR" secondAttribute="bottom" constant="211" id="Fud-PN-341"/>
+                            <constraint firstItem="1Xf-Gk-m5s" firstAttribute="trailing" secondItem="lqz-mw-pKy" secondAttribute="trailingMargin" id="ITQ-rN-ZWd"/>
+                            <constraint firstItem="ZPy-a2-9Yv" firstAttribute="top" secondItem="1Xf-Gk-m5s" secondAttribute="bottom" constant="20" id="auJ-Bn-bSe"/>
+                            <constraint firstItem="1Xf-Gk-m5s" firstAttribute="leading" secondItem="lqz-mw-pKy" secondAttribute="leadingMargin" id="lbg-0A-PKn"/>
+                            <constraint firstItem="1Xf-Gk-m5s" firstAttribute="top" secondItem="k1E-Ty-PAR" secondAttribute="bottom" constant="498" id="thh-BS-9qz"/>
+                            <constraint firstItem="8kq-BB-Y5m" firstAttribute="leading" secondItem="lqz-mw-pKy" secondAttribute="leadingMargin" id="uSm-zF-aoi"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="name" destination="1Xf-Gk-m5s" id="Vmp-Js-1Jc"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ibd-Hy-qdu" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-784" y="236"/>
+        </scene>
         <!--Page View Controller-->
         <scene sceneID="iHD-Ca-BxJ">
             <objects>
@@ -21,6 +66,7 @@
         <!--Recent View Controller-->
         <scene sceneID="hrH-9J-MBn">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dc3-EJ-e7o" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController storyboardIdentifier="RecentViewController" id="p7O-Vl-8dA" customClass="RecentViewController" customModule="Whereabouts" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Pso-Hj-mCj"/>
@@ -32,7 +78,6 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="dc3-EJ-e7o" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="58" y="236.99999999999997"/>
         </scene>

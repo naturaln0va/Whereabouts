@@ -10,6 +10,7 @@ import UIKit
 import QuartzCore
 import MapKit
 import CoreLocation
+import AudioToolbox
 
 class MainViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     
@@ -65,6 +66,10 @@ class MainViewController: UIViewController, CLLocationManagerDelegate, MKMapView
     let touchHoldLayer = CAShapeLayer()
     let textAnimation = CATransition()
     
+    // Sound ID's
+    var tapAudioEffect: SystemSoundID = 0
+    //var locationAudioEffect: SystemSoundID = 0
+    
     // Gradient Arrays
     let darkColors = [UIColor(hex: 0x34495e).CGColor, UIColor(hex: 0x2c3e50).CGColor]
     let greenColors = [UIColor(hex: 0x2ecc71).CGColor, UIColor(hex: 0x27ae60).CGColor]
@@ -78,7 +83,7 @@ class MainViewController: UIViewController, CLLocationManagerDelegate, MKMapView
         showingInformation = false
         
         initUIElements()
-        
+        initSounds()
         updateLabel()
         
         let region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: mapView.userLocation.coordinate.latitude, longitude: mapView.userLocation.coordinate.longitude), span: MKCoordinateSpan(latitudeDelta: 0.00725, longitudeDelta: 0.00725))
@@ -114,6 +119,14 @@ class MainViewController: UIViewController, CLLocationManagerDelegate, MKMapView
     }
     
     //MARK: - Init Methods
+    
+    func initSounds() {
+        var tapSoundPath = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("Satisfying Click", ofType: "wav")!)
+        //var locationSoundPath = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("Satisfying Click", ofType: "wav")!)
+        
+        AudioServicesCreateSystemSoundID(tapSoundPath! as CFURLRef, &tapAudioEffect)
+        //AudioServicesCreateSystemSoundID(locationSoundPath! as CFURLRef, &locationAudioEffect)
+    }
     
     func initUIElements() {
         var compassImage: UIImage = UIImage()
@@ -220,14 +233,24 @@ class MainViewController: UIViewController, CLLocationManagerDelegate, MKMapView
         
         //Map View
         
-        mapView = MKMapView(frame: CGRect(x: 0, y: CGRectGetHeight(cityDisplay.bounds), width: CGRectGetWidth(self.view.bounds), height: 180))
+        if RADevice.getDeviceName() == "iPhone4" {
+            mapView = MKMapView(frame: CGRect(x: 0, y: CGRectGetHeight(cityDisplay.bounds), width: CGRectGetWidth(self.view.bounds), height: 140))
+        } else if RADevice.getDeviceName() == "iPhone6+" {
+            mapView = MKMapView(frame: CGRect(x: 0, y: CGRectGetHeight(cityDisplay.bounds), width: CGRectGetWidth(self.view.bounds), height: 280))
+        }else {
+            mapView = MKMapView(frame: CGRect(x: 0, y: CGRectGetHeight(cityDisplay.bounds), width: CGRectGetWidth(self.view.bounds), height: 180))
+        }
         mapView.alpha = 0.0
         mapView.delegate = self
         self.view.addSubview(mapView)
         
         //Location Info
         
-        placemarkInfoLabel = UILabel(frame: CGRect(x: 10, y: CGFloat((CGRectGetHeight(self.view.frame) + 300)), width: CGRectGetWidth(self.view.bounds) - 20, height: 165))
+        if RADevice.getDeviceName() == "iPhone4" {
+            placemarkInfoLabel = UILabel(frame: CGRect(x: 10, y: CGFloat((CGRectGetHeight(self.view.frame) + 300)), width: CGRectGetWidth(self.view.bounds) - 20, height: 105))
+        } else {
+            placemarkInfoLabel = UILabel(frame: CGRect(x: 10, y: CGFloat((CGRectGetHeight(self.view.frame) + 300)), width: CGRectGetWidth(self.view.bounds) - 20, height: 165))
+        }
         placemarkInfoLabel.font = UIFont(name: "Berlin", size: 42.0)
         placemarkInfoLabel.numberOfLines = 0
         placemarkInfoLabel.lineBreakMode = .ByWordWrapping
@@ -239,7 +262,7 @@ class MainViewController: UIViewController, CLLocationManagerDelegate, MKMapView
         
         latLongLabel = UILabel(frame: CGRect(x: 10, y: CGRectGetHeight(cityDisplay.bounds) + CGRectGetHeight(mapView.bounds) + CGRectGetHeight(placemarkInfoLabel.bounds), width: CGRectGetWidth(self.view.bounds) - 20, height: 50))
         var fontSize = CGFloat(0.0)
-        if RADevice().deviceName != "iPhone6" || RADevice().deviceName != "iPhone6+" {
+        if RADevice.getDeviceName() != "iPhone6" || RADevice.getDeviceName() != "iPhone6+" {
             fontSize = 24.0
         } else {
             fontSize = 44.0
@@ -273,36 +296,54 @@ class MainViewController: UIViewController, CLLocationManagerDelegate, MKMapView
     //MARK: - Button Actions
     
     func saveAction(sender:UIButton!) {
-        if let placemark = placemark {
+        if let placemark = self.placemark {
+            AudioServicesPlaySystemSound(tapAudioEffect)
             showMessageBannerWithText("Location Saved", color: UIColor.emeraldColor())
             if let pageVC = self.parentViewController as RAPageViewController? {
                 pageVC.addPage(Recent(placemark: placemark, timeStamp: NSDate()))
             }
+        } else {
+            showMessageBannerWithText("Placemark Error", color: UIColor.alizarinColor())
+            var animationVC = self.storyboard?.instantiateViewControllerWithIdentifier("AnimationViewController") as AnimationViewController
+            animationVC.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
+            self.presentViewController(animationVC, animated: true, completion: {
+                animationVC.showVCAfter(.Retry, after: 1.2)
+            })
         }
-        
     }
     
     func shareAction(sender:UIButton!) {
-        let firstActivityItem = "I'm at \(longLocationDescription(self.placemark!)), where are you?"
-        
-        let activityViewController : UIActivityViewController = UIActivityViewController(
-            activityItems: [firstActivityItem], applicationActivities: nil)
-        
-        activityViewController.excludedActivityTypes = [
-            UIActivityTypePostToWeibo,
-            UIActivityTypePrint,
-            UIActivityTypeAssignToContact,
-            UIActivityTypeSaveToCameraRoll,
-            UIActivityTypeAddToReadingList,
-            UIActivityTypePostToFlickr,
-            UIActivityTypePostToVimeo,
-            UIActivityTypePostToTencentWeibo
-        ]
-        
-        self.presentViewController(activityViewController, animated: true, completion: nil)
+        if let placemark = self.placemark {
+            AudioServicesPlaySystemSound(tapAudioEffect)
+            let firstActivityItem = "I'm at \(longLocationDescription(placemark)), where are you?"
+            
+            let activityViewController : UIActivityViewController = UIActivityViewController(
+                activityItems: [firstActivityItem], applicationActivities: nil)
+            
+            activityViewController.excludedActivityTypes = [
+                UIActivityTypePostToWeibo,
+                UIActivityTypePrint,
+                UIActivityTypeAssignToContact,
+                UIActivityTypeSaveToCameraRoll,
+                UIActivityTypeAddToReadingList,
+                UIActivityTypePostToFlickr,
+                UIActivityTypePostToVimeo,
+                UIActivityTypePostToTencentWeibo
+            ]
+            
+            self.presentViewController(activityViewController, animated: true, completion: nil)
+        } else {
+            showMessageBannerWithText("Placemark Error", color: UIColor.alizarinColor())
+            var animationVC = self.storyboard?.instantiateViewControllerWithIdentifier("AnimationViewController") as AnimationViewController
+            animationVC.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
+            self.presentViewController(animationVC, animated: true, completion: {
+                animationVC.showVCAfter(.Retry, after: 1.2)
+            })
+        }
     }
     
     func relocateAction(sender:UIButton) {
+        AudioServicesPlaySystemSound(tapAudioEffect)
         var animationVC = self.storyboard?.instantiateViewControllerWithIdentifier("AnimationViewController") as AnimationViewController
         animationVC.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
         self.presentViewController(animationVC, animated: true, completion: {
@@ -388,6 +429,7 @@ class MainViewController: UIViewController, CLLocationManagerDelegate, MKMapView
                 } else {
                     touchHoldLayer.position = CGPoint(x: point.x - 55, y: point.y - 55)
                     let parentVC = self.parentViewController as RAPageViewController
+                    AudioServicesPlaySystemSound(tapAudioEffect)
                     parentVC.delegate = nil
                     startTouchAnimation()
                     holding = true
@@ -396,6 +438,7 @@ class MainViewController: UIViewController, CLLocationManagerDelegate, MKMapView
             }
             if CGRectContainsPoint(latLongLabel.frame, point) && showingInformation {
                 if self.placemark != nil {
+                    AudioServicesPlaySystemSound(tapAudioEffect)
                     let coordinate = CLLocationCoordinate2D(latitude: self.placemark!.location.coordinate.latitude, longitude: self.placemark!.location.coordinate.longitude)
                     let mapPlacemark = MKPlacemark(placemark: self.placemark)
                     let mapItem = MKMapItem(placemark: mapPlacemark)
@@ -525,8 +568,8 @@ class MainViewController: UIViewController, CLLocationManagerDelegate, MKMapView
         let l = locationLabel.bounds
         animateViewToColor(darkColors, duration: colorFadeTime)
         UIView.animateWithDuration(0.3, animations: { () -> Void in
-            self.compassView.center = CGPoint(x: CGRectGetMidX(self.view.frame), y: -150)
-            self.locationLabel.center = CGPoint(x: l.origin.x + l.size.width/2, y: -150)
+            self.compassView.center = CGPoint(x: CGRectGetMidX(self.view.frame), y: -180)
+            self.locationLabel.center = CGPoint(x: l.origin.x + l.size.width/2, y: -180)
             }, completion: { _ in
                 self.showInfoForPlaceMark()
         })

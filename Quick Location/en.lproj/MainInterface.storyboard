@@ -17,21 +17,21 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="72"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hello Notification Center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="noe-8E-U5p">
-                                <rect key="frame" x="16" y="8" width="288" height="32"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Open the app to get location" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="noe-8E-U5p">
+                                <rect key="frame" x="16" y="8" width="288" height="33"/>
                                 <fontDescription key="fontDescription" name="AvenirNextCondensed-Regular" family="Avenir Next Condensed" pointSize="24"/>
                                 <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Updated: 3 minutes ago" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mna-jm-1wb">
-                                <rect key="frame" x="16" y="44.5" width="288" height="19.5"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Updated: Never" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mna-jm-1wb">
+                                <rect key="frame" x="16" y="44" width="288" height="20"/>
                                 <fontDescription key="fontDescription" name="Avenir-Light" family="Avenir" pointSize="14"/>
                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="Ynd-zc-mfY" firstAttribute="top" secondItem="noe-8E-U5p" secondAttribute="bottom" constant="32" id="7Zo-QO-e4x"/>
+                            <constraint firstItem="Ynd-zc-mfY" firstAttribute="top" secondItem="noe-8E-U5p" secondAttribute="bottom" constant="31" id="7Zo-QO-e4x"/>
                             <constraint firstItem="noe-8E-U5p" firstAttribute="top" secondItem="rLc-Jd-bJR" secondAttribute="bottom" constant="8" id="F82-UQ-Ycd"/>
                             <constraint firstItem="Ynd-zc-mfY" firstAttribute="top" secondItem="Mna-jm-1wb" secondAttribute="bottom" constant="8" id="ODX-Gy-kYL"/>
                             <constraint firstItem="noe-8E-U5p" firstAttribute="leading" secondItem="S3S-Oj-5AN" secondAttribute="leadingMargin" id="TyA-24-ffG"/>

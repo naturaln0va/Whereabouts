@@ -36,6 +36,10 @@ extension UIColor {
     class func wetAsphaltColor() -> UIColor {
         return UIColor(hex: 0x34495e)
     }
+    
+    class func alizarinColor() -> UIColor {
+        return UIColor(hex: 0xe74c3c)
+    }
 }
 
 func isLightColor(color: UIColor) -> Bool {
