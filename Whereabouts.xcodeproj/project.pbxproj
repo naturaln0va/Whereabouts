@@ -21,14 +21,6 @@
 		485E161A19F86344002CCB48 /* Recent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485E161919F86344002CCB48 /* Recent.swift */; };
 		485E161C19F86E24002CCB48 /* RecentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485E161B19F86E24002CCB48 /* RecentViewController.swift */; };
 		485E165519F9AC37002CCB48 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 485E165319F9AC37002CCB48 /* DataModel.xcdatamodeld */; };
-		4880D4821A5366730077E68B /* AnimationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4880D4811A5366730077E68B /* AnimationViewController.swift */; };
-		4880D48D1A5368460077E68B /* AnimatedFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4880D4851A5368460077E68B /* AnimatedFrame.swift */; };
-		4880D48E1A5368460077E68B /* AnimatedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4880D4861A5368460077E68B /* AnimatedImage.swift */; };
-		4880D48F1A5368460077E68B /* Functional.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4880D4871A5368460077E68B /* Functional.swift */; };
-		4880D4901A5368460077E68B /* ImageSourceHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4880D4891A5368460077E68B /* ImageSourceHelpers.swift */; };
-		4880D4911A5368460077E68B /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4880D48A1A5368460077E68B /* Info.plist */; };
-		4880D4921A5368460077E68B /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4880D48B1A5368460077E68B /* UIImageExtension.swift */; };
-		4880D4931A5368460077E68B /* UIImageView+Gifu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4880D48C1A5368460077E68B /* UIImageView+Gifu.swift */; };
 		48C7636419F59D230096B27A /* ColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C7636319F59D230096B27A /* ColorExtensions.swift */; };
 		48D225881A02F908008A419B /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 48D2258A1A02F908008A419B /* MainInterface.storyboard */; };
 		48DEDA3719F592F80094CB8F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DEDA3619F592F80094CB8F /* AppDelegate.swift */; };
@@ -79,15 +71,6 @@
 		485E165419F9AC37002CCB48 /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
 		4880D47F1A5331960077E68B /* Whereabouts.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Whereabouts.entitlements; path = Whereabouts/Whereabouts.entitlements; sourceTree = SOURCE_ROOT; };
 		4880D4801A5331DA0077E68B /* Quick Location.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = "Quick Location.entitlements"; path = "Quick Location/Quick Location.entitlements"; sourceTree = SOURCE_ROOT; };
-		4880D4811A5366730077E68B /* AnimationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimationViewController.swift; sourceTree = "<group>"; };
-		4880D4851A5368460077E68B /* AnimatedFrame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimatedFrame.swift; sourceTree = "<group>"; };
-		4880D4861A5368460077E68B /* AnimatedImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimatedImage.swift; sourceTree = "<group>"; };
-		4880D4871A5368460077E68B /* Functional.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Functional.swift; sourceTree = "<group>"; };
-		4880D4881A5368460077E68B /* Gifu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Gifu.h; sourceTree = "<group>"; };
-		4880D4891A5368460077E68B /* ImageSourceHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageSourceHelpers.swift; sourceTree = "<group>"; };
-		4880D48A1A5368460077E68B /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4880D48B1A5368460077E68B /* UIImageExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
-		4880D48C1A5368460077E68B /* UIImageView+Gifu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+Gifu.swift"; sourceTree = "<group>"; };
 		48C7636319F59D230096B27A /* ColorExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorExtensions.swift; sourceTree = "<group>"; };
 		48D225891A02F908008A419B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		48DEDA3119F592F80094CB8F /* Whereabouts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Whereabouts.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -155,29 +138,6 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		4880D4831A5367FD0077E68B /* gifu */ = {
-			isa = PBXGroup;
-			children = (
-				4880D4841A5368460077E68B /* Source */,
-			);
-			name = gifu;
-			sourceTree = "<group>";
-		};
-		4880D4841A5368460077E68B /* Source */ = {
-			isa = PBXGroup;
-			children = (
-				4880D4851A5368460077E68B /* AnimatedFrame.swift */,
-				4880D4861A5368460077E68B /* AnimatedImage.swift */,
-				4880D4871A5368460077E68B /* Functional.swift */,
-				4880D4881A5368460077E68B /* Gifu.h */,
-				4880D4891A5368460077E68B /* ImageSourceHelpers.swift */,
-				4880D48A1A5368460077E68B /* Info.plist */,
-				4880D48B1A5368460077E68B /* UIImageExtension.swift */,
-				4880D48C1A5368460077E68B /* UIImageView+Gifu.swift */,
-			);
-			path = Source;
-			sourceTree = "<group>";
-		};
 		48DEDA2819F592F80094CB8F = {
 			isa = PBXGroup;
 			children = (
@@ -201,23 +161,13 @@
 		48DEDA3319F592F80094CB8F /* Whereabouts */ = {
 			isa = PBXGroup;
 			children = (
-				4880D47F1A5331960077E68B /* Whereabouts.entitlements */,
-				48DEDA3619F592F80094CB8F /* AppDelegate.swift */,
-				483648EB1A718AC80076756B /* SplashScreenViewController.swift */,
-				48DEDA3819F592F80094CB8F /* MainViewController.swift */,
-				485E161319F85A36002CCB48 /* RAPageViewController.swift */,
-				485E161B19F86E24002CCB48 /* RecentViewController.swift */,
-				4880D4811A5366730077E68B /* AnimationViewController.swift */,
-				485E161919F86344002CCB48 /* Recent.swift */,
-				48C7636319F59D230096B27A /* ColorExtensions.swift */,
-				485C38E11A2A619600355B7E /* UIDeviceExtensions.swift */,
-				485E165319F9AC37002CCB48 /* DataModel.xcdatamodeld */,
-				48DEDA3A19F592F80094CB8F /* Main.storyboard */,
-				48DEDA3F19F592F80094CB8F /* LaunchScreen.xib */,
-				48DEDA3D19F592F80094CB8F /* Images.xcassets */,
-				4880D4831A5367FD0077E68B /* gifu */,
+				48FF04FC1AD036BC00A2FA34 /* Objects */,
+				48FF04FB1AD036A000A2FA34 /* Controllers */,
+				48FF04FE1AD036D400A2FA34 /* Models */,
+				48FF04FD1AD036C700A2FA34 /* Extensions */,
+				48FF04FF1AD036F200A2FA34 /* Interfaces */,
+				48FF05011AD0372400A2FA34 /* Resources */,
 				48DEDA3419F592F80094CB8F /* Supporting Files */,
-				482CABD319FF464900B5F1E2 /* Fonts */,
 			);
 			path = Whereabouts;
 			sourceTree = "<group>";
@@ -225,11 +175,75 @@
 		48DEDA3419F592F80094CB8F /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				483648ED1A71A1C50076756B /* Satisfying Click.wav */,
-				483648EF1A71A1FF0076756B /* Arctic Wind.wav */,
 				48DEDA3519F592F80094CB8F /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		48FF04FB1AD036A000A2FA34 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				48DEDA3819F592F80094CB8F /* MainViewController.swift */,
+				485E161319F85A36002CCB48 /* RAPageViewController.swift */,
+				485E161B19F86E24002CCB48 /* RecentViewController.swift */,
+				483648EB1A718AC80076756B /* SplashScreenViewController.swift */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		48FF04FC1AD036BC00A2FA34 /* Objects */ = {
+			isa = PBXGroup;
+			children = (
+				48DEDA3619F592F80094CB8F /* AppDelegate.swift */,
+				4880D47F1A5331960077E68B /* Whereabouts.entitlements */,
+				485E165319F9AC37002CCB48 /* DataModel.xcdatamodeld */,
+			);
+			name = Objects;
+			sourceTree = "<group>";
+		};
+		48FF04FD1AD036C700A2FA34 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				48C7636319F59D230096B27A /* ColorExtensions.swift */,
+				485C38E11A2A619600355B7E /* UIDeviceExtensions.swift */,
+			);
+			name = Extensions;
+			sourceTree = "<group>";
+		};
+		48FF04FE1AD036D400A2FA34 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				485E161919F86344002CCB48 /* Recent.swift */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		48FF04FF1AD036F200A2FA34 /* Interfaces */ = {
+			isa = PBXGroup;
+			children = (
+				48DEDA3A19F592F80094CB8F /* Main.storyboard */,
+				48DEDA3F19F592F80094CB8F /* LaunchScreen.xib */,
+			);
+			name = Interfaces;
+			sourceTree = "<group>";
+		};
+		48FF05001AD0371300A2FA34 /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				483648ED1A71A1C50076756B /* Satisfying Click.wav */,
+				483648EF1A71A1FF0076756B /* Arctic Wind.wav */,
+			);
+			name = Sounds;
+			sourceTree = "<group>";
+		};
+		48FF05011AD0372400A2FA34 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				482CABD319FF464900B5F1E2 /* Fonts */,
+				48DEDA3D19F592F80094CB8F /* Images.xcassets */,
+				48FF05001AD0371300A2FA34 /* Sounds */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -340,7 +354,6 @@
 				483648EE1A71A1C50076756B /* Satisfying Click.wav in Resources */,
 				48DEDA4119F592F80094CB8F /* LaunchScreen.xib in Resources */,
 				482CABD219FF463C00B5F1E2 /* Berlin.ttf in Resources */,
-				4880D4911A5368460077E68B /* Info.plist in Resources */,
 				48DEDA3E19F592F80094CB8F /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -362,18 +375,11 @@
 			files = (
 				48DEDA3919F592F80094CB8F /* MainViewController.swift in Sources */,
 				485C38E21A2A619600355B7E /* UIDeviceExtensions.swift in Sources */,
-				4880D48E1A5368460077E68B /* AnimatedImage.swift in Sources */,
 				485E165519F9AC37002CCB48 /* DataModel.xcdatamodeld in Sources */,
 				485E161C19F86E24002CCB48 /* RecentViewController.swift in Sources */,
 				48C7636419F59D230096B27A /* ColorExtensions.swift in Sources */,
-				4880D48F1A5368460077E68B /* Functional.swift in Sources */,
-				4880D4901A5368460077E68B /* ImageSourceHelpers.swift in Sources */,
 				485E161419F85A36002CCB48 /* RAPageViewController.swift in Sources */,
-				4880D4921A5368460077E68B /* UIImageExtension.swift in Sources */,
 				483648EC1A718AC80076756B /* SplashScreenViewController.swift in Sources */,
-				4880D48D1A5368460077E68B /* AnimatedFrame.swift in Sources */,
-				4880D4821A5366730077E68B /* AnimationViewController.swift in Sources */,
-				4880D4931A5368460077E68B /* UIImageView+Gifu.swift in Sources */,
 				48DEDA3719F592F80094CB8F /* AppDelegate.swift in Sources */,
 				485E161A19F86344002CCB48 /* Recent.swift in Sources */,
 			);
@@ -480,7 +486,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PROVISIONING_PROFILE = "c1742340-c761-4842-ac6f-9c22d3f95884";
 				SDKROOT = iphoneos;
@@ -492,6 +498,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = Whereabouts/Whereabouts.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Ryan Ackermann (WK4Y48HVH2)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Ryan Ackermann (WK4Y48HVH2)";
@@ -554,7 +561,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PROVISIONING_PROFILE = "c1742340-c761-4842-ac6f-9c22d3f95884";
@@ -592,7 +599,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PROVISIONING_PROFILE = "c1742340-c761-4842-ac6f-9c22d3f95884";
 				SDKROOT = iphoneos;
@@ -604,6 +611,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = Whereabouts/Whereabouts.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -619,6 +627,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = Whereabouts/Whereabouts.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Ryan Ackermann (WK4Y48HVH2)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Ryan Ackermann (WK4Y48HVH2)";

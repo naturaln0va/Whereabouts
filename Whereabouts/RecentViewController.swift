@@ -103,13 +103,6 @@ class RecentViewController: UIViewController {
         let destroyAction = UIAlertAction(title: "Delete", style: .Destructive) { _ in
             let parent = self.parentViewController as RAPageViewController
             parent.deleteData(self.recentLocation)
-            
-            var animationVC = self.storyboard?.instantiateViewControllerWithIdentifier("AnimationViewController") as AnimationViewController
-            animationVC.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
-            self.presentViewController(animationVC, animated: true, completion: { 
-                animationVC.showVCAfter(.Delete, after: 1.2)
-            })
-            
         }
         
         alertController.addAction(destroyAction)
