@@ -22,7 +22,7 @@ class RADevice {
             }
         case 750:
             return "iPhone6"
-        case 1242:
+        case 1080:
             return "iPhone6+"
         default:
             return "Uknown Device"

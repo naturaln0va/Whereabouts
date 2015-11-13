@@ -36,23 +36,20 @@ class TodayViewController: UIViewController, NCWidgetProviding, CLLocationManage
         return UIEdgeInsets(top: 5.0, left: 42.0, bottom: 5.0, right: 5.0)
     }
     
-    override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
-        let touch = touches.anyObject() as? UITouch
-        let point = touch!.locationInView(self.view)
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         
-        for touch in touches {
-            if CGRectContainsPoint(locationLabel.frame, point) {
+        if let touch = touches.first {
+            if CGRectContainsPoint(locationLabel.frame, touch.locationInView(self.view)) {
                 extensionContext?.openURL(NSURL(string: "whereabouts://more")!, completionHandler: nil)
             }
         }
     }
     
     func relativeStringForDate(date: NSDate) -> String {
-        let units:NSCalendarUnit = .CalendarUnitMinute | .CalendarUnitHour | .CalendarUnitDay | .CalendarUnitWeekOfYear |
-            .CalendarUnitMonth | .CalendarUnitYear
+        let units:NSCalendarUnit = [.Minute, .Hour, .Day, .WeekOfYear, .Month, .Year]
         
         // if "date" is before "now" (i.e. in the past) then the components will be positive
-        let components: NSDateComponents = NSCalendar.currentCalendar().components(units, fromDate: date, toDate: NSDate(), options: nil)
+        let components: NSDateComponents = NSCalendar.currentCalendar().components(units, fromDate: date, toDate: NSDate(), options: [])
         
         if components.year > 0 {
             return "\(components.year) years ago"
