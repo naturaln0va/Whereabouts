@@ -30,7 +30,6 @@ enum LocationAccuracy
 
 class LocationAssistant: NSObject, CLLocationManagerDelegate, LocationAccessViewControllerDelegate
 {
-    static let sharedController = LocationAssistant()
     
     private let manager = CLLocationManager()
     private let geocoder = CLGeocoder()
@@ -38,19 +37,27 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate, LocationAccessView
     var desiredAccuracy: LocationAccuracy = .Best
     var delegate: LocationAssistantDelegate?
     
-    var location: CLLocation?
-    var placemark: CLPlacemark?
-    var timer: NSTimer?
+    private var location: CLLocation?
+    private var placemark: CLPlacemark?
+    private var timer: NSTimer?
     
-    var updatingLocation = false
-    var reverseGeocoding = false
+    private var updatingLocation = false
+    private var reverseGeocoding = false
+    
+    private(set) var parentViewController: UIViewController!
+    
+    
+    init(viewController: UIViewController)
+    {
+        parentViewController = viewController
+    }
     
     // MARK: - Public Methods
     func promptForLocationAccess()
     {
         let locationAccessVC = LocationAccessViewController()
         locationAccessVC.delegate = self
-        MenuController.sharedController.presentViewController(locationAccessVC, animated: true, completion: nil)
+        parentViewController.presentViewController(locationAccessVC, animated: true, completion: nil)
     }
     
     func getLocation()

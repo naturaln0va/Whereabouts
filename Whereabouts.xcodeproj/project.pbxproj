@@ -59,8 +59,6 @@
 		48642D111BAE1E0400935358 /* LocationAssistant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48642D101BAE1E0400935358 /* LocationAssistant.swift */; };
 		48642D141BAE27D300935358 /* LocationAccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48642D121BAE27D300935358 /* LocationAccessViewController.swift */; };
 		48642D151BAE27D300935358 /* LocationAccessViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48642D131BAE27D300935358 /* LocationAccessViewController.xib */; };
-		48673A081BB05A7800BC0CD7 /* Location+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48673A061BB05A7800BC0CD7 /* Location+CoreDataProperties.swift */; };
-		48673A091BB05A7800BC0CD7 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48673A071BB05A7800BC0CD7 /* Location.swift */; };
 		487A553F1BB4C61A00D0D320 /* NewLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487A553D1BB4C61A00D0D320 /* NewLocationViewController.swift */; };
 		487A55401BB4C61A00D0D320 /* NewLocationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 487A553E1BB4C61A00D0D320 /* NewLocationViewController.xib */; };
 		488092C81AFEF44E00300874 /* Delete.png in Resources */ = {isa = PBXBuildFile; fileRef = 488092C51AFEF44E00300874 /* Delete.png */; };
@@ -76,12 +74,10 @@
 		4882D9D51B1A99FD00BAADAD /* RHACLStringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4882D9D41B1A99FD00BAADAD /* RHACLStringExtensions.swift */; };
 		4882D9D71B1AA27F00BAADAD /* RHACurrentLocationAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4882D9D61B1AA27F00BAADAD /* RHACurrentLocationAnnotation.swift */; };
 		48C7636419F59D230096B27A /* RHAUtilExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C7636319F59D230096B27A /* RHAUtilExtensions.swift */; };
-		48CB175D1AD1F52300864CBF /* LocationsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48CB175C1AD1F52300864CBF /* LocationsController.swift */; };
 		48D225881A02F908008A419B /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 48D2258A1A02F908008A419B /* MainInterface.storyboard */; };
 		48DEDA3719F592F80094CB8F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DEDA3619F592F80094CB8F /* AppDelegate.swift */; };
 		48DEDA3E19F592F80094CB8F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 48DEDA3D19F592F80094CB8F /* Images.xcassets */; };
 		48DEDA4119F592F80094CB8F /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48DEDA3F19F592F80094CB8F /* LaunchScreen.xib */; };
-		48E3B8531B193E0E003DD726 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E3B8511B193E0E003DD726 /* MapViewController.swift */; };
 		48E3B8561B193FA3003DD726 /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E3B8551B193FA3003DD726 /* MenuController.swift */; };
 		48E3B8591B194150003DD726 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E3B8571B194150003DD726 /* SplashViewController.swift */; };
 		48E3B85A1B194150003DD726 /* SplashViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48E3B8581B194150003DD726 /* SplashViewController.xib */; };
@@ -91,6 +87,14 @@
 		48E3B8641B195BF8003DD726 /* map-menu-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 48E3B8611B195BF8003DD726 /* map-menu-icon.png */; };
 		48E3B8651B195BF8003DD726 /* map-menu-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48E3B8621B195BF8003DD726 /* map-menu-icon@2x.png */; };
 		48E3B8661B195BF8003DD726 /* map-menu-icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48E3B8631B195BF8003DD726 /* map-menu-icon@3x.png */; };
+		698AF3891BF69BD800F1E745 /* StyledCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698AF3881BF69BD800F1E745 /* StyledCell.swift */; };
+		698AF38C1BF6D66D00F1E745 /* TextEntryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698AF38A1BF6D66D00F1E745 /* TextEntryCell.swift */; };
+		698AF38D1BF6D66D00F1E745 /* TextEntryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 698AF38B1BF6D66D00F1E745 /* TextEntryCell.xib */; };
+		698AF3941BF7910100F1E745 /* ColorPreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698AF3921BF7910100F1E745 /* ColorPreviewCell.swift */; };
+		698AF3951BF7910100F1E745 /* ColorPreviewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 698AF3931BF7910100F1E745 /* ColorPreviewCell.xib */; };
+		698AF3981BF79A3F00F1E745 /* Location+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698AF3961BF79A3F00F1E745 /* Location+CoreDataProperties.swift */; };
+		698AF3991BF79A3F00F1E745 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698AF3971BF79A3F00F1E745 /* Location.swift */; };
+		698AF39B1BF79A4D00F1E745 /* Fetchable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698AF39A1BF79A4D00F1E745 /* Fetchable.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -171,8 +175,6 @@
 		48642D121BAE27D300935358 /* LocationAccessViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationAccessViewController.swift; sourceTree = "<group>"; };
 		48642D131BAE27D300935358 /* LocationAccessViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LocationAccessViewController.xib; sourceTree = "<group>"; };
 		48673A051BB059AA00BC0CD7 /* DataModel2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel2.xcdatamodel; sourceTree = "<group>"; };
-		48673A061BB05A7800BC0CD7 /* Location+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Location+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		48673A071BB05A7800BC0CD7 /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		487A553D1BB4C61A00D0D320 /* NewLocationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewLocationViewController.swift; sourceTree = "<group>"; };
 		487A553E1BB4C61A00D0D320 /* NewLocationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewLocationViewController.xib; sourceTree = "<group>"; };
 		488092C51AFEF44E00300874 /* Delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Delete.png; sourceTree = "<group>"; };
@@ -190,14 +192,12 @@
 		4882D9D41B1A99FD00BAADAD /* RHACLStringExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RHACLStringExtensions.swift; sourceTree = "<group>"; };
 		4882D9D61B1AA27F00BAADAD /* RHACurrentLocationAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RHACurrentLocationAnnotation.swift; sourceTree = "<group>"; };
 		48C7636319F59D230096B27A /* RHAUtilExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RHAUtilExtensions.swift; sourceTree = "<group>"; };
-		48CB175C1AD1F52300864CBF /* LocationsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationsController.swift; sourceTree = "<group>"; };
 		48D225891A02F908008A419B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		48DEDA3119F592F80094CB8F /* Whereabouts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Whereabouts.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		48DEDA3519F592F80094CB8F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		48DEDA3619F592F80094CB8F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		48DEDA3D19F592F80094CB8F /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		48DEDA4019F592F80094CB8F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		48E3B8511B193E0E003DD726 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		48E3B8551B193FA3003DD726 /* MenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
 		48E3B8571B194150003DD726 /* SplashViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		48E3B8581B194150003DD726 /* SplashViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SplashViewController.xib; sourceTree = "<group>"; };
@@ -207,6 +207,14 @@
 		48E3B8611B195BF8003DD726 /* map-menu-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "map-menu-icon.png"; sourceTree = "<group>"; };
 		48E3B8621B195BF8003DD726 /* map-menu-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "map-menu-icon@2x.png"; sourceTree = "<group>"; };
 		48E3B8631B195BF8003DD726 /* map-menu-icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "map-menu-icon@3x.png"; sourceTree = "<group>"; };
+		698AF3881BF69BD800F1E745 /* StyledCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledCell.swift; sourceTree = "<group>"; };
+		698AF38A1BF6D66D00F1E745 /* TextEntryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextEntryCell.swift; sourceTree = "<group>"; };
+		698AF38B1BF6D66D00F1E745 /* TextEntryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TextEntryCell.xib; sourceTree = "<group>"; };
+		698AF3921BF7910100F1E745 /* ColorPreviewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorPreviewCell.swift; sourceTree = "<group>"; };
+		698AF3931BF7910100F1E745 /* ColorPreviewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ColorPreviewCell.xib; sourceTree = "<group>"; };
+		698AF3961BF79A3F00F1E745 /* Location+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Location+CoreDataProperties.swift"; path = "../Location+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		698AF3971BF79A3F00F1E745 /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Location.swift; path = ../Location.swift; sourceTree = "<group>"; };
+		698AF39A1BF79A4D00F1E745 /* Fetchable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fetchable.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -260,23 +268,31 @@
 		4849BD021B093A44003A40AF /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				48E3B8511B193E0E003DD726 /* MapViewController.swift */,
+				48E3B8581B194150003DD726 /* SplashViewController.xib */,
 				48E3B8571B194150003DD726 /* SplashViewController.swift */,
 				48E3B85B1B1951AA003DD726 /* RHAViewController.swift */,
 				48E3B85D1B195804003DD726 /* RHANavigationViewController.swift */,
 				48642D0E1BAE166F00935358 /* LocationsViewController.swift */,
+				48642D131BAE27D300935358 /* LocationAccessViewController.xib */,
 				48642D121BAE27D300935358 /* LocationAccessViewController.swift */,
+				487A553E1BB4C61A00D0D320 /* NewLocationViewController.xib */,
 				487A553D1BB4C61A00D0D320 /* NewLocationViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
 		};
-		48CB17591AD1F2A000864CBF /* Views */ = {
+		48CB17591AD1F2A000864CBF /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				4863ACAD1B24EF4D009F008F /* LocationCell.xib */,
 				4863ACAC1B24EF4D009F008F /* LocationCell.swift */,
+				698AF3881BF69BD800F1E745 /* StyledCell.swift */,
+				698AF38A1BF6D66D00F1E745 /* TextEntryCell.swift */,
+				698AF38B1BF6D66D00F1E745 /* TextEntryCell.xib */,
+				698AF3921BF7910100F1E745 /* ColorPreviewCell.swift */,
+				698AF3931BF7910100F1E745 /* ColorPreviewCell.xib */,
 			);
-			name = Views;
+			name = Cells;
 			sourceTree = "<group>";
 		};
 		48D6229E1AD04208002922ED /* Images */ = {
@@ -338,7 +354,6 @@
 		48DEDA2819F592F80094CB8F = {
 			isa = PBXGroup;
 			children = (
-				482CE19E19FD9F9A00682940 /* MapKit.framework */,
 				48DEDA3319F592F80094CB8F /* Whereabouts */,
 				482CABDC19FF565300B5F1E2 /* Quick Location */,
 				482CABD919FF565200B5F1E2 /* Frameworks */,
@@ -358,13 +373,14 @@
 		48DEDA3319F592F80094CB8F /* Whereabouts */ = {
 			isa = PBXGroup;
 			children = (
+				69CEA4A81BF63AC200F5022B /* Frameworks */,
 				4849BD021B093A44003A40AF /* ViewControllers */,
-				48CB17591AD1F2A000864CBF /* Views */,
+				48CB17591AD1F2A000864CBF /* Cells */,
 				48FF04FC1AD036BC00A2FA34 /* Objects */,
+				69CEA4AA1BF63B0F00F5022B /* CoreData */,
 				48FF04FB1AD036A000A2FA34 /* Controllers */,
 				48FF04FE1AD036D400A2FA34 /* Models */,
 				48FF04FD1AD036C700A2FA34 /* Extensions */,
-				48FF04FF1AD036F200A2FA34 /* Interfaces */,
 				48FF05011AD0372400A2FA34 /* Resources */,
 				48DEDA3419F592F80094CB8F /* Supporting Files */,
 			);
@@ -382,7 +398,6 @@
 		48FF04FB1AD036A000A2FA34 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				48CB175C1AD1F52300864CBF /* LocationsController.swift */,
 				483AF54C1B0BFF2700A00BED /* PersistenceController.swift */,
 				48E3B8551B193FA3003DD726 /* MenuController.swift */,
 				48E3B85F1B195896003DD726 /* ColorController.swift */,
@@ -394,9 +409,9 @@
 		48FF04FC1AD036BC00A2FA34 /* Objects */ = {
 			isa = PBXGroup;
 			children = (
-				4880D47F1A5331960077E68B /* Whereabouts.entitlements */,
-				485E165319F9AC37002CCB48 /* DataModel.xcdatamodeld */,
 				48DEDA3619F592F80094CB8F /* AppDelegate.swift */,
+				48DEDA3F19F592F80094CB8F /* LaunchScreen.xib */,
+				4880D47F1A5331960077E68B /* Whereabouts.entitlements */,
 			);
 			name = Objects;
 			sourceTree = "<group>";
@@ -413,24 +428,10 @@
 		48FF04FE1AD036D400A2FA34 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				48673A061BB05A7800BC0CD7 /* Location+CoreDataProperties.swift */,
-				48673A071BB05A7800BC0CD7 /* Location.swift */,
 				485E161919F86344002CCB48 /* Recent.swift */,
 				4882D9D61B1AA27F00BAADAD /* RHACurrentLocationAnnotation.swift */,
 			);
 			name = Models;
-			sourceTree = "<group>";
-		};
-		48FF04FF1AD036F200A2FA34 /* Interfaces */ = {
-			isa = PBXGroup;
-			children = (
-				487A553E1BB4C61A00D0D320 /* NewLocationViewController.xib */,
-				48642D131BAE27D300935358 /* LocationAccessViewController.xib */,
-				4863ACAD1B24EF4D009F008F /* LocationCell.xib */,
-				48E3B8581B194150003DD726 /* SplashViewController.xib */,
-				48DEDA3F19F592F80094CB8F /* LaunchScreen.xib */,
-			);
-			name = Interfaces;
 			sourceTree = "<group>";
 		};
 		48FF05001AD0371300A2FA34 /* Sounds */ = {
@@ -450,6 +451,26 @@
 				48FF05001AD0371300A2FA34 /* Sounds */,
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		69CEA4A81BF63AC200F5022B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				482CE19E19FD9F9A00682940 /* MapKit.framework */,
+			);
+			name = Frameworks;
+			path = ..;
+			sourceTree = "<group>";
+		};
+		69CEA4AA1BF63B0F00F5022B /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				485E165319F9AC37002CCB48 /* DataModel.xcdatamodeld */,
+				698AF3961BF79A3F00F1E745 /* Location+CoreDataProperties.swift */,
+				698AF3971BF79A3F00F1E745 /* Location.swift */,
+				698AF39A1BF79A4D00F1E745 /* Fetchable.swift */,
+			);
+			name = CoreData;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -569,6 +590,7 @@
 				484E89AF1B084BAB00830C71 /* Maps@3x.png in Resources */,
 				4856AA741B0017A1008EBB87 /* Add-Location@2x.png in Resources */,
 				483AE2091B1B789800679C75 /* user-location-indicator@3x.png in Resources */,
+				698AF3951BF7910100F1E745 /* ColorPreviewCell.xib in Resources */,
 				488092CA1AFEF44E00300874 /* Delete@3x.png in Resources */,
 				482C34411AD1E6400029B2EE /* Location@2x.png in Resources */,
 				4856AA7B1B0017A1008EBB87 /* Save-Check@3x.png in Resources */,
@@ -610,6 +632,7 @@
 				4863ACAF1B24EF4D009F008F /* LocationCell.xib in Resources */,
 				4882D9C71B1A83D700BAADAD /* whereabouts-splash-image.png in Resources */,
 				4824B1C21B1E98A700359E1C /* Compass@2x.png in Resources */,
+				698AF38D1BF6D66D00F1E745 /* TextEntryCell.xib in Resources */,
 				482C34421AD1E6400029B2EE /* Location@3x.png in Resources */,
 				484E89B51B084BAB00830C71 /* Trash@3x.png in Resources */,
 				48642D151BAE27D300935358 /* LocationAccessViewController.xib in Resources */,
@@ -632,10 +655,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				698AF39B1BF79A4D00F1E745 /* Fetchable.swift in Sources */,
 				487A553F1BB4C61A00D0D320 /* NewLocationViewController.swift in Sources */,
-				48E3B8531B193E0E003DD726 /* MapViewController.swift in Sources */,
 				48E3B8601B195896003DD726 /* ColorController.swift in Sources */,
-				48673A091BB05A7800BC0CD7 /* Location.swift in Sources */,
+				698AF3981BF79A3F00F1E745 /* Location+CoreDataProperties.swift in Sources */,
+				698AF3941BF7910100F1E745 /* ColorPreviewCell.swift in Sources */,
+				698AF38C1BF6D66D00F1E745 /* TextEntryCell.swift in Sources */,
 				48E3B85C1B1951AA003DD726 /* RHAViewController.swift in Sources */,
 				48642D0F1BAE166F00935358 /* LocationsViewController.swift in Sources */,
 				4863ACAE1B24EF4D009F008F /* LocationCell.swift in Sources */,
@@ -644,8 +669,8 @@
 				485E165519F9AC37002CCB48 /* DataModel.xcdatamodeld in Sources */,
 				48E3B8591B194150003DD726 /* SplashViewController.swift in Sources */,
 				48C7636419F59D230096B27A /* RHAUtilExtensions.swift in Sources */,
-				48CB175D1AD1F52300864CBF /* LocationsController.swift in Sources */,
-				48673A081BB05A7800BC0CD7 /* Location+CoreDataProperties.swift in Sources */,
+				698AF3891BF69BD800F1E745 /* StyledCell.swift in Sources */,
+				698AF3991BF79A3F00F1E745 /* Location.swift in Sources */,
 				483AF54D1B0BFF2700A00BED /* PersistenceController.swift in Sources */,
 				48E3B85E1B195804003DD726 /* RHANavigationViewController.swift in Sources */,
 				48DEDA3719F592F80094CB8F /* AppDelegate.swift in Sources */,
@@ -952,7 +977,7 @@
 				48673A051BB059AA00BC0CD7 /* DataModel2.xcdatamodel */,
 				485E165419F9AC37002CCB48 /* DataModel.xcdatamodel */,
 			);
-			currentVersion = 485E165419F9AC37002CCB48 /* DataModel.xcdatamodel */;
+			currentVersion = 48673A051BB059AA00BC0CD7 /* DataModel2.xcdatamodel */;
 			path = DataModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

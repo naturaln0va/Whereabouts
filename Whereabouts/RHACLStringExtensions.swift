@@ -48,7 +48,8 @@ func shortLocationDescription(placemark: CLPlacemark) -> String
 {
     if placemark.areasOfInterest != nil {
         return "\(placemark.areasOfInterest!.first!) \(placemark.administrativeArea)"
-    } else {
+    }
+    else {
         return "\(placemark.locality) \(placemark.administrativeArea)"
     }
 }
@@ -65,7 +66,8 @@ func detailLocationDescription(placemark: CLPlacemark) -> String
             return "\(subFare) \(fare)"
         }
         return "\(subFare)"
-    } else {
+    }
+    else {
         if let fare = placemark.thoroughfare {
             return "\(fare)"
         }
@@ -102,7 +104,8 @@ func stringFromCoordinate(coordinate: CLLocationCoordinate2D) -> String
     return resultingString
 }
 
-func relativeStringForDate(date: NSDate) -> String {
+func relativeStringForDate(date: NSDate) -> String
+{
     let units:NSCalendarUnit = [.Minute, .Hour, .Day, .WeekOfYear, .Month, .Year]
     
     // if "date" is before "now" (i.e. in the past) then the components will be positive
@@ -110,14 +113,18 @@ func relativeStringForDate(date: NSDate) -> String {
     
     if components.weekOfYear > 0 {
         return "\(components.weekOfYear) w"
-    } else if components.day > 0 {
+    }
+    else if components.day > 0 {
         return "\(components.day) d"
-    } else {
+    }
+    else {
         if components.hour > 0 {
             return "\(components.hour) h"
-        } else if components.minute > 1 {
+        }
+        else if components.minute > 1 {
             return "\(components.minute) m"
-        } else {
+        }
+        else {
             return "now"
         }
     }

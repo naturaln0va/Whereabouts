@@ -12,19 +12,9 @@ class MenuController: NSObject
         return RHANavigationViewController(rootViewController: LocationsViewController())
     }()
     
-    private func visibleViewController() -> UIViewController
-    {
-        return locationsNC
-    }
-
     override init()
     {
         super.init()
-    }
-    
-    func presentViewController(vc: UIViewController, animated: Bool, completion: (() -> Void)?)
-    {
-        visibleViewController().presentViewController(vc, animated: animated, completion: completion)
     }
     
     func showInWindow(window: UIWindow)
@@ -36,9 +26,9 @@ class MenuController: NSObject
         window.makeKeyAndVisible()
         
         if let presenterVC = presenterViewController {
-            delay(0.5, closure: {
+            delay(0.5) {
                 presenterVC.presentViewController(self.locationsNC, animated: false, completion: nil)
-            })
+            }
         }
     }
 }

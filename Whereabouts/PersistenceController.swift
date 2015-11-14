@@ -1,80 +1,62 @@
 
+import UIKit
 import CoreData
+import CoreLocation
 
 
-class PersistenceController : NSObject
+class PersistentController
 {
-    static let sharedController = PersistenceController()
     
-    private(set) var managedObjectContext: NSManagedObjectContext?
-    private var privateContext: NSManagedObjectContext?
+    static let sharedController = PersistentController()
     
-    private lazy var applicationDocumentsDirectory: NSURL = {
+    lazy var managedObjectContext: NSManagedObjectContext = {
+        guard let modelURL = NSBundle.mainBundle().URLForResource("DataModel", withExtension: "momd") else {
+            fatalError("Could not find the data model in the bundle")
+        }
+        
+        guard let model = NSManagedObjectModel(contentsOfURL: modelURL) else {
+            fatalError("error initializing model from: \(modelURL)")
+        }
+        
         let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
-        return urls[urls.count-1]
-    }()
-
-    func save()
-    {
-        if let pc = privateContext, let moc = managedObjectContext {
-            if !pc.hasChanges && !moc.hasChanges {
-                return
-            }
+        let documentsDirectory = urls[0]
+        let storeURL = documentsDirectory.URLByAppendingPathComponent("DataStore.sqlite")
+        
+        do {
+            let coordinator = NSPersistentStoreCoordinator(managedObjectModel: model)
             
-            moc.performBlockAndWait {
-                do {
-                    try moc.save()
-                } catch let error as NSError {
-                    print("Error when saving publicly to CoreData: \(error)")
-                }
-                
-                pc.performBlockAndWait {
-                    do {
-                        try pc.save()
-                    } catch let error as NSError {
-                        print("Error when saving privatly to CoreData: \(error)")
-                    }
-                }
-            }
+            try coordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: storeURL, options: nil)
+            
+            let context = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
+            context.persistentStoreCoordinator = coordinator
+            return context
+        } catch {
+            fatalError("Error adding persistent store at \(storeURL): \(error)")
+        }
+    }()
+    
+    func saveLocation(title: String, color: UIColor?, placemark: CLPlacemark?, location: CLLocation)
+    {
+        guard let dataToSave = NSEntityDescription.insertNewObjectForEntityForName(Location.entityName(), inManagedObjectContext: managedObjectContext) as? Location else {
+            fatalError("Expected to insert and entity of type 'Location'.")
         }
         
+        dataToSave.date = location.timestamp
+        dataToSave.title = title
+        dataToSave.color = color
+        dataToSave.placemark = placemark
+        dataToSave.location = location
+        dataToSave.identifier = "\(location.timestamp.timeIntervalSince1970)+\(title)+\(location.coordinate.longitude)+\(location.coordinate.latitude)"
+        
+        managedObjectContext.performBlockAndWait { [unowned self] in
+            do {
+                try self.managedObjectContext.save()
+            }
+                
+            catch {
+                fatalError("Error saving location: \(error)")
+            }
+        }
     }
     
-    func initializeCoreData()
-    {
-        if let _ = managedObjectContext {
-            return
-        }
-        
-        let modelURL = NSBundle.mainBundle().URLForResource("DataModel", withExtension: "momd")
-        if let url = modelURL, let mom = NSManagedObjectModel(contentsOfURL: url) {
-            let coordinator = NSPersistentStoreCoordinator(managedObjectModel: mom)
-            
-            managedObjectContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
-            privateContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
-            
-            if let pc = privateContext, moc = managedObjectContext {
-                pc.persistentStoreCoordinator = coordinator
-                moc.parentContext = pc
-            }
-        }
-        
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) {
-            if let pc = self.privateContext, let psc = pc.persistentStoreCoordinator {
-                
-                var options = [NSObject: AnyObject]()
-                options[NSMigratePersistentStoresAutomaticallyOption] = true
-                options[NSInferMappingModelAutomaticallyOption] = true
-                options[NSSQLitePragmasOption] = ["journal_mode": "DELETE"]
-
-                let url = self.applicationDocumentsDirectory.URLByAppendingPathComponent("DataModel.sqlite")
-                
-                do {
-                    try psc.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: options)
-                } catch let error as NSError {
-                    print("Error when initializing CoreData: \(error)")
-                }
-            }
-        }
-    }
 }

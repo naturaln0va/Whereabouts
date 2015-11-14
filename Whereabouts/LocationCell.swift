@@ -3,6 +3,10 @@ import UIKit
 
 class LocationCell: UITableViewCell
 {
+    
+    static let cellHeight: CGFloat = 68.0
+    static let reuseIdentifier = "LocationCell"
+    
     @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var createdDateLabel: UILabel!
     @IBOutlet weak var distanceLabel: UILabel!
@@ -11,13 +15,14 @@ class LocationCell: UITableViewCell
     
     var location: Location? {
         didSet {
-            if let loc = location, let place = loc.placemark {
+            if let locationToDisplay = location, let place = locationToDisplay.placemark {
                 addressLabel.text = stringFromAddress(place)
-                createdDateLabel.text = relativeStringForDate(loc.date)
+                createdDateLabel.text = relativeStringForDate(locationToDisplay.location.timestamp)
                 distanceLabel.text = "todo"
-                titleLabel.text = loc.title
-                colorCategoryStripView.backgroundColor = loc.color
+                titleLabel.text = locationToDisplay.title
+                colorCategoryStripView.backgroundColor = locationToDisplay.color
             }
         }
     }
+    
 }

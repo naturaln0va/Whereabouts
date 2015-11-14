@@ -1,40 +1,38 @@
 
 import UIKit
-import CoreLocation
+import CoreData
 
-class LocationsViewController: UIViewController, LocationAssistantDelegate
+
+class LocationsViewController: UIViewController
 {
-    private let assistant = LocationAssistant()
-    private var currentLocation: CLLocation?
     
-    private lazy var locationStatusView: UIView =  {
-        let view = UIView()
-        view.backgroundColor = UIColor(hex: 0x067dff) //Error red color UIColor(hex: 0xc03b2b)
+    private lazy var fetchedResultsController: NSFetchedResultsController = {
+        let moc = PersistentController.sharedController.managedObjectContext
         
-        let infoLabel = UILabel()
-        infoLabel.text = "Locating..."
-        infoLabel.textColor = UIColor.whiteColor()
-        infoLabel.textAlignment = .Center
-        infoLabel.font = UIFont.systemFontOfSize(12)
-        infoLabel.sizeToFit()
+        let fetchRequest = Location.fetchRequest(moc, predicate: nil, sortedBy: "date", ascending: false)
+        fetchRequest.fetchLimit = 100
         
-        view.frame = infoLabel.frame
-        view.addSubview(infoLabel)
+        return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: "locations")
+    }()
+    
+    private lazy var tableView: UITableView = {
+        let tbl = UITableView(frame: CGRectZero, style: .Plain)
         
-        infoLabel.center = view.center
+        tbl.delegate = self
+        tbl.dataSource = self
+        tbl.separatorStyle = .None
+        tbl.backgroundColor = ColorController.backgroundColor
+        tbl.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 64, right: 0)
         
-        view.layer.cornerRadius = 12.0
-        
-        view.frame.origin.y = CGRectGetHeight(self.view.bounds) - 40
-        
-        return view
+        return tbl
     }()
     
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        title = "Locations"
-        view.backgroundColor = ColorController.viewControllerBackgroundColor
+        
+        title = "Whereabouts"
+        view.backgroundColor = ColorController.backgroundColor
         
         let rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "locateBarButtonWasPressed")
         let leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "Settings-BarButton"), style: .Plain, target: self, action: "settingsBarButtonWasPressed")
@@ -42,14 +40,17 @@ class LocationsViewController: UIViewController, LocationAssistantDelegate
         navigationItem.rightBarButtonItem = rightBarButtonItem
         navigationItem.leftBarButtonItem = leftBarButtonItem
         
-        assistant.delegate = self
+        tableView.frame = view.frame
+        tableView.registerNib(UINib(nibName: LocationCell.reuseIdentifier, bundle: nil), forCellReuseIdentifier: LocationCell.reuseIdentifier)
+        
+        view.addSubview(tableView)
+        fetch()
     }
     
     // MARK: - BarButon Actions
     func locateBarButtonWasPressed()
     {
-        assistant.getLocation()
-        showLocationStatus()
+        presentViewController(RHANavigationViewController(rootViewController: NewLocationViewController()), animated: true, completion: nil)
     }
     
     func settingsBarButtonWasPressed()
@@ -57,64 +58,59 @@ class LocationsViewController: UIViewController, LocationAssistantDelegate
         
     }
     
-    // MARK: - Private Helpers
-    private func showLocationStatus()
+    // MARK: - Private
+    private func fetch()
     {
-        view.addSubview(locationStatusView)
-        UIView.animateWithDuration(0.125, delay: 0.0, usingSpringWithDamping: 0.25, initialSpringVelocity: 5.0, options: .CurveEaseOut, animations: { () -> Void in
-            self.locationStatusView.frame.origin.y = self.view.center.y
-        }, completion: nil)
-    }
-    
-    private func dismissLocationStatusWithCompletion(completion: Void -> Void)
-    {
+        do {
+            try fetchedResultsController.performFetch()
+        }
         
+        catch {
+            print("Error fetching for the results controller: \(error)")
+        }
     }
     
-    private func showSaveLocationViewController()
+}
+
+
+extension LocationsViewController: UITableViewDelegate, UITableViewDataSource
+{
+    
+    // MARK: - UITableViewDelegate
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
     {
-        let newLocationVC = NewLocationViewController()
+        return tableView.dequeueReusableCellWithIdentifier(LocationCell.reuseIdentifier, forIndexPath: indexPath)
+    }
+    
+    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath)
+    {
+//        if cell.tag == kLoadingCellTag {
+//            performFetch(nil, cursor: fetchCursor)
+//            return
+//        }
         
-        newLocationVC.location = assistant.location
-        newLocationVC.placemark = assistant.placemark
+        guard let cell = cell as? LocationCell else { fatalError("Expected to display a `RecipeCell`.") }
+        if let location = fetchedResultsController.objectAtIndexPath(indexPath) as? Location {
+            cell.location = location
+        }
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
+    {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    }
+    
+    // MARK: - UITableViewDataSource
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat
+    {
+        return LocationCell.cellHeight
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int
+    {
+        let section = fetchedResultsController.sections?[section]
         
-        presentViewController(RHANavigationViewController(rootViewController: newLocationVC), animated: true, completion: nil)
+        return section?.numberOfObjects ?? 0
     }
     
-    // MARK: - LocationAssistantDelegate Delegate
-    func receivedLocation(location: CLLocation, finished: Bool)
-    {
-        if finished {
-            currentLocation = location
-            assistant.getAddressForLocation(location)
-        }
-    }
-    
-    func receivedAddress(placemark: CLPlacemark)
-    {
-        dismissLocationStatusWithCompletion {
-            self.showSaveLocationViewController()
-        }
-    }
-    
-    func failedToGetAddress()
-    {
-        dismissLocationStatusWithCompletion {
-            self.showSaveLocationViewController()
-        }
-    }
-    
-    func failedToGetLocation()
-    {
-        dismissLocationStatusWithCompletion {
-            self.showSaveLocationViewController()
-        }
-    }
-    
-    func authorizationDenied()
-    {
-        dismissLocationStatusWithCompletion {
-            self.showSaveLocationViewController()
-        }
-    }
 }

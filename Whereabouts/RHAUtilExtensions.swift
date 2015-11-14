@@ -12,30 +12,40 @@ func delay(delay:Double, closure:()->())
         dispatch_get_main_queue(), closure)
 }
 
-extension NSObject {
+extension NSObject
+{
+    
     var classNameString: String {
         return NSStringFromClass(self.dynamicType).componentsSeparatedByString(".").last!
     }
+    
 }
 
-extension CLLocation {
+extension CLLocation
+{
+    
     func stringByDistanceFromLocation(toLocation: CLLocation) -> String
     {
         let distance: CLLocationDistance = self.distanceFromLocation(toLocation)
         let roundedDistance = distance / 1609.34
         return "\(roundedDistance.roundTo(2))"
     }
+    
 }
 
-extension Double {
+extension Double
+{
+    
     func roundTo(places: Int) -> Double
     {
         let divisor = pow(10.0, Double(places))
         return round(self * divisor) / divisor
     }
+    
 }
 
-extension UIView {
+extension UIView
+{
     
     func snapshot() -> UIImage
     {
@@ -47,9 +57,11 @@ extension UIView {
         UIGraphicsEndImageContext()
         return image
     }
+    
 }
 
-extension UIImage {
+extension UIImage
+{
     
     func imageByScalingToFactor(byFactor: Float) -> UIImage
     {
@@ -76,9 +88,11 @@ extension UIImage {
         UIGraphicsEndImageContext()
         return tintedImage
     }
+    
 }
 
-extension UIColor {
+extension UIColor
+{
     
     convenience init(hex: Int, alpha: CGFloat = 1.0)
     {
@@ -132,4 +146,5 @@ extension UIColor {
         self.getWhite(&white, alpha: nil)
         return (white >= 0.5)
     }
+    
 }

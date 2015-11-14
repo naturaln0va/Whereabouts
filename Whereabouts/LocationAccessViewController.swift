@@ -1,14 +1,17 @@
 
 import UIKit
 
+
 protocol LocationAccessViewControllerDelegate
 {
     func accessGranted()
     func accessDenied()
 }
 
+
 class LocationAccessViewController: RHAViewController
 {
+    
     var delegate: LocationAccessViewControllerDelegate?
 
     override func viewDidLoad()
@@ -41,4 +44,5 @@ class LocationAccessViewController: RHAViewController
         }
         dismiss()
     }
+    
 }
