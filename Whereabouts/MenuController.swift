@@ -8,8 +8,8 @@ class MenuController: NSObject
     private var presenterViewController: UIViewController?
     private var window = UIWindow()
     
-    lazy var locationsNC: RHANavigationViewController = {
-        return RHANavigationViewController(rootViewController: LocationsViewController())
+    lazy var locationsNC: StyledNavigationController = {
+        return StyledNavigationController(rootViewController: LocationsViewController())
     }()
     
     override init()
@@ -19,16 +19,10 @@ class MenuController: NSObject
     
     func showInWindow(window: UIWindow)
     {
-        presenterViewController = SplashViewController()
+        presenterViewController = self.locationsNC
         
         self.window = window
         window.rootViewController = presenterViewController
-        window.makeKeyAndVisible()
-        
-        if let presenterVC = presenterViewController {
-            delay(0.5) {
-                presenterVC.presentViewController(self.locationsNC, animated: false, completion: nil)
-            }
-        }
+        window.makeKeyAndVisible()        
     }
 }

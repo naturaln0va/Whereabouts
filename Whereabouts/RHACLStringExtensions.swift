@@ -1,11 +1,8 @@
-//
-//  Created by Ryan Ackermann on 5/30/15.
-//  Copyright (c) 2015 Ryan Ackermann. All rights reserved.
-//
 
 import CoreLocation
 
-func stringFromAddress(placemark: CLPlacemark) -> String
+
+func stringFromAddress(placemark: CLPlacemark, withNewLine newline: Bool) -> String
 {
     var line1 = ""
     var line2 = ""
@@ -31,7 +28,7 @@ func stringFromAddress(placemark: CLPlacemark) -> String
     }
     
     if line1.characters.count > 0 && line2.characters.count > 0 {
-        return line1 + "\n" + line2
+        return line1 + (newline ? "\n" : " ") + line2
     }
     else if line1.characters.count > 0 {
         return line1
@@ -44,61 +41,28 @@ func stringFromAddress(placemark: CLPlacemark) -> String
     }
 }
 
-func shortLocationDescription(placemark: CLPlacemark) -> String
-{
-    if placemark.areasOfInterest != nil {
-        return "\(placemark.areasOfInterest!.first!) \(placemark.administrativeArea)"
-    }
-    else {
-        return "\(placemark.locality) \(placemark.administrativeArea)"
-    }
-}
-
-func longLocationDescription(placemark: CLPlacemark) -> String
-{
-    return "\(placemark.subThoroughfare) \(placemark.thoroughfare) \(placemark.locality), \(placemark.administrativeArea) \(placemark.postalCode)"
-}
-
-func detailLocationDescription(placemark: CLPlacemark) -> String
-{
-    if let subFare = placemark.subThoroughfare {
-        if let fare = placemark.thoroughfare {
-            return "\(subFare) \(fare)"
-        }
-        return "\(subFare)"
-    }
-    else {
-        if let fare = placemark.thoroughfare {
-            return "\(fare)"
-        }
-        return ""
-    }
-}
-
-func sharableStringFrom(placemark: CLPlacemark) -> String
-{
-    return "\(placemark.subThoroughfare) \(placemark.thoroughfare) \(placemark.locality), \(placemark.administrativeArea)"
-}
-
 func stringFromCoordinate(coordinate: CLLocationCoordinate2D) -> String
 {
     var resultingString = ""
     let coords = [coordinate.latitude, coordinate.longitude]
     
     for coord in coords {
-        let degrees = Int(coord)
-        let minutes = Int((coord - Double(degrees)) * 100)
-        let seconds = Int((((coord - Double(degrees)) * 100) - Double(minutes)) * 100)
-        let cardinal: Character
-        let first: Bool = resultingString.characters.count <= 0
+        var seconds = Int(round(fabs(coord * 3600)))
+        let degrees = seconds / 3600
+        seconds %= 3600
+        let minutes = seconds / 60
+        seconds %= 60
+        
+        let cardinal: String
+        let first: Bool = resultingString.characters.count == 0
         if first {
-            cardinal = degrees > 0 ? "N" : "S"
+            cardinal = coord >= 0 ? "N" : "S"
         }
         else {
-            cardinal = degrees > 0 ? "W" : "E"
+            cardinal = coord >= 0 ? "W" : "E"
         }
-        resultingString = resultingString + "\(degrees)º\(minutes)'\(seconds)'' \(cardinal)"
-        resultingString = resultingString + (first ? ", " : "")
+        resultingString += String(format: "%02i° %02i' %02i\" %@", degrees, minutes, seconds, cardinal)
+        resultingString += (first ? ", " : "")
     }
     
     return resultingString

@@ -11,14 +11,14 @@ class StyledCell: UITableViewCell
         UIRectFill(rect)
         
         let ctx = UIGraphicsGetCurrentContext()!
-        CGContextSetStrokeColorWithColor(ctx, UIColor(white: 0.75, alpha: 1.0).CGColor)
+        CGContextSetStrokeColorWithColor(ctx, ColorController.backgroundColor.CGColor)
         
         let path = CGPathCreateMutable()
         CGPathMoveToPoint(path, nil, 0, CGRectGetMaxY(rect))
         CGPathAddLineToPoint(path, nil, CGRectGetMaxX(rect), CGRectGetMaxY(rect))
         
         CGContextAddPath(ctx, path)
-        CGContextSetLineWidth(ctx, 1)
+        CGContextSetLineWidth(ctx, 2)
         CGContextDrawPath(ctx, .Stroke)
     }
     

@@ -37,14 +37,13 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate, LocationAccessView
     var desiredAccuracy: LocationAccuracy = .Best
     var delegate: LocationAssistantDelegate?
     
-    private var location: CLLocation?
-    private var placemark: CLPlacemark?
-    private var timer: NSTimer?
+    private(set) var parentViewController: UIViewController!
+    private(set) var location: CLLocation?
+    private(set) var placemark: CLPlacemark?
+    private(set) var timer: NSTimer?
     
     private var updatingLocation = false
     private var reverseGeocoding = false
-    
-    private(set) var parentViewController: UIViewController!
     
     
     init(viewController: UIViewController)
@@ -83,24 +82,21 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate, LocationAccessView
         if !reverseGeocoding {
             reverseGeocoding = true
             
-            geocoder.reverseGeocodeLocation(locationToGeocode, completionHandler: {
-                placemarks, error in
-                
-                if error == nil, let p = placemarks where !p.isEmpty {
+            geocoder.reverseGeocodeLocation(locationToGeocode) { placemarks, error in
+                if let p = placemarks where !p.isEmpty && error == nil {
                     if let delegate = self.delegate {
                         delegate.receivedAddress?(p.last!)
-                        self.placemark = p.last!
                     }
+                    self.placemark = p.last!
                 }
                 else {
                     if let delegate = self.delegate {
                         delegate.failedToGetAddress?()
-                        self.placemark = nil
                     }
+                    self.placemark = nil
                 }
-                
                 self.reverseGeocoding = false
-            })
+            }
         }
     }
     
@@ -164,7 +160,7 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate, LocationAccessView
             manager.startUpdatingLocation()
             updatingLocation = true
             
-            timer = NSTimer.scheduledTimerWithTimeInterval(30, target: self, selector: "didTimeOut", userInfo: nil, repeats: false)
+            timer = NSTimer.scheduledTimerWithTimeInterval(10, target: self, selector: "didTimeOut", userInfo: nil, repeats: false)
         }
     }
     
@@ -183,12 +179,10 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate, LocationAccessView
     
     func didTimeOut()
     {
-        if location == nil {
-            stopLocationManager()
-            
-            if let delegate = delegate {
-                delegate.failedToGetLocation?()
-            }
+        stopLocationManager()
+        
+        if let delegate = delegate {
+            delegate.failedToGetLocation?()
         }
     }
     

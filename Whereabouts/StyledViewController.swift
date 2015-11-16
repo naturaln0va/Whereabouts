@@ -5,7 +5,7 @@
 
 import UIKit
 
-class RHAViewController: UIViewController
+class StyledViewController: UIViewController
 {
     init()
     {

@@ -2,7 +2,7 @@
 import UIKit
 
 
-class RHANavigationViewController: UINavigationController
+class StyledNavigationController: UINavigationController
 {
 
     override func viewDidLoad()

@@ -9,7 +9,7 @@ protocol LocationAccessViewControllerDelegate
 }
 
 
-class LocationAccessViewController: RHAViewController
+class LocationAccessViewController: StyledViewController
 {
     
     var delegate: LocationAccessViewControllerDelegate?

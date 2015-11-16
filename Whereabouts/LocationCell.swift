@@ -1,7 +1,7 @@
 
 import UIKit
 
-class LocationCell: UITableViewCell
+class LocationCell: StyledCell
 {
     
     static let cellHeight: CGFloat = 68.0
@@ -9,19 +9,26 @@ class LocationCell: UITableViewCell
     
     @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var createdDateLabel: UILabel!
-    @IBOutlet weak var distanceLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var colorCategoryStripView: UIView!
     
     var location: Location? {
         didSet {
-            if let locationToDisplay = location, let place = locationToDisplay.placemark {
-                addressLabel.text = stringFromAddress(place)
-                createdDateLabel.text = relativeStringForDate(locationToDisplay.location.timestamp)
-                distanceLabel.text = "todo"
-                titleLabel.text = locationToDisplay.title
-                colorCategoryStripView.backgroundColor = locationToDisplay.color
+            guard let locationToDisplay = location else {
+                return
             }
+            
+            colorCategoryStripView.backgroundColor = locationToDisplay.color
+            createdDateLabel.text = relativeStringForDate(locationToDisplay.location.timestamp)
+            titleLabel.text = locationToDisplay.title
+            
+            if let place = locationToDisplay.placemark {
+                addressLabel.text = stringFromAddress(place, withNewLine: false)
+            }
+            else {
+                addressLabel.text = stringFromCoordinate(locationToDisplay.location.coordinate)
+            }
+            
         }
     }
     

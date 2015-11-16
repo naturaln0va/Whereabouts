@@ -35,6 +35,49 @@ class PersistentController
         }
     }()
     
+    func deleteLocation(locationToDelete: Location)
+    {
+        managedObjectContext.deleteObject(locationToDelete)
+        
+        managedObjectContext.performBlockAndWait { [unowned self] in
+            do {
+                try self.managedObjectContext.save()
+            }
+                
+            catch {
+                fatalError("Error deleting location: \(error)")
+            }
+        }
+    }
+    
+    func updateLocation(locationToUpdate: Location, title: String, color: UIColor?)
+    {
+        do {
+            if let result = try Location.singleObjectInContext(managedObjectContext, predicate: NSPredicate(format: "identifier == [c] %@", locationToUpdate.identifier), sortedBy: nil, ascending: false) {
+                result.locationTitle = title
+                result.color = color
+                
+                
+                managedObjectContext.performBlockAndWait { [unowned self] in
+                    do {
+                        try self.managedObjectContext.save()
+                    }
+                        
+                    catch {
+                        fatalError("Error saving location: \(error)")
+                    }
+                }
+            }
+            else {
+                print("Error there was no entity with that identifier.")
+            }
+        }
+            
+        catch {
+            print("Error adding or updating location: \(locationToUpdate.title) ・ \(locationToUpdate.date)")
+        }
+    }
+    
     func saveLocation(title: String, color: UIColor?, placemark: CLPlacemark?, location: CLLocation)
     {
         guard let dataToSave = NSEntityDescription.insertNewObjectForEntityForName(Location.entityName(), inManagedObjectContext: managedObjectContext) as? Location else {
@@ -42,7 +85,7 @@ class PersistentController
         }
         
         dataToSave.date = location.timestamp
-        dataToSave.title = title
+        dataToSave.locationTitle = title
         dataToSave.color = color
         dataToSave.placemark = placemark
         dataToSave.location = location

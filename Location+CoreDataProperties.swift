@@ -20,7 +20,7 @@ extension Location {
     @NSManaged var identifier: String
     @NSManaged var color: UIColor?
     @NSManaged var placemark: CLPlacemark?
-    @NSManaged var title: String
+    @NSManaged var locationTitle: String
     @NSManaged var location: CLLocation
 
 }

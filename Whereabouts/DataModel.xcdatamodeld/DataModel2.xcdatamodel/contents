@@ -5,8 +5,8 @@
         <attribute name="date" attributeType="Transformable" syncable="YES"/>
         <attribute name="identifier" attributeType="String" syncable="YES"/>
         <attribute name="location" attributeType="Transformable" syncable="YES"/>
+        <attribute name="locationTitle" attributeType="String" syncable="YES"/>
         <attribute name="placemark" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="title" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
         <element name="Location" positionX="-54" positionY="-9" width="128" height="135"/>

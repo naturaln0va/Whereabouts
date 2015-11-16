@@ -2,6 +2,11 @@
 import UIKit
 import CoreLocation
 
+protocol NewLocationViewControllerDelegate
+{
+    func newLocationViewControllerDidEditLocation(editedLocation: Location)
+}
+
 
 class NewLocationViewController: UIViewController
 {
@@ -9,7 +14,9 @@ class NewLocationViewController: UIViewController
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet var bottomToolBar: UIToolbar!
     
-    var assistant: LocationAssistant!
+    var delegate: NewLocationViewControllerDelegate?
+    var assistant: LocationAssistant?
+    var locationToEdit: Location?
     
     var selectedColor: UIColor?
     
@@ -34,6 +41,12 @@ class NewLocationViewController: UIViewController
         return formatter
     }()
     
+    private let numberFormatter: NSNumberFormatter = {
+        let formatter = NSNumberFormatter()
+        formatter.minimumFractionDigits = 3
+        return formatter
+    }()
+    
     private var location: CLLocation? {
         didSet {
             tableView.reloadData()
@@ -46,11 +59,18 @@ class NewLocationViewController: UIViewController
     }
     
     
+    deinit
+    {
+        if let _ = assistant {
+            assistant?.delegate = nil
+        }
+    }
+    
     override func viewDidLoad()
     {
         super.viewDidLoad()
         
-        title = "New Location"
+        title = locationToEdit == nil ? "New Location" : locationToEdit!.title
         
         bottomToolBar.tintColor = ColorController.navBarBackgroundColor
         bottomToolBar.items = [spaceBarButtonItem, loadingBarButtonItem]
@@ -68,39 +88,56 @@ class NewLocationViewController: UIViewController
         tableView.registerNib(UINib(nibName: TextEntryCell.reuseIdentifier, bundle: nil), forCellReuseIdentifier: TextEntryCell.reuseIdentifier)
         tableView.registerNib(UINib(nibName: ColorPreviewCell.reuseIdentifier, bundle: nil), forCellReuseIdentifier: ColorPreviewCell.reuseIdentifier)
         
-        assistant = LocationAssistant(viewController: self)
-        assistant.delegate = self
-    }
-    
-    override func viewDidAppear(animated: Bool)
-    {
-        super.viewDidAppear(animated)
-        assistant.getLocation()
+        if let _ = assistant {
+            assistant?.delegate = self
+            assistant?.getLocation()
+        }
+        else if let editingLocation = locationToEdit {
+            location = editingLocation.location
+            placemark = editingLocation.placemark
+            selectedColor = editingLocation.color
+            
+            if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? TextEntryCell {
+                cell.textField.text = editingLocation.title
+            }
+            
+            bottomToolBar.items = nil
+        }
     }
 
     func refreshButtonPressed()
     {
         bottomToolBar.items = [spaceBarButtonItem, loadingBarButtonItem]
-        assistant.getLocation()
+        if let _ = assistant {
+            assistant?.getLocation()
+        }
     }
     
     func saveBarButtonPressed()
     {
-        guard let locationToSave = location, let items = bottomToolBar.items where !items.contains(loadingBarButtonItem) else {
-            let alert = UIAlertController(title: "Error", message: "Please wait for an accurate location to be found.", preferredStyle: .Alert)
-            alert.addAction(UIAlertAction(title: "Okay", style: .Default, handler: nil))
-            presentViewController(alert, animated: true, completion: nil)
-            return
-        }
-        
         guard let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? TextEntryCell, let title = cell.textField.text where title.characters.count > 0 else {
-            let alert = UIAlertController(title: "Error", message: "Please enter a title for this location.", preferredStyle: .Alert)
+            let alert = UIAlertController(title: "No Title", message: "Please enter a title for this location.", preferredStyle: .Alert)
             alert.addAction(UIAlertAction(title: "Okay", style: .Default, handler: nil))
             presentViewController(alert, animated: true, completion: nil)
             return
         }
         
-        PersistentController.sharedController.saveLocation(title, color: nil, placemark: placemark, location: locationToSave)
+        if let location = locationToEdit {
+            PersistentController.sharedController.updateLocation(location, title: title, color: selectedColor)
+            if let delegate = delegate {
+                delegate.newLocationViewControllerDidEditLocation(location)
+            }
+        }
+        else {
+            guard let locationToSave = location, let items = bottomToolBar.items where !items.contains(loadingBarButtonItem) else {
+                let alert = UIAlertController(title: "Sorry", message: "Please wait for an accurate location to be found.", preferredStyle: .Alert)
+                alert.addAction(UIAlertAction(title: "Okay", style: .Default, handler: nil))
+                presentViewController(alert, animated: true, completion: nil)
+                return
+            }
+
+            PersistentController.sharedController.saveLocation(title, color: selectedColor, placemark: placemark, location: locationToSave)
+        }
         dismiss()
     }
     
@@ -127,7 +164,7 @@ extension NewLocationViewController: LocationAssistantDelegate
         self.location = location
         
         if finished {
-            assistant.getAddressForLocation(location)
+            assistant?.getAddressForLocation(location)
         }
     }
     
@@ -144,12 +181,12 @@ extension NewLocationViewController: LocationAssistantDelegate
     
     func failedToGetLocation()
     {
-        
+        bottomToolBar.items = [spaceBarButtonItem, refreshBarButtonItem]
     }
     
     func failedToGetAddress()
     {
-        
+        bottomToolBar.items = [spaceBarButtonItem, refreshBarButtonItem]
     }
     
 }
@@ -199,12 +236,12 @@ extension NewLocationViewController: UITableViewDelegate, UITableViewDataSource
             }
             else if indexPath.row == 4 {
                 cell.textLabel?.text = "Altitude"
-                cell.detailTextLabel?.text = location == nil ? "" : location!.altitude == 0.0 ? "At sea level" : "\(location!.altitude)m " + (location!.altitude > 0 ? "above sea level" : "below sea level")
+                cell.detailTextLabel?.text = location == nil ? "" : location!.altitude == 0.0 ? "At sea level" :  "\(numberFormatter.stringFromNumber(NSNumber(double: location!.altitude))!)m " + (location!.altitude > 0 ? "above sea level" : "below sea level")
             }
             else if indexPath.row == 5 {
                 if let placemark = placemark {
                     cell.textLabel?.text = "Address"
-                    cell.detailTextLabel?.text = stringFromAddress(placemark)
+                    cell.detailTextLabel?.text = stringFromAddress(placemark, withNewLine: true)
                 }
                 else {
                     cell.textLabel?.text = "Date"
@@ -215,6 +252,15 @@ extension NewLocationViewController: UITableViewDelegate, UITableViewDataSource
                 cell.textLabel?.text = "Date"
                 cell.detailTextLabel?.text = location == nil ? "" : dateFormatter.stringFromDate(location!.timestamp)
             }
+        }
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
+    {
+        if indexPath.row == 1 {
+            let colorSelector = ColorSelectionViewController(collectionViewLayout: DefaultLayout())
+            colorSelector.delegate = self
+            navigationController?.pushViewController(colorSelector, animated: true)
         }
     }
     
@@ -242,7 +288,22 @@ extension NewLocationViewController: UITableViewDelegate, UITableViewDataSource
     
     func tableView(tableView: UITableView, shouldHighlightRowAtIndexPath indexPath: NSIndexPath) -> Bool
     {
+        if indexPath.row == 1 {
+            return true
+        }
         return false
+    }
+    
+}
+
+
+extension NewLocationViewController: ColorSelectionViewControllerDelegate
+{
+    
+    func colorSelectionViewControllerDidSelectColor(color: UIColor)
+    {
+        selectedColor = color
+        tableView.reloadData()
     }
     
 }

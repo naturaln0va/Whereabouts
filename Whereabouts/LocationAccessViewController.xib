@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="15A282b" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9059" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LocationAccessViewController" customModule="Whereabouts" customModuleProvider="target">
@@ -15,14 +15,14 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ReB-S4-RaU">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Location" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ReB-S4-RaU">
                     <rect key="frame" x="-42" y="-21" width="42" height="21"/>
                     <animations/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
                     <color key="textColor" red="0.93333333333333335" green="0.93333333333333335" blue="0.93333333333333335" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your location access is required in order to provide detailed information about your whereabouts" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Ofi-hF-sSQ">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Your location access is required in order to provide detailed information about your whereabouts" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Ofi-hF-sSQ">
                     <rect key="frame" x="-42" y="-21" width="42" height="21"/>
                     <animations/>
                     <fontDescription key="fontDescription" type="system" weight="light" pointSize="14"/>
@@ -32,7 +32,7 @@
                         <fontDescription key="fontDescription" type="system" weight="light" pointSize="20"/>
                     </variation>
                 </label>
-                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8YO-CM-F9S">
+                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8YO-CM-F9S">
                     <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                     <animations/>
                     <fontDescription key="fontDescription" type="system" weight="light" pointSize="15"/>
@@ -43,7 +43,7 @@
                         <action selector="noThanksButtonPressed:" destination="-1" eventType="touchUpInside" id="GBY-Ct-0BU"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pli-LI-Q3x">
+                <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pli-LI-Q3x">
                     <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                     <animations/>
                     <color key="backgroundColor" red="0.93333333333333335" green="0.93333333333333335" blue="0.93333333333333335" alpha="1" colorSpace="calibratedRGB"/>
@@ -85,7 +85,7 @@
                         <action selector="accessButtonPressed:" destination="-1" eventType="touchUpInside" id="uvo-ha-pxQ"/>
                     </connections>
                 </button>
-                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="245" verticalCompressionResistancePriority="745" image="flat-logo" translatesAutoresizingMaskIntoConstraints="NO" id="YzV-fN-azg">
+                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="245" verticalCompressionResistancePriority="745" misplaced="YES" image="flat-logo" translatesAutoresizingMaskIntoConstraints="NO" id="YzV-fN-azg">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                     <animations/>
                     <color key="backgroundColor" red="0.14117647058823529" green="0.14117647058823529" blue="0.14117647058823529" alpha="1" colorSpace="calibratedRGB"/>
@@ -172,40 +172,40 @@
             </constraints>
             <variation key="default">
                 <mask key="constraints">
-                    <exclude reference="UNT-LR-Lh4"/>
-                    <exclude reference="d0d-Of-ll0"/>
-                    <exclude reference="ftN-4V-xVL"/>
-                    <exclude reference="txe-x6-ZTB"/>
-                    <exclude reference="GpS-ld-2G3"/>
-                    <exclude reference="JNh-ia-uwP"/>
-                    <exclude reference="MNG-Z8-BAE"/>
-                    <exclude reference="WI7-r4-L7p"/>
-                    <exclude reference="cg3-bh-1Sl"/>
-                    <exclude reference="r5U-mS-74c"/>
-                    <exclude reference="368-ry-1LY"/>
-                    <exclude reference="5Kt-Zs-VFj"/>
-                    <exclude reference="bAO-Hj-rk5"/>
-                    <exclude reference="j4Z-Bj-aLp"/>
                     <exclude reference="2DZ-CX-IQM"/>
                     <exclude reference="9FF-PM-lgX"/>
                     <exclude reference="Cqn-4r-kFv"/>
                     <exclude reference="XiI-js-hZK"/>
                     <exclude reference="aKR-Yt-5jV"/>
                     <exclude reference="jPP-k6-Wib"/>
+                    <exclude reference="368-ry-1LY"/>
+                    <exclude reference="5Kt-Zs-VFj"/>
+                    <exclude reference="bAO-Hj-rk5"/>
+                    <exclude reference="j4Z-Bj-aLp"/>
+                    <exclude reference="GpS-ld-2G3"/>
+                    <exclude reference="JNh-ia-uwP"/>
+                    <exclude reference="MNG-Z8-BAE"/>
+                    <exclude reference="WI7-r4-L7p"/>
+                    <exclude reference="cg3-bh-1Sl"/>
+                    <exclude reference="r5U-mS-74c"/>
+                    <exclude reference="UNT-LR-Lh4"/>
+                    <exclude reference="d0d-Of-ll0"/>
+                    <exclude reference="ftN-4V-xVL"/>
+                    <exclude reference="txe-x6-ZTB"/>
                 </mask>
             </variation>
             <variation key="widthClass=compact">
                 <mask key="constraints">
-                    <include reference="ftN-4V-xVL"/>
-                    <include reference="txe-x6-ZTB"/>
-                    <include reference="GpS-ld-2G3"/>
-                    <include reference="WI7-r4-L7p"/>
-                    <include reference="cg3-bh-1Sl"/>
-                    <include reference="368-ry-1LY"/>
-                    <include reference="j4Z-Bj-aLp"/>
                     <include reference="2DZ-CX-IQM"/>
                     <include reference="aKR-Yt-5jV"/>
                     <include reference="jPP-k6-Wib"/>
+                    <include reference="368-ry-1LY"/>
+                    <include reference="j4Z-Bj-aLp"/>
+                    <include reference="GpS-ld-2G3"/>
+                    <include reference="WI7-r4-L7p"/>
+                    <include reference="cg3-bh-1Sl"/>
+                    <include reference="ftN-4V-xVL"/>
+                    <include reference="txe-x6-ZTB"/>
                 </mask>
             </variation>
             <variation key="heightClass=regular-widthClass=compact">
@@ -216,18 +216,18 @@
                     <include reference="pli-LI-Q3x"/>
                 </mask>
                 <mask key="constraints">
-                    <include reference="UNT-LR-Lh4"/>
-                    <include reference="d0d-Of-ll0"/>
-                    <exclude reference="txe-x6-ZTB"/>
-                    <exclude reference="JNh-ia-uwP"/>
-                    <exclude reference="MNG-Z8-BAE"/>
-                    <exclude reference="r5U-mS-74c"/>
-                    <include reference="5Kt-Zs-VFj"/>
-                    <exclude reference="bAO-Hj-rk5"/>
                     <exclude reference="9FF-PM-lgX"/>
                     <include reference="Cqn-4r-kFv"/>
                     <include reference="XiI-js-hZK"/>
                     <exclude reference="aKR-Yt-5jV"/>
+                    <include reference="5Kt-Zs-VFj"/>
+                    <exclude reference="bAO-Hj-rk5"/>
+                    <exclude reference="JNh-ia-uwP"/>
+                    <exclude reference="MNG-Z8-BAE"/>
+                    <exclude reference="r5U-mS-74c"/>
+                    <include reference="UNT-LR-Lh4"/>
+                    <include reference="d0d-Of-ll0"/>
+                    <exclude reference="txe-x6-ZTB"/>
                 </mask>
             </variation>
             <point key="canvasLocation" x="401" y="332"/>
