@@ -59,13 +59,6 @@ class NewLocationViewController: UIViewController
     }
     
     
-    deinit
-    {
-        if let _ = assistant {
-            assistant?.delegate = nil
-        }
-    }
-    
     override func viewDidLoad()
     {
         super.viewDidLoad()
@@ -150,6 +143,9 @@ class NewLocationViewController: UIViewController
     private func dismiss()
     {
         view.endEditing(true)
+        if let _ = assistant {
+            assistant?.terminate()
+        }
         dismissViewControllerAnimated(true, completion: nil)
     }
     

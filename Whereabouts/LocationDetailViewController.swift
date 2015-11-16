@@ -1,6 +1,7 @@
 
 import UIKit
 import MapKit
+import Photos
 
 
 class LocationDetailViewController: UIViewController
@@ -38,6 +39,7 @@ class LocationDetailViewController: UIViewController
         locationInformationView.layer.shadowRadius = 2.5
         
         mapView.delegate = self
+        mapView.setRegion(MKCoordinateRegion(center: locationToDisplay.location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.052125, longitudeDelta: 0.052125)), animated: false)
         
         colorView.layer.cornerRadius = 10.0
         toolBar.tintColor = ColorController.navBarBackgroundColor
@@ -83,6 +85,30 @@ class LocationDetailViewController: UIViewController
         self.presentViewController(activityViewController, animated: true, completion: nil)
     }
     
+    func getNearbyPhotos(completion: Array<UIImage> -> Void)
+    {
+        PHPhotoLibrary.requestAuthorization { status in
+            if status == .Authorized {
+                let results = PHAsset.fetchAssetsWithMediaType(.Image, options: nil)
+                var filtered = Array<PHAsset>()
+                
+                results.enumerateObjectsUsingBlock { asset, idx, stop in
+                    if let asset = asset as? PHAsset where asset.location != nil {
+                        filtered.append(asset)
+                    }
+                }
+            }
+        }
+
+//        let manager = PHImageManager.defaultManager()
+//        var option = PHImageRequestOptions()
+//        option.synchronous = true
+//        manager.requestImageForAsset(asset, targetSize: <#T##CGSize#>, contentMode: <#T##PHImageContentMode#>, options: <#T##PHImageRequestOptions?#>, resultHandler: <#T##(UIImage?, [NSObject : AnyObject]?) -> Void#>)
+//        manager.requestImageForAsset(asset, targetSize: CGSize(width: 100.0, height: 100.0), contentMode: .AspectFit, options: option, resultHandler: {(result, info)->Void in
+//            thumbnail = result
+//        })
+    }
+    
     private func refreshView()
     {
         title = locationToDisplay.title
@@ -103,7 +129,7 @@ class LocationDetailViewController: UIViewController
             coordinateLabel.text = "No Address Found"
         }
         
-        altitudeLabel.text = locationToDisplay.location.altitude == 0.0 ? "At sea level" :  "\(numberFormatter.stringFromNumber(NSNumber(double: locationToDisplay.location.altitude))!)m " + (locationToDisplay.location.altitude > 0 ? "above sea level" : "below sea level")
+        altitudeLabel.text = locationToDisplay.location.altitude == 0.0 ? "At sea level" : "\(numberFormatter.stringFromNumber(NSNumber(double: locationToDisplay.location.altitude))!)m " + (locationToDisplay.location.altitude > 0 ? "above sea level" : "below sea level")
         dateLabel.text = relativeStringForDate(locationToDisplay.location.timestamp)
         colorView.backgroundColor = locationToDisplay.color ?? UIColor.clearColor()
     }
@@ -121,11 +147,11 @@ extension LocationDetailViewController: MKMapViewDelegate
             longitude: userLocation.coordinate.longitude - (userLocation.coordinate.longitude - locationToDisplay.location.coordinate.longitude) / 2
         )
         let span = MKCoordinateSpan(
-            latitudeDelta: abs(userLocation.coordinate.latitude - locationToDisplay.location.coordinate.latitude) * 250,
-            longitudeDelta: abs(userLocation.coordinate.longitude - locationToDisplay.location.coordinate.longitude) * 250
+            latitudeDelta: max(0.052125, abs(userLocation.coordinate.latitude - locationToDisplay.location.coordinate.latitude) * 2.5),
+            longitudeDelta: max(0.052125, abs(userLocation.coordinate.longitude - locationToDisplay.location.coordinate.longitude) * 2.5)
         )
         let region = MKCoordinateRegionMake(center, span)
-        mapView.setRegion(mapView.regionThatFits(region), animated: false)
+        mapView.setRegion(mapView.regionThatFits(region), animated: true)
     }
     
     func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView?
@@ -150,6 +176,7 @@ extension LocationDetailViewController: MKMapViewDelegate
             }
             
             let rightButton = UIButton(type: .DetailDisclosure)
+            rightButton.tintColor = locationToDisplay.color
             rightButton.addTarget(self, action: "annotationButtonPressed", forControlEvents: .TouchUpInside)
             annotationView.rightCalloutAccessoryView = rightButton
         }

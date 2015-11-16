@@ -16,7 +16,7 @@ import CoreLocation
 
 extension Location {
 
-    @NSManaged var date:  NSDate
+    @NSManaged var date: NSDate
     @NSManaged var identifier: String
     @NSManaged var color: UIColor?
     @NSManaged var placemark: CLPlacemark?

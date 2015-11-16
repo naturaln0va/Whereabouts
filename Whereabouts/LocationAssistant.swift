@@ -34,7 +34,7 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate, LocationAccessView
     private let manager = CLLocationManager()
     private let geocoder = CLGeocoder()
     
-    var desiredAccuracy: LocationAccuracy = .Best
+    var desiredAccuracy: LocationAccuracy = .Good
     var delegate: LocationAssistantDelegate?
     
     private(set) var parentViewController: UIViewController!
@@ -98,6 +98,12 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate, LocationAccessView
                 self.reverseGeocoding = false
             }
         }
+    }
+    
+    func terminate()
+    {
+        stopLocationManager()
+        delegate = nil
     }
     
     // MARK: - Internal Helpers
@@ -169,6 +175,10 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate, LocationAccessView
         if updatingLocation {
             if let timer = timer {
                 timer.invalidate()
+            }
+            
+            if geocoder.geocoding {
+                geocoder.cancelGeocode()
             }
             
             manager.stopUpdatingLocation()

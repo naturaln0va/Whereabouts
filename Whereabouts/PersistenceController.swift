@@ -25,7 +25,12 @@ class PersistentController
         do {
             let coordinator = NSPersistentStoreCoordinator(managedObjectModel: model)
             
-            try coordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: storeURL, options: nil)
+            try coordinator.addPersistentStoreWithType(
+                NSSQLiteStoreType,
+                configuration: nil,
+                URL: storeURL,
+                options: [NSMigratePersistentStoresAutomaticallyOption: true, NSInferMappingModelAutomaticallyOption: true]
+            )
             
             let context = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
             context.persistentStoreCoordinator = coordinator
