@@ -55,10 +55,11 @@ class PersistentController
         }
     }
     
-    func updateLocation(locationToUpdate: Location, title: String, color: UIColor?)
+    func updateLocation(locationToUpdate: Location, title: String, color: UIColor?, placemark: CLPlacemark?)
     {
         do {
             if let result = try Location.singleObjectInContext(managedObjectContext, predicate: NSPredicate(format: "identifier == [c] %@", locationToUpdate.identifier), sortedBy: nil, ascending: false) {
+                result.placemark = placemark
                 result.locationTitle = title
                 result.color = color
                 

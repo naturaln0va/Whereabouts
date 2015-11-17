@@ -113,6 +113,7 @@ class LocationDetailViewController: UIViewController
     {
         title = locationToDisplay.title
 
+        mapView.removeAnnotation(locationToDisplay)
         mapView.addAnnotation(locationToDisplay)
         
         if #available(iOS 9.0, *) {

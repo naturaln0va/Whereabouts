@@ -94,14 +94,26 @@ class NewLocationViewController: UIViewController
                 cell.textField.text = editingLocation.title
             }
             
-            bottomToolBar.items = nil
+            if editingLocation.placemark == nil {
+                assistant = LocationAssistant(viewController: self)
+                assistant?.delegate = self
+                assistant?.getAddressForLocation(editingLocation.location)
+                bottomToolBar.items = [spaceBarButtonItem, loadingBarButtonItem]
+            }
+            else {
+                bottomToolBar.items = nil
+            }
         }
     }
 
     func refreshButtonPressed()
     {
         bottomToolBar.items = [spaceBarButtonItem, loadingBarButtonItem]
-        if let _ = assistant {
+        
+        if let editingLocation = locationToEdit {
+            assistant?.getAddressForLocation(editingLocation.location)
+        }
+        else if let _ = assistant {
             assistant?.getLocation()
         }
     }
@@ -116,7 +128,7 @@ class NewLocationViewController: UIViewController
         }
         
         if let location = locationToEdit {
-            PersistentController.sharedController.updateLocation(location, title: title, color: selectedColor)
+            PersistentController.sharedController.updateLocation(location, title: title, color: selectedColor, placemark: placemark)
             if let delegate = delegate {
                 delegate.newLocationViewControllerDidEditLocation(location)
             }
@@ -167,7 +179,13 @@ extension NewLocationViewController: LocationAssistantDelegate
     func receivedAddress(placemark: CLPlacemark)
     {
         self.placemark = placemark
-        bottomToolBar.items = [spaceBarButtonItem, refreshBarButtonItem]
+        
+        if locationToEdit != nil {
+            bottomToolBar.items = nil
+        }
+        else {
+            bottomToolBar.items = [spaceBarButtonItem, refreshBarButtonItem]
+        }
     }
     
     func authorizationDenied()
@@ -253,6 +271,7 @@ extension NewLocationViewController: UITableViewDelegate, UITableViewDataSource
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
     {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
         if indexPath.row == 1 {
             let colorSelector = ColorSelectionViewController(collectionViewLayout: DefaultLayout())
             colorSelector.delegate = self
