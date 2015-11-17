@@ -37,6 +37,9 @@
 		48E3B85C1B1951AA003DD726 /* StyledViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E3B85B1B1951AA003DD726 /* StyledViewController.swift */; };
 		48E3B85E1B195804003DD726 /* StyledNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E3B85D1B195804003DD726 /* StyledNavigationController.swift */; };
 		48E3B8601B195896003DD726 /* ColorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E3B85F1B195896003DD726 /* ColorController.swift */; };
+		69640E901BFBCDE80050722D /* PhotosLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69640E8F1BFBCDE80050722D /* PhotosLayout.swift */; };
+		69640E931BFBCEA60050722D /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69640E911BFBCEA60050722D /* PhotoCell.swift */; };
+		69640E941BFBCEA60050722D /* PhotoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 69640E921BFBCEA60050722D /* PhotoCell.xib */; };
 		698AF3891BF69BD800F1E745 /* StyledCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698AF3881BF69BD800F1E745 /* StyledCell.swift */; };
 		698AF38C1BF6D66D00F1E745 /* TextEntryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698AF38A1BF6D66D00F1E745 /* TextEntryCell.swift */; };
 		698AF38D1BF6D66D00F1E745 /* TextEntryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 698AF38B1BF6D66D00F1E745 /* TextEntryCell.xib */; };
@@ -107,6 +110,9 @@
 		48E3B85B1B1951AA003DD726 /* StyledViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledViewController.swift; sourceTree = "<group>"; };
 		48E3B85D1B195804003DD726 /* StyledNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledNavigationController.swift; sourceTree = "<group>"; };
 		48E3B85F1B195896003DD726 /* ColorController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorController.swift; sourceTree = "<group>"; };
+		69640E8F1BFBCDE80050722D /* PhotosLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotosLayout.swift; sourceTree = "<group>"; };
+		69640E911BFBCEA60050722D /* PhotoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoCell.swift; sourceTree = "<group>"; };
+		69640E921BFBCEA60050722D /* PhotoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhotoCell.xib; sourceTree = "<group>"; };
 		698AF3881BF69BD800F1E745 /* StyledCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledCell.swift; sourceTree = "<group>"; };
 		698AF38A1BF6D66D00F1E745 /* TextEntryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextEntryCell.swift; sourceTree = "<group>"; };
 		698AF38B1BF6D66D00F1E745 /* TextEntryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TextEntryCell.xib; sourceTree = "<group>"; };
@@ -192,6 +198,8 @@
 				698AF38B1BF6D66D00F1E745 /* TextEntryCell.xib */,
 				698AF3921BF7910100F1E745 /* ColorPreviewCell.swift */,
 				698AF3931BF7910100F1E745 /* ColorPreviewCell.xib */,
+				69640E911BFBCEA60050722D /* PhotoCell.swift */,
+				69640E921BFBCEA60050722D /* PhotoCell.xib */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -200,6 +208,7 @@
 			isa = PBXGroup;
 			children = (
 				48D4FFE51BF7D08F006DA09C /* DefaultLayout.swift */,
+				69640E8F1BFBCDE80050722D /* PhotosLayout.swift */,
 			);
 			name = Layouts;
 			sourceTree = "<group>";
@@ -418,6 +427,7 @@
 				48DEDA4119F592F80094CB8F /* LaunchScreen.xib in Resources */,
 				48DEDA3E19F592F80094CB8F /* Images.xcassets in Resources */,
 				4863ACAF1B24EF4D009F008F /* LocationCell.xib in Resources */,
+				69640E941BFBCEA60050722D /* PhotoCell.xib in Resources */,
 				698AF38D1BF6D66D00F1E745 /* TextEntryCell.xib in Resources */,
 				48642D151BAE27D300935358 /* LocationAccessViewController.xib in Resources */,
 			);
@@ -444,6 +454,7 @@
 				487A553F1BB4C61A00D0D320 /* NewLocationViewController.swift in Sources */,
 				48E3B8601B195896003DD726 /* ColorController.swift in Sources */,
 				48D4FFE61BF7D08F006DA09C /* DefaultLayout.swift in Sources */,
+				69640E931BFBCEA60050722D /* PhotoCell.swift in Sources */,
 				698AF3981BF79A3F00F1E745 /* Location+CoreDataProperties.swift in Sources */,
 				698AF3941BF7910100F1E745 /* ColorPreviewCell.swift in Sources */,
 				698AF38C1BF6D66D00F1E745 /* TextEntryCell.swift in Sources */,
@@ -451,6 +462,7 @@
 				48642D0F1BAE166F00935358 /* LocationsViewController.swift in Sources */,
 				4863ACAE1B24EF4D009F008F /* LocationCell.swift in Sources */,
 				48E3B8561B193FA3003DD726 /* MenuController.swift in Sources */,
+				69640E901BFBCDE80050722D /* PhotosLayout.swift in Sources */,
 				4882D9D51B1A99FD00BAADAD /* RHACLStringExtensions.swift in Sources */,
 				48D4FFE41BF7CB7A006DA09C /* ColorSelectionViewController.swift in Sources */,
 				485E165519F9AC37002CCB48 /* DataModel.xcdatamodeld in Sources */,

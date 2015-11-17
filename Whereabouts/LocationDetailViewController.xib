@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9059" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LocationDetailViewController" customModule="Whereabouts" customModuleProvider="target">
@@ -15,6 +15,7 @@
                 <outlet property="locationInformationView" destination="uEx-Xv-I50" id="zR1-dk-jHg"/>
                 <outlet property="mapView" destination="giY-k8-Emk" id="gQi-5q-mRo"/>
                 <outlet property="mapWidthConstraint" destination="SQa-WU-jgz" id="KSX-Bd-M16"/>
+                <outlet property="photosCollectionView" destination="A5s-Uh-IZN" id="ZBu-82-wsc"/>
                 <outlet property="toolBar" destination="Pw5-UM-KPl" id="cfy-bU-vQV"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -113,11 +114,28 @@
                                 </mask>
                             </variation>
                         </view>
+                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="A5s-Uh-IZN">
+                            <rect key="frame" x="8" y="437" width="359" height="150"/>
+                            <animations/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="150" id="dcv-dh-BwM"/>
+                            </constraints>
+                            <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="G3u-rd-Z4n">
+                                <size key="itemSize" width="50" height="50"/>
+                                <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            </collectionViewFlowLayout>
+                        </collectionView>
                     </subviews>
                     <animations/>
                     <constraints>
+                        <constraint firstItem="A5s-Uh-IZN" firstAttribute="leading" secondItem="1fx-3w-CEn" secondAttribute="leading" constant="8" id="7XO-0N-woE"/>
+                        <constraint firstAttribute="bottom" secondItem="A5s-Uh-IZN" secondAttribute="bottom" constant="12" id="ErT-wi-jdE"/>
                         <constraint firstItem="giY-k8-Emk" firstAttribute="top" secondItem="1fx-3w-CEn" secondAttribute="top" id="QNL-pB-HBq"/>
+                        <constraint firstAttribute="trailing" secondItem="A5s-Uh-IZN" secondAttribute="trailing" constant="8" id="S0E-1Q-Cth"/>
                         <constraint firstAttribute="trailing" secondItem="uEx-Xv-I50" secondAttribute="trailing" constant="8" id="UsV-BQ-P0O"/>
+                        <constraint firstItem="A5s-Uh-IZN" firstAttribute="top" secondItem="uEx-Xv-I50" secondAttribute="bottom" constant="8" id="ZKl-B1-fVB"/>
                         <constraint firstItem="uEx-Xv-I50" firstAttribute="leading" secondItem="1fx-3w-CEn" secondAttribute="leading" constant="8" id="bEV-ea-FNK"/>
                         <constraint firstAttribute="bottom" secondItem="uEx-Xv-I50" secondAttribute="bottom" constant="100" id="cPb-9L-rxC"/>
                         <constraint firstItem="uEx-Xv-I50" firstAttribute="top" secondItem="giY-k8-Emk" secondAttribute="bottom" constant="8" id="coH-0G-r7G"/>
@@ -128,6 +146,7 @@
                     <variation key="default">
                         <mask key="constraints">
                             <exclude reference="yz4-y1-p4D"/>
+                            <exclude reference="cPb-9L-rxC"/>
                         </mask>
                     </variation>
                 </scrollView>

@@ -8,6 +8,7 @@ class LocationDetailViewController: UIViewController
 {
 
     @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var photosCollectionView: UICollectionView!
     @IBOutlet weak var mapWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var locationInformationView: UIView!
     @IBOutlet weak var colorView: UIView!
@@ -24,6 +25,7 @@ class LocationDetailViewController: UIViewController
     }()
 
     var locationToDisplay: Location!
+    var nearbyPhotos: Array<UIImage>?
     
     
     override func viewDidLoad()
@@ -31,6 +33,12 @@ class LocationDetailViewController: UIViewController
         super.viewDidLoad()
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: "editButtonPressed")
+        
+        photosCollectionView.delegate = self
+        photosCollectionView.dataSource = self
+        photosCollectionView.backgroundColor = UIColor.clearColor()
+        photosCollectionView.collectionViewLayout = PhotosLayout()
+        photosCollectionView.registerNib(UINib(nibName: PhotoCell.reuseIdentifer, bundle: nil), forCellWithReuseIdentifier: PhotoCell.reuseIdentifer)
         
         locationInformationView.layer.cornerRadius = 4.0
         locationInformationView.layer.shadowColor = UIColor.blackColor().CGColor
@@ -43,6 +51,13 @@ class LocationDetailViewController: UIViewController
         
         colorView.layer.cornerRadius = 10.0
         toolBar.tintColor = ColorController.navBarBackgroundColor
+        
+        getNearbyPhotos { photos in
+            if let photos = photos {
+                self.nearbyPhotos = photos
+                self.photosCollectionView.reloadData()
+            }
+        }
     }
     
     override func viewWillAppear(animated: Bool)
@@ -85,28 +100,34 @@ class LocationDetailViewController: UIViewController
         self.presentViewController(activityViewController, animated: true, completion: nil)
     }
     
-    func getNearbyPhotos(completion: Array<UIImage> -> Void)
+    func getNearbyPhotos(completion: Array<UIImage>? -> Void)
     {
         PHPhotoLibrary.requestAuthorization { status in
             if status == .Authorized {
                 let results = PHAsset.fetchAssetsWithMediaType(.Image, options: nil)
-                var filtered = Array<PHAsset>()
+                let manager = PHImageManager.defaultManager()
+                let option = PHImageRequestOptions()
+                option.synchronous = true
+                var images = Array<UIImage>()
                 
                 results.enumerateObjectsUsingBlock { asset, idx, stop in
                     if let asset = asset as? PHAsset where asset.location != nil {
-                        filtered.append(asset)
+                        if asset.location!.distanceFromLocation(self.locationToDisplay.location) < 150.0 {
+                            manager.requestImageForAsset(asset, targetSize: CGSize(width: 425.0, height: 425.0), contentMode: .AspectFit, options: option) { image, info in
+                                if let img = image {
+                                    images.append(img)
+                                }
+                            }
+                        }
                     }
                 }
+                
+                dispatch_async(dispatch_get_main_queue()) { completion(images) }
+            }
+            else {
+                dispatch_async(dispatch_get_main_queue()) { completion(nil) }
             }
         }
-
-//        let manager = PHImageManager.defaultManager()
-//        var option = PHImageRequestOptions()
-//        option.synchronous = true
-//        manager.requestImageForAsset(asset, targetSize: <#T##CGSize#>, contentMode: <#T##PHImageContentMode#>, options: <#T##PHImageRequestOptions?#>, resultHandler: <#T##(UIImage?, [NSObject : AnyObject]?) -> Void#>)
-//        manager.requestImageForAsset(asset, targetSize: CGSize(width: 100.0, height: 100.0), contentMode: .AspectFit, options: option, resultHandler: {(result, info)->Void in
-//            thumbnail = result
-//        })
     }
     
     private func refreshView()
@@ -171,7 +192,8 @@ extension LocationDetailViewController: MKMapViewDelegate
             
             if #available(iOS 9.0, *) {
                 annotationView.pinTintColor = locationToDisplay.color
-            } else {
+            }
+            else {
                 annotationView.pinColor = MKPinAnnotationColor.Red
             }
             
@@ -181,6 +203,10 @@ extension LocationDetailViewController: MKMapViewDelegate
             annotationView.rightCalloutAccessoryView = rightButton
         }
         else {
+            if #available(iOS 9.0, *) {
+                annotationView.pinTintColor = locationToDisplay.color
+            }
+            
             annotationView.annotation = annotation
         }
         
@@ -201,6 +227,34 @@ extension LocationDetailViewController: NewLocationViewControllerDelegate
     func newLocationViewControllerDidEditLocation(editedLocation: Location)
     {
         locationToDisplay = editedLocation
+    }
+    
+}
+
+
+extension LocationDetailViewController: UICollectionViewDelegate, UICollectionViewDataSource
+{
+    
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell
+    {
+        guard let photos = nearbyPhotos else {
+            fatalError("Should have had photos to display.")
+        }
+        
+        guard let cell = collectionView.dequeueReusableCellWithReuseIdentifier(PhotoCell.reuseIdentifer, forIndexPath: indexPath) as? PhotoCell else {
+            fatalError("Expected to display a 'PhotoCell'.")
+        }
+        
+        cell.imageView.image = photos[indexPath.item]
+        return cell
+    }
+    
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
+    {
+        if let photos = nearbyPhotos where photos.count > 0 {
+            return photos.count
+        }
+        return 0
     }
     
 }
