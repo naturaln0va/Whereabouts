@@ -47,6 +47,8 @@ class LocationDetailViewController: UIViewController
         locationInformationView.layer.shadowRadius = 2.5
         
         mapView.delegate = self
+        mapView.scrollEnabled = false
+        mapView.rotateEnabled = false
         mapView.setRegion(MKCoordinateRegion(center: locationToDisplay.location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.052125, longitudeDelta: 0.052125)), animated: false)
         
         colorView.layer.cornerRadius = 10.0
@@ -174,6 +176,8 @@ extension LocationDetailViewController: MKMapViewDelegate
         )
         let region = MKCoordinateRegionMake(center, span)
         mapView.setRegion(mapView.regionThatFits(region), animated: true)
+        mapView.removeAnnotation(locationToDisplay)
+        mapView.addAnnotation(locationToDisplay)
     }
     
     func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView?
@@ -195,7 +199,7 @@ extension LocationDetailViewController: MKMapViewDelegate
                 annotationView.pinTintColor = locationToDisplay.color
             }
             else {
-                annotationView.pinColor = MKPinAnnotationColor.Red
+                annotationView.pinColor = .Red
             }
             
             let rightButton = UIButton(type: .DetailDisclosure)
@@ -209,6 +213,12 @@ extension LocationDetailViewController: MKMapViewDelegate
             }
             
             annotationView.annotation = annotation
+        }
+        
+        if let userLocation = mapView.userLocation.location {
+            let adjustedLocation = locationToDisplay
+            adjustedLocation.userLocationForAnnotation = userLocation
+            annotationView.annotation = adjustedLocation
         }
         
         return annotationView
