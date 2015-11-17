@@ -166,7 +166,7 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate, LocationAccessView
             manager.startUpdatingLocation()
             updatingLocation = true
             
-            timer = NSTimer.scheduledTimerWithTimeInterval(10, target: self, selector: "didTimeOut", userInfo: nil, repeats: false)
+            timer = NSTimer.scheduledTimerWithTimeInterval(20, target: self, selector: "didTimeOut", userInfo: nil, repeats: false)
         }
     }
     
@@ -249,12 +249,13 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate, LocationAccessView
                 location = newLocation
                 
                 var finished = false
+                print("Current accuracy: \(newLocation.horizontalAccuracy), desiredAccuracy: \(manager.desiredAccuracy)")
                 if newLocation.horizontalAccuracy <= manager.desiredAccuracy {
                     stopLocationManager()
                     finished = true
                 } else if distance < 1.0 {
                     let timeInterval = newLocation.timestamp.timeIntervalSinceDate(location!.timestamp)
-                    if timeInterval > 10 {
+                    if timeInterval > 8 {
                         stopLocationManager()
                         finished = true
                     }
