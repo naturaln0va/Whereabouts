@@ -69,7 +69,7 @@ class LocationsViewController: UITableViewController
     
     func settingsBarButtonWasPressed()
     {
-        
+        presentViewController(StyledNavigationController(rootViewController: SettingsViewController()), animated: true, completion: nil)
     }
     
     // MARK: - Private

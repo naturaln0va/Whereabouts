@@ -7,7 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PhotoViewController" customModule="Whereabouts" customModuleProvider="target">
             <connections>
-                <outlet property="imageView" destination="AJf-1u-cNR" id="7pa-Iy-dfZ"/>
+                <outlet property="imageView" destination="AJf-1u-cNR" id="Thi-sh-0nc"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>

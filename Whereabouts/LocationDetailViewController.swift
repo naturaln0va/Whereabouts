@@ -60,9 +60,7 @@ class LocationDetailViewController: UIViewController
         getNearbyPhotos { photos in
             if let photos = photos {
                 self.noPhotosLabel.alpha = 0.0
-                for photo in photos {
-                    self.nearbyPhotos?.append(photo)
-                }
+                self.nearbyPhotos = photos
                 self.photosCollectionView.reloadData()
             }
             else {
@@ -90,6 +88,14 @@ class LocationDetailViewController: UIViewController
         newlocationVC.locationToEdit = locationToDisplay
         newlocationVC.delegate = self
         presentViewController(StyledNavigationController(rootViewController: newlocationVC), animated: true, completion: nil)
+    }
+    
+    func annotationButtonPressed()
+    {
+        let placeToOpen = locationToDisplay.placemark == nil ? MKPlacemark(coordinate: locationToDisplay.location.coordinate, addressDictionary: nil) : MKPlacemark(placemark: locationToDisplay.placemark!)
+        let mapItem = MKMapItem(placemark: placeToOpen)
+        mapItem.name = locationToDisplay.title
+        mapItem.openInMapsWithLaunchOptions(nil)
     }
     
     @IBAction func actionButtonPressed(sender: AnyObject)
@@ -133,12 +139,15 @@ class LocationDetailViewController: UIViewController
                         
                         if images.count > 5 {
                             dispatch_async(dispatch_get_main_queue()) { completion(images) }
-                            images.removeAll()
-                        }
-                        else {
-                            dispatch_async(dispatch_get_main_queue()) { completion(nil) }
                         }
                     }
+                }
+                
+                if images.count > 0 {
+                    dispatch_async(dispatch_get_main_queue()) { completion(images) }
+                }
+                else {
+                    dispatch_async(dispatch_get_main_queue()) { completion(nil) }
                 }
             }
             else {
@@ -195,8 +204,11 @@ extension LocationDetailViewController: MKMapViewDelegate
         )
         let region = MKCoordinateRegionMake(center, span)
         mapView.setRegion(mapView.regionThatFits(region), animated: true)
-        mapView.removeAnnotation(locationToDisplay)
-        mapView.addAnnotation(locationToDisplay)
+        
+        if locationToDisplay.userLocationForAnnotation == nil {
+            mapView.removeAnnotation(locationToDisplay)
+            mapView.addAnnotation(locationToDisplay)
+        }
     }
     
     func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView?
@@ -235,17 +247,11 @@ extension LocationDetailViewController: MKMapViewDelegate
         }
         
         if let userLocation = mapView.userLocation.location where locationToDisplay.userLocationForAnnotation == nil {
-            let adjustedLocation = locationToDisplay
-            adjustedLocation.userLocationForAnnotation = userLocation
-            annotationView.annotation = adjustedLocation
+            locationToDisplay.userLocationForAnnotation = userLocation
+            annotationView.annotation = locationToDisplay
         }
         
         return annotationView
-    }
-    
-    func annotationButtonPressed()
-    {
-        UIApplication.sharedApplication().openURL(NSURL(string: "http://maps.apple.com/?ll=\(locationToDisplay.location.coordinate.latitude),\(locationToDisplay.location.coordinate.longitude)")!)
     }
     
 }
@@ -277,6 +283,18 @@ extension LocationDetailViewController: UICollectionViewDelegate, UICollectionVi
         
         cell.imageView.image = photos[indexPath.item]
         return cell
+    }
+    
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath)
+    {
+        guard let photos = nearbyPhotos else {
+            return
+        }
+        
+        let photoVC = PhotoViewController()
+        let image = photos[indexPath.item]
+        photoVC.photoToDisplay = image
+        presentViewController(photoVC, animated: true, completion: nil)
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
