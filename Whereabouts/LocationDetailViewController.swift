@@ -14,9 +14,11 @@ class LocationDetailViewController: UIViewController
     @IBOutlet weak var colorView: UIView!
     @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var coordinateLabel: UILabel!
+    @IBOutlet weak var noPhotosLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var altitudeLabel: UILabel!
     @IBOutlet weak var toolBar: UIToolbar!
+    @IBOutlet var collectionViewHeightConstraint: NSLayoutConstraint!
     
     private let numberFormatter: NSNumberFormatter = {
         let formatter = NSNumberFormatter()
@@ -53,11 +55,18 @@ class LocationDetailViewController: UIViewController
         
         colorView.layer.cornerRadius = 10.0
         toolBar.tintColor = ColorController.navBarBackgroundColor
+        noPhotosLabel.alpha = 0.0
         
         getNearbyPhotos { photos in
             if let photos = photos {
-                self.nearbyPhotos = photos
+                self.noPhotosLabel.alpha = 0.0
+                for photo in photos {
+                    self.nearbyPhotos?.append(photo)
+                }
                 self.photosCollectionView.reloadData()
+            }
+            else {
+                self.noPhotosLabel.alpha = 1.0
             }
         }
     }
@@ -121,12 +130,22 @@ class LocationDetailViewController: UIViewController
                                 }
                             }
                         }
+                        
+                        if images.count > 5 {
+                            dispatch_async(dispatch_get_main_queue()) { completion(images) }
+                            images.removeAll()
+                        }
+                        else {
+                            dispatch_async(dispatch_get_main_queue()) { completion(nil) }
+                        }
                     }
                 }
-                
-                dispatch_async(dispatch_get_main_queue()) { completion(images) }
             }
             else {
+                dispatch_async(dispatch_get_main_queue()) {
+                    self.collectionViewHeightConstraint.constant = 0.0
+                    self.view.layoutIfNeeded()
+                }
                 dispatch_async(dispatch_get_main_queue()) { completion(nil) }
             }
         }
@@ -215,7 +234,7 @@ extension LocationDetailViewController: MKMapViewDelegate
             annotationView.annotation = annotation
         }
         
-        if let userLocation = mapView.userLocation.location {
+        if let userLocation = mapView.userLocation.location where locationToDisplay.userLocationForAnnotation == nil {
             let adjustedLocation = locationToDisplay
             adjustedLocation.userLocationForAnnotation = userLocation
             annotationView.annotation = adjustedLocation

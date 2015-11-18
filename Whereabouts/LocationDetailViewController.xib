@@ -9,12 +9,14 @@
             <connections>
                 <outlet property="addressLabel" destination="GPg-Wh-gDF" id="Pae-MC-yHP"/>
                 <outlet property="altitudeLabel" destination="jvW-vH-q8p" id="Tdd-i6-vQ7"/>
+                <outlet property="collectionViewHeightConstraint" destination="dcv-dh-BwM" id="SuZ-R9-DmG"/>
                 <outlet property="colorView" destination="kK0-Gh-XPe" id="Ptc-hv-Tcp"/>
                 <outlet property="coordinateLabel" destination="3fC-gR-M4T" id="nkd-W1-eln"/>
                 <outlet property="dateLabel" destination="M7b-72-CLl" id="nJq-5B-kEh"/>
                 <outlet property="locationInformationView" destination="uEx-Xv-I50" id="zR1-dk-jHg"/>
                 <outlet property="mapView" destination="giY-k8-Emk" id="gQi-5q-mRo"/>
                 <outlet property="mapWidthConstraint" destination="SQa-WU-jgz" id="KSX-Bd-M16"/>
+                <outlet property="noPhotosLabel" destination="ZeY-cC-qgu" id="0pk-j4-yMw"/>
                 <outlet property="photosCollectionView" destination="A5s-Uh-IZN" id="ZBu-82-wsc"/>
                 <outlet property="toolBar" destination="Pw5-UM-KPl" id="cfy-bU-vQV"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -127,6 +129,13 @@
                                 <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                             </collectionViewFlowLayout>
                         </collectionView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Nearby Photos" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZeY-cC-qgu">
+                            <rect key="frame" x="117" y="501" width="140" height="21"/>
+                            <animations/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                     </subviews>
                     <animations/>
                     <constraints>
@@ -139,8 +148,10 @@
                         <constraint firstItem="uEx-Xv-I50" firstAttribute="leading" secondItem="1fx-3w-CEn" secondAttribute="leading" constant="8" id="bEV-ea-FNK"/>
                         <constraint firstAttribute="bottom" secondItem="uEx-Xv-I50" secondAttribute="bottom" constant="100" id="cPb-9L-rxC"/>
                         <constraint firstItem="uEx-Xv-I50" firstAttribute="top" secondItem="giY-k8-Emk" secondAttribute="bottom" constant="8" id="coH-0G-r7G"/>
+                        <constraint firstItem="ZeY-cC-qgu" firstAttribute="centerY" secondItem="A5s-Uh-IZN" secondAttribute="centerY" id="gVp-AK-Eyb"/>
                         <constraint firstAttribute="trailing" secondItem="giY-k8-Emk" secondAttribute="trailing" id="lei-gs-c9c"/>
                         <constraint firstItem="giY-k8-Emk" firstAttribute="leading" secondItem="1fx-3w-CEn" secondAttribute="leading" id="udh-dZ-5ck"/>
+                        <constraint firstItem="ZeY-cC-qgu" firstAttribute="centerX" secondItem="A5s-Uh-IZN" secondAttribute="centerX" id="wb2-ya-6B0"/>
                         <constraint firstAttribute="height" constant="623" id="yz4-y1-p4D"/>
                     </constraints>
                     <variation key="default">
@@ -163,7 +174,7 @@
                 <constraint firstItem="1fx-3w-CEn" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="rTZ-Fn-gKl"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
-            <point key="canvasLocation" x="125.5" y="516.5"/>
+            <point key="canvasLocation" x="-476.5" y="506.5"/>
         </view>
     </objects>
 </document>
