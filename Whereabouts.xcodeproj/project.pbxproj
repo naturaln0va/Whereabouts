@@ -52,6 +52,7 @@
 		69B7A3B71BFCD436000BEBA0 /* PhotoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 69B7A3B51BFCD436000BEBA0 /* PhotoViewController.xib */; };
 		69B7A3B91BFCD6FE000BEBA0 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69B7A3B81BFCD6FE000BEBA0 /* SettingsViewController.swift */; };
 		69B7A3BB1BFCD76B000BEBA0 /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69B7A3BA1BFCD76B000BEBA0 /* SettingsController.swift */; };
+		69EA5BBA1BFE4E1A0009B709 /* UIDevice+Addition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69EA5BB91BFE4E1A0009B709 /* UIDevice+Addition.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -129,6 +130,7 @@
 		69B7A3B51BFCD436000BEBA0 /* PhotoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhotoViewController.xib; sourceTree = "<group>"; };
 		69B7A3B81BFCD6FE000BEBA0 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		69B7A3BA1BFCD76B000BEBA0 /* SettingsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
+		69EA5BB91BFE4E1A0009B709 /* UIDevice+Addition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIDevice+Addition.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -296,6 +298,7 @@
 				48C7636319F59D230096B27A /* RHAUtilExtensions.swift */,
 				4882D9D41B1A99FD00BAADAD /* RHACLStringExtensions.swift */,
 				48510BEA1BF7F3D10041C7C1 /* String+Additions.swift */,
+				69EA5BB91BFE4E1A0009B709 /* UIDevice+Addition.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -474,6 +477,7 @@
 				48E3B85C1B1951AA003DD726 /* StyledViewController.swift in Sources */,
 				48642D0F1BAE166F00935358 /* LocationsViewController.swift in Sources */,
 				4863ACAE1B24EF4D009F008F /* LocationCell.swift in Sources */,
+				69EA5BBA1BFE4E1A0009B709 /* UIDevice+Addition.swift in Sources */,
 				48E3B8561B193FA3003DD726 /* MenuController.swift in Sources */,
 				69B7A3BB1BFCD76B000BEBA0 /* SettingsController.swift in Sources */,
 				69640E901BFBCDE80050722D /* PhotosLayout.swift in Sources */,

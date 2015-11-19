@@ -140,8 +140,13 @@ class SettingsViewController: UITableViewController
                 break
                 
             case GeneralSectionRows.kContactRow.rawValue:
-                //Send mail to me
-                //MFMailComposeViewController()
+                let mailVC = MFMailComposeViewController()
+                mailVC.setSubject("Whereabouts Feedback")
+                mailVC.setToRecipients(["support@ackermann.io"])
+                let devInfo = "• iOS Version: \(UIDevice.currentDevice().deviceIOSVersion)<br>• Hardware: \(UIDevice.currentDevice().deviceModel)"
+                mailVC.setMessageBody("<br><br><br><br><br><br><br><br><br><br><br><br><hr> <center>Developer Info</center> <br>\(devInfo)<hr>", isHTML: true)
+                mailVC.mailComposeDelegate = self
+                presentViewController(mailVC, animated: true, completion: nil)
                 break
                 
             default:
@@ -166,6 +171,17 @@ class SettingsViewController: UITableViewController
                 break
             }
         }
+    }
+    
+}
+
+
+extension SettingsViewController: MFMailComposeViewControllerDelegate
+{
+    
+    func mailComposeController(controller: MFMailComposeViewController, didFinishWithResult result: MFMailComposeResult, error: NSError?)
+    {
+        dismissViewControllerAnimated(true, completion: nil)
     }
     
 }
