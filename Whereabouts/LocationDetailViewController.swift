@@ -73,6 +73,37 @@ class LocationDetailViewController: UIViewController
     {
         super.viewWillAppear(animated)
         refreshView()
+        
+        let request = MKDirectionsRequest()
+        
+        request.source = MKMapItem.mapItemForCurrentLocation()
+        request.destination = MKMapItem(placemark: MKPlacemark(coordinate: locationToDisplay.location.coordinate, addressDictionary: nil))
+        
+        let directions = MKDirections(request: request)
+        directions.calculateETAWithCompletionHandler { response, error in
+            if let response = response where error == nil {
+                var responseString = ""
+                if #available(iOS 9.0, *) {
+                    let milesAway = response.distance * 0.00062137
+                    if milesAway > 0.75 {
+                        let formatter = NSNumberFormatter()
+                        formatter.minimumFractionDigits = 2
+                        
+                        if let formattedMileString = formatter.stringFromNumber(NSNumber(double: milesAway)) {
+                            responseString += "\(formattedMileString) mi, "
+                        }
+                    }
+                }
+                
+                let timeString = timeStringFromSeconds(response.expectedTravelTime)
+                if timeString.characters.count > 0 {
+                    responseString += "\(timeString) away"
+                    self.locationToDisplay.distanceAndETAString = responseString
+                    self.mapView.removeAnnotation(self.locationToDisplay)
+                    self.mapView.addAnnotation(self.locationToDisplay)
+                }
+            }
+        }
     }
     
     override func viewWillLayoutSubviews()
@@ -204,11 +235,6 @@ extension LocationDetailViewController: MKMapViewDelegate
         )
         let region = MKCoordinateRegionMake(center, span)
         mapView.setRegion(mapView.regionThatFits(region), animated: true)
-        
-        if locationToDisplay.userLocationForAnnotation == nil {
-            mapView.removeAnnotation(locationToDisplay)
-            mapView.addAnnotation(locationToDisplay)
-        }
     }
     
     func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView?
@@ -244,11 +270,6 @@ extension LocationDetailViewController: MKMapViewDelegate
             }
             
             annotationView.annotation = annotation
-        }
-        
-        if let userLocation = mapView.userLocation.location where locationToDisplay.userLocationForAnnotation == nil {
-            locationToDisplay.userLocationForAnnotation = userLocation
-            annotationView.annotation = locationToDisplay
         }
         
         return annotationView

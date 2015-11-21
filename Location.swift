@@ -7,7 +7,7 @@ import MapKit
 class Location: NSManagedObject
 {
 
-    var userLocationForAnnotation: CLLocation?
+    var distanceAndETAString: String?
     
     
     func shareableString() -> String
@@ -35,16 +35,8 @@ extension Location: MKAnnotation
     }
     
     var subtitle: String? {
-        if let userLocation = userLocationForAnnotation {
-            let milesAway = userLocation.distanceFromLocation(location) * 0.00062137
-            if milesAway > 0.5 {
-                let formatter = NSNumberFormatter()
-                formatter.minimumFractionDigits = 2
-                
-                if let formattedMileString = formatter.stringFromNumber(NSNumber(double: milesAway)) {
-                    return "\(formattedMileString) mi away"
-                }
-            }
+        if let distanceString = distanceAndETAString {
+            return distanceString
         }
         return stringFromCoordinate(location.coordinate)
     }
