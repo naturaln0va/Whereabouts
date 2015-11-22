@@ -2,33 +2,71 @@
 import UIKit
 import MessageUI
 
-enum GeneralSectionRows: Int
-{
-    case kRateRow
-    case kContactRow
-    case kTotalRows
-}
-
-enum UserSectionRows: Int
-{
-    case kAccuracyRow
-    case kTimeoutRow
-    case kPhotoRangeRow
-    case kUnitStyleRow
-    case kTotalRows
-}
-
-enum TableSections: Int
-{
-    case kGeneralSection
-    case kUserSection
-    case kTotalSections
-}
-
 
 class SettingsViewController: UITableViewController
 {
 
+    enum UserSectionRows: Int
+    {
+        case kAccuracyRow
+        case kTimeoutRow
+        case kPhotoRangeRow
+        case kUnitStyleRow
+        case kTotalRows
+    }
+    
+    enum GeneralSectionRows: Int
+    {
+        case kRateRow
+        case kContactRow
+        case kTotalRows
+    }
+    
+    enum TableSections: Int
+    {
+        case kUserSection
+        case kGeneralSection
+        case kTotalSections
+    }
+    
+    enum PickerViewControllerTags: Int
+    {
+        case AccuracyTag
+        case TimeoutTag
+        case PhotoRangeTag
+        case UnitStyleTag
+    }
+    
+    private lazy var footerView: UIView = {
+        let footerView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: CGRectGetWidth(UIScreen.mainScreen().bounds), height: 130.0))
+        footerView.backgroundColor = UIColor.clearColor()
+        
+        let logoImageview = UIImageView(frame: CGRect(x: 0.0, y: 0.0, width: 80.0, height: 80.0))
+        logoImageview.image = UIImage(named: "desaturated-flat-logo")
+        logoImageview.contentMode = .ScaleAspectFit
+        logoImageview.center = footerView.center
+        logoImageview.frame.origin.y -= 12.0
+        logoImageview.alpha = 0.75
+        footerView.addSubview(logoImageview)
+        
+        let buildInfoLabel = UILabel()
+        buildInfoLabel.font = UIFont.systemFontOfSize(12.0, weight: UIFontWeightLight)
+        let version = NSBundle.mainBundle().infoDictionary!["CFBundleVersion"] as! String
+        buildInfoLabel.text = "Whereabouts \(version)"
+        buildInfoLabel.sizeToFit()
+        buildInfoLabel.center.x = footerView.center.x
+        buildInfoLabel.frame.origin.y = CGRectGetMaxY(logoImageview.bounds) + 20.0
+        footerView.addSubview(buildInfoLabel)
+        
+        return footerView
+    }()
+    
+    
+    deinit
+    {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+    
     override func viewDidLoad()
     {
         super.viewDidLoad()
@@ -41,12 +79,22 @@ class SettingsViewController: UITableViewController
         tableView.backgroundColor = ColorController.backgroundColor
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Done", style: .Plain, target: self, action: "doneButtonPressed")
+        
+        tableView.tableFooterView = footerView
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "settingsDidChange", name: kSettingsControllerDidChangeNotification, object: nil)
     }
     
     // MARK: - Actions
     func doneButtonPressed()
     {
         dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    // MARK: - Notifications
+    func settingsDidChange()
+    {
+        tableView.reloadData()
     }
 
     // MARK: - UITableViewDataSource
@@ -57,7 +105,7 @@ class SettingsViewController: UITableViewController
     
     override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView?
     {
-        let coloredBackgroundView = UIView(frame: CGRect(x: 0, y: 0, width: CGRectGetWidth(tableView.bounds), height: 22))
+        let coloredBackgroundView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: CGRectGetWidth(tableView.bounds), height: 24.0))
         coloredBackgroundView.backgroundColor = UIColor.clearColor()
         return coloredBackgroundView
     }
@@ -83,42 +131,50 @@ class SettingsViewController: UITableViewController
     // MARK: - UITableViewDelegate
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
     {
-        let cell = StyledCell(style: .Subtitle, reuseIdentifier: "defaultCell")
+        let cell = StyledCell(style: .Value1, reuseIdentifier: "defaultCell")
         
-        if indexPath.section == TableSections.kGeneralSection.rawValue {
+        if indexPath.section == TableSections.kUserSection.rawValue {
             switch indexPath.row {
-            case GeneralSectionRows.kRateRow.rawValue:
-                cell.textLabel?.text = "Rate Whereabouts"
-                cell.imageView?.contentMode = .ScaleAspectFit
-                cell.imageView?.image = UIImage(named: "rate-star")
+            case UserSectionRows.kAccuracyRow.rawValue:
+                cell.textLabel?.text = "Accuracy"
+                cell.detailTextLabel?.text = SettingsController.sharedController.stringForDistanceAccuracy()
+                cell.accessoryType = .DisclosureIndicator
                 break
                 
-            case GeneralSectionRows.kContactRow.rawValue:
-                cell.textLabel?.text = "Contact the Developer"
-                cell.userInteractionEnabled = MFMailComposeViewController.canSendMail()
-                cell.textLabel?.enabled = MFMailComposeViewController.canSendMail()
+            case UserSectionRows.kTimeoutRow.rawValue:
+                cell.textLabel?.text = "Timeout"
+                cell.detailTextLabel?.text = "\(SettingsController.sharedController.locationTimeout)s"
+                cell.accessoryType = .DisclosureIndicator
+                break
+                
+            case UserSectionRows.kPhotoRangeRow.rawValue:
+                cell.textLabel?.text = "Nearby Photo Range"
+                cell.detailTextLabel?.text = "\(SettingsController.sharedController.nearbyPhotoRange)m"
+                cell.accessoryType = .DisclosureIndicator
+                break
+                
+            case UserSectionRows.kUnitStyleRow.rawValue:
+                cell.textLabel?.text = "Unit Style"
+                cell.detailTextLabel?.text = SettingsController.sharedController.unitStyle ? "Customary" : "Metric"
+                cell.accessoryType = .DisclosureIndicator
                 break
                 
             default:
                 break
             }
         }
-        else if indexPath.section == TableSections.kUserSection.rawValue {
+        else if indexPath.section == TableSections.kGeneralSection.rawValue {
             switch indexPath.row {
-            case UserSectionRows.kAccuracyRow.rawValue:
-                cell.textLabel?.text = "Location Accuracy"
+            case GeneralSectionRows.kRateRow.rawValue:
+                cell.textLabel?.text = "Rate Whereabouts"
+                cell.accessoryType = .DisclosureIndicator
                 break
                 
-            case UserSectionRows.kTimeoutRow.rawValue:
-                cell.textLabel?.text = "Location Timeout"
-                break
-                
-            case UserSectionRows.kPhotoRangeRow.rawValue:
-                cell.textLabel?.text = "Nearby Photo Range"
-                break
-                
-            case UserSectionRows.kUnitStyleRow.rawValue:
-                cell.textLabel?.text = "Unit Style"
+            case GeneralSectionRows.kContactRow.rawValue:
+                cell.textLabel?.text = "Contact the Developer"
+                cell.accessoryType = .DisclosureIndicator
+                cell.userInteractionEnabled = MFMailComposeViewController.canSendMail()
+                cell.textLabel?.enabled = MFMailComposeViewController.canSendMail()
                 break
                 
             default:
@@ -156,15 +212,105 @@ class SettingsViewController: UITableViewController
         else if indexPath.section == TableSections.kUserSection.rawValue {
             switch indexPath.row {
             case UserSectionRows.kAccuracyRow.rawValue:
+                let values = [
+                    kHorizontalAccuracyPoor,
+                    kHorizontalAccuracyFair,
+                    kHorizontalAccuracyAverage,
+                    kHorizontalAccuracyGood,
+                    kHorizontalAccuracyBest
+                ]
+                let labels = [
+                    "Poor",
+                    "Fair",
+                    "Average",
+                    "Good",
+                    "Best"
+                ]
+                
+                let index: Int = values.indexOf(SettingsController.sharedController.distanceAccuracy)!
+                
+                let data = PickerData(values: values, currentIndex: index, labels: labels, detailLabels: nil, footerDescription: "Higher accuracy may take longer when locating.")
+                let pvc = PickerViewController(data: data, tag: PickerViewControllerTags.AccuracyTag.rawValue, title: "Accuracy")
+                pvc.delegate = self
+                
+                navigationController?.pushViewController(pvc, animated: true)
                 break
                 
             case UserSectionRows.kTimeoutRow.rawValue:
+                let values = [
+                    kLocationTimeoutShort,
+                    kLocationTimeoutNormal,
+                    kLocationTimeoutLong,
+                    kLocationTimeoutVeryLong
+                ]
+                let labels = [
+                    "Short",
+                    "Normal",
+                    "Long",
+                    "VeryLong"
+                ]
+                let details = [
+                    "10s",
+                    "15s",
+                    "25s",
+                    "45s"
+                ]
+                
+                let index: Int = values.indexOf(SettingsController.sharedController.locationTimeout)!
+                
+                let data = PickerData(values: values, currentIndex: index, labels: labels, detailLabels: details, footerDescription: "A longer timeout may drain the battery faster.")
+                let pvc = PickerViewController(data: data, tag: PickerViewControllerTags.TimeoutTag.rawValue, title: "Timeout")
+                pvc.delegate = self
+                
+                navigationController?.pushViewController(pvc, animated: true)
                 break
                 
             case UserSectionRows.kPhotoRangeRow.rawValue:
+                let values = [
+                    50,
+                    150,
+                    350,
+                    800
+                ]
+                let labels = [
+                    "Low",
+                    "Normal",
+                    "High",
+                    "VeryHigh"
+                ]
+                let details = [
+                    "50m",
+                    "150m",
+                    "350m",
+                    "800m"
+                ]
+                
+                let index: Int = values.indexOf(SettingsController.sharedController.nearbyPhotoRange)!
+                
+                let data = PickerData(values: values, currentIndex: index, labels: labels, detailLabels: details, footerDescription: "A higher range may show more photos.")
+                let pvc = PickerViewController(data: data, tag: PickerViewControllerTags.PhotoRangeTag.rawValue, title: "Range")
+                pvc.delegate = self
+                
+                navigationController?.pushViewController(pvc, animated: true)
                 break
                 
             case UserSectionRows.kUnitStyleRow.rawValue:
+                let values = [
+                    true,
+                    false
+                ]
+                let labels = [
+                    "Customary",
+                    "Metric"
+                ]
+                
+                let index: Int = SettingsController.sharedController.unitStyle ? 0 : 1
+                
+                let data = PickerData(values: values, currentIndex: index, labels: labels, detailLabels: nil, footerDescription: nil)
+                let pvc = PickerViewController(data: data, tag: PickerViewControllerTags.UnitStyleTag.rawValue, title: "Unit")
+                pvc.delegate = self
+                
+                navigationController?.pushViewController(pvc, animated: true)
                 break
                 
             default:
@@ -182,6 +328,38 @@ extension SettingsViewController: MFMailComposeViewControllerDelegate
     func mailComposeController(controller: MFMailComposeViewController, didFinishWithResult result: MFMailComposeResult, error: NSError?)
     {
         dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+}
+
+
+extension SettingsViewController: PickerViewControllerDelegate
+{
+    
+    func pickerViewController(pvc: PickerViewController, didPickObject object: AnyObject)
+    {
+        switch pvc.tag {
+            
+        case PickerViewControllerTags.AccuracyTag.rawValue:
+            SettingsController.sharedController.distanceAccuracy = object as! Double
+            break
+            
+        case PickerViewControllerTags.TimeoutTag.rawValue:
+            SettingsController.sharedController.locationTimeout = object as! Int
+            break
+            
+        case PickerViewControllerTags.PhotoRangeTag.rawValue:
+            SettingsController.sharedController.nearbyPhotoRange = object as! Int
+            break
+            
+        case PickerViewControllerTags.UnitStyleTag.rawValue:
+            SettingsController.sharedController.unitStyle = object as! Bool
+            break
+            
+        default:
+            break
+            
+        }
     }
     
 }

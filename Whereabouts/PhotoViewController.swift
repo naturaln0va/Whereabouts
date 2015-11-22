@@ -17,9 +17,9 @@ class PhotoViewController: StyledViewController
         imageView.image = photoToDisplay
     }
     
-    override func prefersStatusBarHidden() -> Bool
+    override func preferredStatusBarStyle() -> UIStatusBarStyle
     {
-        return true
+        return .Default
     }
     
     // MARK: - Touches
@@ -42,11 +42,11 @@ extension PhotoViewController: UIViewControllerAnimatedTransitioning
     
     func animateTransition(transitionContext: UIViewControllerContextTransitioning)
     {
-        let fromVC = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey)
-        let toVC = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)
-        
-        let containerView = transitionContext.containerView()
-        let duration = transitionDuration(transitionContext)
+//        let fromVC = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey)
+//        let toVC = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)
+//        
+//        let containerView = transitionContext.containerView()
+//        let duration = transitionDuration(transitionContext)
         
     }
     

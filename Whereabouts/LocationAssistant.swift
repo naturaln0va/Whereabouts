@@ -9,14 +9,10 @@ let kHorizontalAccuracyAverage: CLLocationAccuracy = 150.0
 let kHorizontalAccuracyGood:    CLLocationAccuracy = 25.0
 let kHorizontalAccuracyBest:    CLLocationAccuracy = 5.0
 
-enum LocationAccuracy
-{
-    case Poor
-    case Fair
-    case Average
-    case Good
-    case Best
-}
+let kLocationTimeoutShort:      Int = 10
+let kLocationTimeoutNormal:     Int = 15
+let kLocationTimeoutLong:       Int = 25
+let kLocationTimeoutVeryLong:   Int = 45
 
 @objc protocol LocationAssistantDelegate
 {
@@ -34,7 +30,6 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate, LocationAccessView
     private let manager = CLLocationManager()
     private let geocoder = CLGeocoder()
     
-    var desiredAccuracy: LocationAccuracy = .Good
     var delegate: LocationAssistantDelegate?
     
     private(set) var parentViewController: UIViewController!
@@ -107,22 +102,6 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate, LocationAccessView
     }
     
     // MARK: - Internal Helpers
-    private func accuracyForDesiredAccuracy() -> Double
-    {
-        switch desiredAccuracy {
-        case .Poor:
-            return kHorizontalAccuracyPoor
-        case .Fair:
-            return kHorizontalAccuracyFair
-        case .Average:
-            return kHorizontalAccuracyAverage
-        case .Good:
-            return kHorizontalAccuracyGood
-        case .Best:
-            return kHorizontalAccuracyBest
-        }
-    }
-    
     private func checkLocationAuthorization()
     {
         let authStatus = CLLocationManager.authorizationStatus()
@@ -162,7 +141,7 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate, LocationAccessView
     {
         if CLLocationManager.locationServicesEnabled() {
             manager.delegate = self
-            manager.desiredAccuracy = accuracyForDesiredAccuracy()
+            manager.desiredAccuracy = SettingsController.sharedController.distanceAccuracy
             manager.startUpdatingLocation()
             updatingLocation = true
             

@@ -92,12 +92,8 @@ class LocationsViewController: UITableViewController
     
     override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath)
     {
-        //        if cell.tag == kLoadingCellTag {
-        //            performFetch(nil, cursor: fetchCursor)
-        //            return
-        //        }
+        guard let cell = cell as? LocationCell else { fatalError("Expected to display a `LocationCell`.") }
         
-        guard let cell = cell as? LocationCell else { fatalError("Expected to display a `RecipeCell`.") }
         if let location = fetchedResultsController.objectAtIndexPath(indexPath) as? Location {
             cell.location = location
         }
@@ -119,7 +115,6 @@ class LocationsViewController: UITableViewController
         let shareAction = UITableViewRowAction(style: .Default, title: "Share") { action, indexPath in
             if let location = self.fetchedResultsController.objectAtIndexPath(indexPath) as? Location {
                 let firstActivityItem = "I'm at \(location.shareableString()), where are you?"
-                
                 let activityViewController : UIActivityViewController = UIActivityViewController(
                     activityItems: [firstActivityItem], applicationActivities: nil)
                 
@@ -212,13 +207,6 @@ extension LocationsViewController: UISearchBarDelegate, UISearchControllerDelega
     
     func searchBarShouldEndEditing(searchBar: UISearchBar) -> Bool
     {
-        let moc = PersistentController.sharedController.managedObjectContext
-        
-        let fetchRequest = Location.fetchRequest(moc, predicate: nil, sortedBy: "date", ascending: false)
-        fetchRequest.fetchBatchSize = 20
-        
-        fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: "locations")
-        fetch()
         return true
     }
     
@@ -227,13 +215,13 @@ extension LocationsViewController: UISearchBarDelegate, UISearchControllerDelega
         searchBar.resignFirstResponder()
         
         if let searchText = searchBar.text where searchText.characters.count > 0 {
-            let moc = PersistentController.sharedController.managedObjectContext
-            
-            let fetchRequest = Location.fetchRequest(moc, predicate: NSPredicate(format: "locationTitle contains[c] %@", searchText), sortedBy: "date", ascending: false)
-            fetchRequest.fetchBatchSize = 20
-            
-            fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: "filtered")
-            fetch()
+//            let moc = PersistentController.sharedController.managedObjectContext
+//            let fetchRequest = Location.fetchRequest(moc, predicate: NSPredicate(format: "ANY locationTitle CONTAINS[c] %@", searchText), sortedBy: "date", ascending: false)
+//            fetchRequest.fetchBatchSize = 20
+//            
+//            fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
+//            fetchedResultsController.delegate = self
+//            fetch()
         }
     }
 

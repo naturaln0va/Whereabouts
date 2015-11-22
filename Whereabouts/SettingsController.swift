@@ -1,10 +1,7 @@
 
 import Foundation
 
-let kSettingsControllerDidChangeLocationAccuracy: String = "settingsControllerDidChangeLocationAccuracy"
-let kSettingsControllerDidChangeLocationTimeout: String = "settingsControllerDidChangeLocationTimeout"
-let kSettingsControllerDidChangeNearbyPhotoRange: String = "settingsControllerDidChangeNearbyPhotoRange"
-let kSettingsControllerDidChangeUnitStyle: String = "settingsControllerDidChangeUnitStyle"
+let kSettingsControllerDidChangeNotification: String = "settingsControllerDidChange"
 
 
 class SettingsController
@@ -23,9 +20,9 @@ class SettingsController
     lazy private var baseDefaults: Dictionary<String, AnyObject> = {
         return [
             kLocationAccuracyKey : kHorizontalAccuracyAverage,
-            kLocationTimeoutKey: 20,
+            kLocationTimeoutKey: kLocationTimeoutNormal,
             kNearbyPhotoRangeKey: 150,
-            kUnitStyleKey: false
+            kUnitStyleKey: true
         ]
     }()
     
@@ -42,6 +39,31 @@ class SettingsController
     }
     
     // MARK: - Public
+    func stringForDistanceAccuracy() -> String
+    {
+        switch distanceAccuracy {
+            
+        case kHorizontalAccuracyPoor:
+            return "Poor"
+            
+        case kHorizontalAccuracyFair:
+            return "Fair"
+            
+        case kHorizontalAccuracyAverage:
+            return "Average"
+            
+        case kHorizontalAccuracyGood:
+            return "Good"
+            
+        case kHorizontalAccuracyBest:
+            return "Best"
+            
+        default:
+            return ""
+            
+        }
+    }
+    
     var distanceAccuracy: Double {
         get {
             return defaults.doubleForKey(SettingsController.kLocationAccuracyKey)
@@ -49,7 +71,7 @@ class SettingsController
         set {
             defaults.setDouble(newValue, forKey: SettingsController.kLocationAccuracyKey)
             defaults.synchronize()
-            NSNotificationCenter.defaultCenter().postNotificationName(kSettingsControllerDidChangeLocationAccuracy, object: nil)
+            NSNotificationCenter.defaultCenter().postNotificationName(kSettingsControllerDidChangeNotification, object: nil)
         }
     }
     
@@ -60,7 +82,7 @@ class SettingsController
         set {
             defaults.setInteger(newValue, forKey: SettingsController.kLocationTimeoutKey)
             defaults.synchronize()
-            NSNotificationCenter.defaultCenter().postNotificationName(kSettingsControllerDidChangeLocationTimeout, object: nil)
+            NSNotificationCenter.defaultCenter().postNotificationName(kSettingsControllerDidChangeNotification, object: nil)
         }
     }
     
@@ -71,7 +93,7 @@ class SettingsController
         set {
             defaults.setInteger(newValue, forKey: SettingsController.kNearbyPhotoRangeKey)
             defaults.synchronize()
-            NSNotificationCenter.defaultCenter().postNotificationName(kSettingsControllerDidChangeNearbyPhotoRange, object: nil)
+            NSNotificationCenter.defaultCenter().postNotificationName(kSettingsControllerDidChangeNotification, object: nil)
         }
     }
     
@@ -82,7 +104,7 @@ class SettingsController
         set {
             defaults.setBool(newValue, forKey: SettingsController.kUnitStyleKey)
             defaults.synchronize()
-            NSNotificationCenter.defaultCenter().postNotificationName(kSettingsControllerDidChangeUnitStyle, object: nil)
+            NSNotificationCenter.defaultCenter().postNotificationName(kSettingsControllerDidChangeNotification, object: nil)
         }
     }
     

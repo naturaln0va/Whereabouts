@@ -67,12 +67,6 @@ class LocationDetailViewController: UIViewController
                 self.noPhotosLabel.alpha = 1.0
             }
         }
-    }
-    
-    override func viewWillAppear(animated: Bool)
-    {
-        super.viewWillAppear(animated)
-        refreshView()
         
         let request = MKDirectionsRequest()
         
@@ -104,6 +98,12 @@ class LocationDetailViewController: UIViewController
                 }
             }
         }
+    }
+    
+    override func viewWillAppear(animated: Bool)
+    {
+        super.viewWillAppear(animated)
+        refreshView()
     }
     
     override func viewWillLayoutSubviews()
@@ -152,7 +152,9 @@ class LocationDetailViewController: UIViewController
     {
         PHPhotoLibrary.requestAuthorization { status in
             if status == .Authorized {
-                let results = PHAsset.fetchAssetsWithMediaType(.Image, options: nil)
+                let options = PHFetchOptions()
+                options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
+                let results = PHAsset.fetchAssetsWithMediaType(.Image, options: options)
                 let manager = PHImageManager.defaultManager()
                 let option = PHImageRequestOptions()
                 option.synchronous = true
@@ -160,7 +162,7 @@ class LocationDetailViewController: UIViewController
                 
                 results.enumerateObjectsUsingBlock { asset, idx, stop in
                     if let asset = asset as? PHAsset where asset.location != nil {
-                        if asset.location!.distanceFromLocation(self.locationToDisplay.location) < 150.0 {
+                        if asset.location!.distanceFromLocation(self.locationToDisplay.location) < Double(SettingsController.sharedController.nearbyPhotoRange) {
                             manager.requestImageForAsset(asset, targetSize: CGSize(width: 425.0, height: 425.0), contentMode: .AspectFit, options: option) { image, info in
                                 if let img = image {
                                     images.append(img)

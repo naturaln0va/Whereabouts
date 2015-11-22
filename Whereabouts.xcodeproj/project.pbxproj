@@ -24,12 +24,14 @@
 		487A553F1BB4C61A00D0D320 /* NewLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487A553D1BB4C61A00D0D320 /* NewLocationViewController.swift */; };
 		487A55401BB4C61A00D0D320 /* NewLocationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 487A553E1BB4C61A00D0D320 /* NewLocationViewController.xib */; };
 		4882D9D51B1A99FD00BAADAD /* RHACLStringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4882D9D41B1A99FD00BAADAD /* RHACLStringExtensions.swift */; };
+		48AA3C331C01732800A0935A /* PickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48AA3C321C01732800A0935A /* PickerViewController.swift */; };
 		48C7636419F59D230096B27A /* RHAUtilExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C7636319F59D230096B27A /* RHAUtilExtensions.swift */; };
 		48D225881A02F908008A419B /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 48D2258A1A02F908008A419B /* MainInterface.storyboard */; };
 		48D4FFE41BF7CB7A006DA09C /* ColorSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D4FFE31BF7CB7A006DA09C /* ColorSelectionViewController.swift */; };
 		48D4FFE61BF7D08F006DA09C /* DefaultLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D4FFE51BF7D08F006DA09C /* DefaultLayout.swift */; };
 		48D4FFEA1BF7D2ED006DA09C /* LocationDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D4FFE81BF7D2ED006DA09C /* LocationDetailViewController.swift */; };
 		48D4FFEB1BF7D2ED006DA09C /* LocationDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48D4FFE91BF7D2ED006DA09C /* LocationDetailViewController.xib */; };
+		48D73D6B1C012AA900B1A9B5 /* LocationModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 48D73D691C012AA900B1A9B5 /* LocationModel.xcdatamodeld */; };
 		48DEDA3719F592F80094CB8F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DEDA3619F592F80094CB8F /* AppDelegate.swift */; };
 		48DEDA3E19F592F80094CB8F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 48DEDA3D19F592F80094CB8F /* Images.xcassets */; };
 		48DEDA4119F592F80094CB8F /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48DEDA3F19F592F80094CB8F /* LaunchScreen.xib */; };
@@ -100,12 +102,14 @@
 		4880D47F1A5331960077E68B /* Whereabouts.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Whereabouts.entitlements; path = Whereabouts/Whereabouts.entitlements; sourceTree = SOURCE_ROOT; };
 		4880D4801A5331DA0077E68B /* Quick Location.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = "Quick Location.entitlements"; path = "Quick Location/Quick Location.entitlements"; sourceTree = SOURCE_ROOT; };
 		4882D9D41B1A99FD00BAADAD /* RHACLStringExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RHACLStringExtensions.swift; sourceTree = "<group>"; };
+		48AA3C321C01732800A0935A /* PickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerViewController.swift; sourceTree = "<group>"; };
 		48C7636319F59D230096B27A /* RHAUtilExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RHAUtilExtensions.swift; sourceTree = "<group>"; };
 		48D225891A02F908008A419B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		48D4FFE31BF7CB7A006DA09C /* ColorSelectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorSelectionViewController.swift; sourceTree = "<group>"; };
 		48D4FFE51BF7D08F006DA09C /* DefaultLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultLayout.swift; sourceTree = "<group>"; };
 		48D4FFE81BF7D2ED006DA09C /* LocationDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationDetailViewController.swift; sourceTree = "<group>"; };
 		48D4FFE91BF7D2ED006DA09C /* LocationDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LocationDetailViewController.xib; sourceTree = "<group>"; };
+		48D73D6A1C012AA900B1A9B5 /* LocationModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = LocationModel.xcdatamodel; sourceTree = "<group>"; };
 		48DEDA3119F592F80094CB8F /* Whereabouts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Whereabouts.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		48DEDA3519F592F80094CB8F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		48DEDA3619F592F80094CB8F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -197,6 +201,7 @@
 				69B7A3B41BFCD436000BEBA0 /* PhotoViewController.swift */,
 				69B7A3B51BFCD436000BEBA0 /* PhotoViewController.xib */,
 				69B7A3B81BFCD6FE000BEBA0 /* SettingsViewController.swift */,
+				48AA3C321C01732800A0935A /* PickerViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -323,6 +328,7 @@
 		69CEA4AA1BF63B0F00F5022B /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
+				48D73D691C012AA900B1A9B5 /* LocationModel.xcdatamodeld */,
 				485E165319F9AC37002CCB48 /* DataModel.xcdatamodeld */,
 				698AF3961BF79A3F00F1E745 /* Location+CoreDataProperties.swift */,
 				698AF3971BF79A3F00F1E745 /* Location.swift */,
@@ -482,7 +488,9 @@
 				69B7A3BB1BFCD76B000BEBA0 /* SettingsController.swift in Sources */,
 				69640E901BFBCDE80050722D /* PhotosLayout.swift in Sources */,
 				4882D9D51B1A99FD00BAADAD /* RHACLStringExtensions.swift in Sources */,
+				48AA3C331C01732800A0935A /* PickerViewController.swift in Sources */,
 				48D4FFE41BF7CB7A006DA09C /* ColorSelectionViewController.swift in Sources */,
+				48D73D6B1C012AA900B1A9B5 /* LocationModel.xcdatamodeld in Sources */,
 				485E165519F9AC37002CCB48 /* DataModel.xcdatamodeld in Sources */,
 				48C7636419F59D230096B27A /* RHAUtilExtensions.swift in Sources */,
 				698AF3891BF69BD800F1E745 /* StyledCell.swift in Sources */,
@@ -793,8 +801,18 @@
 				48673A051BB059AA00BC0CD7 /* DataModel2.xcdatamodel */,
 				485E165419F9AC37002CCB48 /* DataModel.xcdatamodel */,
 			);
-			currentVersion = 48673A051BB059AA00BC0CD7 /* DataModel2.xcdatamodel */;
+			currentVersion = 485E165419F9AC37002CCB48 /* DataModel.xcdatamodel */;
 			path = DataModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+		48D73D691C012AA900B1A9B5 /* LocationModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				48D73D6A1C012AA900B1A9B5 /* LocationModel.xcdatamodel */,
+			);
+			currentVersion = 48D73D6A1C012AA900B1A9B5 /* LocationModel.xcdatamodel */;
+			path = LocationModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

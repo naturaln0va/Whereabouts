@@ -113,17 +113,17 @@ func relativeStringForDate(date: NSDate) -> String
     let components: NSDateComponents = NSCalendar.currentCalendar().components(units, fromDate: date, toDate: NSDate(), options: [])
     
     if components.weekOfYear > 0 {
-        return "\(components.weekOfYear) w"
+        return "\(components.weekOfYear)w"
     }
     else if components.day > 0 {
-        return "\(components.day) d"
+        return "\(components.day)d"
     }
     else {
         if components.hour > 0 {
-            return "\(components.hour) h"
+            return "\(components.hour)h"
         }
         else if components.minute > 1 {
-            return "\(components.minute) m"
+            return "\(components.minute)m"
         }
         else {
             return "now"
