@@ -16,7 +16,7 @@ class LocationsViewController: UITableViewController
         
         return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: "locations")
     }()
-        
+    
     
     deinit
     {
@@ -26,6 +26,9 @@ class LocationsViewController: UITableViewController
     override func viewDidLoad()
     {
         super.viewDidLoad()
+        
+//        navigationController?.toolbarHidden = false
+//        navigationController?.toolbar.tintColor = ColorController.navBarBackgroundColor
         
         title = "Whereabouts"
         view.backgroundColor = ColorController.backgroundColor
@@ -45,17 +48,14 @@ class LocationsViewController: UITableViewController
         
         searchController.searchBar.sizeToFit()
         tableView.tableHeaderView = searchController.searchBar
-        
         searchController.delegate = self
-        searchController.hidesNavigationBarDuringPresentation = false
-        searchController.dimsBackgroundDuringPresentation = true
+        searchController.dimsBackgroundDuringPresentation = false
         definesPresentationContext = true
         
         searchController.searchBar.delegate = self
-        searchController.searchBar.autocapitalizationType = .None
+        searchController.searchBar.autocapitalizationType = .Sentences
         searchController.searchBar.searchBarStyle = .Minimal
         searchController.searchBar.backgroundColor = ColorController.backgroundColor
-        searchController.searchBar.barTintColor = ColorController.backgroundColor
         searchController.searchBar.tintColor = ColorController.navBarBackgroundColor
     }
     
@@ -140,6 +140,25 @@ class LocationsViewController: UITableViewController
         deleteAction.backgroundColor = UIColor.alizarinColor()
         
         return [deleteAction, shareAction]
+    }
+    
+    override func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle
+    {
+        if Int(UIDevice.currentDevice().deviceIOSVersion) <= 8 {
+            return .Delete
+        }
+        else {
+            return .None
+        }
+    }
+    
+    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath)
+    {
+        if Int(UIDevice.currentDevice().deviceIOSVersion) <= 8 {
+            if let location = self.fetchedResultsController.objectAtIndexPath(indexPath) as? Location {
+                PersistentController.sharedController.deleteLocation(location)
+            }
+        }
     }
     
     // MARK: - UITableViewDataSource

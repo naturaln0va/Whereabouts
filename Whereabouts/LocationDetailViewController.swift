@@ -4,7 +4,7 @@ import MapKit
 import Photos
 
 
-class LocationDetailViewController: UIViewController
+class LocationDetailViewController: StyledViewController
 {
 
     @IBOutlet weak var mapView: MKMapView!

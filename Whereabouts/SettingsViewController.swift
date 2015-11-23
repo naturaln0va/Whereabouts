@@ -199,7 +199,7 @@ class SettingsViewController: UITableViewController
                 let mailVC = MFMailComposeViewController()
                 mailVC.setSubject("Whereabouts Feedback")
                 mailVC.setToRecipients(["support@ackermann.io"])
-                let devInfo = "• iOS Version: \(UIDevice.currentDevice().deviceIOSVersion)<br>• Hardware: \(UIDevice.currentDevice().deviceModel)"
+                let devInfo = "• iOS Version: \(UIDevice.currentDevice().deviceIOSVersion)<br>• Hardware: \(UIDevice.currentDevice().deviceModel)<br>• App Version: \(NSBundle.mainBundle().infoDictionary!["CFBundleVersion"] as! String)"
                 mailVC.setMessageBody("<br><br><br><br><br><br><br><br><br><br><br><br><hr> <center>Developer Info</center> <br>\(devInfo)<hr>", isHTML: true)
                 mailVC.mailComposeDelegate = self
                 presentViewController(mailVC, animated: true, completion: nil)

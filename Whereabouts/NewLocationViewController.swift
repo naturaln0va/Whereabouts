@@ -8,7 +8,7 @@ protocol NewLocationViewControllerDelegate
 }
 
 
-class NewLocationViewController: UIViewController
+class NewLocationViewController: StyledViewController
 {
 
     @IBOutlet weak var tableView: UITableView!
@@ -66,8 +66,8 @@ class NewLocationViewController: UIViewController
         
         title = locationToEdit == nil ? "New Location" : locationToEdit!.title
         
-        bottomToolBar.tintColor = ColorController.navBarBackgroundColor
         bottomToolBar.items = [spaceBarButtonItem, loadingBarButtonItem]
+        bottomToolBar.tintColor = ColorController.navBarBackgroundColor
         
         let rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Save, target: self, action: "saveBarButtonPressed")
         let leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: "cancelBarButtonPressed")

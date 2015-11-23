@@ -45,6 +45,11 @@ class PickerViewController: UITableViewController
         self.tag = tag
         self.title = title
     }
+    
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?)
+    {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    }
 
     required init?(coder aDecoder: NSCoder)
     {

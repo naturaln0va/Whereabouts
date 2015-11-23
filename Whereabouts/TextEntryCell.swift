@@ -16,6 +16,7 @@ class TextEntryCell: StyledCell
         super.awakeFromNib()
         
         textField.delegate = self
+        textField.tintColor = ColorController.navBarBackgroundColor
     }
     
     override func drawRect(rect: CGRect)

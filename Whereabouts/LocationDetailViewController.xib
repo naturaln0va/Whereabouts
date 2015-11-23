@@ -52,17 +52,17 @@
                             </constraints>
                         </mapView>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uEx-Xv-I50">
-                            <rect key="frame" x="8" y="308" width="359" height="121.5"/>
+                            <rect key="frame" x="8" y="308" width="359" height="122"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Edmond, OK 97381" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GPg-Wh-gDF">
-                                    <rect key="frame" x="18" y="18" width="181.5" height="24"/>
+                                    <rect key="frame" x="18" y="18" width="182" height="24"/>
                                     <animations/>
                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Created date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M7b-72-CLl">
-                                    <rect key="frame" x="251.5" y="86" width="89.5" height="18"/>
+                                    <rect key="frame" x="252" y="86" width="89" height="18"/>
                                     <animations/>
                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                     <color key="textColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -116,7 +116,7 @@
                                 </mask>
                             </variation>
                         </view>
-                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="A5s-Uh-IZN">
+                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="A5s-Uh-IZN">
                             <rect key="frame" x="8" y="437" width="359" height="150"/>
                             <animations/>
                             <constraints>
@@ -129,7 +129,7 @@
                                 <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                             </collectionViewFlowLayout>
                         </collectionView>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Nearby Photos" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZeY-cC-qgu">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="No Nearby Photos" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZeY-cC-qgu">
                             <rect key="frame" x="117" y="501" width="140" height="21"/>
                             <animations/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
