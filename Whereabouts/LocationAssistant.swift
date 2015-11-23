@@ -32,7 +32,7 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate, LocationAccessView
     
     var delegate: LocationAssistantDelegate?
     
-    private(set) var parentViewController: UIViewController!
+    private(set) var parentViewController: UIViewController?
     private(set) var location: CLLocation?
     private(set) var placemark: CLPlacemark?
     private(set) var timer: NSTimer?
@@ -41,7 +41,7 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate, LocationAccessView
     private var reverseGeocoding = false
     
     
-    init(viewController: UIViewController)
+    init(viewController: UIViewController?)
     {
         parentViewController = viewController
     }
@@ -49,9 +49,16 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate, LocationAccessView
     // MARK: - Public Methods
     func promptForLocationAccess()
     {
-        let locationAccessVC = LocationAccessViewController()
-        locationAccessVC.delegate = self
-        parentViewController.presentViewController(locationAccessVC, animated: true, completion: nil)
+        if let parentVC = parentViewController {
+            let locationAccessVC = LocationAccessViewController()
+            locationAccessVC.delegate = self
+            parentVC.presentViewController(locationAccessVC, animated: true, completion: nil)
+        }
+        else {
+            if let delegate = delegate {
+                delegate.authorizationDenied?()
+            }
+        }
     }
     
     func getLocation()
@@ -164,6 +171,10 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate, LocationAccessView
             manager.stopUpdatingLocation()
             manager.delegate = nil
             updatingLocation = false
+            
+            if let delegate = delegate where location != nil {
+                delegate.receivedLocation(location!, finished: true)
+            }
         }
     }
     
@@ -180,7 +191,9 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate, LocationAccessView
     func accessGranted()
     {
         if !locationAccess() {
-            UIApplication.sharedApplication().openURL(NSURL(string: UIApplicationOpenSettingsURLString)!)
+            #if MAIN_APP
+                UIApplication.sharedApplication().openURL(NSURL(string: UIApplicationOpenSettingsURLString)!)
+            #endif
         }
         else {
             manager.requestWhenInUseAuthorization()

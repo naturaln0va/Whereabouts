@@ -1,93 +1,132 @@
-//
-//  TodayViewController.swift
-//  Quick Location
-//
-//  Created by Ryan Ackermann on 10/27/14.
-//  Copyright (c) 2014 Ryan Ackermann. All rights reserved.
-//
 
 import UIKit
 import NotificationCenter
 import CoreLocation
 
-class TodayViewController: UIViewController, NCWidgetProviding, CLLocationManagerDelegate {
+
+class TodayViewController: UIViewController, NCWidgetProviding
+{
         
     @IBOutlet weak var locationLabel: UILabel!
-    @IBOutlet weak var updatedLabel: UILabel!
+    @IBOutlet var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet var imageView: UIImageView!
     
-    let locationManager = CLLocationManager()
-    var location: CLLocation!
-    let geocoder = CLGeocoder()
-    var placemark: CLPlacemark?
+    var location: CLLocation? {
+        didSet {
+            if location != nil {
+                updateView()
+            }
+        }
+    }
+    var placemark: CLPlacemark? {
+        didSet {
+            if placemark != nil {
+                updateView()
+            }
+        }
+    }
     
-    let sharedDefaults = NSUserDefaults(suiteName: "group.net.naturaln0va.Whereabouts")
+    let assistant = LocationAssistant(viewController: nil)
+    //let sharedDefaults = NSUserDefaults(suiteName: "group.net.naturaln0va.Whereabouts")
     
-    override func viewDidLoad() {
+    override func viewDidLoad()
+    {
         super.viewDidLoad()
-        if let locationString = sharedDefaults?.objectForKey("location") as? String {
-            locationLabel.text = locationString
+        assistant.delegate = self
+        imageView.alpha = 0.0
+        imageView.image = UIImage(named: "add-circle")
+        imageView.tintColor = UIColor(white: 1.0, alpha: 0.9)
+    }
+    
+    override func viewDidAppear(animated: Bool)
+    {
+        super.viewDidAppear(animated)
+        if location == nil {
+            assistant.getLocation()
         }
-        if let date = sharedDefaults?.objectForKey("date") as? NSDate {
-            updatedLabel.text = "Updated \(relativeStringForDate(date))"
+        else {
+            updateView()
         }
     }
     
-    func widgetMarginInsetsForProposedMarginInsets(defaultMarginInsets: UIEdgeInsets) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 5.0, left: 42.0, bottom: 5.0, right: 5.0)
+    func updateView()
+    {
+        guard let location = location else {
+            return
+        }
+        locationLabel.text = stringFromCoordinate(location.coordinate)
+        
+        guard let address = placemark else {
+            return
+        }
+        locationLabel.text = stringFromAddress(address, withNewLine: true)
     }
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        
-        if let touch = touches.first {
-            if CGRectContainsPoint(locationLabel.frame, touch.locationInView(self.view)) {
-                extensionContext?.openURL(NSURL(string: "whereabouts://more")!, completionHandler: nil)
-            }
+    func widgetMarginInsetsForProposedMarginInsets(defaultMarginInsets: UIEdgeInsets) -> UIEdgeInsets
+    {
+        return UIEdgeInsets(top: 12.0, left: 44.0, bottom: 12.0, right: 12.0)
+    }
+    
+    func widgetPerformUpdateWithCompletionHandler(completionHandler: ((NCUpdateResult) -> Void))
+    {
+        if location == nil {
+            assistant.getLocation()
+        }
+        else {
+            updateView()
         }
     }
     
-    func relativeStringForDate(date: NSDate) -> String {
-        let units:NSCalendarUnit = [.Minute, .Hour, .Day, .WeekOfYear, .Month, .Year]
-        
-        // if "date" is before "now" (i.e. in the past) then the components will be positive
-        let components: NSDateComponents = NSCalendar.currentCalendar().components(units, fromDate: date, toDate: NSDate(), options: [])
-        
-        if components.year > 0 {
-            return "\(components.year) years ago"
-        } else if components.month > 0 {
-            if components.month > 1 {
-                return "\(components.month) months ago"
-            } else {
-                return "last month"
-            }
-        } else if components.weekOfYear > 0 {
-            if components.weekOfYear > 1 {
-                return "\(components.weekOfYear) weeks ago"
-            } else {
-                return "last week"
-            }
-        } else if components.day > 0 {
-            if components.day > 1 {
-                return "\(components.day) days ago"
-            } else {
-                return "yesterday"
-            }
-        } else {
-            if components.hour > 0 {
-                if components.hour > 1 {
-                    return "\(components.hour) hours ago"
-                } else {
-                    return "1 hour ago"
-                }
-            } else if components.minute > 1 {
-                if components.minute == 1 {
-                    return "1 minute ago"
-                } else {
-                    return "\(components.minute) minuts ago"
-                }
-            } else {
-                return "a moment ago"
-            }
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?)
+    {
+        super.touchesBegan(touches, withEvent: event)
+        if let ctx = extensionContext, let url = NSURL(string: "whereabouts://") {
+            ctx.openURL(url, completionHandler: nil)
         }
     }
+    
+}
 
+
+extension TodayViewController: LocationAssistantDelegate
+{
+    
+    func receivedLocation(location: CLLocation, finished: Bool)
+    {
+        self.location = location
+        
+        if finished {
+            assistant.getAddressForLocation(location)
+        }
+    }
+    
+    func receivedAddress(placemark: CLPlacemark)
+    {
+        self.placemark = placemark
+        activityIndicator.stopAnimating()
+        UIView.animateWithDuration(0.125) {
+            self.imageView.alpha = 1.0
+        }
+    }
+    
+    func authorizationDenied()
+    {
+        locationLabel.text = "Location Access Denied."
+        activityIndicator.stopAnimating()
+    }
+    
+    func failedToGetLocation()
+    {
+        locationLabel.text = "Could not get a location."
+        activityIndicator.stopAnimating()
+    }
+    
+    func failedToGetAddress()
+    {
+        activityIndicator.stopAnimating()
+        UIView.animateWithDuration(0.125) {
+            self.imageView.alpha = 1.0
+        }
+    }
+    
 }
