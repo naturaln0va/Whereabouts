@@ -13,26 +13,26 @@ class ColorSelectionViewController: UICollectionViewController
 {
     
     private let colors = [
-        UIColor(hue:0.467, saturation:0.862, brightness:0.737, alpha:1),
-        UIColor(hue:0.467, saturation:0.856, brightness:0.627, alpha:1),
-        UIColor(hue:0.404, saturation:0.775, brightness:0.800, alpha:1),
-        UIColor(hue:0.404, saturation:0.776, brightness:0.682, alpha:1),
-        UIColor(hue:0.567, saturation:0.763, brightness:0.859, alpha:1),
-        UIColor(hue:0.566, saturation:0.778, brightness:0.725, alpha:1),
-        UIColor(hue:0.785, saturation:0.511, brightness:0.714, alpha:1),
-        UIColor(hue:0.784, saturation:0.607, brightness:0.678, alpha:1),
-        UIColor(hue:0.134, saturation:0.942, brightness:0.945, alpha:1),
-        UIColor(hue:0.102, saturation:0.926, brightness:0.953, alpha:1),
-        UIColor(hue:0.079, saturation:0.857, brightness:0.902, alpha:1),
-        UIColor(hue:0.066, saturation:1, brightness:0.827, alpha:1),
-        UIColor(hue:0.016, saturation:0.740, brightness:0.906, alpha:1),
-        UIColor(hue:0.016, saturation:0.776, brightness:0.753, alpha:1),
-        UIColor(hue:0.583, saturation:0.447, brightness:0.369, alpha:1),
-        UIColor(hue:0.583, saturation:0.450, brightness:0.314, alpha:1),
-        UIColor(hue:0.510, saturation:0.102, brightness:0.651, alpha:1),
-        UIColor(hue:0.512, saturation:0.099, brightness:0.553, alpha:1),
-        UIColor(hue:0.533, saturation:0.021, brightness:0.945, alpha:1),
-        UIColor(hue:0.567, saturation:0.050, brightness:0.780, alpha:1)
+        UIColor(red:0.980,  green:0.863,  blue:0.337, alpha:1),
+        UIColor(red:0.976,  green:0.827,  blue:0.024, alpha:1),
+        UIColor(red:0.949,  green:0.608,  blue:0.333, alpha:1),
+        UIColor(red:0.863,  green:0.490,  blue:0.118, alpha:1),
+        UIColor(red:0.957,  green:0.467,  blue:0.435, alpha:1),
+        UIColor(red:0.898,  green:0.302,  blue:0.259, alpha:1),
+        UIColor(red:0.788,  green:0.816,  blue:0.816, alpha:1),
+        UIColor(red:0.584,  green:0.647,  blue:0.651, alpha:1),
+        UIColor(red:0.584,  green:0.373,  blue:0.706, alpha:1),
+        UIColor(red:0.424,  green:0.290,  blue:0.498, alpha:1),
+        UIColor(red:0.875,  green:0.424,  blue:0.714, alpha:1),
+        UIColor(red:0.820,  green:0.286,  blue:0.627, alpha:1),
+        UIColor(red:0.278,  green:0.710,  blue:0.988, alpha:1),
+        UIColor(red:0.192,  green:0.506,  blue:0.718, alpha:1),
+        UIColor(red:0.824,  green:0.961,  blue:0.482, alpha:1),
+        UIColor(red:0.600,  green:0.816,  blue:0.169, alpha:1),
+        UIColor(red:0.373,  green:0.745,  blue:0.541, alpha:1),
+        UIColor(red:0.298,  green:0.529,  blue:0.404, alpha:1),
+        UIColor(red:0.404,  green:0.816,  blue:0.714, alpha:1),
+        UIColor(red:0.224,  green:0.624,  blue:0.525, alpha:1)
     ]
     
     var delegate: ColorSelectionViewControllerDelegate?

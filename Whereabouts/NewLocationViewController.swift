@@ -17,6 +17,7 @@ class NewLocationViewController: UIViewController
     var delegate: NewLocationViewControllerDelegate?
     var assistant: LocationAssistant?
     var locationToEdit: Location?
+    var shouldAutoSelectTextField = false
     
     var selectedColor: UIColor?
     
@@ -84,6 +85,7 @@ class NewLocationViewController: UIViewController
         if let _ = assistant {
             assistant?.delegate = self
             assistant?.getLocation()
+            shouldAutoSelectTextField = true
         }
         else if let editingLocation = locationToEdit {
             location = editingLocation.location
@@ -229,6 +231,10 @@ extension NewLocationViewController: UITableViewDelegate, UITableViewDataSource
                 fatalError("Expected to display a 'TextEntryCell' cell.")
             }
             cell.textField.placeholder = "Enter a title"
+            if shouldAutoSelectTextField {
+                cell.textField.becomeFirstResponder()
+                shouldAutoSelectTextField = false
+            }
         }
         else if indexPath.row == 1 {
             guard let cell = cell as? ColorPreviewCell else {
@@ -250,7 +256,7 @@ extension NewLocationViewController: UITableViewDelegate, UITableViewDataSource
             }
             else if indexPath.row == 4 {
                 cell.textLabel?.text = "Altitude"
-                cell.detailTextLabel?.text = location == nil ? "" : location!.altitude == 0.0 ? "At sea level" :  "\(numberFormatter.stringFromNumber(NSNumber(double: location!.altitude))!)m " + (location!.altitude > 0 ? "above sea level" : "below sea level")
+                cell.detailTextLabel?.text = location == nil ? "" : altitudeString(location!.altitude)
             }
             else if indexPath.row == 5 {
                 if let placemark = placemark {

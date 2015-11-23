@@ -68,6 +68,25 @@ func stringFromCoordinate(coordinate: CLLocationCoordinate2D) -> String
     return resultingString
 }
 
+func altitudeString(altitude: CLLocationDistance) -> String
+{
+    if altitude == 0 {
+        return "At sea level"
+    }
+    else {
+        let formatter = NSNumberFormatter()
+        formatter.minimumFractionDigits = 3
+        
+        if SettingsController.sharedController.unitStyle {
+            let altitudeInYards = altitude / 0.914
+            return "\(formatter.stringFromNumber(NSNumber(double: altitudeInYards))!)yrd \(altitudeInYards > 0 ? "above sea level" : "below sea level")"
+        }
+        else {
+            return "\(formatter.stringFromNumber(NSNumber(double: altitude))!)m \(altitude > 0 ? "above sea level" : "below sea level")"
+        }
+    }
+}
+
 func timeStringFromSeconds(interval: NSTimeInterval) -> String
 {
     let now = NSDate()

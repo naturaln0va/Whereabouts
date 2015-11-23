@@ -5,7 +5,7 @@ import UIKit
 class TextEntryCell: StyledCell
 {
 
-    static let cellHeight: CGFloat = 75.0
+    static let cellHeight: CGFloat = 67.0
     static let reuseIdentifier = "TextEntryCell"
     
     @IBOutlet var textField: UITextField!
@@ -18,6 +18,23 @@ class TextEntryCell: StyledCell
         textField.delegate = self
     }
     
+    override func drawRect(rect: CGRect)
+    {
+        UIColor.whiteColor().set()
+        UIRectFill(rect)
+        
+        let ctx = UIGraphicsGetCurrentContext()!
+        CGContextSetStrokeColorWithColor(ctx, ColorController.backgroundColor.CGColor)
+        
+        let path = CGPathCreateMutable()
+        CGPathMoveToPoint(path, nil, 0, CGRectGetMaxY(rect))
+        CGPathAddLineToPoint(path, nil, CGRectGetMaxX(rect), CGRectGetMaxY(rect))
+        
+        CGContextAddPath(ctx, path)
+        CGContextSetLineWidth(ctx, 2)
+        CGContextDrawPath(ctx, .Stroke)
+    }
+
 }
 
 

@@ -101,7 +101,7 @@ class PickerViewController: UITableViewController
     // MARK: - UITableViewDelegate
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
     {
-        let cell = StyledCell(style: .Value1, reuseIdentifier: "defaultCell")
+        let cell = StyledCell(style: .Subtitle, reuseIdentifier: "defaultCell")
         
         guard let data = dataForPicker else { fatalError("There was no data") }
 

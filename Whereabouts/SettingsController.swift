@@ -21,7 +21,7 @@ class SettingsController
         return [
             kLocationAccuracyKey : kHorizontalAccuracyAverage,
             kLocationTimeoutKey: kLocationTimeoutNormal,
-            kNearbyPhotoRangeKey: 150,
+            kNearbyPhotoRangeKey: 250,
             kUnitStyleKey: true
         ]
     }()
@@ -61,6 +61,26 @@ class SettingsController
         default:
             return ""
             
+        }
+    }
+    
+    func stringForPhotoRange() -> String
+    {
+        switch nearbyPhotoRange {
+        case 50:
+            return unitStyle ? "55yrd" : "50m"
+            
+        case 250:
+            return unitStyle ? "275yrd" : "250m"
+            
+        case 1600:
+            return unitStyle ? "1mi" : "1.6km"
+            
+        case 5000:
+            return unitStyle ? "3mi" : "5km"
+            
+        default:
+            return ""
         }
     }
     

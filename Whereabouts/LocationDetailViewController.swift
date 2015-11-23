@@ -19,12 +19,6 @@ class LocationDetailViewController: UIViewController
     @IBOutlet weak var altitudeLabel: UILabel!
     @IBOutlet weak var toolBar: UIToolbar!
     @IBOutlet var collectionViewHeightConstraint: NSLayoutConstraint!
-    
-    private let numberFormatter: NSNumberFormatter = {
-        let formatter = NSNumberFormatter()
-        formatter.minimumFractionDigits = 3
-        return formatter
-    }()
 
     var locationToDisplay: Location!
     var nearbyPhotos: Array<UIImage>?
@@ -78,13 +72,13 @@ class LocationDetailViewController: UIViewController
             if let response = response where error == nil {
                 var responseString = ""
                 if #available(iOS 9.0, *) {
-                    let milesAway = response.distance * 0.00062137
-                    if milesAway > 0.75 {
+                    let distanceAway = SettingsController.sharedController.unitStyle ? response.distance * 0.00062137 : response.distance / 1000.0
+                    if distanceAway > 0.75 {
                         let formatter = NSNumberFormatter()
                         formatter.minimumFractionDigits = 2
                         
-                        if let formattedMileString = formatter.stringFromNumber(NSNumber(double: milesAway)) {
-                            responseString += "\(formattedMileString) mi, "
+                        if let formattedMileString = formatter.stringFromNumber(NSNumber(double: distanceAway)) {
+                            responseString += "\(formattedMileString) \(SettingsController.sharedController.unitStyle ? "mi": "km"), "
                         }
                     }
                 }
@@ -180,12 +174,16 @@ class LocationDetailViewController: UIViewController
                     dispatch_async(dispatch_get_main_queue()) { completion(images) }
                 }
                 else {
+                    dispatch_async(dispatch_get_main_queue()) {
+                        self.collectionViewHeightConstraint.constant = 45.0
+                        self.view.layoutIfNeeded()
+                    }
                     dispatch_async(dispatch_get_main_queue()) { completion(nil) }
                 }
             }
             else {
                 dispatch_async(dispatch_get_main_queue()) {
-                    self.collectionViewHeightConstraint.constant = 0.0
+                    self.collectionViewHeightConstraint.constant = 45.0
                     self.view.layoutIfNeeded()
                 }
                 dispatch_async(dispatch_get_main_queue()) { completion(nil) }
@@ -214,7 +212,7 @@ class LocationDetailViewController: UIViewController
             coordinateLabel.text = "No Address Found"
         }
         
-        altitudeLabel.text = locationToDisplay.location.altitude == 0.0 ? "At sea level" : "\(numberFormatter.stringFromNumber(NSNumber(double: locationToDisplay.location.altitude))!)m " + (locationToDisplay.location.altitude > 0 ? "above sea level" : "below sea level")
+        altitudeLabel.text = altitudeString(locationToDisplay.location.altitude)
         dateLabel.text = relativeStringForDate(locationToDisplay.location.timestamp)
         colorView.backgroundColor = locationToDisplay.color ?? UIColor.clearColor()
     }
@@ -248,31 +246,24 @@ extension LocationDetailViewController: MKMapViewDelegate
         let reuseIdentifier = "Location"
         var annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseIdentifier) as! MKPinAnnotationView!
         
-        if annotationView == nil {
-            annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseIdentifier)
-            annotationView.enabled = true
-            annotationView.canShowCallout = true
-            annotationView.animatesDrop = false
-            
-            if #available(iOS 9.0, *) {
-                annotationView.pinTintColor = locationToDisplay.color
-            }
-            else {
-                annotationView.pinColor = .Red
-            }
-            
-            let rightButton = UIButton(type: .DetailDisclosure)
-            rightButton.tintColor = locationToDisplay.color
-            rightButton.addTarget(self, action: "annotationButtonPressed", forControlEvents: .TouchUpInside)
-            annotationView.rightCalloutAccessoryView = rightButton
+        annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseIdentifier)
+        annotationView.enabled = true
+        annotationView.canShowCallout = true
+        annotationView.animatesDrop = false
+        
+        if #available(iOS 9.0, *) {
+            annotationView.pinTintColor = locationToDisplay.color
         }
         else {
-            if #available(iOS 9.0, *) {
-                annotationView.pinTintColor = locationToDisplay.color
-            }
-            
-            annotationView.annotation = annotation
+            annotationView.pinColor = .Red
         }
+        
+        let rightButton = UIButton()
+        rightButton.tintColor = locationToDisplay.color
+        rightButton.setImage(UIImage(named: "open-location"), forState: .Normal)
+        rightButton.sizeToFit()
+        rightButton.addTarget(self, action: "annotationButtonPressed", forControlEvents: .TouchUpInside)
+        annotationView.rightCalloutAccessoryView = rightButton
         
         return annotationView
     }

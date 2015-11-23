@@ -136,20 +136,20 @@ class SettingsViewController: UITableViewController
         if indexPath.section == TableSections.kUserSection.rawValue {
             switch indexPath.row {
             case UserSectionRows.kAccuracyRow.rawValue:
-                cell.textLabel?.text = "Accuracy"
+                cell.textLabel?.text = "Location Accuracy"
                 cell.detailTextLabel?.text = SettingsController.sharedController.stringForDistanceAccuracy()
                 cell.accessoryType = .DisclosureIndicator
                 break
                 
             case UserSectionRows.kTimeoutRow.rawValue:
-                cell.textLabel?.text = "Timeout"
+                cell.textLabel?.text = "Location Timeout"
                 cell.detailTextLabel?.text = "\(SettingsController.sharedController.locationTimeout)s"
                 cell.accessoryType = .DisclosureIndicator
                 break
                 
             case UserSectionRows.kPhotoRangeRow.rawValue:
                 cell.textLabel?.text = "Nearby Photo Range"
-                cell.detailTextLabel?.text = "\(SettingsController.sharedController.nearbyPhotoRange)m"
+                cell.detailTextLabel?.text = SettingsController.sharedController.stringForPhotoRange()
                 cell.accessoryType = .DisclosureIndicator
                 break
                 
@@ -247,7 +247,7 @@ class SettingsViewController: UITableViewController
                     "Short",
                     "Normal",
                     "Long",
-                    "VeryLong"
+                    "Very Long"
                 ]
                 let details = [
                     "10s",
@@ -268,22 +268,34 @@ class SettingsViewController: UITableViewController
             case UserSectionRows.kPhotoRangeRow.rawValue:
                 let values = [
                     50,
-                    150,
-                    350,
-                    800
+                    250,
+                    1600,
+                    5000
                 ]
                 let labels = [
                     "Low",
                     "Normal",
                     "High",
-                    "VeryHigh"
+                    "Very High"
                 ]
-                let details = [
-                    "50m",
-                    "150m",
-                    "350m",
-                    "800m"
-                ]
+                
+                var details = Array<String>()
+                if SettingsController.sharedController.unitStyle {
+                    details = [
+                        "55 yards",
+                        "275 yards",
+                        "1 mile",
+                        "3 miles"
+                    ]
+                }
+                else {
+                    details = [
+                        "50 meters",
+                        "250 meters",
+                        "1.6 kilometers",
+                        "5 kilometers"
+                    ]
+                }
                 
                 let index: Int = values.indexOf(SettingsController.sharedController.nearbyPhotoRange)!
                 
@@ -306,7 +318,7 @@ class SettingsViewController: UITableViewController
                 
                 let index: Int = SettingsController.sharedController.unitStyle ? 0 : 1
                 
-                let data = PickerData(values: values, currentIndex: index, labels: labels, detailLabels: nil, footerDescription: nil)
+                let data = PickerData(values: values, currentIndex: index, labels: labels, detailLabels: nil, footerDescription: "Customary: Miles, Yards. Metric: Kilometers, Meters.")
                 let pvc = PickerViewController(data: data, tag: PickerViewControllerTags.UnitStyleTag.rawValue, title: "Unit")
                 pvc.delegate = self
                 
