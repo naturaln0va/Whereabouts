@@ -8,6 +8,7 @@ class LocationDetailViewController: StyledViewController
 {
 
     @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var photosCollectionView: UICollectionView!
     @IBOutlet weak var mapWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var locationInformationView: UIView!
@@ -27,6 +28,8 @@ class LocationDetailViewController: StyledViewController
     override func viewDidLoad()
     {
         super.viewDidLoad()
+        
+        scrollView.contentInset = UIEdgeInsets(top: 64.0, left: 0.0, bottom: 0.0, right: 0.0)
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: "editButtonPressed")
         

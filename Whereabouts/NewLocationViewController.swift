@@ -66,6 +66,8 @@ class NewLocationViewController: StyledViewController
         
         title = locationToEdit == nil ? "New Location" : locationToEdit!.title
         
+        tableView.contentInset = UIEdgeInsets(top: 64.0, left: 0.0, bottom: 0.0, right: 0.0)
+        
         bottomToolBar.items = [spaceBarButtonItem, loadingBarButtonItem]
         bottomToolBar.tintColor = ColorController.navBarBackgroundColor
         

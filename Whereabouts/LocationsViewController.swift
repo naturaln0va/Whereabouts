@@ -7,6 +7,11 @@ class LocationsViewController: UITableViewController
 {
     
     private let searchController = UISearchController(searchResultsController: nil)
+    private var filteredLocations: Array<Location>? {
+        didSet {
+            tableView.reloadData()
+        }
+    }
     
     private lazy var fetchedResultsController: NSFetchedResultsController = {
         let moc = PersistentController.sharedController.managedObjectContext
@@ -26,9 +31,6 @@ class LocationsViewController: UITableViewController
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        
-//        navigationController?.toolbarHidden = false
-//        navigationController?.toolbar.tintColor = ColorController.navBarBackgroundColor
         
         title = "Whereabouts"
         view.backgroundColor = ColorController.backgroundColor
@@ -94,7 +96,10 @@ class LocationsViewController: UITableViewController
     {
         guard let cell = cell as? LocationCell else { fatalError("Expected to display a `LocationCell`.") }
         
-        if let location = fetchedResultsController.objectAtIndexPath(indexPath) as? Location {
+        if filteredLocations != nil {
+            cell.location = filteredLocations![indexPath.row]
+        }
+        else if let location = fetchedResultsController.objectAtIndexPath(indexPath) as? Location {
             cell.location = location
         }
     }
@@ -102,8 +107,14 @@ class LocationsViewController: UITableViewController
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
     {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        searchController.searchBar.resignFirstResponder()
         
-        if let location = self.fetchedResultsController.objectAtIndexPath(indexPath) as? Location {
+        if filteredLocations != nil {
+            let detailVC = LocationDetailViewController()
+            detailVC.locationToDisplay = filteredLocations![indexPath.row]
+            navigationController?.pushViewController(detailVC, animated: true)
+        }
+        else if let location = self.fetchedResultsController.objectAtIndexPath(indexPath) as? Location {
             let detailVC = LocationDetailViewController()
             detailVC.locationToDisplay = location
             navigationController?.pushViewController(detailVC, animated: true)
@@ -139,12 +150,12 @@ class LocationsViewController: UITableViewController
         }
         deleteAction.backgroundColor = UIColor.alizarinColor()
         
-        return [deleteAction, shareAction]
+        return filteredLocations == nil ? [deleteAction, shareAction] : nil
     }
     
     override func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle
     {
-        if Int(UIDevice.currentDevice().deviceIOSVersion) <= 8 {
+        if Int(UIDevice.currentDevice().deviceIOSVersion) <= 8 && filteredLocations == nil {
             return .Delete
         }
         else {
@@ -154,7 +165,7 @@ class LocationsViewController: UITableViewController
     
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath)
     {
-        if Int(UIDevice.currentDevice().deviceIOSVersion) <= 8 {
+        if Int(UIDevice.currentDevice().deviceIOSVersion) <= 8 && filteredLocations == nil {
             if let location = self.fetchedResultsController.objectAtIndexPath(indexPath) as? Location {
                 PersistentController.sharedController.deleteLocation(location)
             }
@@ -169,6 +180,10 @@ class LocationsViewController: UITableViewController
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
+        if filteredLocations != nil {
+            return filteredLocations!.count
+        }
+        
         let section = fetchedResultsController.sections?[section]
         
         return section?.numberOfObjects ?? 0
@@ -229,19 +244,29 @@ extension LocationsViewController: UISearchBarDelegate, UISearchControllerDelega
         return true
     }
     
+    func searchBarCancelButtonClicked(searchBar: UISearchBar)
+    {
+        filteredLocations = nil
+    }
+    
+    func searchBar(searchBar: UISearchBar, textDidChange searchText: String)
+    {
+        if let fetched: NSArray = fetchedResultsController.fetchedObjects, let searchText = searchBar.text {
+            if searchText.characters.count == 0 {
+                filteredLocations = nil
+                return
+            }
+            
+            let filteredFetch = fetched.filteredArrayUsingPredicate(NSPredicate(format: "locationTitle CONTAINS[c] %@", searchText))
+            filteredLocations = filteredFetch.map { obj in
+                return obj as! Location
+            }
+        }
+    }
+    
     func searchBarSearchButtonClicked(searchBar: UISearchBar)
     {
         searchBar.resignFirstResponder()
-        
-        if let searchText = searchBar.text where searchText.characters.count > 0 {
-//            let moc = PersistentController.sharedController.managedObjectContext
-//            let fetchRequest = Location.fetchRequest(moc, predicate: NSPredicate(format: "ANY locationTitle CONTAINS[c] %@", searchText), sortedBy: "date", ascending: false)
-//            fetchRequest.fetchBatchSize = 20
-//            
-//            fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
-//            fetchedResultsController.delegate = self
-//            fetch()
-        }
     }
 
 }
