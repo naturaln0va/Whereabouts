@@ -9,12 +9,12 @@ class StyledNavigationController: UINavigationController
     {
         super.viewDidLoad()
         
-        navigationBar.barTintColor = ColorController.backgroundColor
-        navigationBar.tintColor = ColorController.navBarBackgroundColor
+        navigationBar.barTintColor = ColorController.navBarBackgroundColor
+        navigationBar.tintColor = ColorController.navBarTintColor
         navigationBar.translucent = true
         
         navigationBar.titleTextAttributes = [
-            NSForegroundColorAttributeName: UIColor.blackColor(),
+            NSForegroundColorAttributeName: ColorController.navBarTintColor,
             NSFontAttributeName: UIFont.systemFontOfSize(17, weight: UIFontWeightMedium)
         ]
     }
@@ -26,7 +26,7 @@ class StyledNavigationController: UINavigationController
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle
     {
-        return .Default
+        return .LightContent
     }
     
 }

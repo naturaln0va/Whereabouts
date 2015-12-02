@@ -19,6 +19,7 @@ class LocationDetailViewController: StyledViewController
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var altitudeLabel: UILabel!
     @IBOutlet weak var toolBar: UIToolbar!
+    @IBOutlet weak var detailBarButton: UIBarButtonItem!
     @IBOutlet var collectionViewHeightConstraint: NSLayoutConstraint!
 
     var locationToDisplay: Location!
@@ -54,47 +55,24 @@ class LocationDetailViewController: StyledViewController
         toolBar.tintColor = ColorController.navBarBackgroundColor
         noPhotosLabel.alpha = 0.0
         
-        getNearbyPhotos { photos in
+        getNearbyPhotos { photos, photoStatus in
             if let photos = photos {
                 self.noPhotosLabel.alpha = 0.0
                 self.nearbyPhotos = photos
                 self.photosCollectionView.reloadData()
             }
             else {
-                self.noPhotosLabel.alpha = 1.0
-            }
-        }
-        
-        let request = MKDirectionsRequest()
-        
-        request.source = MKMapItem.mapItemForCurrentLocation()
-        request.destination = MKMapItem(placemark: MKPlacemark(coordinate: locationToDisplay.location.coordinate, addressDictionary: nil))
-        
-        let directions = MKDirections(request: request)
-        directions.calculateETAWithCompletionHandler { response, error in
-            if let response = response where error == nil {
-                var responseString = ""
-                if #available(iOS 9.0, *) {
-                    let distanceAway = SettingsController.sharedController.unitStyle ? response.distance * 0.00062137 : response.distance / 1000.0
-                    if distanceAway > 0.75 {
-                        let formatter = NSNumberFormatter()
-                        formatter.minimumFractionDigits = 2
-                        
-                        if let formattedMileString = formatter.stringFromNumber(NSNumber(double: distanceAway)) {
-                            responseString += "\(formattedMileString) \(SettingsController.sharedController.unitStyle ? "mi": "km"), "
-                        }
-                    }
+                if photoStatus {
+                    self.noPhotosLabel.alpha = 1.0
                 }
-                
-                let timeString = timeStringFromSeconds(response.expectedTravelTime)
-                if timeString.characters.count > 0 {
-                    responseString += "\(timeString) away"
-                    self.locationToDisplay.distanceAndETAString = responseString
-                    self.mapView.removeAnnotation(self.locationToDisplay)
-                    self.mapView.addAnnotation(self.locationToDisplay)
+                else {
+                    self.noPhotosLabel.alpha = 0.0
                 }
             }
         }
+        
+        detailBarButton.customView = nil
+        getDistanceFromLocation()
     }
     
     override func viewWillAppear(animated: Bool)
@@ -126,6 +104,12 @@ class LocationDetailViewController: StyledViewController
         mapItem.openInMapsWithLaunchOptions(nil)
     }
     
+    @IBAction func trashButtonPressed()
+    {
+        PersistentController.sharedController.deleteLocation(locationToDisplay)
+        navigationController?.popToRootViewControllerAnimated(true)
+    }
+    
     @IBAction func actionButtonPressed(sender: AnyObject)
     {
         let firstActivityItem = "I'm at \(locationToDisplay.shareableString()), where are you?"
@@ -145,7 +129,45 @@ class LocationDetailViewController: StyledViewController
         self.presentViewController(activityViewController, animated: true, completion: nil)
     }
     
-    func getNearbyPhotos(completion: Array<UIImage>? -> Void)
+    func getDistanceFromLocation()
+    {
+        let request = MKDirectionsRequest()
+        
+        request.source = MKMapItem.mapItemForCurrentLocation()
+        request.destination = MKMapItem(placemark: MKPlacemark(coordinate: locationToDisplay.location.coordinate, addressDictionary: nil))
+        
+        let directions = MKDirections(request: request)
+        directions.calculateETAWithCompletionHandler { response, error in
+            if let response = response where error == nil {
+                var responseString = ""
+                if #available(iOS 9.0, *) {
+                    let distanceAway = SettingsController.sharedController.unitStyle ? response.distance * 0.00062137 : response.distance / 1000.0
+                    if distanceAway > 0.75 {
+                        let formatter = NSNumberFormatter()
+                        formatter.minimumFractionDigits = 2
+                        
+                        if let formattedMileString = formatter.stringFromNumber(NSNumber(double: distanceAway)) {
+                            responseString += "\(formattedMileString) \(SettingsController.sharedController.unitStyle ? "mi": "km"), "
+                        }
+                    }
+                }
+                
+                let timeString = timeStringFromSeconds(response.expectedTravelTime)
+                if timeString.characters.count > 0 {
+                    responseString += "\(timeString) away"
+                    
+                    let label = UILabel()
+                    label.font = UIFont.systemFontOfSize(10.0, weight: UIFontWeightRegular)
+                    label.text = responseString
+                    label.sizeToFit()
+                    
+                    self.detailBarButton.customView = label
+                }
+            }
+        }
+    }
+    
+    func getNearbyPhotos(completion: (Array<UIImage>?, Bool) -> Void)
     {
         PHPhotoLibrary.requestAuthorization { status in
             if status == .Authorized {
@@ -168,20 +190,20 @@ class LocationDetailViewController: StyledViewController
                         }
                         
                         if images.count > 5 {
-                            dispatch_async(dispatch_get_main_queue()) { completion(images) }
+                            dispatch_async(dispatch_get_main_queue()) { completion(images, true) }
                         }
                     }
                 }
                 
                 if images.count > 0 {
-                    dispatch_async(dispatch_get_main_queue()) { completion(images) }
+                    dispatch_async(dispatch_get_main_queue()) { completion(images, true) }
                 }
                 else {
                     dispatch_async(dispatch_get_main_queue()) {
                         self.collectionViewHeightConstraint.constant = 45.0
                         self.view.layoutIfNeeded()
                     }
-                    dispatch_async(dispatch_get_main_queue()) { completion(nil) }
+                    dispatch_async(dispatch_get_main_queue()) { completion(nil, true) }
                 }
             }
             else {
@@ -189,7 +211,7 @@ class LocationDetailViewController: StyledViewController
                     self.collectionViewHeightConstraint.constant = 45.0
                     self.view.layoutIfNeeded()
                 }
-                dispatch_async(dispatch_get_main_queue()) { completion(nil) }
+                dispatch_async(dispatch_get_main_queue()) { completion(nil, false) }
             }
         }
     }

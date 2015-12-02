@@ -13,11 +13,13 @@
                 <outlet property="colorView" destination="kK0-Gh-XPe" id="Ptc-hv-Tcp"/>
                 <outlet property="coordinateLabel" destination="3fC-gR-M4T" id="nkd-W1-eln"/>
                 <outlet property="dateLabel" destination="M7b-72-CLl" id="nJq-5B-kEh"/>
+                <outlet property="detailBarButton" destination="h2e-7b-fvj" id="8r1-FW-C3I"/>
                 <outlet property="locationInformationView" destination="uEx-Xv-I50" id="zR1-dk-jHg"/>
                 <outlet property="mapView" destination="giY-k8-Emk" id="gQi-5q-mRo"/>
                 <outlet property="mapWidthConstraint" destination="SQa-WU-jgz" id="KSX-Bd-M16"/>
                 <outlet property="noPhotosLabel" destination="ZeY-cC-qgu" id="0pk-j4-yMw"/>
                 <outlet property="photosCollectionView" destination="A5s-Uh-IZN" id="ZBu-82-wsc"/>
+                <outlet property="scrollView" destination="1fx-3w-CEn" id="SRx-UQ-NdH"/>
                 <outlet property="toolBar" destination="Pw5-UM-KPl" id="cfy-bU-vQV"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -31,7 +33,14 @@
                     <rect key="frame" x="0.0" y="623" width="375" height="44"/>
                     <animations/>
                     <items>
+                        <barButtonItem systemItem="trash" id="OOk-TQ-70A">
+                            <connections>
+                                <action selector="trashButtonPressed" destination="-1" id="F5v-Vw-Ut3"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="Koc-ea-jnU"/>
+                        <barButtonItem title="Item" style="plain" id="h2e-7b-fvj"/>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="0Gn-Pm-4FN"/>
                         <barButtonItem systemItem="action" id="WTO-sM-pjy">
                             <connections>
                                 <action selector="actionButtonPressed:" destination="-1" id="NlT-tg-yGR"/>

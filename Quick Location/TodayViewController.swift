@@ -34,8 +34,10 @@ class TodayViewController: UIViewController, NCWidgetProviding
         super.viewDidLoad()
         assistant.delegate = self
         imageView.alpha = 0.0
-        imageView.image = UIImage(named: "add-circle")
-        imageView.tintColor = UIColor(white: 1.0, alpha: 0.9)
+        
+        let doubleTapGesture = UITapGestureRecognizer(target: self, action: "relocate")
+        doubleTapGesture.numberOfTapsRequired = 2
+        view.addGestureRecognizer(doubleTapGesture)
     }
     
     override func viewDidAppear(animated: Bool)
@@ -47,6 +49,13 @@ class TodayViewController: UIViewController, NCWidgetProviding
         else {
             updateView()
         }
+    }
+    
+    func relocate()
+    {
+        location = nil
+        placemark = nil
+        assistant.getLocation()
     }
     
     func updateView()
@@ -77,13 +86,13 @@ class TodayViewController: UIViewController, NCWidgetProviding
         }
     }
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?)
-    {
-        super.touchesBegan(touches, withEvent: event)
-        if let ctx = extensionContext, let url = NSURL(string: "whereabouts://") {
-            ctx.openURL(url, completionHandler: nil)
-        }
-    }
+//    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?)
+//    {
+//        super.touchesBegan(touches, withEvent: event)
+//        if let ctx = extensionContext, let url = NSURL(string: "whereabouts://") {
+//            ctx.openURL(url, completionHandler: nil)
+//        }
+//    }
     
 }
 
@@ -117,7 +126,9 @@ extension TodayViewController: LocationAssistantDelegate
     
     func failedToGetLocation()
     {
-        locationLabel.text = "Could not get a location."
+        if location == nil {
+            locationLabel.text = "Could not get a location."
+        }
         activityIndicator.stopAnimating()
     }
     

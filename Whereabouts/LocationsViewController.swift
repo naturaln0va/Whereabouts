@@ -57,7 +57,7 @@ class LocationsViewController: UITableViewController
         searchController.searchBar.delegate = self
         searchController.searchBar.autocapitalizationType = .Sentences
         searchController.searchBar.searchBarStyle = .Minimal
-        searchController.searchBar.backgroundColor = ColorController.backgroundColor
+        searchController.searchBar.backgroundColor = UIColor.clearColor()
         searchController.searchBar.tintColor = ColorController.navBarBackgroundColor
     }
     

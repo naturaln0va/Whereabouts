@@ -68,10 +68,10 @@ class SettingsController
     {
         switch nearbyPhotoRange {
         case 50:
-            return unitStyle ? "55yrd" : "50m"
+            return unitStyle ? "165ft" : "50m"
             
         case 250:
-            return unitStyle ? "275yrd" : "250m"
+            return unitStyle ? "825ft" : "250m"
             
         case 1600:
             return unitStyle ? "1mi" : "1.6km"

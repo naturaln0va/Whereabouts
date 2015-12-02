@@ -258,7 +258,7 @@ class SettingsViewController: UITableViewController
                 
                 let index: Int = values.indexOf(SettingsController.sharedController.locationTimeout)!
                 
-                let data = PickerData(values: values, currentIndex: index, labels: labels, detailLabels: details, footerDescription: "A longer timeout may drain the battery faster.")
+                let data = PickerData(values: values, currentIndex: index, labels: labels, detailLabels: details, footerDescription: "When attempting to find your location a longer timeout may increase accuracy.")
                 let pvc = PickerViewController(data: data, tag: PickerViewControllerTags.TimeoutTag.rawValue, title: "Timeout")
                 pvc.delegate = self
                 
@@ -282,8 +282,8 @@ class SettingsViewController: UITableViewController
                 var details = Array<String>()
                 if SettingsController.sharedController.unitStyle {
                     details = [
-                        "55 yards",
-                        "275 yards",
+                        "165 feet",
+                        "825 feet",
                         "1 mile",
                         "3 miles"
                     ]
@@ -299,7 +299,7 @@ class SettingsViewController: UITableViewController
                 
                 let index: Int = values.indexOf(SettingsController.sharedController.nearbyPhotoRange)!
                 
-                let data = PickerData(values: values, currentIndex: index, labels: labels, detailLabels: details, footerDescription: "A higher range may show more photos.")
+                let data = PickerData(values: values, currentIndex: index, labels: labels, detailLabels: details, footerDescription: "You can see photos you have taken near a saved location.")
                 let pvc = PickerViewController(data: data, tag: PickerViewControllerTags.PhotoRangeTag.rawValue, title: "Range")
                 pvc.delegate = self
                 
@@ -318,7 +318,7 @@ class SettingsViewController: UITableViewController
                 
                 let index: Int = SettingsController.sharedController.unitStyle ? 0 : 1
                 
-                let data = PickerData(values: values, currentIndex: index, labels: labels, detailLabels: nil, footerDescription: "Customary: Miles, Yards. Metric: Kilometers, Meters.")
+                let data = PickerData(values: values, currentIndex: index, labels: labels, detailLabels: nil, footerDescription: "Customary: Miles, Feet. Metric: Kilometers, Meters.")
                 let pvc = PickerViewController(data: data, tag: PickerViewControllerTags.UnitStyleTag.rawValue, title: "Unit")
                 pvc.delegate = self
                 

@@ -78,8 +78,8 @@ func altitudeString(altitude: CLLocationDistance) -> String
         formatter.minimumFractionDigits = 3
         
         if SettingsController.sharedController.unitStyle {
-            let altitudeInYards = altitude / 0.914
-            return "\(formatter.stringFromNumber(NSNumber(double: altitudeInYards))!)yrd \(altitudeInYards > 0 ? "above sea level" : "below sea level")"
+            let altitudeInFeet = (altitude / 0.914) * 3
+            return "\(formatter.stringFromNumber(NSNumber(double: altitudeInFeet))!)ft \(altitudeInFeet > 0 ? "above sea level" : "below sea level")"
         }
         else {
             return "\(formatter.stringFromNumber(NSNumber(double: altitude))!)m \(altitude > 0 ? "above sea level" : "below sea level")"
