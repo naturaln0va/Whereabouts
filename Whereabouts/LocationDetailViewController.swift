@@ -19,9 +19,22 @@ class LocationDetailViewController: StyledViewController
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var altitudeLabel: UILabel!
     @IBOutlet weak var toolBar: UIToolbar!
-    @IBOutlet weak var detailBarButton: UIBarButtonItem!
     @IBOutlet var collectionViewHeightConstraint: NSLayoutConstraint!
+    
+    var lastUserLocation: CLLocation?
 
+    private lazy var trashBarButtonItem: UIBarButtonItem = {
+        return UIBarButtonItem(barButtonSystemItem: .Trash, target: self, action: "trashButtonPressed")
+    }()
+    
+    private lazy var actionBarButtonItem: UIBarButtonItem = {
+        return UIBarButtonItem(barButtonSystemItem: .Action, target: self, action: "actionButtonPressed")
+    }()
+    
+    private lazy var spaceBarButtonItem: UIBarButtonItem = {
+        return UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
+    }()
+    
     var locationToDisplay: Location!
     var nearbyPhotos: Array<UIImage>?
     
@@ -29,6 +42,8 @@ class LocationDetailViewController: StyledViewController
     override func viewDidLoad()
     {
         super.viewDidLoad()
+        
+        toolBar.items = [trashBarButtonItem, spaceBarButtonItem, actionBarButtonItem]
         
         scrollView.contentInset = UIEdgeInsets(top: 64.0, left: 0.0, bottom: 0.0, right: 0.0)
         
@@ -49,7 +64,7 @@ class LocationDetailViewController: StyledViewController
         mapView.delegate = self
         mapView.scrollEnabled = false
         mapView.rotateEnabled = false
-        mapView.setRegion(MKCoordinateRegion(center: locationToDisplay.location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.052125, longitudeDelta: 0.052125)), animated: false)
+        mapView.setRegion(MKCoordinateRegion(center: locationToDisplay.location.coordinate, span: MKCoordinateSpan(latitudeDelta: 1 / 111, longitudeDelta: 1 / 111)), animated: false)
         
         colorView.layer.cornerRadius = 10.0
         toolBar.tintColor = ColorController.navBarBackgroundColor
@@ -71,8 +86,13 @@ class LocationDetailViewController: StyledViewController
             }
         }
         
-        detailBarButton.customView = nil
         getDistanceFromLocation()
+    }
+    
+    override func viewWillDisappear(animated: Bool)
+    {
+        super.viewWillDisappear(animated)
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
     }
     
     override func viewWillAppear(animated: Bool)
@@ -104,15 +124,15 @@ class LocationDetailViewController: StyledViewController
         mapItem.openInMapsWithLaunchOptions(nil)
     }
     
-    @IBAction func trashButtonPressed()
+    func trashButtonPressed()
     {
         PersistentController.sharedController.deleteLocation(locationToDisplay)
         navigationController?.popToRootViewControllerAnimated(true)
     }
     
-    @IBAction func actionButtonPressed(sender: AnyObject)
+    func actionButtonPressed()
     {
-        let firstActivityItem = "I'm at \(locationToDisplay.shareableString()), where are you?"
+        let firstActivityItem = locationToDisplay.shareableString()
         
         let activityViewController : UIActivityViewController = UIActivityViewController(
             activityItems: [firstActivityItem], applicationActivities: nil)
@@ -137,7 +157,13 @@ class LocationDetailViewController: StyledViewController
         request.destination = MKMapItem(placemark: MKPlacemark(coordinate: locationToDisplay.location.coordinate, addressDictionary: nil))
         
         let directions = MKDirections(request: request)
+        
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
         directions.calculateETAWithCompletionHandler { response, error in
+            defer {
+                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+            }
+            
             if let response = response where error == nil {
                 var responseString = ""
                 if #available(iOS 9.0, *) {
@@ -147,21 +173,41 @@ class LocationDetailViewController: StyledViewController
                         formatter.minimumFractionDigits = 2
                         
                         if let formattedMileString = formatter.stringFromNumber(NSNumber(double: distanceAway)) {
-                            responseString += "\(formattedMileString) \(SettingsController.sharedController.unitStyle ? "mi": "km"), "
+                            responseString += "\(formattedMileString) \(SettingsController.sharedController.unitStyle ? "mi": "km")"
                         }
                     }
                 }
                 
                 let timeString = timeStringFromSeconds(response.expectedTravelTime)
                 if timeString.characters.count > 0 {
-                    responseString += "\(timeString) away"
+                    
+                    let hasDistance = responseString.characters.count > 0
+                    let mut = NSMutableAttributedString()
+                    
+                    if hasDistance {
+                        mut.appendAttributedString(NSAttributedString(string: responseString, attributes: [
+                            NSForegroundColorAttributeName: UIColor.blackColor()
+                        ]))
+                        mut.appendAttributedString(NSAttributedString(string: "\n"))
+                        mut.appendAttributedString(NSAttributedString(string: timeString + " away", attributes: [
+                            NSForegroundColorAttributeName: UIColor(white: 0.45, alpha: 1.0)
+                        ]))
+                    }
+                    else {
+                        mut.appendAttributedString(NSAttributedString(string: timeString + " away", attributes: [
+                            NSForegroundColorAttributeName: UIColor.blackColor()
+                        ]))
+                    }
                     
                     let label = UILabel()
-                    label.font = UIFont.systemFontOfSize(10.0, weight: UIFontWeightRegular)
-                    label.text = responseString
+                    label.font = UIFont.systemFontOfSize(hasDistance ? 11.0 : 12.0, weight: UIFontWeightRegular)
+                    label.numberOfLines = 2
+                    label.textAlignment = .Center
+                    label.attributedText = mut
                     label.sizeToFit()
+                    let labelButton = UIBarButtonItem(customView: label)
                     
-                    self.detailBarButton.customView = label
+                    self.toolBar.items = [self.trashBarButtonItem, self.spaceBarButtonItem, labelButton, self.spaceBarButtonItem, self.actionBarButtonItem]
                 }
             }
         }
@@ -245,18 +291,61 @@ class LocationDetailViewController: StyledViewController
 }
 
 
+//MARK: - MapKitDelegate
 extension LocationDetailViewController: MKMapViewDelegate
 {
     
     func mapView(mapView: MKMapView, didUpdateUserLocation userLocation: MKUserLocation)
     {
+        if let lastLocation = lastUserLocation {
+            guard let currentUserLocation = userLocation.location
+                where lastLocation.distanceFromLocation(currentUserLocation) > 25.0 else {
+                    return
+            }
+        }
+        
         let center = CLLocationCoordinate2D(
             latitude: userLocation.coordinate.latitude - (userLocation.coordinate.latitude - locationToDisplay.location.coordinate.latitude) / 2,
             longitude: userLocation.coordinate.longitude - (userLocation.coordinate.longitude - locationToDisplay.location.coordinate.longitude) / 2
         )
         let span = MKCoordinateSpan(
-            latitudeDelta: max(0.052125, abs(userLocation.coordinate.latitude - locationToDisplay.location.coordinate.latitude) * 2.5),
-            longitudeDelta: max(0.052125, abs(userLocation.coordinate.longitude - locationToDisplay.location.coordinate.longitude) * 2.5)
+            latitudeDelta: max(1 / 55, abs(userLocation.coordinate.latitude - locationToDisplay.location.coordinate.latitude) * 2.5),
+            longitudeDelta: max(1 / 55, abs(userLocation.coordinate.longitude - locationToDisplay.location.coordinate.longitude) * 2.5)
+        )
+        let region = MKCoordinateRegionMake(center, span)
+        mapView.setRegion(mapView.regionThatFits(region), animated: true)
+        
+        lastUserLocation = userLocation.location
+    }
+    
+    func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView)
+    {
+        guard let annotation = view.annotation else {
+            return
+        }
+        
+        let center = CLLocationCoordinate2D(
+            latitude: annotation.coordinate.latitude,
+            longitude: annotation.coordinate.longitude
+        )
+        let span = MKCoordinateSpan(
+            latitudeDelta: 1 / 55,
+            longitudeDelta: 1 / 55
+        )
+        
+        let region = MKCoordinateRegionMake(center, span)
+        mapView.setRegion(mapView.regionThatFits(region), animated: true)
+    }
+    
+    func mapView(mapView: MKMapView, didDeselectAnnotationView view: MKAnnotationView)
+    {
+        let center = CLLocationCoordinate2D(
+            latitude: mapView.userLocation.coordinate.latitude - (mapView.userLocation.coordinate.latitude - locationToDisplay.location.coordinate.latitude) / 2,
+            longitude: mapView.userLocation.coordinate.longitude - (mapView.userLocation.coordinate.longitude - locationToDisplay.location.coordinate.longitude) / 2
+        )
+        let span = MKCoordinateSpan(
+            latitudeDelta: max(1 / 55, abs(mapView.userLocation.coordinate.latitude - locationToDisplay.location.coordinate.latitude) * 2.5),
+            longitudeDelta: max(1 / 55, abs(mapView.userLocation.coordinate.longitude - locationToDisplay.location.coordinate.longitude) * 2.5)
         )
         let region = MKCoordinateRegionMake(center, span)
         mapView.setRegion(mapView.regionThatFits(region), animated: true)

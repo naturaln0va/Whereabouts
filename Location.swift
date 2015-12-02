@@ -12,12 +12,22 @@ class Location: NSManagedObject
     
     func shareableString() -> String
     {
+        var shareString = ""
+        
+        if let title = title {
+            shareString += title + "\n"
+        }
+        
         if let place = placemark {
-            return stringFromAddress(place, withNewLine: false)
+            shareString += stringFromAddress(place, withNewLine: false)
         }
         else {
-            return stringFromCoordinate(location.coordinate)
+            shareString += stringFromCoordinate(location.coordinate)
         }
+        
+        shareString += "\nvia Whereabouts: (http://appstore.com/whereaboutslocationutility)"
+        
+        return shareString
     }
     
 }

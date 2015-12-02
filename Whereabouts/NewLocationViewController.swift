@@ -14,6 +14,7 @@ class NewLocationViewController: StyledViewController
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet var bottomToolBar: UIToolbar!
     
+    var accuracyBarButtonItem: UIBarButtonItem?
     var delegate: NewLocationViewControllerDelegate?
     var assistant: LocationAssistant?
     var locationToEdit: Location?
@@ -112,7 +113,12 @@ class NewLocationViewController: StyledViewController
 
     func refreshButtonPressed()
     {
-        bottomToolBar.items = [spaceBarButtonItem, loadingBarButtonItem]
+        if let accuracyButton = accuracyBarButtonItem {
+            bottomToolBar.items = [spaceBarButtonItem, accuracyButton, spaceBarButtonItem, loadingBarButtonItem]
+        }
+        else {
+            bottomToolBar.items = [spaceBarButtonItem, loadingBarButtonItem]
+        }
         
         if let editingLocation = locationToEdit {
             assistant?.getAddressForLocation(editingLocation.location)
@@ -175,6 +181,23 @@ extension NewLocationViewController: LocationAssistantDelegate
     {
         self.location = location
         
+        let formatter = NSNumberFormatter()
+        formatter.minimumIntegerDigits = 1
+        formatter.minimumFractionDigits = 0
+        formatter.maximumFractionDigits = 2
+        
+        let accuracyString = formatter.stringFromNumber(NSNumber(double: min(100, (SettingsController.sharedController.distanceAccuracy / location.horizontalAccuracy) * 100)))
+        
+        let label = UILabel()
+        label.font = UIFont.systemFontOfSize(12.0, weight: UIFontWeightRegular)
+        label.textAlignment = .Center
+        label.text = "\(accuracyString!)% Accurate"
+        label.sizeToFit()
+        let labelButton = UIBarButtonItem(customView: label)
+        accuracyBarButtonItem = labelButton
+        
+        bottomToolBar.items = [spaceBarButtonItem, labelButton, spaceBarButtonItem, loadingBarButtonItem]
+        
         if finished {
             assistant?.getAddressForLocation(location)
         }
@@ -188,7 +211,12 @@ extension NewLocationViewController: LocationAssistantDelegate
             bottomToolBar.items = nil
         }
         else {
-            bottomToolBar.items = [spaceBarButtonItem, refreshBarButtonItem]
+            if let accuracyButton = accuracyBarButtonItem {
+                bottomToolBar.items = [spaceBarButtonItem, accuracyButton, spaceBarButtonItem, refreshBarButtonItem]
+            }
+            else {
+                bottomToolBar.items = [spaceBarButtonItem, refreshBarButtonItem]
+            }
         }
     }
     
@@ -210,6 +238,7 @@ extension NewLocationViewController: LocationAssistantDelegate
 }
 
 
+//MARK: - TableView Deleagte & DataSource
 extension NewLocationViewController: UITableViewDelegate, UITableViewDataSource
 {
     
@@ -228,6 +257,12 @@ extension NewLocationViewController: UITableViewDelegate, UITableViewDataSource
     
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath)
     {
+        if indexPath.row >= 2 && locationToEdit != nil {
+            cell.contentView.backgroundColor = UIColor(white: 0.95, alpha: 1.0)
+            cell.detailTextLabel?.backgroundColor = UIColor(white: 0.95, alpha: 1.0)
+            cell.textLabel?.backgroundColor = UIColor(white: 0.95, alpha: 1.0)
+        }
+        
         if indexPath.row == 0 {
             guard let cell = cell as? TextEntryCell else {
                 fatalError("Expected to display a 'TextEntryCell' cell.")
@@ -243,6 +278,7 @@ extension NewLocationViewController: UITableViewDelegate, UITableViewDataSource
                 fatalError("Expected to display a 'ColorPreviewCell' cell.")
             }
             cell.colorToDisplay = selectedColor
+            cell.accessoryType = .DisclosureIndicator
         }
         else {
             guard let cell = cell as? StyledCell else {
@@ -294,6 +330,18 @@ extension NewLocationViewController: UITableViewDelegate, UITableViewDataSource
             numberOfRows++
         }
         return numberOfRows
+    }
+    
+    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat
+    {
+        return 24
+    }
+    
+    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView?
+    {
+        let coloredBackgroundView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: CGRectGetWidth(tableView.bounds), height: 24.0))
+        coloredBackgroundView.backgroundColor = UIColor.clearColor()
+        return coloredBackgroundView
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat

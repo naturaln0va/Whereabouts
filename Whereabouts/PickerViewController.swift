@@ -68,10 +68,11 @@ class PickerViewController: UITableViewController
         tableView.backgroundColor = ColorController.backgroundColor
         
         if data.footerDescription != nil {
-            let footerView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: CGRectGetWidth(tableView.bounds), height: 44.0))
+            let footerView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: CGRectGetWidth(tableView.bounds), height: 64.0))
             footerView.backgroundColor = UIColor.clearColor()
             
             let descriptionLabel = UILabel()
+            descriptionLabel.numberOfLines = 0
             descriptionLabel.font = UIFont.systemFontOfSize(12.0, weight: UIFontWeightLight)
             descriptionLabel.text = data.footerDescription!
             descriptionLabel.bounds = footerView.bounds
@@ -86,7 +87,7 @@ class PickerViewController: UITableViewController
     // MARK: - UITableViewDataSource
     override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat
     {
-        return 24
+        return 24.0
     }
     
     override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView?

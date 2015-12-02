@@ -192,7 +192,7 @@ class SettingsViewController: UITableViewController
         if indexPath.section == TableSections.kGeneralSection.rawValue {
             switch indexPath.row {
             case GeneralSectionRows.kRateRow.rawValue:
-                UIApplication.sharedApplication().openURL(NSURL(string: "https://itunes.apple.com/us/app/whereabouts-location-utility/id931591968?mt=8")!)
+                UIApplication.sharedApplication().openURL(NSURL(string: "http://appstore.com/whereaboutslocationutility")!)
                 break
                 
             case GeneralSectionRows.kContactRow.rawValue:

@@ -51,13 +51,14 @@ class LocationsViewController: UITableViewController
         searchController.searchBar.sizeToFit()
         tableView.tableHeaderView = searchController.searchBar
         searchController.delegate = self
-        searchController.dimsBackgroundDuringPresentation = false
+        
+        searchController.dimsBackgroundDuringPresentation = true
         definesPresentationContext = true
         
         searchController.searchBar.delegate = self
         searchController.searchBar.autocapitalizationType = .Sentences
         searchController.searchBar.searchBarStyle = .Minimal
-        searchController.searchBar.backgroundColor = UIColor.clearColor()
+        searchController.searchBar.backgroundColor = ColorController.backgroundColor
         searchController.searchBar.tintColor = ColorController.navBarBackgroundColor
     }
     
@@ -125,7 +126,7 @@ class LocationsViewController: UITableViewController
     {
         let shareAction = UITableViewRowAction(style: .Default, title: "Share") { action, indexPath in
             if let location = self.fetchedResultsController.objectAtIndexPath(indexPath) as? Location {
-                let firstActivityItem = "I'm at \(location.shareableString()), where are you?"
+                let firstActivityItem = location.shareableString()
                 let activityViewController : UIActivityViewController = UIActivityViewController(
                     activityItems: [firstActivityItem], applicationActivities: nil)
                 
