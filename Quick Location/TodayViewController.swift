@@ -9,7 +9,7 @@ class TodayViewController: UIViewController, NCWidgetProviding
         
     @IBOutlet weak var locationLabel: UILabel!
     @IBOutlet var activityIndicator: UIActivityIndicatorView!
-    @IBOutlet var imageView: UIImageView!
+    @IBOutlet var altitudeLabel: UILabel!
     
     var location: CLLocation? {
         didSet {
@@ -33,7 +33,9 @@ class TodayViewController: UIViewController, NCWidgetProviding
     {
         super.viewDidLoad()
         assistant.delegate = self
-        imageView.alpha = 0.0
+        
+        locationLabel.text = ""
+        altitudeLabel.text = ""
         
         let doubleTapGesture = UITapGestureRecognizer(target: self, action: "relocate")
         doubleTapGesture.numberOfTapsRequired = 2
@@ -64,6 +66,7 @@ class TodayViewController: UIViewController, NCWidgetProviding
             return
         }
         locationLabel.text = stringFromCoordinate(location.coordinate)
+        altitudeLabel.text = altitudeString(location.altitude)
         
         guard let address = placemark else {
             return
@@ -113,9 +116,6 @@ extension TodayViewController: LocationAssistantDelegate
     {
         self.placemark = placemark
         activityIndicator.stopAnimating()
-        UIView.animateWithDuration(0.125) {
-            self.imageView.alpha = 1.0
-        }
     }
     
     func authorizationDenied()
@@ -135,9 +135,6 @@ extension TodayViewController: LocationAssistantDelegate
     func failedToGetAddress()
     {
         activityIndicator.stopAnimating()
-        UIView.animateWithDuration(0.125) {
-            self.imageView.alpha = 1.0
-        }
     }
     
 }

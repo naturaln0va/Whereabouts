@@ -15,40 +15,39 @@
                         <viewControllerLayoutGuide type="bottom" id="Ynd-zc-mfY"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" simulatedAppContext="notificationCenter" id="S3S-Oj-5AN">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="72"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Open the app to get location" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="noe-8E-U5p">
-                                <rect key="frame" x="16" y="8" width="248" height="56"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="254" horizontalCompressionResistancePriority="749" text="Open the app to get location" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="noe-8E-U5p">
+                                <rect key="frame" x="16" y="8" width="260" height="48"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="HhO-ei-vCz">
-                                <rect key="frame" x="284" y="26" width="20" height="20"/>
+                                <rect key="frame" x="284" y="40" width="20" height="20"/>
                                 <animations/>
                             </activityIndicatorView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="add-circle" translatesAutoresizingMaskIntoConstraints="NO" id="rqU-7e-KnY">
-                                <rect key="frame" x="272" y="20" width="32" height="32"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="4 feet above sea level" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3jF-GE-luE">
+                                <rect key="frame" x="16" y="68" width="166" height="24"/>
                                 <animations/>
-                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="32" id="Ar4-Wu-oDu"/>
-                                    <constraint firstAttribute="width" constant="32" id="OCx-Bd-sNs"/>
-                                </constraints>
-                            </imageView>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <animations/>
                         <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="rqU-7e-KnY" secondAttribute="trailing" id="7SQ-bU-bAf"/>
-                            <constraint firstItem="Ynd-zc-mfY" firstAttribute="top" secondItem="noe-8E-U5p" secondAttribute="bottom" constant="8" id="7Zo-QO-e4x"/>
-                            <constraint firstItem="rqU-7e-KnY" firstAttribute="centerY" secondItem="S3S-Oj-5AN" secondAttribute="centerY" id="B5h-4I-psT"/>
+                            <constraint firstItem="3jF-GE-luE" firstAttribute="leading" secondItem="S3S-Oj-5AN" secondAttribute="leadingMargin" id="6hl-ly-SOC"/>
+                            <constraint firstItem="HhO-ei-vCz" firstAttribute="leading" secondItem="noe-8E-U5p" secondAttribute="trailing" constant="8" id="972-OD-2KS"/>
                             <constraint firstItem="noe-8E-U5p" firstAttribute="top" secondItem="rLc-Jd-bJR" secondAttribute="bottom" constant="8" id="F82-UQ-Ycd"/>
-                            <constraint firstItem="rqU-7e-KnY" firstAttribute="leading" secondItem="noe-8E-U5p" secondAttribute="trailing" constant="8" id="Lh1-jP-Irl"/>
                             <constraint firstItem="HhO-ei-vCz" firstAttribute="centerY" secondItem="S3S-Oj-5AN" secondAttribute="centerY" id="PEx-FN-liL"/>
+                            <constraint firstItem="3jF-GE-luE" firstAttribute="top" secondItem="noe-8E-U5p" secondAttribute="bottom" constant="12" id="UH1-Jj-XbB"/>
                             <constraint firstAttribute="trailingMargin" secondItem="HhO-ei-vCz" secondAttribute="trailing" id="ZSQ-pb-1Ge"/>
                             <constraint firstItem="noe-8E-U5p" firstAttribute="leading" secondItem="S3S-Oj-5AN" secondAttribute="leadingMargin" id="iv0-xb-Jf4"/>
+                            <constraint firstItem="HhO-ei-vCz" firstAttribute="leading" secondItem="3jF-GE-luE" secondAttribute="trailing" constant="102" id="mac-PP-vkR"/>
+                            <constraint firstItem="Ynd-zc-mfY" firstAttribute="top" secondItem="3jF-GE-luE" secondAttribute="bottom" constant="8" id="xOP-Ap-gKT"/>
                         </constraints>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
@@ -56,19 +55,16 @@
                     <nil key="simulatedTopBarMetrics"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="320" height="72"/>
+                    <size key="freeformSize" width="320" height="100"/>
                     <connections>
                         <outlet property="activityIndicator" destination="HhO-ei-vCz" id="BeA-nR-sjU"/>
-                        <outlet property="imageView" destination="rqU-7e-KnY" id="iBO-5Q-ao4"/>
+                        <outlet property="altitudeLabel" destination="3jF-GE-luE" id="CYM-Mk-Mze"/>
                         <outlet property="locationLabel" destination="noe-8E-U5p" id="6iw-u9-1yN"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vXp-U4-Rya" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-235" y="310"/>
+            <point key="canvasLocation" x="-527" y="280"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="add-circle" width="32" height="32"/>
-    </resources>
 </document>
