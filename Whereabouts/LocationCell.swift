@@ -12,23 +12,17 @@ class LocationCell: StyledCell
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var colorCategoryStripView: UIView!
     
-    var location: Location? {
-        didSet {
-            guard let locationToDisplay = location else {
-                return
-            }
-            
-            colorCategoryStripView.backgroundColor = locationToDisplay.color
-            createdDateLabel.text = relativeStringForDate(locationToDisplay.location.timestamp)
-            titleLabel.text = locationToDisplay.title
-            
-            if let place = locationToDisplay.placemark {
-                addressLabel.text = stringFromAddress(place, withNewLine: false)
-            }
-            else {
-                addressLabel.text = stringFromCoordinate(locationToDisplay.location.coordinate)
-            }
-            
+    func configureCell(locationToDisplay: Location)
+    {
+        colorCategoryStripView.backgroundColor = locationToDisplay.color
+        createdDateLabel.text = relativeStringForDate(locationToDisplay.location.timestamp)
+        titleLabel.text = locationToDisplay.title
+        
+        if let place = locationToDisplay.placemark {
+            addressLabel.text = stringFromAddress(place, withNewLine: false)
+        }
+        else {
+            addressLabel.text = stringFromCoordinate(locationToDisplay.location.coordinate)
         }
     }
     

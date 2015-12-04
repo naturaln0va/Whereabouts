@@ -349,29 +349,31 @@ extension LocationDetailViewController: MKMapViewDelegate
             return nil
         }
         
-        let reuseIdentifier = "Location"
-        var annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseIdentifier) as! MKPinAnnotationView!
-        
-        annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseIdentifier)
-        annotationView.enabled = true
-        annotationView.canShowCallout = true
-        annotationView.animatesDrop = false
-        
-        if #available(iOS 9.0, *) {
-            annotationView.pinTintColor = locationToDisplay.color
+        if let annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier("Location") as? MKPinAnnotationView {
+            return annotationView
         }
         else {
-            annotationView.pinColor = .Red
+            let annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "Location")
+            annotationView.enabled = true
+            annotationView.canShowCallout = true
+            annotationView.animatesDrop = false
+            
+            if #available(iOS 9.0, *) {
+                annotationView.pinTintColor = locationToDisplay.color
+            }
+            else {
+                annotationView.pinColor = .Red
+            }
+            
+            let rightButton = UIButton()
+            rightButton.tintColor = locationToDisplay.color
+            rightButton.setImage(UIImage(named: "open-location"), forState: .Normal)
+            rightButton.sizeToFit()
+            rightButton.addTarget(self, action: "annotationButtonPressed", forControlEvents: .TouchUpInside)
+            annotationView.rightCalloutAccessoryView = rightButton
+            
+            return annotationView
         }
-        
-        let rightButton = UIButton()
-        rightButton.tintColor = locationToDisplay.color
-        rightButton.setImage(UIImage(named: "open-location"), forState: .Normal)
-        rightButton.sizeToFit()
-        rightButton.addTarget(self, action: "annotationButtonPressed", forControlEvents: .TouchUpInside)
-        annotationView.rightCalloutAccessoryView = rightButton
-        
-        return annotationView
     }
     
 }

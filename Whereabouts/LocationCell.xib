@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9059" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -15,14 +15,14 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Home" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cte-QE-42b">
-                        <rect key="frame" x="24" y="11" width="276" height="22"/>
+                        <rect key="frame" x="23" y="10" width="287" height="22"/>
                         <animations/>
                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="18"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="157 Stonebridge Blvd Edmond, OK" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rJa-hN-OVp">
-                        <rect key="frame" x="24" y="36" width="265" height="20"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="157 Stonebridge Blvd Edmond, OK" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rJa-hN-OVp">
+                        <rect key="frame" x="23" y="39" width="266" height="19"/>
                         <animations/>
                         <fontDescription key="fontDescription" type="system" weight="light" pointSize="16"/>
                         <color key="textColor" red="0.5490196078431373" green="0.5490196078431373" blue="0.5490196078431373" alpha="1" colorSpace="calibratedRGB"/>
@@ -55,15 +55,16 @@
                 <animations/>
                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 <constraints>
-                    <constraint firstItem="Cte-QE-42b" firstAttribute="leading" secondItem="yM1-LD-A0L" secondAttribute="trailing" constant="16" id="2SI-W2-Rah"/>
+                    <constraint firstItem="Cte-QE-42b" firstAttribute="leading" secondItem="yM1-LD-A0L" secondAttribute="trailing" constant="15" id="2SI-W2-Rah"/>
                     <constraint firstItem="FTf-GO-7Av" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="9w7-YJ-hTG"/>
-                    <constraint firstItem="rJa-hN-OVp" firstAttribute="leading" secondItem="yM1-LD-A0L" secondAttribute="trailing" constant="16" id="AJO-a9-IDI"/>
+                    <constraint firstItem="rJa-hN-OVp" firstAttribute="leading" secondItem="yM1-LD-A0L" secondAttribute="trailing" constant="15" id="AJO-a9-IDI"/>
                     <constraint firstAttribute="trailing" secondItem="47S-tx-B7t" secondAttribute="trailing" constant="10" id="DU7-du-2uG"/>
-                    <constraint firstAttribute="bottom" secondItem="rJa-hN-OVp" secondAttribute="bottom" constant="11" id="K8P-sT-LWV"/>
+                    <constraint firstAttribute="bottom" secondItem="rJa-hN-OVp" secondAttribute="bottom" constant="10" id="K8P-sT-LWV"/>
                     <constraint firstAttribute="bottom" secondItem="FTf-GO-7Av" secondAttribute="bottom" id="KIo-vs-u3N"/>
-                    <constraint firstAttribute="trailing" secondItem="Cte-QE-42b" secondAttribute="trailing" constant="20" id="UiD-Vm-1Jk"/>
+                    <constraint firstAttribute="trailing" secondItem="Cte-QE-42b" secondAttribute="trailing" constant="10" id="UiD-Vm-1Jk"/>
                     <constraint firstAttribute="bottom" secondItem="yM1-LD-A0L" secondAttribute="bottom" id="Xne-0s-28G"/>
-                    <constraint firstItem="Cte-QE-42b" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="11" id="ZCc-Mz-uki"/>
+                    <constraint firstItem="Cte-QE-42b" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="ZCc-Mz-uki"/>
+                    <constraint firstItem="rJa-hN-OVp" firstAttribute="top" secondItem="Cte-QE-42b" secondAttribute="bottom" constant="7" id="afp-zC-BIt"/>
                     <constraint firstItem="yM1-LD-A0L" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="cht-z4-NdS"/>
                     <constraint firstItem="47S-tx-B7t" firstAttribute="leading" secondItem="rJa-hN-OVp" secondAttribute="trailing" constant="8" id="gUE-0G-0Ep"/>
                     <constraint firstItem="yM1-LD-A0L" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="gxL-cZ-mci"/>
@@ -78,7 +79,7 @@
                 <outlet property="createdDateLabel" destination="47S-tx-B7t" id="Hp1-2Y-WEt"/>
                 <outlet property="titleLabel" destination="Cte-QE-42b" id="GDu-0o-7W6"/>
             </connections>
-            <point key="canvasLocation" x="-209" y="201"/>
+            <point key="canvasLocation" x="-40" y="218"/>
         </tableViewCell>
     </objects>
 </document>

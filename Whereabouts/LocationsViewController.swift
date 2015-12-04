@@ -43,16 +43,18 @@ class LocationsViewController: UITableViewController
         
         tableView.separatorStyle = .None
         tableView.backgroundColor = ColorController.backgroundColor
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = LocationCell.cellHeight
         tableView.registerNib(UINib(nibName: LocationCell.reuseIdentifier, bundle: nil), forCellReuseIdentifier: LocationCell.reuseIdentifier)
         
         fetchedResultsController.delegate = self
-        fetch()
+        fetchLocations()
         
         searchController.searchBar.sizeToFit()
         tableView.tableHeaderView = searchController.searchBar
         searchController.delegate = self
         
-        searchController.dimsBackgroundDuringPresentation = true
+        searchController.dimsBackgroundDuringPresentation = false
         definesPresentationContext = true
         
         searchController.searchBar.delegate = self
@@ -76,7 +78,7 @@ class LocationsViewController: UITableViewController
     }
     
     // MARK: - Private
-    private func fetch()
+    private func fetchLocations()
     {
         do {
             try fetchedResultsController.performFetch()
@@ -90,19 +92,18 @@ class LocationsViewController: UITableViewController
     // MARK: - UITableViewDelegate
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
     {
-        return tableView.dequeueReusableCellWithIdentifier(LocationCell.reuseIdentifier, forIndexPath: indexPath)
-    }
-    
-    override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath)
-    {
-        guard let cell = cell as? LocationCell else { fatalError("Expected to display a `LocationCell`.") }
-        
+        guard let cell = tableView.dequeueReusableCellWithIdentifier(LocationCell.reuseIdentifier) as? LocationCell else {
+            fatalError("Expected to dequeue a 'LocationCell'.")
+        }
+
         if filteredLocations != nil {
-            cell.location = filteredLocations![indexPath.row]
+            cell.configureCell(filteredLocations![indexPath.row])
         }
         else if let location = fetchedResultsController.objectAtIndexPath(indexPath) as? Location {
-            cell.location = location
+            cell.configureCell(location)
         }
+        
+        return cell
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
@@ -122,66 +123,24 @@ class LocationsViewController: UITableViewController
         }
     }
     
-    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]?
-    {
-        let shareAction = UITableViewRowAction(style: .Default, title: "Share") { action, indexPath in
-            if let location = self.fetchedResultsController.objectAtIndexPath(indexPath) as? Location {
-                let firstActivityItem = location.shareableString()
-                let activityViewController : UIActivityViewController = UIActivityViewController(
-                    activityItems: [firstActivityItem], applicationActivities: nil)
-                
-                activityViewController.excludedActivityTypes = [
-                    UIActivityTypePrint,
-                    UIActivityTypeAssignToContact,
-                    UIActivityTypeSaveToCameraRoll,
-                    UIActivityTypeAddToReadingList,
-                    UIActivityTypePostToFlickr,
-                    UIActivityTypePostToVimeo
-                ]
-                
-                self.presentViewController(activityViewController, animated: true, completion: nil)
-            }
-        }
-        shareAction.backgroundColor = UIColor(hex: 0x1e76a0)
-        
-        let deleteAction = UITableViewRowAction(style: .Default, title: "Delete") { action, indexPath in
-            if let location = self.fetchedResultsController.objectAtIndexPath(indexPath) as? Location {
-                PersistentController.sharedController.deleteLocation(location)
-            }
-        }
-        deleteAction.backgroundColor = UIColor.alizarinColor()
-        
-        return filteredLocations == nil ? [deleteAction, shareAction] : nil
-    }
-    
     override func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle
     {
-        if #available(iOS 9.0, *) {
-            return .None
+        if filteredLocations == nil {
+            return .Delete
         }
         else {
-            return .Delete
+            return .None
         }
     }
     
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath)
     {
-        if #available(iOS 9.0, *) {
-            return
-        }
-        else {
-            if let location = self.fetchedResultsController.objectAtIndexPath(indexPath) as? Location {
-                PersistentController.sharedController.deleteLocation(location)
-            }
+        if let location = self.fetchedResultsController.objectAtIndexPath(indexPath) as? Location {
+            PersistentController.sharedController.deleteLocation(location)
         }
     }
     
     // MARK: - UITableViewDataSource
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat
-    {
-        return LocationCell.cellHeight
-    }
-    
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
         if filteredLocations != nil {
@@ -216,7 +175,7 @@ extension LocationsViewController: NSFetchedResultsControllerDelegate
         case .Update:
             if let cell = tableView.cellForRowAtIndexPath(indexPath!) as? LocationCell {
                 if let location = fetchedResultsController.objectAtIndexPath(indexPath!) as? Location {
-                    cell.location = location
+                    cell.configureCell(location)
                 }
             }
             
