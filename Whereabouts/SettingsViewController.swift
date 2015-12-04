@@ -155,7 +155,7 @@ class SettingsViewController: UITableViewController
                 
             case UserSectionRows.kUnitStyleRow.rawValue:
                 cell.textLabel?.text = "Unit Style"
-                cell.detailTextLabel?.text = SettingsController.sharedController.unitStyle ? "Customary" : "Metric"
+                cell.detailTextLabel?.text = SettingsController.sharedController.isUnitStyleImperial ? "Customary" : "Metric"
                 cell.accessoryType = .DisclosureIndicator
                 break
                 
@@ -280,7 +280,7 @@ class SettingsViewController: UITableViewController
                 ]
                 
                 var details = Array<String>()
-                if SettingsController.sharedController.unitStyle {
+                if SettingsController.sharedController.isUnitStyleImperial {
                     details = [
                         "165 feet",
                         "825 feet",
@@ -312,11 +312,11 @@ class SettingsViewController: UITableViewController
                     false
                 ]
                 let labels = [
-                    "Customary",
+                    "Imperial",
                     "Metric"
                 ]
                 
-                let index: Int = SettingsController.sharedController.unitStyle ? 0 : 1
+                let index: Int = SettingsController.sharedController.isUnitStyleImperial ? 0 : 1
                 
                 let data = PickerData(values: values, currentIndex: index, labels: labels, detailLabels: nil, footerDescription: "Customary: Miles, Feet. Metric: Kilometers, Meters.")
                 let pvc = PickerViewController(data: data, tag: PickerViewControllerTags.UnitStyleTag.rawValue, title: "Unit")
@@ -365,7 +365,7 @@ extension SettingsViewController: PickerViewControllerDelegate
             break
             
         case PickerViewControllerTags.UnitStyleTag.rawValue:
-            SettingsController.sharedController.unitStyle = object as! Bool
+            SettingsController.sharedController.isUnitStyleImperial = object as! Bool
             break
             
         default:

@@ -68,16 +68,16 @@ class SettingsController
     {
         switch nearbyPhotoRange {
         case 50:
-            return unitStyle ? "165ft" : "50m"
+            return isUnitStyleImperial ? "165ft" : "50m"
             
         case 250:
-            return unitStyle ? "825ft" : "250m"
+            return isUnitStyleImperial ? "825ft" : "250m"
             
         case 1600:
-            return unitStyle ? "1mi" : "1.6km"
+            return isUnitStyleImperial ? "1mi" : "1.6km"
             
         case 5000:
-            return unitStyle ? "3mi" : "5km"
+            return isUnitStyleImperial ? "3mi" : "5km"
             
         default:
             return ""
@@ -117,7 +117,7 @@ class SettingsController
         }
     }
     
-    var unitStyle: Bool {
+    var isUnitStyleImperial: Bool {
         get {
             return defaults.boolForKey(SettingsController.kUnitStyleKey)
         }
