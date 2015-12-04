@@ -1,5 +1,6 @@
 
 import CoreLocation
+import MapKit
 
 
 func stringFromAddress(placemark: CLPlacemark, withNewLine newline: Bool) -> String
@@ -74,17 +75,19 @@ func altitudeString(altitude: CLLocationDistance) -> String
         return "At sea level"
     }
     else {
-        let formatter = NSNumberFormatter()
-        formatter.minimumFractionDigits = 3
-        
-        if SettingsController.sharedController.unitStyle {
-            let altitudeInFeet = (altitude / 0.914) * 3
-            return "\(formatter.stringFromNumber(NSNumber(double: altitudeInFeet))!)ft \(altitudeInFeet > 0 ? "above sea level" : "below sea level")"
-        }
-        else {
-            return "\(formatter.stringFromNumber(NSNumber(double: altitude))!)m \(altitude > 0 ? "above sea level" : "below sea level")"
-        }
+        let formatter = MKDistanceFormatter()
+        formatter.unitStyle = .Abbreviated
+        formatter.units = SettingsController.sharedController.unitStyle ? .Imperial : .Metric
+        return "\(formatter.stringFromDistance(altitude)) \(altitude > 0 ? "above sea level" : "below sea level")"
     }
+}
+
+func distanceString(distanceInMeters: CLLocationDistance) -> String
+{
+    let formatter = MKDistanceFormatter()
+    formatter.unitStyle = .Abbreviated
+    formatter.units = SettingsController.sharedController.unitStyle ? .Imperial : .Metric
+    return formatter.stringFromDistance(distanceInMeters)
 }
 
 func timeStringFromSeconds(interval: NSTimeInterval) -> String

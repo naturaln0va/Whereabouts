@@ -156,17 +156,20 @@ class LocationsViewController: UITableViewController
     
     override func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle
     {
-        if Int(UIDevice.currentDevice().deviceIOSVersion) <= 8 && filteredLocations == nil {
-            return .Delete
+        if #available(iOS 9.0, *) {
+            return .None
         }
         else {
-            return .None
+            return .Delete
         }
     }
     
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath)
     {
-        if Int(UIDevice.currentDevice().deviceIOSVersion) <= 8 && filteredLocations == nil {
+        if #available(iOS 9.0, *) {
+            return
+        }
+        else {
             if let location = self.fetchedResultsController.objectAtIndexPath(indexPath) as? Location {
                 PersistentController.sharedController.deleteLocation(location)
             }

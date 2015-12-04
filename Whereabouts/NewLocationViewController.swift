@@ -33,6 +33,10 @@ class NewLocationViewController: StyledViewController
         return UIBarButtonItem(barButtonSystemItem: .Refresh, target: self, action: "refreshButtonPressed")
     }()
     
+    private lazy var actionBarButtonItem: UIBarButtonItem = {
+        return UIBarButtonItem(barButtonSystemItem: .Action, target: self, action: "actionButtonPressed")
+    }()
+    
     private lazy var spaceBarButtonItem: UIBarButtonItem = {
         return UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
     }()
@@ -128,6 +132,41 @@ class NewLocationViewController: StyledViewController
         }
     }
     
+    func actionButtonPressed()
+    {
+        var activityItems = Array<AnyObject>()
+        
+        guard let locationToSave = location else {
+            print("Tried to share without a locaiton!")
+            return
+        }
+        
+        if let placemark = placemark {
+            activityItems.append("I'm at: \(stringFromAddress(placemark, withNewLine: true)).\nWhere are you?")
+            activityItems.append(locationToSave)
+        }
+        else {
+            activityItems.append("I'm at: \(stringFromCoordinate(locationToSave.coordinate)).\nWhere are you?")
+            activityItems.append(locationToSave)
+        }
+        
+        let activityViewController: UIActivityViewController = UIActivityViewController(
+            activityItems: activityItems,
+            applicationActivities: nil
+        )
+        
+        activityViewController.excludedActivityTypes = [
+            UIActivityTypePrint,
+            UIActivityTypeAssignToContact,
+            UIActivityTypeSaveToCameraRoll,
+            UIActivityTypeAddToReadingList,
+            UIActivityTypePostToFlickr,
+            UIActivityTypePostToVimeo
+        ]
+        
+        presentViewController(activityViewController, animated: true, completion: nil)
+    }
+    
     func saveBarButtonPressed()
     {
         guard let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? TextEntryCell, let title = cell.textField.text where title.characters.count > 0 else {
@@ -212,10 +251,10 @@ extension NewLocationViewController: LocationAssistantDelegate
         }
         else {
             if let accuracyButton = accuracyBarButtonItem {
-                bottomToolBar.items = [spaceBarButtonItem, accuracyButton, spaceBarButtonItem, refreshBarButtonItem]
+                bottomToolBar.items = [actionBarButtonItem, spaceBarButtonItem, accuracyButton, spaceBarButtonItem, refreshBarButtonItem]
             }
             else {
-                bottomToolBar.items = [spaceBarButtonItem, refreshBarButtonItem]
+                bottomToolBar.items = [actionBarButtonItem, spaceBarButtonItem, refreshBarButtonItem]
             }
         }
     }
@@ -227,12 +266,25 @@ extension NewLocationViewController: LocationAssistantDelegate
     
     func failedToGetLocation()
     {
-        bottomToolBar.items = [spaceBarButtonItem, refreshBarButtonItem]
+        if let accuracyButton = accuracyBarButtonItem {
+            bottomToolBar.items = [actionBarButtonItem, spaceBarButtonItem, accuracyButton, spaceBarButtonItem, refreshBarButtonItem]
+        }
+        else if location != nil {
+            bottomToolBar.items = [actionBarButtonItem, spaceBarButtonItem, refreshBarButtonItem]
+        }
+        else {
+            bottomToolBar.items = [spaceBarButtonItem, refreshBarButtonItem]
+        }
     }
     
     func failedToGetAddress()
     {
-        bottomToolBar.items = [spaceBarButtonItem, refreshBarButtonItem]
+        if let accuracyButton = accuracyBarButtonItem {
+            bottomToolBar.items = [actionBarButtonItem, spaceBarButtonItem, accuracyButton, spaceBarButtonItem, refreshBarButtonItem]
+        }
+        else {
+            bottomToolBar.items = [actionBarButtonItem, spaceBarButtonItem, refreshBarButtonItem]
+        }
     }
     
 }

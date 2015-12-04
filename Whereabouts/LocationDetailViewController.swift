@@ -146,7 +146,7 @@ class LocationDetailViewController: StyledViewController
             UIActivityTypePostToVimeo
         ]
         
-        self.presentViewController(activityViewController, animated: true, completion: nil)
+        presentViewController(activityViewController, animated: true, completion: nil)
     }
     
     func getDistanceFromLocation()
@@ -167,15 +167,7 @@ class LocationDetailViewController: StyledViewController
             if let response = response where error == nil {
                 var responseString = ""
                 if #available(iOS 9.0, *) {
-                    let distanceAway = SettingsController.sharedController.unitStyle ? response.distance * 0.00062137 : response.distance / 1000.0
-                    if distanceAway > 0.75 {
-                        let formatter = NSNumberFormatter()
-                        formatter.minimumFractionDigits = 2
-                        
-                        if let formattedMileString = formatter.stringFromNumber(NSNumber(double: distanceAway)) {
-                            responseString += "\(formattedMileString) \(SettingsController.sharedController.unitStyle ? "mi": "km")"
-                        }
-                    }
+                    responseString += distanceString(response.distance)
                 }
                 
                 let timeString = timeStringFromSeconds(response.expectedTravelTime)
