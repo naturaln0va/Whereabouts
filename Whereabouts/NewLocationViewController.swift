@@ -18,7 +18,7 @@ class NewLocationViewController: StyledViewController
     var delegate: NewLocationViewControllerDelegate?
     var assistant: LocationAssistant?
     var locationToEdit: Location?
-    var shouldAutoSelectTextField = false
+    var isFirstLoadForLocationEdit = true
     
     var selectedColor: UIColor?
     
@@ -55,12 +55,12 @@ class NewLocationViewController: StyledViewController
     
     private var location: CLLocation? {
         didSet {
-            tableView.reloadData()
+            tableView.reloadSections(NSIndexSet(index: 1), withRowAnimation: .None)
         }
     }
     private var placemark: CLPlacemark? {
         didSet {
-            tableView.reloadData()
+            tableView.reloadSections(NSIndexSet(index: 1), withRowAnimation: .Automatic)
         }
     }
     
@@ -84,7 +84,6 @@ class NewLocationViewController: StyledViewController
         
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.separatorStyle = .None
         tableView.backgroundColor = ColorController.backgroundColor
         tableView.registerNib(UINib(nibName: TextEntryCell.reuseIdentifier, bundle: nil), forCellReuseIdentifier: TextEntryCell.reuseIdentifier)
         tableView.registerNib(UINib(nibName: ColorPreviewCell.reuseIdentifier, bundle: nil), forCellReuseIdentifier: ColorPreviewCell.reuseIdentifier)
@@ -92,16 +91,11 @@ class NewLocationViewController: StyledViewController
         if let _ = assistant {
             assistant?.delegate = self
             assistant?.getLocation()
-            shouldAutoSelectTextField = true
         }
         else if let editingLocation = locationToEdit {
             location = editingLocation.location
             placemark = editingLocation.placemark
             selectedColor = editingLocation.color
-            
-            if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? TextEntryCell {
-                cell.textField.text = editingLocation.title
-            }
             
             if editingLocation.placemark == nil {
                 assistant = LocationAssistant(viewController: self)
@@ -296,71 +290,67 @@ extension NewLocationViewController: UITableViewDelegate, UITableViewDataSource
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
     {
-        if indexPath.row == 0 {
-            return tableView.dequeueReusableCellWithIdentifier(TextEntryCell.reuseIdentifier, forIndexPath: indexPath)
-        }
-        else if indexPath.row == 1 {
-            return tableView.dequeueReusableCellWithIdentifier(ColorPreviewCell.reuseIdentifier, forIndexPath: indexPath)
+        if indexPath.section == 0 {
+            if indexPath.row == 0 {
+                return tableView.dequeueReusableCellWithIdentifier(TextEntryCell.reuseIdentifier, forIndexPath: indexPath)
+            }
+            else {
+                return tableView.dequeueReusableCellWithIdentifier(ColorPreviewCell.reuseIdentifier, forIndexPath: indexPath)
+            }
         }
         else {
-            return StyledCell(style: .Value1, reuseIdentifier: "infoCell")
+            return UITableViewCell(style: .Value1, reuseIdentifier: "infoCell")
         }
     }
     
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath)
     {
-        if indexPath.row >= 2 && locationToEdit != nil {
-            cell.contentView.backgroundColor = UIColor(white: 0.95, alpha: 1.0)
-            cell.detailTextLabel?.backgroundColor = UIColor(white: 0.95, alpha: 1.0)
-            cell.textLabel?.backgroundColor = UIColor(white: 0.95, alpha: 1.0)
-        }
         
-        if indexPath.row == 0 {
-            guard let cell = cell as? TextEntryCell else {
-                fatalError("Expected to display a 'TextEntryCell' cell.")
+        if indexPath.section == 0 {
+            if indexPath.row == 0 {
+                guard let cell = cell as? TextEntryCell else {
+                    fatalError("Expected to display a 'TextEntryCell' cell.")
+                }
+                if let editingLocation = locationToEdit where isFirstLoadForLocationEdit {
+                    cell.textField.text = editingLocation.title
+                    isFirstLoadForLocationEdit = false
+                }
+                cell.textField.placeholder = "Enter a title"
             }
-            cell.textField.placeholder = "Enter a title"
-            if shouldAutoSelectTextField {
-                cell.textField.becomeFirstResponder()
-                shouldAutoSelectTextField = false
+            else if indexPath.row == 1 {
+                guard let cell = cell as? ColorPreviewCell else {
+                    fatalError("Expected to display a 'ColorPreviewCell' cell.")
+                }
+                cell.colorToDisplay = selectedColor
+                cell.accessoryType = .DisclosureIndicator
             }
-        }
-        else if indexPath.row == 1 {
-            guard let cell = cell as? ColorPreviewCell else {
-                fatalError("Expected to display a 'ColorPreviewCell' cell.")
-            }
-            cell.colorToDisplay = selectedColor
-            cell.accessoryType = .DisclosureIndicator
         }
         else {
-            guard let cell = cell as? StyledCell else {
-                fatalError("Expected to display a 'StyledCell' cell.")
+            if indexPath.row == 0 {
+                cell.textLabel?.text = "Date"
+                cell.detailTextLabel?.text = location == nil ? "" : dateFormatter.stringFromDate(location!.timestamp)
             }
-            if indexPath.row == 2 {
+            else if indexPath.row == 1 {
                 cell.textLabel?.text = "Latitude"
                 cell.detailTextLabel?.text = location == nil ? "" : "\(location!.coordinate.latitude)"
             }
-            else if indexPath.row == 3 {
+            else if indexPath.row == 2 {
                 cell.textLabel?.text = "Longitude"
                 cell.detailTextLabel?.text = location == nil ? "" : "\(location!.coordinate.longitude)"
             }
-            else if indexPath.row == 4 {
-                cell.textLabel?.text = "Altitude"
-                cell.detailTextLabel?.text = location == nil ? "" : altitudeString(location!.altitude)
-            }
-            else if indexPath.row == 5 {
+            else if indexPath.row == 3 {
                 if let placemark = placemark {
                     cell.textLabel?.text = "Address"
                     cell.detailTextLabel?.text = stringFromAddress(placemark, withNewLine: true)
                 }
                 else {
-                    cell.textLabel?.text = "Date"
-                    cell.detailTextLabel?.text = location == nil ? "" : dateFormatter.stringFromDate(location!.timestamp)
+                    cell.textLabel?.text = "Altitude"
+                    cell.detailTextLabel?.text = location == nil ? "" : altitudeString(location!.altitude)
                 }
             }
-            else if indexPath.row == 6 {
-                cell.textLabel?.text = "Date"
-                cell.detailTextLabel?.text = location == nil ? "" : dateFormatter.stringFromDate(location!.timestamp)
+            else if indexPath.row == 4 {
+                cell.textLabel?.text = "Altitude"
+                cell.detailTextLabel?.text = location == nil ? "" : altitudeString(location!.altitude)
             }
         }
     }
@@ -368,41 +358,60 @@ extension NewLocationViewController: UITableViewDelegate, UITableViewDataSource
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
     {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        if indexPath.row == 1 {
-            let colorSelector = ColorSelectionViewController(collectionViewLayout: DefaultLayout())
-            colorSelector.delegate = self
-            navigationController?.pushViewController(colorSelector, animated: true)
+        if indexPath.section == 0 {
+            if indexPath.row == 0 {
+                if let cell = tableView.cellForRowAtIndexPath(indexPath) as? TextEntryCell {
+                    cell.textField.becomeFirstResponder()
+                }
+            }
+            else {
+                let colorSelector = ColorSelectionViewController(collectionViewLayout: DefaultLayout())
+                colorSelector.delegate = self
+                navigationController?.pushViewController(colorSelector, animated: true)
+            }
+
         }
+    }
+    
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int
+    {
+        return 2
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
-        var numberOfRows = 6
-        if placemark != nil {
-            numberOfRows++
+        if section == 0 {
+            return 2
         }
-        return numberOfRows
+        else {
+            var numberOfRows = 4
+            if placemark != nil {
+                numberOfRows++
+            }
+            return numberOfRows
+
+        }
     }
     
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat
     {
-        return 24
+        return 35.0
     }
     
-    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView?
+    func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat
     {
-        let coloredBackgroundView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: CGRectGetWidth(tableView.bounds), height: 24.0))
-        coloredBackgroundView.backgroundColor = UIColor.clearColor()
-        return coloredBackgroundView
+        return 0.0001
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat
     {
-        if indexPath.row == 0 {
-            return TextEntryCell.cellHeight
-        }
-        else if indexPath.row == 1 {
-            return ColorPreviewCell.cellHeight
+        if indexPath.section == 0 {
+            if indexPath.row == 0 {
+                return TextEntryCell.cellHeight
+            }
+            else {
+                return ColorPreviewCell.cellHeight
+            }
         }
         else {
             return 44.0
@@ -411,7 +420,7 @@ extension NewLocationViewController: UITableViewDelegate, UITableViewDataSource
     
     func tableView(tableView: UITableView, shouldHighlightRowAtIndexPath indexPath: NSIndexPath) -> Bool
     {
-        if indexPath.row == 1 {
+        if indexPath.row == 1 && indexPath.section == 0 {
             return true
         }
         return false

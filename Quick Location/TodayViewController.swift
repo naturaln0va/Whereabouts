@@ -34,8 +34,8 @@ class TodayViewController: UIViewController, NCWidgetProviding
         super.viewDidLoad()
         assistant.delegate = self
         
-        locationLabel.text = ""
-        altitudeLabel.text = ""
+        locationLabel.text = "Locating..."
+        altitudeLabel.text = "-"
         
         let doubleTapGesture = UITapGestureRecognizer(target: self, action: "relocate")
         doubleTapGesture.numberOfTapsRequired = 2
@@ -55,8 +55,12 @@ class TodayViewController: UIViewController, NCWidgetProviding
     
     func relocate()
     {
+        locationLabel.text = "Locating..."
+        altitudeLabel.text = "-"
+
         location = nil
         placemark = nil
+        activityIndicator.startAnimating()
         assistant.getLocation()
     }
     
@@ -121,6 +125,7 @@ extension TodayViewController: LocationAssistantDelegate
     func authorizationDenied()
     {
         locationLabel.text = "Location Access Denied."
+        altitudeLabel.text = "-"
         activityIndicator.stopAnimating()
     }
     

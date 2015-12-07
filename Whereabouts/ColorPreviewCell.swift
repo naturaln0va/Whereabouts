@@ -2,7 +2,7 @@
 import UIKit
 
 
-class ColorPreviewCell: StyledCell
+class ColorPreviewCell: UITableViewCell
 {
 
     static let cellHeight: CGFloat = 44.0
