@@ -72,11 +72,11 @@ class SettingsViewController: UITableViewController
         super.viewDidLoad()
         
         title = "Settings"
-        
+
+        tableView = UITableView(frame: view.bounds, style: .Grouped)
+        tableView.backgroundColor = ColorController.backgroundColor
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.separatorStyle = .None
-        tableView.backgroundColor = ColorController.backgroundColor
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Done", style: .Plain, target: self, action: "doneButtonPressed")
         
@@ -100,7 +100,12 @@ class SettingsViewController: UITableViewController
     // MARK: - UITableViewDataSource
     override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat
     {
-        return 24
+        return 35.0
+    }
+    
+    override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat
+    {
+        return 0.0001
     }
     
     override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView?
@@ -131,7 +136,7 @@ class SettingsViewController: UITableViewController
     // MARK: - UITableViewDelegate
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
     {
-        let cell = StyledCell(style: .Value1, reuseIdentifier: "defaultCell")
+        let cell = UITableViewCell(style: .Value1, reuseIdentifier: "defaultCell")
         
         if indexPath.section == TableSections.kUserSection.rawValue {
             switch indexPath.row {
@@ -192,7 +197,7 @@ class SettingsViewController: UITableViewController
         if indexPath.section == TableSections.kGeneralSection.rawValue {
             switch indexPath.row {
             case GeneralSectionRows.kRateRow.rawValue:
-                UIApplication.sharedApplication().openURL(NSURL(string: "http://appstore.com/whereaboutslocationutility")!)
+                UIApplication.sharedApplication().openURL(NSURL(string: "https://itunes.apple.com/us/app/whereabouts-location-utility/id931591968?mt=8")!)
                 break
                 
             case GeneralSectionRows.kContactRow.rawValue:

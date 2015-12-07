@@ -61,11 +61,11 @@ class PickerViewController: UITableViewController
         super.viewDidLoad()
         
         guard let data = dataForPicker else { fatalError("There was no data") }
-        
+
+        tableView = UITableView(frame: view.bounds, style: .Grouped)
+        tableView.backgroundColor = ColorController.backgroundColor
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.separatorStyle = .None
-        tableView.backgroundColor = ColorController.backgroundColor
         
         if data.footerDescription != nil {
             let footerView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: CGRectGetWidth(tableView.bounds), height: 64.0))
@@ -87,7 +87,12 @@ class PickerViewController: UITableViewController
     // MARK: - UITableViewDataSource
     override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat
     {
-        return 24.0
+        return 35.0
+    }
+    
+    override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat
+    {
+        return 0.0001
     }
     
     override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView?
@@ -107,7 +112,7 @@ class PickerViewController: UITableViewController
     // MARK: - UITableViewDelegate
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
     {
-        let cell = StyledCell(style: .Subtitle, reuseIdentifier: "defaultCell")
+        let cell = UITableViewCell(style: .Subtitle, reuseIdentifier: "defaultCell")
         
         guard let data = dataForPicker else { fatalError("There was no data") }
 
