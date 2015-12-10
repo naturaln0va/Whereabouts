@@ -65,7 +65,10 @@ class PersistentController
                 NSSQLiteStoreType,
                 configuration: nil,
                 URL: storeURL,
-                options: [NSMigratePersistentStoresAutomaticallyOption: true, NSInferMappingModelAutomaticallyOption: true]
+                options: [
+                    NSMigratePersistentStoresAutomaticallyOption: true,
+                    NSInferMappingModelAutomaticallyOption: true
+                ]
             )
             
             let context = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)

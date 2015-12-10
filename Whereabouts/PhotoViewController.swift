@@ -2,52 +2,101 @@
 import UIKit
 
 
-class PhotoViewController: StyledViewController
+class PhotoViewController: UIViewController
 {
 
-    @IBOutlet var imageView: UIImageView!
+    var firstLoad = true
+    var scrollView: UIScrollView!
+    var imageView: UIImageView!
     
-    var fromImageView: UIImageView?
-    var photoToDisplay: UIImage?
+    var photoToDisplay: UIImage!
     
+    override func prefersStatusBarHidden() -> Bool
+    {
+        return true
+    }
     
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        imageView.image = photoToDisplay
+        view.backgroundColor = UIColor.blackColor()
+    }
+
+    override func viewWillLayoutSubviews()
+    {
+        super.viewWillLayoutSubviews()
+        
+        if firstLoad {
+            firstLoad = false
+            
+            scrollView = UIScrollView(frame: view.bounds)
+            scrollView.delegate = self
+            view.addSubview(scrollView)
+            
+            loadImageView()
+        }
     }
     
-    override func preferredStatusBarStyle() -> UIStatusBarStyle
+    // MARK: - Helpers
+    func loadImageView()
     {
-        return .Default
+        imageView = UIImageView(image: photoToDisplay)
+        imageView.userInteractionEnabled = true
+        imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "imageTapped"))
+        imageView.frame = CGRect(origin: CGPoint.zero, size: photoToDisplay.size)
+        scrollView.addSubview(imageView)
+        scrollView.contentSize = photoToDisplay.size
+        
+        let scrollViewFrame = scrollView.frame
+        let scaleWidth = scrollViewFrame.size.width / scrollView.contentSize.width
+        let scaleHeight = scrollViewFrame.size.height / scrollView.contentSize.height
+        let minScale = min(scaleWidth, scaleHeight)
+        
+        scrollView.minimumZoomScale = minScale
+        scrollView.maximumZoomScale = 1.0
+        scrollView.zoomScale = minScale
+        
+        centerScrollViewContents()
     }
     
-    // MARK: - Touches
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?)
+    func centerScrollViewContents()
     {
-        super.touchesBegan(touches, withEvent: event)
+        let boundsSize = scrollView.bounds.size
+        var contentsFrame = imageView.frame
+        
+        if contentsFrame.size.width < boundsSize.width {
+            contentsFrame.origin.x = (boundsSize.width - contentsFrame.size.width) / 2.0
+        } else {
+            contentsFrame.origin.x = 0.0
+        }
+        
+        if contentsFrame.size.height < boundsSize.height {
+            contentsFrame.origin.y = (boundsSize.height - contentsFrame.size.height) / 2.0
+        } else {
+            contentsFrame.origin.y = 0.0
+        }
+        
+        imageView.frame = contentsFrame
+    }
+    
+    func imageTapped()
+    {
         dismissViewControllerAnimated(true, completion: nil)
     }
 
 }
 
-
-extension PhotoViewController: UIViewControllerAnimatedTransitioning
+extension PhotoViewController: UIScrollViewDelegate
 {
     
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval
+    func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView?
     {
-        return 0.5
+        return imageView
     }
     
-    func animateTransition(transitionContext: UIViewControllerContextTransitioning)
+    func scrollViewDidZoom(scrollView: UIScrollView)
     {
-//        let fromVC = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey)
-//        let toVC = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)
-//        
-//        let containerView = transitionContext.containerView()
-//        let duration = transitionDuration(transitionContext)
-        
+        centerScrollViewContents()
     }
     
 }

@@ -49,7 +49,10 @@ class NewLocationViewController: StyledViewController
     
     private let numberFormatter: NSNumberFormatter = {
         let formatter = NSNumberFormatter()
-        formatter.minimumFractionDigits = 3
+        formatter.minimumIntegerDigits = 1
+        formatter.minimumFractionDigits = 0
+        formatter.maximumFractionDigits = 7
+
         return formatter
     }()
     
@@ -332,11 +335,11 @@ extension NewLocationViewController: UITableViewDelegate, UITableViewDataSource
             }
             else if indexPath.row == 1 {
                 cell.textLabel?.text = "Latitude"
-                cell.detailTextLabel?.text = location == nil ? "" : "\(location!.coordinate.latitude)"
+                cell.detailTextLabel?.text = location == nil ? "" : numberFormatter.stringFromNumber(NSNumber(double: location!.coordinate.latitude))!
             }
             else if indexPath.row == 2 {
                 cell.textLabel?.text = "Longitude"
-                cell.detailTextLabel?.text = location == nil ? "" : "\(location!.coordinate.longitude)"
+                cell.detailTextLabel?.text = location == nil ? "" : numberFormatter.stringFromNumber(NSNumber(double: location!.coordinate.longitude))!
             }
             else if indexPath.row == 3 {
                 if let placemark = placemark {

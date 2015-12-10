@@ -23,8 +23,8 @@ class LocationDetailViewController: StyledViewController
     
     var lastUserLocation: CLLocation?
 
-    private lazy var trashBarButtonItem: UIBarButtonItem = {
-        return UIBarButtonItem(barButtonSystemItem: .Trash, target: self, action: "trashButtonPressed")
+    private lazy var openMapsButton: UIBarButtonItem = {
+        return UIBarButtonItem(image: UIImage(named: "open-location"), style: .Plain, target: self, action: "mapsButtonPressed")
     }()
     
     private lazy var actionBarButtonItem: UIBarButtonItem = {
@@ -43,7 +43,7 @@ class LocationDetailViewController: StyledViewController
     {
         super.viewDidLoad()
         
-        toolBar.items = [trashBarButtonItem, spaceBarButtonItem, actionBarButtonItem]
+        toolBar.items = [openMapsButton, spaceBarButtonItem, actionBarButtonItem]
         
         scrollView.contentInset = UIEdgeInsets(top: 64.0, left: 0.0, bottom: 0.0, right: 0.0)
         
@@ -116,18 +116,12 @@ class LocationDetailViewController: StyledViewController
         presentViewController(StyledNavigationController(rootViewController: newlocationVC), animated: true, completion: nil)
     }
     
-    func annotationButtonPressed()
+    func mapsButtonPressed()
     {
         let placeToOpen = locationToDisplay.placemark == nil ? MKPlacemark(coordinate: locationToDisplay.location.coordinate, addressDictionary: nil) : MKPlacemark(placemark: locationToDisplay.placemark!)
         let mapItem = MKMapItem(placemark: placeToOpen)
         mapItem.name = locationToDisplay.title
         mapItem.openInMapsWithLaunchOptions(nil)
-    }
-    
-    func trashButtonPressed()
-    {
-        PersistentController.sharedController.deleteLocation(locationToDisplay)
-        navigationController?.popToRootViewControllerAnimated(true)
     }
     
     func actionButtonPressed()
@@ -199,7 +193,7 @@ class LocationDetailViewController: StyledViewController
                     label.sizeToFit()
                     let labelButton = UIBarButtonItem(customView: label)
                     
-                    self.toolBar.items = [self.trashBarButtonItem, self.spaceBarButtonItem, labelButton, self.spaceBarButtonItem, self.actionBarButtonItem]
+                    self.toolBar.items = [self.openMapsButton, self.spaceBarButtonItem, labelButton, self.spaceBarButtonItem, self.actionBarButtonItem]
                 }
             }
         }
@@ -364,13 +358,6 @@ extension LocationDetailViewController: MKMapViewDelegate
             else {
                 annotationView.pinColor = .Red
             }
-            
-            let rightButton = UIButton()
-            rightButton.tintColor = locationToDisplay.color
-            rightButton.setImage(UIImage(named: "open-location"), forState: .Normal)
-            rightButton.sizeToFit()
-            rightButton.addTarget(self, action: "annotationButtonPressed", forControlEvents: .TouchUpInside)
-            annotationView.rightCalloutAccessoryView = rightButton
             
             return annotationView
         }
