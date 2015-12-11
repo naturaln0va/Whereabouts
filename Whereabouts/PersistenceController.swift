@@ -153,7 +153,7 @@ class PersistentController
         }
     }
     
-    // MARK: - Location Managment
+    // MARK: - Location Management
     func deleteLocation(locationToDelete: Location)
     {
         locationMOC.deleteObject(locationToDelete)
@@ -222,6 +222,48 @@ class PersistentController
                     
                 catch {
                     fatalError("Error saving location: \(error)")
+                }
+            }
+        }
+    }
+    
+    // MARK: - Visits Management
+    func deleteVisit(visitToDelete: Visit)
+    {
+        visitMOC.deleteObject(visitToDelete)
+        
+        if visitMOC.hasChanges {
+            visitMOC.performBlockAndWait { [unowned self] in
+                do {
+                    try self.visitMOC.save()
+                }
+                    
+                catch {
+                    fatalError("Error deleting visit: \(error)")
+                }
+            }
+        }
+    }
+    
+    func saveVisit(arrivalDate: NSDate, departureDate: NSDate, horizontalAccuracy: CLLocationAccuracy, location: CLLocation)
+    {
+        guard let dataToSave = NSEntityDescription.insertNewObjectForEntityForName(Visit.entityName(), inManagedObjectContext: visitMOC) as? Visit else {
+            fatalError("Expected to insert and entity of type 'Visit'.")
+        }
+        
+        dataToSave.arrivalDate = arrivalDate
+        dataToSave.departureDate = departureDate
+        dataToSave.horizontalAccuracy = horizontalAccuracy
+        dataToSave.locationCoordinate = location
+        
+        if visitMOC.hasChanges {
+            visitMOC.performBlockAndWait { [unowned self] in
+                do {
+                    try self.visitMOC.save()
+                }
+                    
+                catch {
+                    fatalError("Error saving visit: \(error)")
                 }
             }
         }
