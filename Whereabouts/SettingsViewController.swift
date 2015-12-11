@@ -326,7 +326,7 @@ class SettingsViewController: UITableViewController
                 
                 let index: Int = SettingsController.sharedController.isUnitStyleImperial ? 0 : 1
                 
-                let data = PickerData(values: values, currentIndex: index, labels: labels, detailLabels: nil, footerDescription: "Customary: Miles, Feet. Metric: Kilometers, Meters.")
+                let data = PickerData(values: values, currentIndex: index, labels: labels, detailLabels: nil, footerDescription: "Customary: Miles, Feet\nMetric: Kilometers, Meters")
                 let pvc = PickerViewController(data: data, tag: PickerViewControllerTags.UnitStyleTag.rawValue, title: "Unit")
                 pvc.delegate = self
                 
