@@ -44,8 +44,8 @@ class PersistentController
         }
     }()
     
-    // MARK: - Current Model
-    lazy var managedObjectContext: NSManagedObjectContext = {
+    // MARK: - Current Models
+    lazy var locationMOC: NSManagedObjectContext = {
         guard let modelURL = NSBundle.mainBundle().URLForResource("LocationModel", withExtension: "momd") else {
             fatalError("Could not find the data model in the bundle")
         }
@@ -61,8 +61,7 @@ class PersistentController
         do {
             let coordinator = NSPersistentStoreCoordinator(managedObjectModel: model)
             
-            try coordinator.addPersistentStoreWithType(
-                NSSQLiteStoreType,
+            try coordinator.addPersistentStoreWithType(NSSQLiteStoreType,
                 configuration: nil,
                 URL: storeURL,
                 options: [
@@ -76,6 +75,41 @@ class PersistentController
             return context
         }
         
+        catch {
+            fatalError("Error adding persistent store at \(storeURL): \(error)")
+        }
+    }()
+    
+    lazy var visitMOC: NSManagedObjectContext = {
+        guard let modelURL = NSBundle.mainBundle().URLForResource("VisitModel", withExtension: "momd") else {
+            fatalError("Could not find the data model in the bundle")
+        }
+        
+        guard let model = NSManagedObjectModel(contentsOfURL: modelURL) else {
+            fatalError("error initializing model from: \(modelURL)")
+        }
+        
+        let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
+        let documentsDirectory = urls[0]
+        let storeURL = documentsDirectory.URLByAppendingPathComponent("VisitModel.sqlite")
+        
+        do {
+            let coordinator = NSPersistentStoreCoordinator(managedObjectModel: model)
+            
+            try coordinator.addPersistentStoreWithType(NSSQLiteStoreType,
+                configuration: nil,
+                URL: storeURL,
+                options: [
+                    NSMigratePersistentStoresAutomaticallyOption: true,
+                    NSInferMappingModelAutomaticallyOption: true
+                ]
+            )
+            
+            let context = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
+            context.persistentStoreCoordinator = coordinator
+            return context
+        }
+            
         catch {
             fatalError("Error adding persistent store at \(storeURL): \(error)")
         }
@@ -119,17 +153,20 @@ class PersistentController
         }
     }
     
+    // MARK: - Location Managment
     func deleteLocation(locationToDelete: Location)
     {
-        managedObjectContext.deleteObject(locationToDelete)
+        locationMOC.deleteObject(locationToDelete)
         
-        managedObjectContext.performBlockAndWait { [unowned self] in
-            do {
-                try self.managedObjectContext.save()
-            }
-                
-            catch {
-                fatalError("Error deleting location: \(error)")
+        if locationMOC.hasChanges {
+            locationMOC.performBlockAndWait { [unowned self] in
+                do {
+                    try self.locationMOC.save()
+                }
+                    
+                catch {
+                    fatalError("Error deleting location: \(error)")
+                }
             }
         }
     }
@@ -137,19 +174,20 @@ class PersistentController
     func updateLocation(locationToUpdate: Location, title: String, color: UIColor?, placemark: CLPlacemark?)
     {
         do {
-            if let result = try Location.singleObjectInContext(managedObjectContext, predicate: NSPredicate(format: "identifier == [c] %@", locationToUpdate.identifier), sortedBy: nil, ascending: false) {
+            if let result = try Location.singleObjectInContext(locationMOC, predicate: NSPredicate(format: "identifier == [c] %@", locationToUpdate.identifier), sortedBy: nil, ascending: false) {
                 result.placemark = placemark
                 result.locationTitle = title
                 result.color = color
                 
-                
-                managedObjectContext.performBlockAndWait { [unowned self] in
-                    do {
-                        try self.managedObjectContext.save()
-                    }
-                        
-                    catch {
-                        fatalError("Error saving location: \(error)")
+                if locationMOC.hasChanges {
+                    locationMOC.performBlockAndWait { [unowned self] in
+                        do {
+                            try self.locationMOC.save()
+                        }
+                            
+                        catch {
+                            fatalError("Error saving location: \(error)")
+                        }
                     }
                 }
             }
@@ -165,7 +203,7 @@ class PersistentController
     
     func saveLocation(title: String, color: UIColor?, placemark: CLPlacemark?, location: CLLocation)
     {
-        guard let dataToSave = NSEntityDescription.insertNewObjectForEntityForName(Location.entityName(), inManagedObjectContext: managedObjectContext) as? Location else {
+        guard let dataToSave = NSEntityDescription.insertNewObjectForEntityForName(Location.entityName(), inManagedObjectContext: locationMOC) as? Location else {
             fatalError("Expected to insert and entity of type 'Location'.")
         }
         
@@ -176,13 +214,15 @@ class PersistentController
         dataToSave.location = location
         dataToSave.identifier = "\(location.timestamp.timeIntervalSince1970)+\(title)+\(location.coordinate.longitude)+\(location.coordinate.latitude)"
         
-        managedObjectContext.performBlockAndWait { [unowned self] in
-            do {
-                try self.managedObjectContext.save()
-            }
-                
-            catch {
-                fatalError("Error saving location: \(error)")
+        if locationMOC.hasChanges {
+            locationMOC.performBlockAndWait { [unowned self] in
+                do {
+                    try self.locationMOC.save()
+                }
+                    
+                catch {
+                    fatalError("Error saving location: \(error)")
+                }
             }
         }
     }
