@@ -38,6 +38,7 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate, LocationAccessView
     private(set) var timer: NSTimer?
     
     private var updatingLocation = false
+    private var monitoringLocationUpdates = false
     private var reverseGeocoding = false
     
     
@@ -102,10 +103,23 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate, LocationAccessView
         }
     }
     
+    func startVisitsMonitoring()
+    {
+        checkLocationAuthorization()
+        
+        if !locationAccess() || monitoringLocationUpdates {
+            return
+        }
+        
+        monitoringLocationUpdates = true
+        manager.startMonitoringVisits()
+    }
+    
     func terminate()
     {
-        stopLocationManager()
         delegate = nil
+        stopLocationManager()
+        if monitoringLocationUpdates { manager.stopMonitoringVisits() }
     }
     
     // MARK: - Internal Helpers

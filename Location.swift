@@ -6,9 +6,6 @@ import MapKit
 
 class Location: NSManagedObject
 {
-
-    var distanceAndETAString: String?
-    
     
     func shareableString() -> String
     {
@@ -45,9 +42,6 @@ extension Location: MKAnnotation
     }
     
     var subtitle: String? {
-        if let distanceString = distanceAndETAString {
-            return distanceString
-        }
         return stringFromCoordinate(location.coordinate)
     }
     
