@@ -12,6 +12,7 @@ class SettingsViewController: UITableViewController
         case kTimeoutRow
         case kPhotoRangeRow
         case kUnitStyleRow
+        case kVisitSwitchRow
         case kTotalRows
     }
     
@@ -35,6 +36,11 @@ class SettingsViewController: UITableViewController
         case TimeoutTag
         case PhotoRangeTag
         case UnitStyleTag
+    }
+    
+    enum SettingSwitchTag: Int
+    {
+        case VisitSwitch
     }
     
     private lazy var footerView: UIView = {
@@ -90,6 +96,19 @@ class SettingsViewController: UITableViewController
     func doneButtonPressed()
     {
         dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func switchWasToggled(sender: UISwitch)
+    {
+        switch sender.tag {
+            
+        case SettingSwitchTag.VisitSwitch.rawValue:
+            SettingsController.sharedController.shouldMonitorVisits = sender.on
+            break
+            
+        default:
+            break
+        }
     }
     
     // MARK: - Notifications
@@ -163,6 +182,20 @@ class SettingsViewController: UITableViewController
                 cell.textLabel?.text = "Unit Style"
                 cell.detailTextLabel?.text = SettingsController.sharedController.isUnitStyleImperial ? "Customary" : "Metric"
                 cell.accessoryType = .DisclosureIndicator
+                break
+                
+            case UserSectionRows.kVisitSwitchRow.rawValue:
+                cell.textLabel?.text = "Visits Monitoring"
+                
+                let visitSwitch = UISwitch()
+                visitSwitch.tag = SettingSwitchTag.VisitSwitch.rawValue
+                visitSwitch.on = SettingsController.sharedController.shouldMonitorVisits
+                visitSwitch.addTarget(self,
+                    action: "switchWasToggled:",
+                    forControlEvents: .ValueChanged
+                )
+                
+                cell.accessoryView = visitSwitch
                 break
                 
             default:

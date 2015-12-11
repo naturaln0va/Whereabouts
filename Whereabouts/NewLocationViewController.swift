@@ -201,9 +201,7 @@ class NewLocationViewController: StyledViewController
     private func dismiss()
     {
         view.endEditing(true)
-        if let _ = assistant {
-            assistant?.terminate()
-        }
+        if let _ = assistant { assistant?.terminate() }
         dismissViewControllerAnimated(true, completion: nil)
     }
     

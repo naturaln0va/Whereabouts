@@ -14,12 +14,16 @@ class LocationsViewController: UITableViewController
     }
     
     private lazy var fetchedResultsController: NSFetchedResultsController = {
-        let moc = PersistentController.sharedController.managedObjectContext
+        let moc = PersistentController.sharedController.locationMOC
         
         let fetchRequest = Location.fetchRequest(moc, predicate: nil, sortedBy: "date", ascending: false)
         fetchRequest.fetchBatchSize = 20
         
         return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: "locations")
+    }()
+    
+    private lazy var spaceBarButtonItem: UIBarButtonItem = {
+        return UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
     }()
     
     
@@ -34,6 +38,11 @@ class LocationsViewController: UITableViewController
         
         title = "Whereabouts"
         view.backgroundColor = ColorController.backgroundColor
+
+        navigationController?.toolbarItems = nil
+        navigationController?.toolbarHidden = false
+        navigationController?.toolbar.setShadowImage(nil, forToolbarPosition: .Bottom)
+        navigationController?.toolbar.tintColor = ColorController.navBarBackgroundColor
         
         let rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "locateBarButtonWasPressed")
         let leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "Settings-BarButton"), style: .Plain, target: self, action: "settingsBarButtonWasPressed")
@@ -64,6 +73,13 @@ class LocationsViewController: UITableViewController
         searchController.searchBar.tintColor = ColorController.navBarBackgroundColor
     }
     
+    override func viewWillAppear(animated: Bool)
+    {
+        super.viewWillAppear(animated)
+        
+        refreshVisits()
+    }
+    
     // MARK: - BarButon Actions
     func locateBarButtonWasPressed()
     {
@@ -86,6 +102,26 @@ class LocationsViewController: UITableViewController
         
         catch {
             print("Error fetching for the results controller: \(error)")
+        }
+    }
+    
+    private func refreshVisits()
+    {
+        guard SettingsController.sharedController.shouldMonitorVisits else {
+            return
+        }
+        
+        let numberOfVisits = Visit.objectCountInContext(PersistentController.sharedController.visitMOC)
+        if numberOfVisits > 0 {
+            let label = UILabel()
+            label.font = UIFont.systemFontOfSize(12.0, weight: UIFontWeightRegular)
+            label.numberOfLines = 1
+            label.textAlignment = .Center
+            label.text = "\(numberOfVisits) Visits"
+            label.sizeToFit()
+            let labelButton = UIBarButtonItem(customView: label)
+            
+            navigationController?.toolbarItems = [spaceBarButtonItem, labelButton, spaceBarButtonItem]
         }
     }
     

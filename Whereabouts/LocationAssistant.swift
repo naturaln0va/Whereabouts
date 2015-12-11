@@ -239,11 +239,13 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate, LocationAccessView
     
     func locationManager(manager: CLLocationManager, didVisit visit: CLVisit)
     {
-        PersistentController.sharedController.saveVisit(visit.arrivalDate,
-            departureDate: visit.departureDate,
-            horizontalAccuracy: visit.horizontalAccuracy,
-            location: CLLocation(latitude: visit.coordinate.latitude, longitude: visit.coordinate.longitude)
-        )
+        #if MAIN_APP
+            PersistentController.sharedController.saveVisit(visit.arrivalDate,
+                departureDate: visit.departureDate,
+                horizontalAccuracy: visit.horizontalAccuracy,
+                location: CLLocation(latitude: visit.coordinate.latitude, longitude: visit.coordinate.longitude)
+            )
+        #endif
     }
     
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation])
