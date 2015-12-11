@@ -13,6 +13,7 @@ class SettingsController
     static let kLocationTimeoutKey = "distanceTimeout" // seconds
     static let kNearbyPhotoRangeKey = "nearbyPhotoRange" // meters
     static let kUnitStyleKey = "unitStyle" // customary, metric
+    static let kShouldMonitorVisits = "shouldMonitorVisits" // user preference
     static let kUserFirstLaunchedKey = "firstLaunched" // date user first installed
     
     private let defaults = NSUserDefaults.standardUserDefaults()
@@ -22,7 +23,8 @@ class SettingsController
             kLocationAccuracyKey : kHorizontalAccuracyAverage,
             kLocationTimeoutKey: kLocationTimeoutNormal,
             kNearbyPhotoRangeKey: 250,
-            kUnitStyleKey: true
+            kUnitStyleKey: true,
+            kShouldMonitorVisits: false
         ]
     }()
     
@@ -123,6 +125,17 @@ class SettingsController
         }
         set {
             defaults.setBool(newValue, forKey: SettingsController.kUnitStyleKey)
+            defaults.synchronize()
+            NSNotificationCenter.defaultCenter().postNotificationName(kSettingsControllerDidChangeNotification, object: nil)
+        }
+    }
+    
+    var shouldMonitorVisits: Bool {
+        get {
+            return defaults.boolForKey(SettingsController.kShouldMonitorVisits)
+        }
+        set {
+            defaults.setBool(newValue, forKey: SettingsController.kShouldMonitorVisits)
             defaults.synchronize()
             NSNotificationCenter.defaultCenter().postNotificationName(kSettingsControllerDidChangeNotification, object: nil)
         }
