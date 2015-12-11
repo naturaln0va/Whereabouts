@@ -192,7 +192,7 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate, LocationAccessView
         }
     }
     
-    func didTimeOut()
+    internal func didTimeOut()
     {
         stopLocationManager()
         
@@ -235,6 +235,15 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate, LocationAccessView
         }
         
         stopLocationManager()
+    }
+    
+    func locationManager(manager: CLLocationManager, didVisit visit: CLVisit)
+    {
+        PersistentController.sharedController.saveVisit(visit.arrivalDate,
+            departureDate: visit.departureDate,
+            horizontalAccuracy: visit.horizontalAccuracy,
+            location: CLLocation(latitude: visit.coordinate.latitude, longitude: visit.coordinate.longitude)
+        )
     }
     
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation])
