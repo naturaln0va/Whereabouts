@@ -29,15 +29,7 @@ extension Fetchable where Self: NSManagedObject, FetchableType == Self
     static func objectCountInContext(context: NSManagedObjectContext, predicate: NSPredicate? = nil) -> Int
     {
         let request = fetchRequest(context, predicate: predicate)
-        let error: NSErrorPointer = nil
-        let count = context.countForFetchRequest(request, error: error)
-        
-        guard error != nil else {
-            print("Error retrieving data \(error), \(error.debugDescription)")
-            return 0
-        }
-        
-        return count
+        return context.countForFetchRequest(request, error: nil)
     }
     
     static func objectsInContext(context: NSManagedObjectContext, predicate: NSPredicate? = nil, sortedBy: String? = nil, ascending: Bool = false) throws -> [FetchableType]

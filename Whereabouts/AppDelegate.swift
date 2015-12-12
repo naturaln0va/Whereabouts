@@ -12,6 +12,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool
     {
         
+        let notificationSettings = UIUserNotificationSettings(
+            forTypes: UIUserNotificationType.Alert,
+            categories: nil
+        )
+        
+        UIApplication.sharedApplication().registerUserNotificationSettings(notificationSettings)
+        
         PersistentController.sharedController.migrateLegacyData()
         
         window = UIWindow(frame: UIScreen.mainScreen().bounds)

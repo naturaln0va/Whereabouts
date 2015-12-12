@@ -113,9 +113,13 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate, LocationAccessView
             return
         }
         
-        monitoringLocationUpdates = true
-        manager.requestAlwaysAuthorization()
-        manager.startMonitoringVisits()
+        if CLLocationManager.authorizationStatus() == .AuthorizedAlways {
+            monitoringLocationUpdates = true
+            manager.startMonitoringVisits()
+        }
+        else {
+            manager.requestAlwaysAuthorization()
+        }
     }
     
     func terminate()
@@ -243,6 +247,14 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate, LocationAccessView
     func locationManager(manager: CLLocationManager, didVisit visit: CLVisit)
     {
         #if MAIN_APP
+            let formatter = NSDateFormatter()
+            formatter.timeStyle = .ShortStyle
+            
+            let notification = UILocalNotification()
+            notification.alertAction = nil
+            notification.alertBody = "Visited \(stringFromCoordinate(visit.coordinate)) @ \(formatter.stringFromDate(visit.arrivalDate))"
+            UIApplication.sharedApplication().presentLocalNotificationNow(notification)
+
             PersistentController.sharedController.saveVisit(visit.arrivalDate,
                 departureDate: visit.departureDate,
                 horizontalAccuracy: visit.horizontalAccuracy,

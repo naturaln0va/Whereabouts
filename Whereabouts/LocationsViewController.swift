@@ -110,15 +110,9 @@ class LocationsViewController: UITableViewController
         
         let numberOfVisits = Visit.objectCountInContext(PersistentController.sharedController.visitMOC)
         if numberOfVisits > 0 {
-            let label = UILabel()
-            label.font = UIFont.systemFontOfSize(12.0, weight: UIFontWeightRegular)
-            label.numberOfLines = 1
-            label.textAlignment = .Center
-            label.text = "\(numberOfVisits) Visits"
-            label.sizeToFit()
-            let labelButton = UIBarButtonItem(customView: label)
+            let visitItem = UIBarButtonItem(title: "\(numberOfVisits) Visits", style: .Plain, target: self, action: "")
             
-            toolbarItems = [spaceBarButtonItem, labelButton, spaceBarButtonItem]
+            toolbarItems = [spaceBarButtonItem, visitItem, spaceBarButtonItem]
         }
     }
     
