@@ -9,6 +9,9 @@ class StyledNavigationController: UINavigationController
     {
         super.viewDidLoad()
         
+        toolbar.tintColor = ColorController.navBarBackgroundColor
+        toolbar.clipsToBounds = true
+        
         navigationBar.barTintColor = ColorController.navBarBackgroundColor
         navigationBar.tintColor = ColorController.navBarTintColor
         navigationBar.translucent = true

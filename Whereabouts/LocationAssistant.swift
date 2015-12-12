@@ -105,13 +105,16 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate, LocationAccessView
     
     func startVisitsMonitoring()
     {
-        checkLocationAuthorization()
+        guard CLLocationManager.authorizationStatus() != .AuthorizedAlways else {
+            return
+        }
         
-        if !locationAccess() || monitoringLocationUpdates {
+        if monitoringLocationUpdates {
             return
         }
         
         monitoringLocationUpdates = true
+        manager.requestAlwaysAuthorization()
         manager.startMonitoringVisits()
     }
     

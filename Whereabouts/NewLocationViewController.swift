@@ -8,11 +8,8 @@ protocol NewLocationViewControllerDelegate
 }
 
 
-class NewLocationViewController: StyledViewController
+class NewLocationViewController: UITableViewController
 {
-
-    @IBOutlet weak var tableView: UITableView!
-    @IBOutlet var bottomToolBar: UIToolbar!
     
     var accuracyBarButtonItem: UIBarButtonItem?
     var delegate: NewLocationViewControllerDelegate?
@@ -74,10 +71,8 @@ class NewLocationViewController: StyledViewController
         
         title = locationToEdit == nil ? "New Location" : locationToEdit!.title
         
-        tableView.contentInset = UIEdgeInsets(top: 64.0, left: 0.0, bottom: 0.0, right: 0.0)
-        
-        bottomToolBar.items = [spaceBarButtonItem, loadingBarButtonItem]
-        bottomToolBar.tintColor = ColorController.navBarBackgroundColor
+        navigationController?.toolbarHidden = false        
+        toolbarItems = [spaceBarButtonItem, loadingBarButtonItem]
         
         let rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Save, target: self, action: "saveBarButtonPressed")
         let leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: "cancelBarButtonPressed")
@@ -85,6 +80,7 @@ class NewLocationViewController: StyledViewController
         navigationItem.rightBarButtonItem = rightBarButtonItem
         navigationItem.leftBarButtonItem = leftBarButtonItem
         
+        tableView = UITableView(frame: view.bounds, style: .Grouped)
         tableView.delegate = self
         tableView.dataSource = self
         tableView.backgroundColor = ColorController.backgroundColor
@@ -104,10 +100,10 @@ class NewLocationViewController: StyledViewController
                 assistant = LocationAssistant(viewController: self)
                 assistant?.delegate = self
                 assistant?.getAddressForLocation(editingLocation.location)
-                bottomToolBar.items = [spaceBarButtonItem, loadingBarButtonItem]
+                toolbarItems = [spaceBarButtonItem, loadingBarButtonItem]
             }
             else {
-                bottomToolBar.items = nil
+                toolbarItems = nil
             }
         }
     }
@@ -115,10 +111,10 @@ class NewLocationViewController: StyledViewController
     func refreshButtonPressed()
     {
         if let accuracyButton = accuracyBarButtonItem {
-            bottomToolBar.items = [spaceBarButtonItem, accuracyButton, spaceBarButtonItem, loadingBarButtonItem]
+            toolbarItems = [spaceBarButtonItem, accuracyButton, spaceBarButtonItem, loadingBarButtonItem]
         }
         else {
-            bottomToolBar.items = [spaceBarButtonItem, loadingBarButtonItem]
+            toolbarItems = [spaceBarButtonItem, loadingBarButtonItem]
         }
         
         if let editingLocation = locationToEdit {
@@ -180,7 +176,7 @@ class NewLocationViewController: StyledViewController
             }
         }
         else {
-            guard let locationToSave = location, let items = bottomToolBar.items where !items.contains(loadingBarButtonItem) else {
+            guard let locationToSave = location, let items = toolbarItems where !items.contains(loadingBarButtonItem) else {
                 let alert = UIAlertController(title: "Sorry", message: "Please wait for an accurate location to be found.", preferredStyle: .Alert)
                 alert.addAction(UIAlertAction(title: "Okay", style: .Default, handler: nil))
                 presentViewController(alert, animated: true, completion: nil)
@@ -205,91 +201,8 @@ class NewLocationViewController: StyledViewController
         dismissViewControllerAnimated(true, completion: nil)
     }
     
-}
-
-
-extension NewLocationViewController: LocationAssistantDelegate
-{
-    
-    func receivedLocation(location: CLLocation, finished: Bool)
-    {
-        self.location = location
-        
-        let formatter = NSNumberFormatter()
-        formatter.minimumIntegerDigits = 1
-        formatter.minimumFractionDigits = 0
-        formatter.maximumFractionDigits = 2
-        
-        let accuracyString = formatter.stringFromNumber(NSNumber(double: min(100, (SettingsController.sharedController.distanceAccuracy / location.horizontalAccuracy) * 100)))
-        
-        let label = UILabel()
-        label.font = UIFont.systemFontOfSize(12.0, weight: UIFontWeightRegular)
-        label.textAlignment = .Center
-        label.text = "\(accuracyString!)% Accurate"
-        label.sizeToFit()
-        let labelButton = UIBarButtonItem(customView: label)
-        accuracyBarButtonItem = labelButton
-        
-        bottomToolBar.items = [spaceBarButtonItem, labelButton, spaceBarButtonItem, loadingBarButtonItem]
-        
-        if finished {
-            assistant?.getAddressForLocation(location)
-        }
-    }
-    
-    func receivedAddress(placemark: CLPlacemark)
-    {
-        self.placemark = placemark
-        
-        if locationToEdit != nil {
-            bottomToolBar.items = nil
-        }
-        else {
-            if let accuracyButton = accuracyBarButtonItem {
-                bottomToolBar.items = [actionBarButtonItem, spaceBarButtonItem, accuracyButton, spaceBarButtonItem, refreshBarButtonItem]
-            }
-            else {
-                bottomToolBar.items = [actionBarButtonItem, spaceBarButtonItem, refreshBarButtonItem]
-            }
-        }
-    }
-    
-    func authorizationDenied()
-    {
-        dismiss()
-    }
-    
-    func failedToGetLocation()
-    {
-        if let accuracyButton = accuracyBarButtonItem {
-            bottomToolBar.items = [actionBarButtonItem, spaceBarButtonItem, accuracyButton, spaceBarButtonItem, refreshBarButtonItem]
-        }
-        else if location != nil {
-            bottomToolBar.items = [actionBarButtonItem, spaceBarButtonItem, refreshBarButtonItem]
-        }
-        else {
-            bottomToolBar.items = [spaceBarButtonItem, refreshBarButtonItem]
-        }
-    }
-    
-    func failedToGetAddress()
-    {
-        if let accuracyButton = accuracyBarButtonItem {
-            bottomToolBar.items = [actionBarButtonItem, spaceBarButtonItem, accuracyButton, spaceBarButtonItem, refreshBarButtonItem]
-        }
-        else {
-            bottomToolBar.items = [actionBarButtonItem, spaceBarButtonItem, refreshBarButtonItem]
-        }
-    }
-    
-}
-
-
-//MARK: - TableView Deleagte & DataSource
-extension NewLocationViewController: UITableViewDelegate, UITableViewDataSource
-{
-    
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
+    //MARK: - TableView Deleagte & DataSource
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
     {
         if indexPath.section == 0 {
             if indexPath.row == 0 {
@@ -304,7 +217,7 @@ extension NewLocationViewController: UITableViewDelegate, UITableViewDataSource
         }
     }
     
-    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath)
+    override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath)
     {
         
         if indexPath.section == 0 {
@@ -356,7 +269,7 @@ extension NewLocationViewController: UITableViewDelegate, UITableViewDataSource
         }
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
     {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         if indexPath.section == 0 {
@@ -370,16 +283,16 @@ extension NewLocationViewController: UITableViewDelegate, UITableViewDataSource
                 colorSelector.delegate = self
                 navigationController?.pushViewController(colorSelector, animated: true)
             }
-
+            
         }
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int
     {
         return 2
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
         if section == 0 {
             return 2
@@ -390,21 +303,21 @@ extension NewLocationViewController: UITableViewDelegate, UITableViewDataSource
                 numberOfRows++
             }
             return numberOfRows
-
+            
         }
     }
     
-    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat
+    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat
     {
         return 35.0
     }
     
-    func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat
+    override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat
     {
         return 0.0001
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat
     {
         if indexPath.section == 0 {
             if indexPath.row == 0 {
@@ -419,7 +332,7 @@ extension NewLocationViewController: UITableViewDelegate, UITableViewDataSource
         }
     }
     
-    func tableView(tableView: UITableView, shouldHighlightRowAtIndexPath indexPath: NSIndexPath) -> Bool
+    override func tableView(tableView: UITableView, shouldHighlightRowAtIndexPath indexPath: NSIndexPath) -> Bool
     {
         if indexPath.row == 1 && indexPath.section == 0 {
             return true
@@ -430,6 +343,85 @@ extension NewLocationViewController: UITableViewDelegate, UITableViewDataSource
 }
 
 
+//MARK: - LocationAssistantDelegate
+extension NewLocationViewController: LocationAssistantDelegate
+{
+    
+    func receivedLocation(location: CLLocation, finished: Bool)
+    {
+        self.location = location
+        
+        let formatter = NSNumberFormatter()
+        formatter.minimumIntegerDigits = 1
+        formatter.minimumFractionDigits = 0
+        formatter.maximumFractionDigits = 2
+        
+        let accuracyString = formatter.stringFromNumber(NSNumber(double: min(100, (SettingsController.sharedController.distanceAccuracy / location.horizontalAccuracy) * 100)))
+        
+        let label = UILabel()
+        label.font = UIFont.systemFontOfSize(12.0, weight: UIFontWeightRegular)
+        label.textAlignment = .Center
+        label.text = "\(accuracyString!)% Accurate"
+        label.sizeToFit()
+        let labelButton = UIBarButtonItem(customView: label)
+        accuracyBarButtonItem = labelButton
+        
+        toolbarItems = [spaceBarButtonItem, labelButton, spaceBarButtonItem, loadingBarButtonItem]
+        
+        if finished {
+            assistant?.getAddressForLocation(location)
+        }
+    }
+    
+    func receivedAddress(placemark: CLPlacemark)
+    {
+        self.placemark = placemark
+        
+        if locationToEdit != nil {
+            toolbarItems = nil
+        }
+        else {
+            if let accuracyButton = accuracyBarButtonItem {
+                toolbarItems = [actionBarButtonItem, spaceBarButtonItem, accuracyButton, spaceBarButtonItem, refreshBarButtonItem]
+            }
+            else {
+                toolbarItems = [actionBarButtonItem, spaceBarButtonItem, refreshBarButtonItem]
+            }
+        }
+    }
+    
+    func authorizationDenied()
+    {
+        dismiss()
+    }
+    
+    func failedToGetLocation()
+    {
+        if let accuracyButton = accuracyBarButtonItem {
+            toolbarItems = [actionBarButtonItem, spaceBarButtonItem, accuracyButton, spaceBarButtonItem, refreshBarButtonItem]
+        }
+        else if location != nil {
+            toolbarItems = [actionBarButtonItem, spaceBarButtonItem, refreshBarButtonItem]
+        }
+        else {
+            toolbarItems = [spaceBarButtonItem, refreshBarButtonItem]
+        }
+    }
+    
+    func failedToGetAddress()
+    {
+        if let accuracyButton = accuracyBarButtonItem {
+            toolbarItems = [actionBarButtonItem, spaceBarButtonItem, accuracyButton, spaceBarButtonItem, refreshBarButtonItem]
+        }
+        else {
+            toolbarItems = [actionBarButtonItem, spaceBarButtonItem, refreshBarButtonItem]
+        }
+    }
+    
+}
+
+
+//MARK: - ColorSelectionViewControllerDelegate
 extension NewLocationViewController: ColorSelectionViewControllerDelegate
 {
     

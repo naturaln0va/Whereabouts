@@ -18,7 +18,6 @@ class LocationDetailViewController: StyledViewController
     @IBOutlet weak var noPhotosLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var altitudeLabel: UILabel!
-    @IBOutlet weak var toolBar: UIToolbar!
     @IBOutlet var collectionViewHeightConstraint: NSLayoutConstraint!
     
     var lastUserLocation: CLLocation?
@@ -43,10 +42,6 @@ class LocationDetailViewController: StyledViewController
     {
         super.viewDidLoad()
         
-        toolBar.items = [openMapsButton, spaceBarButtonItem, actionBarButtonItem]
-        
-        scrollView.contentInset = UIEdgeInsets(top: 64.0, left: 0.0, bottom: 0.0, right: 0.0)
-        
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: "editButtonPressed")
         
         photosCollectionView.delegate = self
@@ -67,8 +62,9 @@ class LocationDetailViewController: StyledViewController
         mapView.setRegion(MKCoordinateRegion(center: locationToDisplay.location.coordinate, span: MKCoordinateSpan(latitudeDelta: 1 / 111, longitudeDelta: 1 / 111)), animated: false)
         
         colorView.layer.cornerRadius = 10.0
-        toolBar.tintColor = ColorController.navBarBackgroundColor
         noPhotosLabel.alpha = 0.0
+        
+        toolbarItems = [openMapsButton, spaceBarButtonItem, actionBarButtonItem]
         
         getNearbyPhotos { photos, photoStatus in
             if let photos = photos {
@@ -128,8 +124,10 @@ class LocationDetailViewController: StyledViewController
     {
         let firstActivityItem = locationToDisplay.shareableString()
         
-        let activityViewController : UIActivityViewController = UIActivityViewController(
-            activityItems: [firstActivityItem], applicationActivities: nil)
+        let activityViewController: UIActivityViewController = UIActivityViewController(
+            activityItems: [firstActivityItem],
+            applicationActivities: nil
+        )
         
         activityViewController.excludedActivityTypes = [
             UIActivityTypePrint,
@@ -193,7 +191,7 @@ class LocationDetailViewController: StyledViewController
                     label.sizeToFit()
                     let labelButton = UIBarButtonItem(customView: label)
                     
-                    self.toolBar.items = [self.openMapsButton, self.spaceBarButtonItem, labelButton, self.spaceBarButtonItem, self.actionBarButtonItem]
+                    self.toolbarItems = [self.openMapsButton, self.spaceBarButtonItem, labelButton, self.spaceBarButtonItem, self.actionBarButtonItem]
                 }
             }
         }

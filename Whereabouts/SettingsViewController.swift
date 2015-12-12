@@ -82,12 +82,11 @@ class SettingsViewController: UITableViewController
 
         tableView = UITableView(frame: view.bounds, style: .Grouped)
         tableView.backgroundColor = ColorController.backgroundColor
+        tableView.tableFooterView = footerView
         tableView.delegate = self
         tableView.dataSource = self
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Done", style: .Plain, target: self, action: "doneButtonPressed")
-        
-        tableView.tableFooterView = footerView
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "settingsDidChange", name: kSettingsControllerDidChangeNotification, object: nil)
     }

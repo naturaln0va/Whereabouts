@@ -26,6 +26,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate
             object: nil
         )
         
+        if SettingsController.sharedController.shouldMonitorVisits {
+            assistant = LocationAssistant(viewController: nil)
+            assistant?.startVisitsMonitoring()
+        }
+        
         return true
     }
     

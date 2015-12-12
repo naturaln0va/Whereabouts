@@ -21,7 +21,6 @@
 		48642D141BAE27D300935358 /* LocationAccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48642D121BAE27D300935358 /* LocationAccessViewController.swift */; };
 		48642D151BAE27D300935358 /* LocationAccessViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48642D131BAE27D300935358 /* LocationAccessViewController.xib */; };
 		487A553F1BB4C61A00D0D320 /* NewLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487A553D1BB4C61A00D0D320 /* NewLocationViewController.swift */; };
-		487A55401BB4C61A00D0D320 /* NewLocationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 487A553E1BB4C61A00D0D320 /* NewLocationViewController.xib */; };
 		4882D9D51B1A99FD00BAADAD /* RHACLStringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4882D9D41B1A99FD00BAADAD /* RHACLStringExtensions.swift */; };
 		48AA3C331C01732800A0935A /* PickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48AA3C321C01732800A0935A /* PickerViewController.swift */; };
 		48C7636419F59D230096B27A /* RHAUtilExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C7636319F59D230096B27A /* RHAUtilExtensions.swift */; };
@@ -105,7 +104,6 @@
 		48642D121BAE27D300935358 /* LocationAccessViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationAccessViewController.swift; sourceTree = "<group>"; };
 		48642D131BAE27D300935358 /* LocationAccessViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LocationAccessViewController.xib; sourceTree = "<group>"; };
 		487A553D1BB4C61A00D0D320 /* NewLocationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewLocationViewController.swift; sourceTree = "<group>"; };
-		487A553E1BB4C61A00D0D320 /* NewLocationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewLocationViewController.xib; sourceTree = "<group>"; };
 		4880D47F1A5331960077E68B /* Whereabouts.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Whereabouts.entitlements; path = Whereabouts/Whereabouts.entitlements; sourceTree = SOURCE_ROOT; };
 		4880D4801A5331DA0077E68B /* Quick Location.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = "Quick Location.entitlements"; path = "Quick Location/Quick Location.entitlements"; sourceTree = SOURCE_ROOT; };
 		4882D9D41B1A99FD00BAADAD /* RHACLStringExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RHACLStringExtensions.swift; sourceTree = "<group>"; };
@@ -202,19 +200,18 @@
 		4849BD021B093A44003A40AF /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				48E3B85B1B1951AA003DD726 /* StyledViewController.swift */,
-				48E3B85D1B195804003DD726 /* StyledNavigationController.swift */,
-				48642D0E1BAE166F00935358 /* LocationsViewController.swift */,
+				48D4FFE31BF7CB7A006DA09C /* ColorSelectionViewController.swift */,
 				48642D131BAE27D300935358 /* LocationAccessViewController.xib */,
 				48642D121BAE27D300935358 /* LocationAccessViewController.swift */,
-				487A553E1BB4C61A00D0D320 /* NewLocationViewController.xib */,
-				487A553D1BB4C61A00D0D320 /* NewLocationViewController.swift */,
-				48D4FFE31BF7CB7A006DA09C /* ColorSelectionViewController.swift */,
 				48D4FFE91BF7D2ED006DA09C /* LocationDetailViewController.xib */,
 				48D4FFE81BF7D2ED006DA09C /* LocationDetailViewController.swift */,
+				48642D0E1BAE166F00935358 /* LocationsViewController.swift */,
+				487A553D1BB4C61A00D0D320 /* NewLocationViewController.swift */,
 				69B7A3B41BFCD436000BEBA0 /* PhotoViewController.swift */,
-				69B7A3B81BFCD6FE000BEBA0 /* SettingsViewController.swift */,
 				48AA3C321C01732800A0935A /* PickerViewController.swift */,
+				69B7A3B81BFCD6FE000BEBA0 /* SettingsViewController.swift */,
+				48E3B85B1B1951AA003DD726 /* StyledViewController.swift */,
+				48E3B85D1B195804003DD726 /* StyledNavigationController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -441,6 +438,9 @@
 							com.apple.ApplicationGroups.iOS = {
 								enabled = 1;
 							};
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
 							com.apple.iCloud = {
 								enabled = 1;
 							};
@@ -482,7 +482,6 @@
 			files = (
 				48D4FFEB1BF7D2ED006DA09C /* LocationDetailViewController.xib in Resources */,
 				698AF3951BF7910100F1E745 /* ColorPreviewCell.xib in Resources */,
-				487A55401BB4C61A00D0D320 /* NewLocationViewController.xib in Resources */,
 				48DEDA4119F592F80094CB8F /* LaunchScreen.xib in Resources */,
 				48DEDA3E19F592F80094CB8F /* Images.xcassets in Resources */,
 				4863ACAF1B24EF4D009F008F /* LocationCell.xib in Resources */,

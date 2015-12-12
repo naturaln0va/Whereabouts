@@ -19,7 +19,6 @@
                 <outlet property="noPhotosLabel" destination="ZeY-cC-qgu" id="0pk-j4-yMw"/>
                 <outlet property="photosCollectionView" destination="A5s-Uh-IZN" id="ZBu-82-wsc"/>
                 <outlet property="scrollView" destination="1fx-3w-CEn" id="SRx-UQ-NdH"/>
-                <outlet property="toolBar" destination="Pw5-UM-KPl" id="cfy-bU-vQV"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -28,17 +27,8 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pw5-UM-KPl">
-                    <rect key="frame" x="0.0" y="623" width="375" height="44"/>
-                    <items>
-                        <barButtonItem systemItem="trash" id="OOk-TQ-70A"/>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="0Gn-Pm-4FN"/>
-                        <barButtonItem systemItem="action" id="WTO-sM-pjy"/>
-                    </items>
-                    <color key="tintColor" red="0.24313725489999999" green="0.2901960784" blue="0.38431372549999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                </toolbar>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1fx-3w-CEn">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                     <subviews>
                         <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" zoomEnabled="NO" scrollEnabled="NO" rotateEnabled="NO" pitchEnabled="NO" showsUserLocation="YES" showsBuildings="NO" translatesAutoresizingMaskIntoConstraints="NO" id="giY-k8-Emk">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="300"/>
@@ -51,13 +41,13 @@
                             <rect key="frame" x="8" y="308" width="359" height="122"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Edmond, OK 97381" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GPg-Wh-gDF">
-                                    <rect key="frame" x="18" y="18" width="182" height="24"/>
+                                    <rect key="frame" x="18" y="18" width="181.5" height="24"/>
                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Created date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M7b-72-CLl">
-                                    <rect key="frame" x="252" y="86" width="89" height="18"/>
+                                    <rect key="frame" x="251.5" y="86" width="89.5" height="18"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                     <color key="textColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
@@ -107,7 +97,7 @@
                             </variation>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Nearby Photos" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZeY-cC-qgu">
-                            <rect key="frame" x="118" y="503" width="139" height="20"/>
+                            <rect key="frame" x="118" y="503" width="139.5" height="20.5"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
@@ -151,12 +141,9 @@
             </subviews>
             <color key="backgroundColor" red="0.93333333330000001" green="0.93333333330000001" blue="0.93333333330000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstAttribute="bottom" secondItem="1fx-3w-CEn" secondAttribute="bottom" id="2vg-nz-rOc"/>
                 <constraint firstItem="1fx-3w-CEn" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="93J-61-xVG"/>
                 <constraint firstAttribute="trailing" secondItem="1fx-3w-CEn" secondAttribute="trailing" id="EeX-aT-pdY"/>
-                <constraint firstItem="Pw5-UM-KPl" firstAttribute="top" secondItem="1fx-3w-CEn" secondAttribute="bottom" id="eY0-di-vfL"/>
-                <constraint firstItem="Pw5-UM-KPl" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="jye-QQ-RRE"/>
-                <constraint firstAttribute="trailing" secondItem="Pw5-UM-KPl" secondAttribute="trailing" id="lkD-2j-q6V"/>
-                <constraint firstAttribute="bottom" secondItem="Pw5-UM-KPl" secondAttribute="bottom" id="ook-Yb-Y4o"/>
                 <constraint firstItem="1fx-3w-CEn" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="rTZ-Fn-gKl"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>

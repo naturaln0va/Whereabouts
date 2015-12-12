@@ -39,10 +39,7 @@ class LocationsViewController: UITableViewController
         title = "Whereabouts"
         view.backgroundColor = ColorController.backgroundColor
 
-        navigationController?.toolbarItems = nil
         navigationController?.toolbarHidden = false
-        navigationController?.toolbar.setShadowImage(nil, forToolbarPosition: .Bottom)
-        navigationController?.toolbar.tintColor = ColorController.navBarBackgroundColor
         
         let rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "locateBarButtonWasPressed")
         let leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "Settings-BarButton"), style: .Plain, target: self, action: "settingsBarButtonWasPressed")
@@ -121,7 +118,7 @@ class LocationsViewController: UITableViewController
             label.sizeToFit()
             let labelButton = UIBarButtonItem(customView: label)
             
-            navigationController?.toolbarItems = [spaceBarButtonItem, labelButton, spaceBarButtonItem]
+            toolbarItems = [spaceBarButtonItem, labelButton, spaceBarButtonItem]
         }
     }
     
