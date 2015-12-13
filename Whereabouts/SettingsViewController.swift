@@ -57,9 +57,7 @@ class SettingsViewController: UITableViewController
         
         let buildInfoLabel = UILabel()
         buildInfoLabel.font = UIFont.systemFontOfSize(12.0, weight: UIFontWeightLight)
-        let identifer = NSBundle.mainBundle().infoDictionary!["CFBundleShortVersionString"] as! String
-        let build = NSBundle.mainBundle().infoDictionary!["CFBundleVersion"] as! String
-        buildInfoLabel.text = "Whereabouts \(identifer).\(build)"
+        buildInfoLabel.text = "Whereabouts " + UIDevice.currentDevice().appVersionAndBuildString
         buildInfoLabel.sizeToFit()
         buildInfoLabel.center.x = footerView.center.x
         buildInfoLabel.frame.origin.y = CGRectGetMaxY(logoImageview.bounds) + 20.0
@@ -237,9 +235,7 @@ class SettingsViewController: UITableViewController
                 let mailVC = MFMailComposeViewController()
                 mailVC.setSubject("Whereabouts Feedback")
                 mailVC.setToRecipients(["support@ackermann.io"])
-                let identifer = NSBundle.mainBundle().infoDictionary!["CFBundleShortVersionString"] as! String
-                let build = NSBundle.mainBundle().infoDictionary!["CFBundleVersion"] as! String
-                let devInfo = "• iOS Version: \(UIDevice.currentDevice().deviceIOSVersion)<br>• Hardware: \(UIDevice.currentDevice().deviceModel)<br>• App Version: \(identifer).\(build)"
+                let devInfo = "• iOS Version: \(UIDevice.currentDevice().deviceIOSVersion)<br>• Hardware: \(UIDevice.currentDevice().deviceModel)<br>• App Version: \(UIDevice.currentDevice().appVersionAndBuildString)"
                 mailVC.setMessageBody("<br><br><br><br><br><br><br><br><br><br><br><br><hr> <center>Developer Info</center> <br>\(devInfo)<hr>", isHTML: true)
                 mailVC.mailComposeDelegate = self
                 presentViewController(mailVC, animated: true, completion: nil)

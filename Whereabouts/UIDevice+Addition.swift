@@ -18,12 +18,18 @@ extension UIDevice
         return code
     }
     
+    public var appVersionAndBuildString: String {
+        let identifer = NSBundle.mainBundle().infoDictionary!["CFBundleShortVersionString"] as! String
+        let build = NSBundle.mainBundle().infoDictionary!["CFBundleVersion"] as! String
+        return "\(identifer).\(build)"
+    }
+    
     public var deviceFamily: String {
         return UIDevice.currentDevice().model
     }
     
     public var deviceModel: String {
-        var model : String
+        var model: String
         let deviceCode = UIDevice().deviceCode
         switch deviceCode {
             
