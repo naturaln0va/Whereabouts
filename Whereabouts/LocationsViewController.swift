@@ -90,6 +90,11 @@ class LocationsViewController: UITableViewController
         presentViewController(StyledNavigationController(rootViewController: SettingsViewController()), animated: true, completion: nil)
     }
     
+    func visitsBarButtonPressed()
+    {
+        presentViewController(StyledNavigationController(rootViewController: VisitsMapViewController()), animated: true, completion: nil)
+    }
+    
     // MARK: - Private
     private func fetchLocations()
     {
@@ -110,7 +115,7 @@ class LocationsViewController: UITableViewController
         
         let numberOfVisits = Visit.objectCountInContext(PersistentController.sharedController.visitMOC)
         if numberOfVisits > 0 {
-            let visitItem = UIBarButtonItem(title: "\(numberOfVisits) Visits", style: .Plain, target: self, action: "")
+            let visitItem = UIBarButtonItem(title: "\(numberOfVisits) Visits", style: .Plain, target: self, action: "visitsBarButtonPressed")
             
             toolbarItems = [spaceBarButtonItem, visitItem, spaceBarButtonItem]
         }
