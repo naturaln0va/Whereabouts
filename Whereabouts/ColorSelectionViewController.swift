@@ -43,9 +43,11 @@ class ColorSelectionViewController: UICollectionViewController
         super.viewDidLoad()
         
         title = "Select a Color"
+        
         collectionView?.backgroundColor = UIColor.whiteColor()
-
         collectionView!.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        
+        navigationController?.setToolbarHidden(true, animated: true)
     }
 
     // MARK: UICollectionViewDataSource

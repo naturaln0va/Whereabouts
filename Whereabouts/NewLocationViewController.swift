@@ -107,6 +107,12 @@ class NewLocationViewController: UITableViewController
             }
         }
     }
+    
+    override func viewWillAppear(animated: Bool)
+    {
+        super.viewWillAppear(animated)
+        navigationController?.toolbarHidden = false
+    }
 
     func refreshButtonPressed()
     {

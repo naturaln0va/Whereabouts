@@ -7,7 +7,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
 {
 
     var window: UIWindow?
-    var assistant: LocationAssistant?
+    var assistant = LocationAssistant(viewController: nil)
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool
     {
@@ -34,8 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         )
         
         if SettingsController.sharedController.shouldMonitorVisits {
-            assistant = LocationAssistant(viewController: nil)
-            assistant?.startVisitsMonitoring()
+            assistant.startVisitsMonitoring()
         }
         
         return true
@@ -44,11 +43,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate
     internal func settingsDidChange()
     {
         if SettingsController.sharedController.shouldMonitorVisits {
-            assistant = LocationAssistant(viewController: nil)
-            assistant?.startVisitsMonitoring()
+            assistant.startVisitsMonitoring()
         }
         else {
-            assistant?.terminate()
+            assistant.terminate()
         }
     }
 

@@ -8,26 +8,26 @@ class SettingsViewController: UITableViewController
 
     enum UserSectionRows: Int
     {
-        case kAccuracyRow
-        case kTimeoutRow
-        case kPhotoRangeRow
-        case kUnitStyleRow
-        case kVisitSwitchRow
-        case kTotalRows
+        case AccuracyRow
+        case TimeoutRow
+        case PhotoRangeRow
+        case UnitStyleRow
+        case VisitSwitchRow
+        case TotalRows
     }
     
     enum GeneralSectionRows: Int
     {
-        case kRateRow
-        case kContactRow
-        case kTotalRows
+        case RateRow
+        case ContactRow
+        case TotalRows
     }
     
     enum TableSections: Int
     {
-        case kUserSection
-        case kGeneralSection
-        case kTotalSections
+        case UserSection
+        case GeneralSection
+        case TotalSections
     }
     
     enum PickerViewControllerTags: Int
@@ -132,18 +132,28 @@ class SettingsViewController: UITableViewController
         return coloredBackgroundView
     }
     
+    override func tableView(tableView: UITableView, shouldHighlightRowAtIndexPath indexPath: NSIndexPath) -> Bool
+    {
+        if indexPath.section == TableSections.UserSection.rawValue && indexPath.row == UserSectionRows.VisitSwitchRow.rawValue {
+            return false
+        }
+        else {
+            return true
+        }
+    }
+    
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int
     {
-        return TableSections.kTotalSections.rawValue
+        return TableSections.TotalSections.rawValue
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
-        if section == TableSections.kGeneralSection.rawValue {
-            return GeneralSectionRows.kTotalRows.rawValue
+        if section == TableSections.GeneralSection.rawValue {
+            return GeneralSectionRows.TotalRows.rawValue
         }
-        else if section == TableSections.kUserSection.rawValue {
-            return UserSectionRows.kTotalRows.rawValue
+        else if section == TableSections.UserSection.rawValue {
+            return UserSectionRows.TotalRows.rawValue
         }
         else {
             return 0
@@ -155,33 +165,33 @@ class SettingsViewController: UITableViewController
     {
         let cell = UITableViewCell(style: .Value1, reuseIdentifier: "defaultCell")
         
-        if indexPath.section == TableSections.kUserSection.rawValue {
+        if indexPath.section == TableSections.UserSection.rawValue {
             switch indexPath.row {
-            case UserSectionRows.kAccuracyRow.rawValue:
+            case UserSectionRows.AccuracyRow.rawValue:
                 cell.textLabel?.text = "Location Accuracy"
                 cell.detailTextLabel?.text = SettingsController.sharedController.stringForDistanceAccuracy()
                 cell.accessoryType = .DisclosureIndicator
                 break
                 
-            case UserSectionRows.kTimeoutRow.rawValue:
+            case UserSectionRows.TimeoutRow.rawValue:
                 cell.textLabel?.text = "Location Timeout"
                 cell.detailTextLabel?.text = "\(SettingsController.sharedController.locationTimeout)s"
                 cell.accessoryType = .DisclosureIndicator
                 break
                 
-            case UserSectionRows.kPhotoRangeRow.rawValue:
+            case UserSectionRows.PhotoRangeRow.rawValue:
                 cell.textLabel?.text = "Nearby Photo Range"
                 cell.detailTextLabel?.text = SettingsController.sharedController.stringForPhotoRange()
                 cell.accessoryType = .DisclosureIndicator
                 break
                 
-            case UserSectionRows.kUnitStyleRow.rawValue:
+            case UserSectionRows.UnitStyleRow.rawValue:
                 cell.textLabel?.text = "Unit Style"
                 cell.detailTextLabel?.text = SettingsController.sharedController.isUnitStyleImperial ? "Customary" : "Metric"
                 cell.accessoryType = .DisclosureIndicator
                 break
                 
-            case UserSectionRows.kVisitSwitchRow.rawValue:
+            case UserSectionRows.VisitSwitchRow.rawValue:
                 cell.textLabel?.text = "Visits Monitoring"
                 
                 let visitSwitch = UISwitch()
@@ -199,14 +209,14 @@ class SettingsViewController: UITableViewController
                 break
             }
         }
-        else if indexPath.section == TableSections.kGeneralSection.rawValue {
+        else if indexPath.section == TableSections.GeneralSection.rawValue {
             switch indexPath.row {
-            case GeneralSectionRows.kRateRow.rawValue:
+            case GeneralSectionRows.RateRow.rawValue:
                 cell.textLabel?.text = "Rate Whereabouts"
                 cell.accessoryType = .DisclosureIndicator
                 break
                 
-            case GeneralSectionRows.kContactRow.rawValue:
+            case GeneralSectionRows.ContactRow.rawValue:
                 cell.textLabel?.text = "Contact the Developer"
                 cell.accessoryType = .DisclosureIndicator
                 cell.userInteractionEnabled = MFMailComposeViewController.canSendMail()
@@ -225,13 +235,13 @@ class SettingsViewController: UITableViewController
     {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
-        if indexPath.section == TableSections.kGeneralSection.rawValue {
+        if indexPath.section == TableSections.GeneralSection.rawValue {
             switch indexPath.row {
-            case GeneralSectionRows.kRateRow.rawValue:
+            case GeneralSectionRows.RateRow.rawValue:
                 UIApplication.sharedApplication().openURL(NSURL(string: "https://itunes.apple.com/us/app/whereabouts-location-utility/id931591968?mt=8")!)
                 break
                 
-            case GeneralSectionRows.kContactRow.rawValue:
+            case GeneralSectionRows.ContactRow.rawValue:
                 let mailVC = MFMailComposeViewController()
                 mailVC.setSubject("Whereabouts Feedback")
                 mailVC.setToRecipients(["support@ackermann.io"])
@@ -245,9 +255,9 @@ class SettingsViewController: UITableViewController
                 break
             }
         }
-        else if indexPath.section == TableSections.kUserSection.rawValue {
+        else if indexPath.section == TableSections.UserSection.rawValue {
             switch indexPath.row {
-            case UserSectionRows.kAccuracyRow.rawValue:
+            case UserSectionRows.AccuracyRow.rawValue:
                 let values = [
                     kHorizontalAccuracyPoor,
                     kHorizontalAccuracyFair,
@@ -272,7 +282,7 @@ class SettingsViewController: UITableViewController
                 navigationController?.pushViewController(pvc, animated: true)
                 break
                 
-            case UserSectionRows.kTimeoutRow.rawValue:
+            case UserSectionRows.TimeoutRow.rawValue:
                 let values = [
                     kLocationTimeoutShort,
                     kLocationTimeoutNormal,
@@ -301,7 +311,7 @@ class SettingsViewController: UITableViewController
                 navigationController?.pushViewController(pvc, animated: true)
                 break
                 
-            case UserSectionRows.kPhotoRangeRow.rawValue:
+            case UserSectionRows.PhotoRangeRow.rawValue:
                 let values = [
                     50,
                     250,
@@ -342,7 +352,7 @@ class SettingsViewController: UITableViewController
                 navigationController?.pushViewController(pvc, animated: true)
                 break
                 
-            case UserSectionRows.kUnitStyleRow.rawValue:
+            case UserSectionRows.UnitStyleRow.rawValue:
                 let values = [
                     true,
                     false
