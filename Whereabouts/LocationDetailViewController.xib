@@ -41,7 +41,7 @@
                             <rect key="frame" x="8" y="308" width="359" height="122"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Edmond, OK 97381" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GPg-Wh-gDF">
-                                    <rect key="frame" x="18" y="18" width="181.5" height="24"/>
+                                    <rect key="frame" x="18" y="18" width="291" height="24"/>
                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
@@ -77,6 +77,7 @@
                             <constraints>
                                 <constraint firstItem="jvW-vH-q8p" firstAttribute="top" secondItem="GPg-Wh-gDF" secondAttribute="bottom" constant="18" id="8Ou-B1-q3v"/>
                                 <constraint firstItem="GPg-Wh-gDF" firstAttribute="leading" secondItem="uEx-Xv-I50" secondAttribute="leading" constant="18" id="Cpy-WK-034"/>
+                                <constraint firstItem="kK0-Gh-XPe" firstAttribute="leading" secondItem="GPg-Wh-gDF" secondAttribute="trailing" constant="12" id="FTB-np-EAO"/>
                                 <constraint firstItem="3fC-gR-M4T" firstAttribute="leading" secondItem="uEx-Xv-I50" secondAttribute="leading" constant="18" id="JU0-hD-41e"/>
                                 <constraint firstAttribute="bottom" secondItem="M7b-72-CLl" secondAttribute="bottom" constant="18" id="LUb-oa-e9n"/>
                                 <constraint firstAttribute="trailing" secondItem="M7b-72-CLl" secondAttribute="trailing" constant="18" id="PpH-eO-TSe"/>
@@ -97,7 +98,7 @@
                             </variation>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Nearby Photos" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZeY-cC-qgu">
-                            <rect key="frame" x="118" y="503" width="139.5" height="20.5"/>
+                            <rect key="frame" x="118" y="503" width="140" height="21"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>

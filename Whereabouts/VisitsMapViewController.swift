@@ -8,7 +8,7 @@ class VisitsMapViewController: UIViewController
     
     private lazy var mapView: MKMapView = {
         let mapView = MKMapView()
-        mapView.bounds = self.view.bounds
+        mapView.frame = self.view.bounds
         mapView.showsUserLocation = true
         mapView.delegate = self
         if #available(iOS 9.0, *) {
@@ -20,8 +20,9 @@ class VisitsMapViewController: UIViewController
     
     private var visits: [Visit]? {
         didSet {
-            guard let _ = visits else { return }
-            refreshMapWithVisits(visits!)
+            if visits != nil {
+                refreshMapWithVisits(visits!)
+            }
         }
     }
     private var shouldContinueUpdatingUserLocation = true
@@ -36,15 +37,19 @@ class VisitsMapViewController: UIViewController
         super.viewDidLoad()
         
         title = "Recent Visits"
+        view.backgroundColor = ColorController.backgroundColor
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(
-            barButtonSystemItem: .Done,
+            title: "Done",
+            style: .Plain,
             target: self,
             action: "doneButtonPressed"
         )
         
         navigationItem.leftBarButtonItem = centerLocationItem
         navigationItem.leftBarButtonItem?.enabled = false
+        
+        view.addSubview(mapView)
         
         do {
             visits = try Visit.objectsInContext(PersistentController.sharedController.visitMOC)
@@ -57,7 +62,7 @@ class VisitsMapViewController: UIViewController
     override func viewWillLayoutSubviews()
     {
         super.viewWillLayoutSubviews()
-        mapView.bounds = view.bounds
+        mapView.frame = view.bounds
     }
     
     // MARK: - Actions
@@ -76,7 +81,7 @@ class VisitsMapViewController: UIViewController
             
             let userRegion = MKCoordinateRegion(
                 center: userLocation.coordinate,
-                span: MKCoordinateSpan(latitudeDelta: 1 / 55, longitudeDelta: 1 / 55)
+                span: MKCoordinateSpan(latitudeDelta: 1 / 55.5, longitudeDelta: 1 / 55.5)
             )
             mapView.setRegion(mapView.regionThatFits(userRegion), animated: false)
         }
@@ -85,30 +90,24 @@ class VisitsMapViewController: UIViewController
     // MARK: - Private
     private func refreshMapWithVisits(visits: [Visit])
     {
-        guard let userLocation = mapView.userLocation.location else {
-            print("No user location when attempting to refresh the mapView.")
-            return
-        }
-        
         shouldContinueUpdatingUserLocation = false
         
         var locations = visits.map { return $0.locationCoordinate }
-        locations.append(userLocation)
         
-        let sortedLocations = locations.count > 1 ? locations.sort {
-            $0.distanceFromLocation(userLocation) > $1.distanceFromLocation(userLocation)
-        } : locations
+        if let userLocation = mapView.userLocation.location {
+            locations.append(userLocation)
+        }
         
         var center = CLLocationCoordinate2D()
         var span = MKCoordinateSpan()
-        if sortedLocations.count == 1 { // no visits, define a region around the user's location
+        if locations.count == 1 {
             center = CLLocationCoordinate2D(
-                latitude: userLocation.coordinate.latitude,
-                longitude: userLocation.coordinate.longitude
+                latitude: locations.first!.coordinate.latitude,
+                longitude: locations.first!.coordinate.longitude
             )
             span = MKCoordinateSpan(
-                latitudeDelta: 1 / 55,
-                longitudeDelta: 1 / 55
+                latitudeDelta: 1 / 55.5,
+                longitudeDelta: 1 / 55.5
             )
         }
         else {
@@ -121,7 +120,7 @@ class VisitsMapViewController: UIViewController
                 longitude: -180
             )
             
-            for location in sortedLocations {
+            for location in locations {
                 topLeftCoord.latitude = max(
                     topLeftCoord.latitude,
                     location.coordinate.latitude
@@ -167,7 +166,14 @@ extension VisitsMapViewController: MKMapViewDelegate
     {
         guard shouldContinueUpdatingUserLocation else { return }
         
-        mapView.setRegion(MKCoordinateRegion(center: userLocation.coordinate, span: MKCoordinateSpan(latitudeDelta: 1 / 55, longitudeDelta: 1 / 55)), animated: false)
+        mapView.setRegion(MKCoordinateRegion(
+            center: userLocation.coordinate,
+            span: MKCoordinateSpan(
+                latitudeDelta: 1 / 55.5,
+                longitudeDelta: 1 / 55.5)
+            ),
+            animated: false
+        )
         navigationItem.leftBarButtonItem?.enabled = true
     }
     
