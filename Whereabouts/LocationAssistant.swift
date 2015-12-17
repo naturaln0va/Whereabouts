@@ -246,14 +246,31 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate, LocationAccessView
     func locationManager(manager: CLLocationManager, didVisit visit: CLVisit)
     {
         #if MAIN_APP
-            let formatter = NSDateFormatter()
-            formatter.timeStyle = .ShortStyle
+            var visitNotificationString = ""
+            if visit.departureDate.isEqualToDate(NSDate.distantFuture()) {
+                visitNotificationString += "Arrived at: "
+            } else {
+                visitNotificationString += "Departed from: "
+            }
             
-            let notification = UILocalNotification()
-            notification.alertAction = nil
-            notification.alertBody = "Visited \(stringFromCoordinate(visit.coordinate)) @ \(formatter.stringFromDate(visit.arrivalDate))"
-            UIApplication.sharedApplication().presentLocalNotificationNow(notification)
-
+            let locationOfVisit = CLLocation(latitude: visit.coordinate.latitude, longitude: visit.coordinate.longitude)
+            
+            geocoder.reverseGeocodeLocation(locationOfVisit) { placemarks, error in
+                if let p = placemarks where !p.isEmpty && error == nil {
+                    let visitedAddress = p.last!
+                    
+                    visitNotificationString += stringFromAddress(visitedAddress, withNewLine: true)
+                }
+                else {
+                    visitNotificationString += stringFromCoordinate(visit.coordinate)
+                }
+                
+                let notification = UILocalNotification()
+                notification.alertAction = nil
+                notification.alertBody = visitNotificationString
+                UIApplication.sharedApplication().presentLocalNotificationNow(notification)
+            }
+            
             PersistentController.sharedController.saveVisit(visit.arrivalDate,
                 departureDate: visit.departureDate,
                 horizontalAccuracy: visit.horizontalAccuracy,
