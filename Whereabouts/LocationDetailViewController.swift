@@ -59,7 +59,7 @@ class LocationDetailViewController: StyledViewController
         mapView.delegate = self
         mapView.scrollEnabled = false
         mapView.rotateEnabled = false
-        mapView.setRegion(MKCoordinateRegion(center: locationToDisplay.location.coordinate, span: MKCoordinateSpan(latitudeDelta: 1 / 111, longitudeDelta: 1 / 111)), animated: false)
+        mapView.showAnnotations(mapView.annotations, animated: true)
         
         colorView.layer.cornerRadius = 10.0
         noPhotosLabel.alpha = 0.0
@@ -288,51 +288,9 @@ extension LocationDetailViewController: MKMapViewDelegate
             }
         }
         
-        let center = CLLocationCoordinate2D(
-            latitude: userLocation.coordinate.latitude - (userLocation.coordinate.latitude - locationToDisplay.location.coordinate.latitude) / 2,
-            longitude: userLocation.coordinate.longitude - (userLocation.coordinate.longitude - locationToDisplay.location.coordinate.longitude) / 2
-        )
-        let span = MKCoordinateSpan(
-            latitudeDelta: max(1 / 55, abs(userLocation.coordinate.latitude - locationToDisplay.location.coordinate.latitude) * 2.5),
-            longitudeDelta: max(1 / 55, abs(userLocation.coordinate.longitude - locationToDisplay.location.coordinate.longitude) * 2.5)
-        )
-        let region = MKCoordinateRegionMake(center, span)
-        mapView.setRegion(mapView.regionThatFits(region), animated: true)
+        mapView.showAnnotations(mapView.annotations, animated: true)
         
         lastUserLocation = userLocation.location
-    }
-    
-    func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView)
-    {
-        guard let annotation = view.annotation else {
-            return
-        }
-        
-        let center = CLLocationCoordinate2D(
-            latitude: annotation.coordinate.latitude,
-            longitude: annotation.coordinate.longitude
-        )
-        let span = MKCoordinateSpan(
-            latitudeDelta: 1 / 55,
-            longitudeDelta: 1 / 55
-        )
-        
-        let region = MKCoordinateRegionMake(center, span)
-        mapView.setRegion(mapView.regionThatFits(region), animated: true)
-    }
-    
-    func mapView(mapView: MKMapView, didDeselectAnnotationView view: MKAnnotationView)
-    {
-        let center = CLLocationCoordinate2D(
-            latitude: mapView.userLocation.coordinate.latitude - (mapView.userLocation.coordinate.latitude - locationToDisplay.location.coordinate.latitude) / 2,
-            longitude: mapView.userLocation.coordinate.longitude - (mapView.userLocation.coordinate.longitude - locationToDisplay.location.coordinate.longitude) / 2
-        )
-        let span = MKCoordinateSpan(
-            latitudeDelta: max(1 / 55, abs(mapView.userLocation.coordinate.latitude - locationToDisplay.location.coordinate.latitude) * 2.5),
-            longitudeDelta: max(1 / 55, abs(mapView.userLocation.coordinate.longitude - locationToDisplay.location.coordinate.longitude) * 2.5)
-        )
-        let region = MKCoordinateRegionMake(center, span)
-        mapView.setRegion(mapView.regionThatFits(region), animated: true)
     }
     
     func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView?

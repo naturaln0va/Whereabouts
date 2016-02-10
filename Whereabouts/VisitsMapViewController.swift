@@ -48,6 +48,9 @@ class VisitsMapViewController: UIViewController
         navigationItem.leftBarButtonItem = centerLocationItem
         navigationItem.leftBarButtonItem?.enabled = false
         
+        view.translatesAutoresizingMaskIntoConstraints = true
+        mapView.translatesAutoresizingMaskIntoConstraints = false
+        
         view.addSubview(mapView)
         let views = ["map": mapView]
         
