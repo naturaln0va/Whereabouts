@@ -80,12 +80,36 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate, LocationAccessView
         }
     }
     
+    func placemarkFromString(stringToGeocode geocodeString: String, completion: (CLPlacemark?, NSError?) -> Void)
+    {
+        #if MAIN_APP
+            UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+        #endif
+        geocoder.geocodeAddressString(geocodeString) { marks, error in
+            #if MAIN_APP
+                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+            #endif
+            if let firstMark = marks?.first where error == nil {
+                completion(firstMark, nil)
+            }
+            else {
+                completion(nil, error)
+            }
+        }
+    }
+    
     func getAddressForLocation(locationToGeocode: CLLocation)
     {
         if !reverseGeocoding {
             reverseGeocoding = true
             
+            #if MAIN_APP
+                UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+            #endif
             geocoder.reverseGeocodeLocation(locationToGeocode) { placemarks, error in
+                #if MAIN_APP
+                    UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+                #endif
                 if let p = placemarks where !p.isEmpty && error == nil {
                     if let delegate = self.delegate {
                         delegate.receivedAddress?(p.last!)
@@ -269,6 +293,24 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate, LocationAccessView
                 notification.alertAction = nil
                 notification.alertBody = visitNotificationString
                 UIApplication.sharedApplication().presentLocalNotificationNow(notification)
+                
+                do {
+                    let nearStoredVisit = try Visit.singleObjectInContext(PersistentController.sharedController.visitMOC,
+                        predicate: NSPredicate(format: "distanceToLocation:fromLocation:(location, %@) < %f", locationOfVisit, 500.0),
+                        sortedBy: nil,
+                        ascending: false
+                    )
+                    
+                    if nearStoredVisit != nil {
+                        let notification = UILocalNotification()
+                        notification.alertAction = nil
+                        notification.alertBody = "This Visit was within 500.0 meters of a previous Visit."
+                        UIApplication.sharedApplication().presentLocalNotificationNow(notification)
+                    }
+                }
+                catch {
+                    print("Error: \(error)")
+                }
             }
             
             PersistentController.sharedController.saveVisit(visit.arrivalDate,

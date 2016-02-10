@@ -207,7 +207,7 @@ class PersistentController
             fatalError("Expected to insert and entity of type 'Location'.")
         }
         
-        dataToSave.date = location.timestamp
+        dataToSave.date = NSDate()
         dataToSave.locationTitle = title
         dataToSave.color = color
         dataToSave.placemark = placemark

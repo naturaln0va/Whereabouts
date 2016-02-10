@@ -15,7 +15,7 @@ class LocationCell: StyledCell
     func configureCell(locationToDisplay: Location)
     {
         colorCategoryStripView.backgroundColor = locationToDisplay.color
-        createdDateLabel.text = relativeStringForDate(locationToDisplay.location.timestamp)
+        createdDateLabel.text = relativeStringForDate(locationToDisplay.date)
         titleLabel.text = locationToDisplay.title
         
         if let place = locationToDisplay.placemark {

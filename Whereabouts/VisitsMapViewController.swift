@@ -8,7 +8,6 @@ class VisitsMapViewController: UIViewController
     
     private lazy var mapView: MKMapView = {
         let mapView = MKMapView()
-        mapView.frame = self.view.bounds
         mapView.showsUserLocation = true
         mapView.delegate = self
         if #available(iOS 9.0, *) {
@@ -20,8 +19,9 @@ class VisitsMapViewController: UIViewController
     
     private var visits: [Visit]? {
         didSet {
-            if visits != nil {
-                refreshMapWithVisits(visits!)
+            if let visits = visits {
+                mapView.removeAnnotations(mapView.annotations)
+                mapView.addAnnotations(visits)
             }
         }
     }
@@ -30,7 +30,6 @@ class VisitsMapViewController: UIViewController
     private lazy var centerLocationItem: UIBarButtonItem = {
         return UIBarButtonItem(image: UIImage(named: "location-arrow"), style: .Plain, target: self, action: "locateButtonPressed")
     }()
-    
     
     override func viewDidLoad()
     {
@@ -50,19 +49,18 @@ class VisitsMapViewController: UIViewController
         navigationItem.leftBarButtonItem?.enabled = false
         
         view.addSubview(mapView)
+        let views = ["map": mapView]
+        
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[map]|", options: [], metrics: nil, views: views))
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[map]|", options: [], metrics: nil, views: views))
         
         do {
             visits = try Visit.objectsInContext(PersistentController.sharedController.visitMOC)
         }
         catch {
             print("Error fetching visits.")
+            dismissViewControllerAnimated(true, completion: nil)
         }
-    }
-    
-    override func viewWillLayoutSubviews()
-    {
-        super.viewWillLayoutSubviews()
-        mapView.frame = view.bounds
     }
     
     // MARK: - Actions
@@ -71,89 +69,10 @@ class VisitsMapViewController: UIViewController
         dismissViewControllerAnimated(true, completion: nil)
     }
     
-    func locateButtonPressed()
+    internal func locateButtonPressed()
     {
-        if let visits = visits {
-            refreshMapWithVisits(visits)
-        }
-        else {
-            guard let userLocation = mapView.userLocation.location else { return }
-            
-            let userRegion = MKCoordinateRegion(
-                center: userLocation.coordinate,
-                span: MKCoordinateSpan(latitudeDelta: 1 / 55.5, longitudeDelta: 1 / 55.5)
-            )
-            mapView.setRegion(mapView.regionThatFits(userRegion), animated: false)
-        }
-    }
-    
-    // MARK: - Private
-    private func refreshMapWithVisits(visits: [Visit])
-    {
-        shouldContinueUpdatingUserLocation = false
-        
-        var locations = visits.map { return $0.locationCoordinate }
-        
-        if let userLocation = mapView.userLocation.location {
-            locations.append(userLocation)
-        }
-        
-        var center = CLLocationCoordinate2D()
-        var span = MKCoordinateSpan()
-        if locations.count == 1 {
-            center = CLLocationCoordinate2D(
-                latitude: locations.first!.coordinate.latitude,
-                longitude: locations.first!.coordinate.longitude
-            )
-            span = MKCoordinateSpan(
-                latitudeDelta: 1 / 55.5,
-                longitudeDelta: 1 / 55.5
-            )
-        }
-        else {
-            var topLeftCoord = CLLocationCoordinate2D(
-                latitude: -90,
-                longitude: 180
-            )
-            var bottomRightCoord = CLLocationCoordinate2D(
-                latitude: 90,
-                longitude: -180
-            )
-            
-            for location in locations {
-                topLeftCoord.latitude = max(
-                    topLeftCoord.latitude,
-                    location.coordinate.latitude
-                )
-                topLeftCoord.longitude = min(
-                    topLeftCoord.longitude,
-                    location.coordinate.longitude
-                )
-                bottomRightCoord.latitude = min(
-                    bottomRightCoord.latitude,
-                    location.coordinate.latitude
-                )
-                bottomRightCoord.longitude = max(
-                    bottomRightCoord.longitude,
-                    location.coordinate.longitude
-                )
-            }
-            
-            center = CLLocationCoordinate2D(
-                latitude: topLeftCoord.latitude - (topLeftCoord.latitude - bottomRightCoord.latitude) / 2,
-                longitude: topLeftCoord.longitude - (topLeftCoord.longitude - bottomRightCoord.longitude) / 2
-            )
-            span = MKCoordinateSpan(
-                latitudeDelta: abs(topLeftCoord.latitude - bottomRightCoord.latitude) * 1.5,
-                longitudeDelta: abs(topLeftCoord.longitude - bottomRightCoord.longitude) * 1.5
-            )
-        }
-        
-        let fittedRegion = mapView.regionThatFits(MKCoordinateRegionMake(center, span))
-        navigationItem.leftBarButtonItem?.enabled = true
-        
-        mapView.setRegion(fittedRegion, animated: true)
-        mapView.addAnnotations(visits)
+        guard let userLocation = mapView.userLocation.location else { return }
+        mapView.setCenterCoordinate(userLocation.coordinate, animated: true)
     }
 
 }
@@ -166,15 +85,11 @@ extension VisitsMapViewController: MKMapViewDelegate
     {
         guard shouldContinueUpdatingUserLocation else { return }
         
-        mapView.setRegion(MKCoordinateRegion(
-            center: userLocation.coordinate,
-            span: MKCoordinateSpan(
-                latitudeDelta: 1 / 55.5,
-                longitudeDelta: 1 / 55.5)
-            ),
-            animated: false
-        )
-        navigationItem.leftBarButtonItem?.enabled = true
+        if visits != nil {
+            mapView.showAnnotations(mapView.annotations, animated: true)
+            navigationItem.leftBarButtonItem?.enabled = true
+            shouldContinueUpdatingUserLocation = false
+        }
     }
     
 }

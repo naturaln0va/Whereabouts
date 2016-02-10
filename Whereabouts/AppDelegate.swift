@@ -13,7 +13,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
     {
         
         let notificationSettings = UIUserNotificationSettings(
-            forTypes: UIUserNotificationType.Alert,
+            forTypes: .Alert,
             categories: nil
         )
         
