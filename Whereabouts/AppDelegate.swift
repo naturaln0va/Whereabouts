@@ -20,6 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         UIApplication.sharedApplication().registerUserNotificationSettings(notificationSettings)
         
         PersistentController.sharedController.migrateLegacyData()
+        PersistentController.sharedController.cleanUpVisits()
         
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
         

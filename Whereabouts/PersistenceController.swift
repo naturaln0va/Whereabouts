@@ -228,6 +228,19 @@ class PersistentController
     }
     
     // MARK: - Visits Management
+    func cleanUpVisits()
+    {
+        if let allVisits = try? Visit.objectsInContext(visitMOC) {
+            var visitsToDelete = [Visit]()
+            for visit in allVisits {
+                if visit.arrivalDate.isMoreThanAWeekOld() || visit.departureDate.isMoreThanAWeekOld() {
+                    visitsToDelete.append(visit)
+                }
+            }
+            deleteVisits(visitsToDelete)
+        }
+    }
+    
     func deleteVisit(visitToDelete: Visit)
     {
         visitMOC.deleteObject(visitToDelete)
@@ -245,8 +258,27 @@ class PersistentController
         }
     }
     
+    func deleteVisits(visitsToDelete: [Visit])
+    {
+        for visit in visitsToDelete {
+            visitMOC.deleteObject(visit)
+        }
+        
+        if visitMOC.hasChanges {
+            do {
+                try self.visitMOC.save()
+            }
+                
+            catch {
+                fatalError("Error deleting visit: \(error)")
+            }
+        }
+    }
+    
     func saveVisit(arrivalDate: NSDate, departureDate: NSDate, horizontalAccuracy: CLLocationAccuracy, location: CLLocation)
     {
+        cleanUpVisits()
+        
         guard let dataToSave = NSEntityDescription.insertNewObjectForEntityForName(Visit.entityName(), inManagedObjectContext: visitMOC) as? Visit else {
             fatalError("Expected to insert and entity of type 'Visit'.")
         }

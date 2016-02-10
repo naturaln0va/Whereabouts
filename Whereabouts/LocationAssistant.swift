@@ -279,6 +279,18 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate, LocationAccessView
             
             let locationOfVisit = CLLocation(latitude: visit.coordinate.latitude, longitude: visit.coordinate.longitude)
             
+            if let visits = try? Visit.objectsInContext(PersistentController.sharedController.visitMOC) {
+                for visit in visits {
+                    if visit.location.distanceFromLocation(locationOfVisit) < 500.0 {
+                        let notification = UILocalNotification()
+                        notification.alertAction = nil
+                        notification.alertBody = "This Visit was within 500.0 meters of a previous Visit. We wont save this just yet."
+                        UIApplication.sharedApplication().presentLocalNotificationNow(notification)
+                        return
+                    }
+                }
+            }
+            
             geocoder.reverseGeocodeLocation(locationOfVisit) { placemarks, error in
                 if let p = placemarks where !p.isEmpty && error == nil {
                     let visitedAddress = p.last!
@@ -293,27 +305,10 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate, LocationAccessView
                 notification.alertAction = nil
                 notification.alertBody = visitNotificationString
                 UIApplication.sharedApplication().presentLocalNotificationNow(notification)
-                
-                do {
-                    let nearStoredVisit = try Visit.singleObjectInContext(PersistentController.sharedController.visitMOC,
-                        predicate: NSPredicate(format: "distanceToLocation:fromLocation:(location, %@) < %f", locationOfVisit, 500.0),
-                        sortedBy: nil,
-                        ascending: false
-                    )
-                    
-                    if nearStoredVisit != nil {
-                        let notification = UILocalNotification()
-                        notification.alertAction = nil
-                        notification.alertBody = "This Visit was within 500.0 meters of a previous Visit."
-                        UIApplication.sharedApplication().presentLocalNotificationNow(notification)
-                    }
-                }
-                catch {
-                    print("Error: \(error)")
-                }
             }
             
-            PersistentController.sharedController.saveVisit(visit.arrivalDate,
+            PersistentController.sharedController.saveVisit(
+                visit.arrivalDate,
                 departureDate: visit.departureDate,
                 horizontalAccuracy: visit.horizontalAccuracy,
                 location: CLLocation(latitude: visit.coordinate.latitude, longitude: visit.coordinate.longitude)

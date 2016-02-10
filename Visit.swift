@@ -13,6 +13,10 @@ class Visit: NSManagedObject
         return formatter
     }()
     
+    var location: CLLocation {
+        return CLLocation(coordinate: coordinate, altitude: 0, horizontalAccuracy: kCLLocationAccuracyBest, verticalAccuracy: kCLLocationAccuracyBest, timestamp: arrivalDate)
+    }
+    
 }
 
 

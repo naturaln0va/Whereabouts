@@ -110,14 +110,22 @@ class LocationsViewController: UITableViewController
     private func refreshVisits()
     {
         guard SettingsController.sharedController.shouldMonitorVisits else {
+            toolbarItems = nil
+            navigationController?.toolbarHidden = true
             return
         }
         
         let numberOfVisits = Visit.objectCountInContext(PersistentController.sharedController.visitMOC)
         if numberOfVisits > 0 {
+            navigationController?.toolbarHidden = false
+            
             let visitItem = UIBarButtonItem(title: "\(numberOfVisits) Visits", style: .Plain, target: self, action: "visitsBarButtonPressed")
             
             toolbarItems = [spaceBarButtonItem, visitItem, spaceBarButtonItem]
+        }
+        else {
+            toolbarItems = nil
+            navigationController?.toolbarHidden = true
         }
     }
     
