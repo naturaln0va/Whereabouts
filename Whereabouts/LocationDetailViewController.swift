@@ -59,7 +59,6 @@ class LocationDetailViewController: StyledViewController
         mapView.delegate = self
         mapView.scrollEnabled = false
         mapView.rotateEnabled = false
-        mapView.showAnnotations(mapView.annotations, animated: false)
         
         colorView.layer.cornerRadius = 10.0
         noPhotosLabel.alpha = 0.0
@@ -252,6 +251,7 @@ class LocationDetailViewController: StyledViewController
 
         mapView.removeAnnotation(locationToDisplay)
         mapView.addAnnotation(locationToDisplay)
+        mapView.showAnnotations(mapView.annotations, animated: false)
         
         if #available(iOS 9.0, *) {
             mapView.showsCompass = true
