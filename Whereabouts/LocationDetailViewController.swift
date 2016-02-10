@@ -59,7 +59,7 @@ class LocationDetailViewController: StyledViewController
         mapView.delegate = self
         mapView.scrollEnabled = false
         mapView.rotateEnabled = false
-        mapView.showAnnotations(mapView.annotations, animated: true)
+        mapView.showAnnotations(mapView.annotations, animated: false)
         
         colorView.layer.cornerRadius = 10.0
         noPhotosLabel.alpha = 0.0
