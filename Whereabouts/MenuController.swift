@@ -12,13 +12,11 @@ class MenuController: NSObject
         return StyledNavigationController(rootViewController: LocationsViewController())
     }()
     
-    override init()
-    {
+    override init() {
         super.init()
     }
     
-    func showInWindow(window: UIWindow)
-    {
+    func showInWindow(window: UIWindow) {
         presenterViewController = self.locationsNC
         
         self.window = window

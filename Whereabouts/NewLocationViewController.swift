@@ -2,14 +2,11 @@
 import UIKit
 import CoreLocation
 
-protocol NewLocationViewControllerDelegate
-{
+protocol NewLocationViewControllerDelegate {
     func newLocationViewControllerDidEditLocation(editedLocation: Location)
 }
 
-
-class NewLocationViewController: UITableViewController
-{
+class NewLocationViewController: UITableViewController {
     
     var accuracyBarButtonItem: UIBarButtonItem?
     var delegate: NewLocationViewControllerDelegate?
@@ -64,9 +61,7 @@ class NewLocationViewController: UITableViewController
         }
     }
     
-    
-    override func viewDidLoad()
-    {
+    override func viewDidLoad() {
         super.viewDidLoad()
         
         title = locationToEdit == nil ? "New Location" : locationToEdit!.title
@@ -108,14 +103,12 @@ class NewLocationViewController: UITableViewController
         }
     }
     
-    override func viewWillAppear(animated: Bool)
-    {
+    override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.toolbarHidden = false
     }
 
-    func refreshButtonPressed()
-    {
+    func refreshButtonPressed() {
         if let accuracyButton = accuracyBarButtonItem {
             toolbarItems = [spaceBarButtonItem, accuracyButton, spaceBarButtonItem, loadingBarButtonItem]
         }
@@ -131,8 +124,7 @@ class NewLocationViewController: UITableViewController
         }
     }
     
-    func actionButtonPressed()
-    {
+    func actionButtonPressed() {
         var activityItems = Array<AnyObject>()
         
         guard let locationToSave = location else {
@@ -166,8 +158,7 @@ class NewLocationViewController: UITableViewController
         presentViewController(activityViewController, animated: true, completion: nil)
     }
     
-    func saveBarButtonPressed()
-    {
+    func saveBarButtonPressed() {
         guard let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? TextEntryCell, let title = cell.textField.text where title.characters.count > 0 else {
             let alert = UIAlertController(title: "No Title", message: "Please enter a title for this location.", preferredStyle: .Alert)
             alert.addAction(UIAlertAction(title: "Okay", style: .Default, handler: nil))
@@ -194,22 +185,19 @@ class NewLocationViewController: UITableViewController
         dismiss()
     }
     
-    func cancelBarButtonPressed()
-    {
+    func cancelBarButtonPressed() {
         dismiss()
     }
     
     // MARK: - Private
-    private func dismiss()
-    {
+    private func dismiss() {
         view.endEditing(true)
         if let _ = assistant { assistant?.terminate() }
         dismissViewControllerAnimated(true, completion: nil)
     }
     
     //MARK: - TableView Deleagte & DataSource
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
-    {
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             if indexPath.row == 0 {
                 return tableView.dequeueReusableCellWithIdentifier(TextEntryCell.reuseIdentifier, forIndexPath: indexPath)
@@ -223,9 +211,7 @@ class NewLocationViewController: UITableViewController
         }
     }
     
-    override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath)
-    {
-        
+    override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
         if indexPath.section == 0 {
             if indexPath.row == 0 {
                 guard let cell = cell as? TextEntryCell else {
@@ -275,8 +261,7 @@ class NewLocationViewController: UITableViewController
         }
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
-    {
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         if indexPath.section == 0 {
             if indexPath.row == 0 {
@@ -293,13 +278,11 @@ class NewLocationViewController: UITableViewController
         }
     }
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int
-    {
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 2
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int
-    {
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
             return 2
         }
@@ -313,18 +296,15 @@ class NewLocationViewController: UITableViewController
         }
     }
     
-    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat
-    {
+    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 35.0
     }
     
-    override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat
-    {
+    override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 0.0001
     }
     
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat
-    {
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if indexPath.section == 0 {
             if indexPath.row == 0 {
                 return TextEntryCell.cellHeight
@@ -338,8 +318,7 @@ class NewLocationViewController: UITableViewController
         }
     }
     
-    override func tableView(tableView: UITableView, shouldHighlightRowAtIndexPath indexPath: NSIndexPath) -> Bool
-    {
+    override func tableView(tableView: UITableView, shouldHighlightRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         if indexPath.row == 1 && indexPath.section == 0 {
             return true
         }
@@ -350,11 +329,9 @@ class NewLocationViewController: UITableViewController
 
 
 //MARK: - LocationAssistantDelegate
-extension NewLocationViewController: LocationAssistantDelegate
-{
+extension NewLocationViewController: LocationAssistantDelegate {
     
-    func receivedLocation(location: CLLocation, finished: Bool)
-    {
+    func receivedLocation(location: CLLocation, finished: Bool) {
         self.location = location
         
         let formatter = NSNumberFormatter()
@@ -379,8 +356,7 @@ extension NewLocationViewController: LocationAssistantDelegate
         }
     }
     
-    func receivedAddress(placemark: CLPlacemark)
-    {
+    func receivedAddress(placemark: CLPlacemark) {
         self.placemark = placemark
         
         if locationToEdit != nil {
@@ -396,13 +372,11 @@ extension NewLocationViewController: LocationAssistantDelegate
         }
     }
     
-    func authorizationDenied()
-    {
+    func authorizationDenied() {
         dismiss()
     }
     
-    func failedToGetLocation()
-    {
+    func failedToGetLocation() {
         if let accuracyButton = accuracyBarButtonItem {
             toolbarItems = [actionBarButtonItem, spaceBarButtonItem, accuracyButton, spaceBarButtonItem, refreshBarButtonItem]
         }
@@ -414,8 +388,7 @@ extension NewLocationViewController: LocationAssistantDelegate
         }
     }
     
-    func failedToGetAddress()
-    {
+    func failedToGetAddress() {
         if let accuracyButton = accuracyBarButtonItem {
             toolbarItems = [actionBarButtonItem, spaceBarButtonItem, accuracyButton, spaceBarButtonItem, refreshBarButtonItem]
         }
@@ -428,11 +401,9 @@ extension NewLocationViewController: LocationAssistantDelegate
 
 
 //MARK: - ColorSelectionViewControllerDelegate
-extension NewLocationViewController: ColorSelectionViewControllerDelegate
-{
+extension NewLocationViewController: ColorSelectionViewControllerDelegate {
     
-    func colorSelectionViewControllerDidSelectColor(color: UIColor)
-    {
+    func colorSelectionViewControllerDidSelectColor(color: UIColor) {
         selectedColor = color
         tableView.reloadData()
     }

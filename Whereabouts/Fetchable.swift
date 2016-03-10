@@ -2,8 +2,7 @@
 import CoreData
 
 
-protocol Fetchable
-{
+protocol Fetchable {
     
     typealias FetchableType: NSManagedObject
     
@@ -15,25 +14,21 @@ protocol Fetchable
     
 }
 
-extension Fetchable where Self: NSManagedObject, FetchableType == Self
-{
+extension Fetchable where Self: NSManagedObject, FetchableType == Self {
     
-    static func singleObjectInContext(context: NSManagedObjectContext, predicate: NSPredicate? = nil, sortedBy: String? = nil, ascending: Bool = false) throws -> FetchableType?
-    {
+    static func singleObjectInContext(context: NSManagedObjectContext, predicate: NSPredicate? = nil, sortedBy: String? = nil, ascending: Bool = false) throws -> FetchableType? {
         let managedObjects: [FetchableType] = try objectsInContext(context, predicate: predicate, sortedBy: sortedBy, ascending: ascending)
         guard managedObjects.count > 0 else { return nil }
         
         return managedObjects.first
     }
     
-    static func objectCountInContext(context: NSManagedObjectContext, predicate: NSPredicate? = nil) -> Int
-    {
+    static func objectCountInContext(context: NSManagedObjectContext, predicate: NSPredicate? = nil) -> Int {
         let request = fetchRequest(context, predicate: predicate)
         return context.countForFetchRequest(request, error: nil)
     }
     
-    static func objectsInContext(context: NSManagedObjectContext, predicate: NSPredicate? = nil, sortedBy: String? = nil, ascending: Bool = false) throws -> [FetchableType]
-    {
+    static func objectsInContext(context: NSManagedObjectContext, predicate: NSPredicate? = nil, sortedBy: String? = nil, ascending: Bool = false) throws -> [FetchableType] {
         let request = fetchRequest(context, predicate: predicate, sortedBy: sortedBy, ascending: ascending)
         let fetchResults = try context.executeFetchRequest(request)
         
@@ -44,8 +39,7 @@ extension Fetchable where Self: NSManagedObject, FetchableType == Self
         return results
     }
     
-    static func fetchRequest(context: NSManagedObjectContext, predicate: NSPredicate? = nil, sortedBy: String? = nil, ascending: Bool = false) -> NSFetchRequest
-    {
+    static func fetchRequest(context: NSManagedObjectContext, predicate: NSPredicate? = nil, sortedBy: String? = nil, ascending: Bool = false) -> NSFetchRequest {
         let request = NSFetchRequest()
         let entity = NSEntityDescription.entityForName(entityName(), inManagedObjectContext: context)
         request.entity = entity

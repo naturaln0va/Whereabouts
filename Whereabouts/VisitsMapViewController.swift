@@ -2,9 +2,7 @@
 import UIKit
 import MapKit
 
-
-class VisitsMapViewController: UIViewController
-{
+class VisitsMapViewController: UIViewController {
     
     private lazy var mapView: MKMapView = {
         let mapView = MKMapView()
@@ -28,8 +26,7 @@ class VisitsMapViewController: UIViewController
     }
     private var shouldContinueUpdatingUserLocation = true
     
-    override func viewDidLoad()
-    {
+    override func viewDidLoad() {
         super.viewDidLoad()
         
         title = "Recent Visits"
@@ -64,18 +61,15 @@ class VisitsMapViewController: UIViewController
     }
     
     // MARK: - Actions
-    func doneButtonPressed()
-    {
+    func doneButtonPressed() {
         dismissViewControllerAnimated(true, completion: nil)
     }
     
 }
 
-extension VisitsMapViewController: MKMapViewDelegate
-{
+extension VisitsMapViewController: MKMapViewDelegate {
     
-    func mapView(mapView: MKMapView, didUpdateUserLocation userLocation: MKUserLocation)
-    {
+    func mapView(mapView: MKMapView, didUpdateUserLocation userLocation: MKUserLocation) {
         guard shouldContinueUpdatingUserLocation else { return }
         
         if visits != nil {

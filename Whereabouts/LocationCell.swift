@@ -1,8 +1,7 @@
 
 import UIKit
 
-class LocationCell: StyledCell
-{
+class LocationCell: UITableViewCell {
     
     static let cellHeight: CGFloat = 68.0
     static let reuseIdentifier = "LocationCell"
@@ -12,8 +11,7 @@ class LocationCell: StyledCell
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var colorCategoryStripView: UIView!
     
-    func configureCell(locationToDisplay: Location)
-    {
+    func configureCell(locationToDisplay: Location) {
         colorCategoryStripView.backgroundColor = locationToDisplay.color
         createdDateLabel.text = locationToDisplay.date.relativeString()
         titleLabel.text = locationToDisplay.title

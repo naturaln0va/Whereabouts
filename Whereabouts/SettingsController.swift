@@ -4,8 +4,7 @@ import Foundation
 let kSettingsControllerDidChangeNotification: String = "settingsControllerDidChange"
 
 
-class SettingsController
-{
+class SettingsController {
     
     static let sharedController = SettingsController()
     
@@ -29,20 +28,17 @@ class SettingsController
     }()
     
     // MARK: - Init
-    init()
-    {
+    init() {
         loadSettings()
     }
     
     // MARK: - Private
-    private func loadSettings()
-    {
+    private func loadSettings() {
         defaults.registerDefaults(baseDefaults)
     }
     
     // MARK: - Public
-    func stringForDistanceAccuracy() -> String
-    {
+    func stringForDistanceAccuracy() -> String {
         switch distanceAccuracy {
             
         case kHorizontalAccuracyPoor:
@@ -66,8 +62,7 @@ class SettingsController
         }
     }
     
-    func stringForPhotoRange() -> String
-    {
+    func stringForPhotoRange() -> String {
         switch nearbyPhotoRange {
         case 50:
             return isUnitStyleImperial ? "165ft" : "50m"

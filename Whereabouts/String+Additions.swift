@@ -2,11 +2,9 @@
 import UIKit
 
 
-extension String
-{
+extension String {
     
-    func basicAttributedString() -> NSAttributedString
-    {
+    func basicAttributedString() -> NSAttributedString {
         let comps = self.componentsSeparatedByString("\n")
         
         if comps.count <= 1 {

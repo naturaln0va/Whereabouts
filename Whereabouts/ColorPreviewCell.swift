@@ -2,8 +2,7 @@
 import UIKit
 
 
-class ColorPreviewCell: UITableViewCell
-{
+class ColorPreviewCell: UITableViewCell {
 
     static let cellHeight: CGFloat = 44.0
     static let reuseIdentifier = "ColorPreviewCell"
@@ -23,8 +22,7 @@ class ColorPreviewCell: UITableViewCell
     }
     
     
-    override func awakeFromNib()
-    {
+    override func awakeFromNib() {
         super.awakeFromNib()
         
         colorPreView.layer.cornerRadius = 15

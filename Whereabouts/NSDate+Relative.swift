@@ -2,8 +2,7 @@
 import Foundation
 
 
-extension NSDate
-{
+extension NSDate {
     
     func hoursSince(date: NSDate) -> Int {
         return NSCalendar.currentCalendar().components(.Hour, fromDate: date, toDate: self, options: []).hour

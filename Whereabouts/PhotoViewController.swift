@@ -1,9 +1,7 @@
 
 import UIKit
 
-
-class PhotoViewController: UIViewController
-{
+class PhotoViewController: UIViewController {
 
     var firstLoad = true
     var scrollView: UIScrollView!
@@ -11,19 +9,16 @@ class PhotoViewController: UIViewController
     
     var photoToDisplay: UIImage!
     
-    override func prefersStatusBarHidden() -> Bool
-    {
+    override func prefersStatusBarHidden() -> Bool {
         return true
     }
     
-    override func viewDidLoad()
-    {
+    override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.blackColor()
     }
 
-    override func viewWillLayoutSubviews()
-    {
+    override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         
         if firstLoad {
@@ -38,8 +33,7 @@ class PhotoViewController: UIViewController
     }
     
     // MARK: - Helpers
-    func loadImageView()
-    {
+    func loadImageView() {
         imageView = UIImageView(image: photoToDisplay)
         imageView.userInteractionEnabled = true
         imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "imageTapped"))
@@ -59,8 +53,7 @@ class PhotoViewController: UIViewController
         centerScrollViewContents()
     }
     
-    func centerScrollViewContents()
-    {
+    func centerScrollViewContents() {
         let boundsSize = scrollView.bounds.size
         var contentsFrame = imageView.frame
         
@@ -79,23 +72,19 @@ class PhotoViewController: UIViewController
         imageView.frame = contentsFrame
     }
     
-    func imageTapped()
-    {
+    func imageTapped() {
         dismissViewControllerAnimated(true, completion: nil)
     }
 
 }
 
-extension PhotoViewController: UIScrollViewDelegate
-{
+extension PhotoViewController: UIScrollViewDelegate {
     
-    func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView?
-    {
+    func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
         return imageView
     }
     
-    func scrollViewDidZoom(scrollView: UIScrollView)
-    {
+    func scrollViewDidZoom(scrollView: UIScrollView) {
         centerScrollViewContents()
     }
     

@@ -2,8 +2,7 @@
 import UIKit
 
 
-class TextEntryCell: UITableViewCell
-{
+class TextEntryCell: UITableViewCell {
 
     static let cellHeight: CGFloat = 44.0
     static let reuseIdentifier = "TextEntryCell"
@@ -11,8 +10,7 @@ class TextEntryCell: UITableViewCell
     @IBOutlet var textField: UITextField!
     
     
-    override func awakeFromNib()
-    {
+    override func awakeFromNib() {
         super.awakeFromNib()
         
         textField.delegate = self
@@ -22,11 +20,9 @@ class TextEntryCell: UITableViewCell
 }
 
 
-extension TextEntryCell: UITextFieldDelegate
-{
+extension TextEntryCell: UITextFieldDelegate {
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool
-    {
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
         return endEditing(true)
     }
     

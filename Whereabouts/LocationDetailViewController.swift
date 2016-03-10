@@ -3,9 +3,7 @@ import UIKit
 import MapKit
 import Photos
 
-
-class LocationDetailViewController: StyledViewController
-{
+class LocationDetailViewController: StyledViewController {
 
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var scrollView: UIScrollView!
@@ -43,9 +41,7 @@ class LocationDetailViewController: StyledViewController
     var locationToDisplay: Location!
     var nearbyPhotos: Array<UIImage>?
     
-    
-    override func viewDidLoad()
-    {
+    override func viewDidLoad() {
         super.viewDidLoad()
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: "editButtonPressed")
@@ -90,43 +86,37 @@ class LocationDetailViewController: StyledViewController
         getDistanceFromLocation()
     }
     
-    override func viewWillDisappear(animated: Bool)
-    {
+    override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         UIApplication.sharedApplication().networkActivityIndicatorVisible = false
     }
     
-    override func viewWillAppear(animated: Bool)
-    {
+    override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         refreshView()
     }
     
-    override func viewWillLayoutSubviews()
-    {
+    override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         mapWidthConstraint.constant = CGRectGetWidth(view.bounds)
     }
     
     // MARK: - Actions
-    func editButtonPressed()
-    {
+    func editButtonPressed() {
         let newlocationVC = NewLocationViewController()
         newlocationVC.locationToEdit = locationToDisplay
         newlocationVC.delegate = self
         presentViewController(StyledNavigationController(rootViewController: newlocationVC), animated: true, completion: nil)
     }
     
-    func mapsButtonPressed()
-    {
+    func mapsButtonPressed() {
         let placeToOpen = locationToDisplay.placemark == nil ? MKPlacemark(coordinate: locationToDisplay.location.coordinate, addressDictionary: nil) : MKPlacemark(placemark: locationToDisplay.placemark!)
         let mapItem = MKMapItem(placemark: placeToOpen)
         mapItem.name = locationToDisplay.title
         mapItem.openInMapsWithLaunchOptions(nil)
     }
     
-    func actionButtonPressed()
-    {
+    func actionButtonPressed() {
         let firstActivityItem = locationToDisplay.shareableString()
         
         let activityViewController: UIActivityViewController = UIActivityViewController(
@@ -146,8 +136,7 @@ class LocationDetailViewController: StyledViewController
         presentViewController(activityViewController, animated: true, completion: nil)
     }
     
-    func getDistanceFromLocation()
-    {
+    func getDistanceFromLocation() {
         let request = MKDirectionsRequest()
         
         request.source = MKMapItem.mapItemForCurrentLocation()
@@ -202,8 +191,7 @@ class LocationDetailViewController: StyledViewController
         }
     }
     
-    func getNearbyPhotos(completion: (Array<UIImage>?, Bool) -> Void)
-    {
+    func getNearbyPhotos(completion: (Array<UIImage>?, Bool) -> Void) {
         PHPhotoLibrary.requestAuthorization { status in
             if status == .Authorized {
                 let options = PHFetchOptions()
@@ -251,8 +239,7 @@ class LocationDetailViewController: StyledViewController
         }
     }
     
-    private func refreshView()
-    {
+    private func refreshView() {
         title = locationToDisplay.title
 
         mapView.removeAnnotation(locationToDisplay)
@@ -282,11 +269,9 @@ class LocationDetailViewController: StyledViewController
 
 
 //MARK: - MapKitDelegate
-extension LocationDetailViewController: MKMapViewDelegate
-{
+extension LocationDetailViewController: MKMapViewDelegate {
     
-    func mapView(mapView: MKMapView, didUpdateUserLocation userLocation: MKUserLocation)
-    {
+    func mapView(mapView: MKMapView, didUpdateUserLocation userLocation: MKUserLocation) {
         if let lastLocation = lastUserLocation {
             guard let currentUserLocation = userLocation.location
                 where lastLocation.distanceFromLocation(currentUserLocation) > 25.0 else {
@@ -299,8 +284,7 @@ extension LocationDetailViewController: MKMapViewDelegate
         lastUserLocation = userLocation.location
     }
     
-    func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView?
-    {
+    func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
         guard annotation is Location else {
             return nil
         }
@@ -328,22 +312,18 @@ extension LocationDetailViewController: MKMapViewDelegate
 }
 
 
-extension LocationDetailViewController: NewLocationViewControllerDelegate
-{
+extension LocationDetailViewController: NewLocationViewControllerDelegate {
     
-    func newLocationViewControllerDidEditLocation(editedLocation: Location)
-    {
+    func newLocationViewControllerDidEditLocation(editedLocation: Location) {
         locationToDisplay = editedLocation
     }
     
 }
 
 
-extension LocationDetailViewController: UICollectionViewDelegate, UICollectionViewDataSource
-{
+extension LocationDetailViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell
-    {
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         guard let photos = nearbyPhotos else {
             fatalError("Should have had photos to display.")
         }
@@ -356,8 +336,7 @@ extension LocationDetailViewController: UICollectionViewDelegate, UICollectionVi
         return cell
     }
     
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath)
-    {
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         guard let photos = nearbyPhotos else {
             return
         }
@@ -368,8 +347,7 @@ extension LocationDetailViewController: UICollectionViewDelegate, UICollectionVi
         presentViewController(photoVC, animated: true, completion: nil)
     }
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
-    {
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if let photos = nearbyPhotos where photos.count > 0 {
             return photos.count
         }

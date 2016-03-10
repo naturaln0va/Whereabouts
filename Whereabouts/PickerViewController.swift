@@ -1,8 +1,7 @@
 
 import UIKit
 
-struct PickerData
-{
+struct PickerData {
     var currentIndex: Int
     var values: Array<AnyObject>
     var labels: Array<String>
@@ -14,8 +13,7 @@ struct PickerData
         }
     }
     
-    init(values: Array<AnyObject>, currentIndex: Int, labels: Array<String>, detailLabels: Array<String>? = nil, footerDescription: String? = nil)
-    {
+    init(values: Array<AnyObject>, currentIndex: Int, labels: Array<String>, detailLabels: Array<String>? = nil, footerDescription: String? = nil) {
         self.values = values
         self.currentIndex = currentIndex
         self.labels = labels
@@ -24,40 +22,34 @@ struct PickerData
     }
 }
 
-protocol PickerViewControllerDelegate
-{
+protocol PickerViewControllerDelegate {
     func pickerViewController(pvc: PickerViewController, didPickObject object: AnyObject)
 }
 
 
-class PickerViewController: UITableViewController
-{
+class PickerViewController: UITableViewController {
     
     var dataForPicker: PickerData?
     var delegate: PickerViewControllerDelegate?
     var tag: Int!
     
     
-    init(data: PickerData, tag: Int, title: String)
-    {
+    init(data: PickerData, tag: Int, title: String) {
         super.init(style: .Plain)
         dataForPicker = data
         self.tag = tag
         self.title = title
     }
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?)
-    {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
 
-    required init?(coder aDecoder: NSCoder)
-    {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewDidLoad()
-    {
+    override func viewDidLoad() {
         super.viewDidLoad()
         
         guard let data = dataForPicker else { fatalError("There was no data") }
@@ -85,33 +77,28 @@ class PickerViewController: UITableViewController
     }
     
     // MARK: - UITableViewDataSource
-    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat
-    {
+    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 35.0
     }
     
-    override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat
-    {
+    override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 0.0001
     }
     
-    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView?
-    {
+    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let coloredBackgroundView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: CGRectGetWidth(tableView.bounds), height: 24.0))
         coloredBackgroundView.backgroundColor = UIColor.clearColor()
         return coloredBackgroundView
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int
-    {
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let data = dataForPicker else { fatalError("There was no data") }
         
         return data.count
     }
     
     // MARK: - UITableViewDelegate
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
-    {
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .Subtitle, reuseIdentifier: "defaultCell")
         
         guard let data = dataForPicker else { fatalError("There was no data") }
@@ -130,8 +117,7 @@ class PickerViewController: UITableViewController
         return cell
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
-    {
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
         guard let data = dataForPicker else { fatalError("There was no data") }

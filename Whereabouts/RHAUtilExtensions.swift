@@ -1,7 +1,3 @@
-//
-//  Created by Ryan Ackermann on 10/20/14.
-//  Copyright (c) 2014 Ryan Ackermann. All rights reserved.
-//
 
 import UIKit
 import CoreLocation
@@ -12,14 +8,6 @@ func delay(delay:Double, closure:()->())
         dispatch_get_main_queue(), closure)
 }
 
-extension NSObject
-{
-    
-    var classNameString: String {
-        return NSStringFromClass(self.dynamicType).componentsSeparatedByString(".").last!
-    }
-    
-}
 
 extension CLLocation
 {

@@ -3,8 +3,7 @@ import UIKit
 import CoreData
 
 
-class LocationsViewController: UITableViewController
-{
+class LocationsViewController: UITableViewController {
     
     private let searchController = UISearchController(searchResultsController: nil)
     private var filteredLocations: Array<Location>? {
@@ -27,13 +26,11 @@ class LocationsViewController: UITableViewController
     }()
     
     
-    deinit
-    {
+    deinit {
         fetchedResultsController.delegate = nil
     }
     
-    override func viewDidLoad()
-    {
+    override func viewDidLoad() {
         super.viewDidLoad()
         
         title = "Whereabouts"
@@ -70,34 +67,29 @@ class LocationsViewController: UITableViewController
         searchController.searchBar.tintColor = ColorController.navBarBackgroundColor
     }
     
-    override func viewWillAppear(animated: Bool)
-    {
+    override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
         refreshVisits()
     }
     
     // MARK: - BarButon Actions
-    func locateBarButtonWasPressed()
-    {
+    func locateBarButtonWasPressed() {
         let newlocationVC = NewLocationViewController()
         newlocationVC.assistant = LocationAssistant(viewController: newlocationVC)
         presentViewController(StyledNavigationController(rootViewController: newlocationVC), animated: true, completion: nil)
     }
     
-    func settingsBarButtonWasPressed()
-    {
+    func settingsBarButtonWasPressed() {
         presentViewController(StyledNavigationController(rootViewController: SettingsViewController()), animated: true, completion: nil)
     }
     
-    func visitsBarButtonPressed()
-    {
+    func visitsBarButtonPressed() {
         presentViewController(StyledNavigationController(rootViewController: VisitsMapViewController()), animated: true, completion: nil)
     }
     
     // MARK: - Private
-    private func fetchLocations()
-    {
+    private func fetchLocations() {
         do {
             try fetchedResultsController.performFetch()
         }
@@ -107,8 +99,7 @@ class LocationsViewController: UITableViewController
         }
     }
     
-    private func refreshVisits()
-    {
+    private func refreshVisits() {
         guard SettingsController.sharedController.shouldMonitorVisits else {
             toolbarItems = nil
             navigationController?.toolbarHidden = true
@@ -130,8 +121,7 @@ class LocationsViewController: UITableViewController
     }
     
     // MARK: - UITableViewDelegate
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
-    {
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCellWithIdentifier(LocationCell.reuseIdentifier) as? LocationCell else {
             fatalError("Expected to dequeue a 'LocationCell'.")
         }
@@ -146,8 +136,7 @@ class LocationsViewController: UITableViewController
         return cell
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
-    {
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         searchController.searchBar.resignFirstResponder()
         
@@ -163,8 +152,7 @@ class LocationsViewController: UITableViewController
         }
     }
     
-    override func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle
-    {
+    override func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
         if filteredLocations == nil {
             return .Delete
         }
@@ -173,16 +161,14 @@ class LocationsViewController: UITableViewController
         }
     }
     
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath)
-    {
+    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if let location = self.fetchedResultsController.objectAtIndexPath(indexPath) as? Location {
             PersistentController.sharedController.deleteLocation(location)
         }
     }
     
     // MARK: - UITableViewDataSource
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int
-    {
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if filteredLocations != nil {
             return filteredLocations!.count
         }
@@ -195,16 +181,13 @@ class LocationsViewController: UITableViewController
 }
 
 
-extension LocationsViewController: NSFetchedResultsControllerDelegate
-{
+extension LocationsViewController: NSFetchedResultsControllerDelegate {
     
-    func controllerWillChangeContent(controller: NSFetchedResultsController)
-    {
+    func controllerWillChangeContent(controller: NSFetchedResultsController) {
         tableView.beginUpdates()
     }
     
-    func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?)
-    {
+    func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
         switch type {
         case .Insert:
             tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
@@ -225,35 +208,29 @@ extension LocationsViewController: NSFetchedResultsControllerDelegate
         }
     }
     
-    func controllerDidChangeContent(controller: NSFetchedResultsController)
-    {
+    func controllerDidChangeContent(controller: NSFetchedResultsController) {
         tableView.endUpdates()
     }
     
 }
 
 
-extension LocationsViewController: UISearchBarDelegate, UISearchControllerDelegate
-{
+extension LocationsViewController: UISearchBarDelegate, UISearchControllerDelegate {
     
     // MARK: UISearchBarDelegate
-    func searchBarShouldBeginEditing(searchBar: UISearchBar) -> Bool
-    {
+    func searchBarShouldBeginEditing(searchBar: UISearchBar) -> Bool {
         return true
     }
     
-    func searchBarShouldEndEditing(searchBar: UISearchBar) -> Bool
-    {
+    func searchBarShouldEndEditing(searchBar: UISearchBar) -> Bool {
         return true
     }
     
-    func searchBarCancelButtonClicked(searchBar: UISearchBar)
-    {
+    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
         filteredLocations = nil
     }
     
-    func searchBar(searchBar: UISearchBar, textDidChange searchText: String)
-    {
+    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
         if let fetched: NSArray = fetchedResultsController.fetchedObjects, let searchText = searchBar.text {
             if searchText.characters.count == 0 {
                 filteredLocations = nil
@@ -267,8 +244,7 @@ extension LocationsViewController: UISearchBarDelegate, UISearchControllerDelega
         }
     }
     
-    func searchBarSearchButtonClicked(searchBar: UISearchBar)
-    {
+    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
     }
 

@@ -1,12 +1,9 @@
 
 import UIKit
 
+class StyledNavigationController: UINavigationController {
 
-class StyledNavigationController: UINavigationController
-{
-
-    override func viewDidLoad()
-    {
+    override func viewDidLoad() {
         super.viewDidLoad()
         
         toolbar.tintColor = ColorController.navBarBackgroundColor
@@ -22,13 +19,11 @@ class StyledNavigationController: UINavigationController
         ]
     }
     
-    override func prefersStatusBarHidden() -> Bool
-    {
+    override func prefersStatusBarHidden() -> Bool {
         return false
     }
     
-    override func preferredStatusBarStyle() -> UIStatusBarStyle
-    {
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
         return .LightContent
     }
     

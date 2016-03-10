@@ -2,11 +2,9 @@
 import UIKit
 
 
-class PhotosLayout: UICollectionViewFlowLayout
-{
+class PhotosLayout: UICollectionViewFlowLayout {
     
-    override func prepareLayout()
-    {
+    override func prepareLayout() {
         sectionInset = UIEdgeInsetsMake(5, 5, 5, 5)
         
         let size = (collectionView?.bounds.size.height)! - 10.0

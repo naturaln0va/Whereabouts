@@ -4,8 +4,7 @@ import NotificationCenter
 import CoreLocation
 
 
-class TodayViewController: UIViewController, NCWidgetProviding
-{
+class TodayViewController: UIViewController, NCWidgetProviding {
         
     @IBOutlet weak var locationLabel: UILabel!
     @IBOutlet var activityIndicator: UIActivityIndicatorView!
@@ -29,8 +28,7 @@ class TodayViewController: UIViewController, NCWidgetProviding
     let assistant = LocationAssistant(viewController: nil)
     //let sharedDefaults = NSUserDefaults(suiteName: "group.net.naturaln0va.Whereabouts")
     
-    override func viewDidLoad()
-    {
+    override func viewDidLoad() {
         super.viewDidLoad()
         assistant.delegate = self
         
@@ -42,8 +40,7 @@ class TodayViewController: UIViewController, NCWidgetProviding
         view.addGestureRecognizer(doubleTapGesture)
     }
     
-    override func viewDidAppear(animated: Bool)
-    {
+    override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         if location == nil {
             assistant.getLocation()
@@ -53,8 +50,7 @@ class TodayViewController: UIViewController, NCWidgetProviding
         }
     }
     
-    func relocate()
-    {
+    func relocate() {
         locationLabel.text = "Locating..."
         altitudeLabel.text = "-"
 
@@ -64,8 +60,7 @@ class TodayViewController: UIViewController, NCWidgetProviding
         assistant.getLocation()
     }
     
-    func updateView()
-    {
+    func updateView() {
         guard let location = location else {
             return
         }
@@ -78,13 +73,11 @@ class TodayViewController: UIViewController, NCWidgetProviding
         locationLabel.text = stringFromAddress(address, withNewLine: true)
     }
     
-    func widgetMarginInsetsForProposedMarginInsets(defaultMarginInsets: UIEdgeInsets) -> UIEdgeInsets
-    {
+    func widgetMarginInsetsForProposedMarginInsets(defaultMarginInsets: UIEdgeInsets) -> UIEdgeInsets {
         return UIEdgeInsets(top: 12.0, left: 44.0, bottom: 12.0, right: 12.0)
     }
     
-    func widgetPerformUpdateWithCompletionHandler(completionHandler: ((NCUpdateResult) -> Void))
-    {
+    func widgetPerformUpdateWithCompletionHandler(completionHandler: ((NCUpdateResult) -> Void)) {
         if location == nil {
             assistant.getLocation()
         }
@@ -104,11 +97,9 @@ class TodayViewController: UIViewController, NCWidgetProviding
 }
 
 
-extension TodayViewController: LocationAssistantDelegate
-{
+extension TodayViewController: LocationAssistantDelegate {
     
-    func receivedLocation(location: CLLocation, finished: Bool)
-    {
+    func receivedLocation(location: CLLocation, finished: Bool) {
         self.location = location
         
         if finished {
@@ -116,29 +107,25 @@ extension TodayViewController: LocationAssistantDelegate
         }
     }
     
-    func receivedAddress(placemark: CLPlacemark)
-    {
+    func receivedAddress(placemark: CLPlacemark) {
         self.placemark = placemark
         activityIndicator.stopAnimating()
     }
     
-    func authorizationDenied()
-    {
+    func authorizationDenied() {
         locationLabel.text = "Location Access Denied."
         altitudeLabel.text = "-"
         activityIndicator.stopAnimating()
     }
     
-    func failedToGetLocation()
-    {
+    func failedToGetLocation() {
         if location == nil {
             locationLabel.text = "Could not get a location."
         }
         activityIndicator.stopAnimating()
     }
     
-    func failedToGetAddress()
-    {
+    func failedToGetAddress() {
         activityIndicator.stopAnimating()
     }
     

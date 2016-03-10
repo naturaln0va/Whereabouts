@@ -4,8 +4,7 @@ import CoreData
 import MapKit
 
 
-class Visit: NSManagedObject
-{
+class Visit: NSManagedObject {
     
     private lazy var dateFormatter: NSDateFormatter = {
         let formatter = NSDateFormatter()
@@ -21,8 +20,7 @@ class Visit: NSManagedObject
 }
 
 
-extension Visit: MKAnnotation
-{
+extension Visit: MKAnnotation {
     
     var title: String? {
         return (totalVisits == 1 ? "Visited on: " : "\(totalVisits) since ") + dateFormatter.stringFromDate(arrivalDate)
@@ -35,13 +33,11 @@ extension Visit: MKAnnotation
 }
 
 
-extension Visit: Fetchable
-{
+extension Visit: Fetchable {
     
     typealias FetchableType = Visit
     
-    static func entityName() -> String
-    {
+    static func entityName() -> String {
         return "Visit"
     }
     

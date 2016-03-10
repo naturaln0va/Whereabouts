@@ -14,8 +14,7 @@ let kLocationTimeoutNormal:     Int = 15
 let kLocationTimeoutLong:       Int = 25
 let kLocationTimeoutVeryLong:   Int = 45
 
-@objc protocol LocationAssistantDelegate
-{
+@objc protocol LocationAssistantDelegate {
     func receivedLocation(location: CLLocation, finished: Bool)
     optional func receivedAddress(placemark: CLPlacemark)
     optional func authorizationDenied()
@@ -23,9 +22,7 @@ let kLocationTimeoutVeryLong:   Int = 45
     optional func failedToGetAddress()
 }
 
-
-class LocationAssistant: NSObject, CLLocationManagerDelegate, LocationAccessViewControllerDelegate
-{
+class LocationAssistant: NSObject, CLLocationManagerDelegate, LocationAccessViewControllerDelegate {
     
     private let manager = CLLocationManager()
     private let geocoder = CLGeocoder()
@@ -41,15 +38,12 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate, LocationAccessView
     private var monitoringLocationUpdates = false
     private var reverseGeocoding = false
     
-    
-    init(viewController: UIViewController?)
-    {
+    init(viewController: UIViewController?) {
         parentViewController = viewController
     }
     
     // MARK: - Public Methods
-    func promptForLocationAccess()
-    {
+    func promptForLocationAccess() {
         if let parentVC = parentViewController {
             let locationAccessVC = LocationAccessViewController()
             locationAccessVC.delegate = self
@@ -62,8 +56,7 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate, LocationAccessView
         }
     }
     
-    func getLocation()
-    {
+    func getLocation() {
         checkLocationAuthorization()
         
         if !locationAccess() {
@@ -80,8 +73,7 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate, LocationAccessView
         }
     }
     
-    func placemarkFromString(stringToGeocode geocodeString: String, completion: (CLPlacemark?, NSError?) -> Void)
-    {
+    func placemarkFromString(stringToGeocode geocodeString: String, completion: (CLPlacemark?, NSError?) -> Void) {
         #if MAIN_APP
             UIApplication.sharedApplication().networkActivityIndicatorVisible = true
         #endif
@@ -98,8 +90,7 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate, LocationAccessView
         }
     }
     
-    func getAddressForLocation(locationToGeocode: CLLocation)
-    {
+    func getAddressForLocation(locationToGeocode: CLLocation) {
         if !reverseGeocoding {
             reverseGeocoding = true
             
@@ -127,8 +118,7 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate, LocationAccessView
         }
     }
     
-    func startVisitsMonitoring()
-    {
+    func startVisitsMonitoring() {
         if monitoringLocationUpdates {
             return
         }
@@ -145,16 +135,14 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate, LocationAccessView
         }
     }
     
-    func terminate()
-    {
+    func terminate() {
         delegate = nil
         stopLocationManager()
         if monitoringLocationUpdates { manager.stopMonitoringVisits() }
     }
     
     // MARK: - Internal Helpers
-    private func checkLocationAuthorization()
-    {
+    private func checkLocationAuthorization() {
         let authStatus = CLLocationManager.authorizationStatus()
         
         switch authStatus {
@@ -177,8 +165,7 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate, LocationAccessView
         }
     }
     
-    private func locationAccess() -> Bool
-    {
+    private func locationAccess() -> Bool {
         if CLLocationManager.authorizationStatus() == .Denied ||
             CLLocationManager.authorizationStatus() == .Restricted {
                 return false
@@ -188,8 +175,7 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate, LocationAccessView
         }
     }
     
-    private func startLocationManager()
-    {
+    private func startLocationManager() {
         if CLLocationManager.locationServicesEnabled() {
             manager.delegate = self
             manager.desiredAccuracy = SettingsController.sharedController.distanceAccuracy
@@ -201,8 +187,7 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate, LocationAccessView
         }
     }
     
-    private func stopLocationManager()
-    {
+    private func stopLocationManager() {
         if updatingLocation {
             if let timer = timer {
                 timer.invalidate()
@@ -222,8 +207,7 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate, LocationAccessView
         }
     }
     
-    internal func didTimeOut()
-    {
+    internal func didTimeOut() {
         stopLocationManager()
         
         if let delegate = delegate {
@@ -232,8 +216,7 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate, LocationAccessView
     }
     
     // MARK: - LocationAccessViewController Delegate
-    func accessGranted()
-    {
+    func accessGranted() {
         if !locationAccess() {
             #if MAIN_APP
                 UIApplication.sharedApplication().openURL(NSURL(string: UIApplicationOpenSettingsURLString)!)
@@ -244,16 +227,14 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate, LocationAccessView
         }
     }
     
-    func accessDenied()
-    {
+    func accessDenied() {
         if let delegate = delegate {
             delegate.authorizationDenied?()
         }
     }
     
     // MARK: - CoreLocation Delegate
-    func locationManager(manager: CLLocationManager, didFailWithError error: NSError)
-    {
+    func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
         print("Failed with error: \(error.localizedDescription)")
         
         if let delegate = delegate {
@@ -267,8 +248,7 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate, LocationAccessView
         stopLocationManager()
     }
     
-    func locationManager(manager: CLLocationManager, didVisit visit: CLVisit)
-    {
+    func locationManager(manager: CLLocationManager, didVisit visit: CLVisit) {
         #if MAIN_APP
             var visitNotificationString = ""
             if visit.departureDate.isEqualToDate(NSDate.distantFuture()) {
@@ -320,8 +300,7 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate, LocationAccessView
         #endif
     }
     
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation])
-    {
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let newLocation = locations.last {
             if newLocation.timestamp.timeIntervalSinceNow < -5 ||
                 newLocation.horizontalAccuracy < 0 {

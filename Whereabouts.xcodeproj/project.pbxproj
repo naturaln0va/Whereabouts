@@ -51,7 +51,6 @@
 		69640E901BFBCDE80050722D /* PhotosLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69640E8F1BFBCDE80050722D /* PhotosLayout.swift */; };
 		69640E931BFBCEA60050722D /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69640E911BFBCEA60050722D /* PhotoCell.swift */; };
 		69640E941BFBCEA60050722D /* PhotoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 69640E921BFBCEA60050722D /* PhotoCell.xib */; };
-		698AF3891BF69BD800F1E745 /* StyledCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698AF3881BF69BD800F1E745 /* StyledCell.swift */; };
 		698AF38C1BF6D66D00F1E745 /* TextEntryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698AF38A1BF6D66D00F1E745 /* TextEntryCell.swift */; };
 		698AF38D1BF6D66D00F1E745 /* TextEntryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 698AF38B1BF6D66D00F1E745 /* TextEntryCell.xib */; };
 		698AF3941BF7910100F1E745 /* ColorPreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698AF3921BF7910100F1E745 /* ColorPreviewCell.swift */; };
@@ -135,7 +134,6 @@
 		69640E8F1BFBCDE80050722D /* PhotosLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotosLayout.swift; sourceTree = "<group>"; };
 		69640E911BFBCEA60050722D /* PhotoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoCell.swift; sourceTree = "<group>"; };
 		69640E921BFBCEA60050722D /* PhotoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhotoCell.xib; sourceTree = "<group>"; };
-		698AF3881BF69BD800F1E745 /* StyledCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledCell.swift; sourceTree = "<group>"; };
 		698AF38A1BF6D66D00F1E745 /* TextEntryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextEntryCell.swift; sourceTree = "<group>"; };
 		698AF38B1BF6D66D00F1E745 /* TextEntryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TextEntryCell.xib; sourceTree = "<group>"; };
 		698AF3921BF7910100F1E745 /* ColorPreviewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorPreviewCell.swift; sourceTree = "<group>"; };
@@ -224,9 +222,8 @@
 		48CB17591AD1F2A000864CBF /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				4863ACAD1B24EF4D009F008F /* LocationCell.xib */,
 				4863ACAC1B24EF4D009F008F /* LocationCell.swift */,
-				698AF3881BF69BD800F1E745 /* StyledCell.swift */,
+				4863ACAD1B24EF4D009F008F /* LocationCell.xib */,
 				698AF38A1BF6D66D00F1E745 /* TextEntryCell.swift */,
 				698AF38B1BF6D66D00F1E745 /* TextEntryCell.xib */,
 				698AF3921BF7910100F1E745 /* ColorPreviewCell.swift */,
@@ -274,27 +271,17 @@
 				48FF04FD1AD036C700A2FA34 /* Extensions */,
 				69CEA4A81BF63AC200F5022B /* Frameworks */,
 				48D4FFE71BF7D125006DA09C /* Layouts */,
-				48FF04FC1AD036BC00A2FA34 /* Objects */,
 				48FF05011AD0372400A2FA34 /* Resources */,
-				48DEDA3419F592F80094CB8F /* Supporting Files */,
 				697FBD721C19D24B00743212 /* Transitions */,
 				4849BD021B093A44003A40AF /* ViewControllers */,
 			);
 			path = Whereabouts;
 			sourceTree = "<group>";
 		};
-		48DEDA3419F592F80094CB8F /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				69D590F91C74DCEE00481E44 /* Images.xcassets */,
-				48DEDA3519F592F80094CB8F /* Info.plist */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
 		48FF04FB1AD036A000A2FA34 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				48DEDA3619F592F80094CB8F /* AppDelegate.swift */,
 				483AF54C1B0BFF2700A00BED /* PersistenceController.swift */,
 				48E3B8551B193FA3003DD726 /* MenuController.swift */,
 				48E3B85F1B195896003DD726 /* ColorController.swift */,
@@ -302,16 +289,6 @@
 				69B7A3BA1BFCD76B000BEBA0 /* SettingsController.swift */,
 			);
 			name = Controllers;
-			sourceTree = "<group>";
-		};
-		48FF04FC1AD036BC00A2FA34 /* Objects */ = {
-			isa = PBXGroup;
-			children = (
-				48DEDA3619F592F80094CB8F /* AppDelegate.swift */,
-				48DEDA3F19F592F80094CB8F /* LaunchScreen.xib */,
-				4880D47F1A5331960077E68B /* Whereabouts.entitlements */,
-			);
-			name = Objects;
 			sourceTree = "<group>";
 		};
 		48FF04FD1AD036C700A2FA34 /* Extensions */ = {
@@ -329,6 +306,10 @@
 		48FF05011AD0372400A2FA34 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				48DEDA3F19F592F80094CB8F /* LaunchScreen.xib */,
+				69D590F91C74DCEE00481E44 /* Images.xcassets */,
+				48DEDA3519F592F80094CB8F /* Info.plist */,
+				4880D47F1A5331960077E68B /* Whereabouts.entitlements */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -573,7 +554,6 @@
 				48D4FFE41BF7CB7A006DA09C /* ColorSelectionViewController.swift in Sources */,
 				48D73D6B1C012AA900B1A9B5 /* LocationModel.xcdatamodeld in Sources */,
 				48C7636419F59D230096B27A /* RHAUtilExtensions.swift in Sources */,
-				698AF3891BF69BD800F1E745 /* StyledCell.swift in Sources */,
 				6954E20B1C177BD500106EB0 /* PhotoTransition.swift in Sources */,
 				698AF3991BF79A3F00F1E745 /* Location.swift in Sources */,
 				483AF54D1B0BFF2700A00BED /* PersistenceController.swift in Sources */,

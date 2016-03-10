@@ -4,11 +4,9 @@ import CoreData
 import MapKit
 
 
-class Location: NSManagedObject
-{
+class Location: NSManagedObject {
     
-    func shareableString() -> String
-    {
+    func shareableString() -> String {
         var shareString = ""
         
         if let title = title {
@@ -30,8 +28,7 @@ class Location: NSManagedObject
 }
 
 
-extension Location: MKAnnotation
-{
+extension Location: MKAnnotation {
     
     var coordinate: CLLocationCoordinate2D {
         return location.coordinate
@@ -48,13 +45,11 @@ extension Location: MKAnnotation
 }
 
 
-extension Location: Fetchable
-{
+extension Location: Fetchable {
     
     typealias FetchableType = Location
     
-    static func entityName() -> String
-    {
+    static func entityName() -> String {
         return "Location"
     }
     

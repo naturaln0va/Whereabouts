@@ -2,25 +2,21 @@
 import UIKit
 
 
-class PhotoTransition: NSObject, UIViewControllerAnimatedTransitioning, UIViewControllerTransitioningDelegate
-{
+class PhotoTransition: NSObject, UIViewControllerAnimatedTransitioning, UIViewControllerTransitioningDelegate {
     
     var transitionDuration: Double!
     
-    init(duration: Double)
-    {
+    init(duration: Double) {
         super.init()
         transitionDuration = duration
     }
 
     // MARK: - UIViewControllerAnimatedTransitioning
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval
-    {
+    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
         return transitionDuration
     }
     
-    func animateTransition(transitionContext: UIViewControllerContextTransitioning)
-    {
+    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
         guard let fromVC = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey),
             let toVC = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey) else {
                 print("Could not parse the to and/or from view controllers from the context.")
@@ -43,13 +39,11 @@ class PhotoTransition: NSObject, UIViewControllerAnimatedTransitioning, UIViewCo
     }
     
     // MARK: - UIViewControllerTransitioningDelegate
-    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning?
-    {
+    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return self
     }
     
-    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning?
-    {
+    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return self
     }
     

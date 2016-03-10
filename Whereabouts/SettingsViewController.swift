@@ -2,12 +2,9 @@
 import UIKit
 import MessageUI
 
+class SettingsViewController: UITableViewController {
 
-class SettingsViewController: UITableViewController
-{
-
-    enum UserSectionRows: Int
-    {
+    enum UserSectionRows: Int {
         case AccuracyRow
         case TimeoutRow
         case PhotoRangeRow
@@ -16,30 +13,26 @@ class SettingsViewController: UITableViewController
         case TotalRows
     }
     
-    enum GeneralSectionRows: Int
-    {
+    enum GeneralSectionRows: Int {
         case RateRow
         case ContactRow
         case TotalRows
     }
     
-    enum TableSections: Int
-    {
+    enum TableSections: Int {
         case UserSection
         case GeneralSection
         case TotalSections
     }
     
-    enum PickerViewControllerTags: Int
-    {
+    enum PickerViewControllerTags: Int {
         case AccuracyTag
         case TimeoutTag
         case PhotoRangeTag
         case UnitStyleTag
     }
     
-    enum SettingSwitchTag: Int
-    {
+    enum SettingSwitchTag: Int {
         case VisitSwitch
     }
     
@@ -66,14 +59,11 @@ class SettingsViewController: UITableViewController
         return footerView
     }()
     
-    
-    deinit
-    {
+    deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
-    override func viewDidLoad()
-    {
+    override func viewDidLoad() {
         super.viewDidLoad()
         
         title = "Settings"
@@ -90,13 +80,11 @@ class SettingsViewController: UITableViewController
     }
     
     // MARK: - Actions
-    func doneButtonPressed()
-    {
+    func doneButtonPressed() {
         dismissViewControllerAnimated(true, completion: nil)
     }
     
-    func switchWasToggled(sender: UISwitch)
-    {
+    func switchWasToggled(sender: UISwitch) {
         switch sender.tag {
             
         case SettingSwitchTag.VisitSwitch.rawValue:
@@ -109,31 +97,26 @@ class SettingsViewController: UITableViewController
     }
     
     // MARK: - Notifications
-    func settingsDidChange()
-    {
+    func settingsDidChange() {
         tableView.reloadData()
     }
 
     // MARK: - UITableViewDataSource
-    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat
-    {
+    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 35.0
     }
     
-    override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat
-    {
+    override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 0.0001
     }
     
-    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView?
-    {
+    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let coloredBackgroundView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: CGRectGetWidth(tableView.bounds), height: 24.0))
         coloredBackgroundView.backgroundColor = UIColor.clearColor()
         return coloredBackgroundView
     }
     
-    override func tableView(tableView: UITableView, shouldHighlightRowAtIndexPath indexPath: NSIndexPath) -> Bool
-    {
+    override func tableView(tableView: UITableView, shouldHighlightRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         if indexPath.section == TableSections.UserSection.rawValue && indexPath.row == UserSectionRows.VisitSwitchRow.rawValue {
             return false
         }
@@ -142,13 +125,11 @@ class SettingsViewController: UITableViewController
         }
     }
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int
-    {
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return TableSections.TotalSections.rawValue
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int
-    {
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == TableSections.GeneralSection.rawValue {
             return GeneralSectionRows.TotalRows.rawValue
         }
@@ -161,8 +142,7 @@ class SettingsViewController: UITableViewController
     }
 
     // MARK: - UITableViewDelegate
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
-    {
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .Value1, reuseIdentifier: "defaultCell")
         
         if indexPath.section == TableSections.UserSection.rawValue {
@@ -231,8 +211,7 @@ class SettingsViewController: UITableViewController
         return cell
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
-    {
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
         if indexPath.section == TableSections.GeneralSection.rawValue {
@@ -380,22 +359,18 @@ class SettingsViewController: UITableViewController
 }
 
 
-extension SettingsViewController: MFMailComposeViewControllerDelegate
-{
+extension SettingsViewController: MFMailComposeViewControllerDelegate {
     
-    func mailComposeController(controller: MFMailComposeViewController, didFinishWithResult result: MFMailComposeResult, error: NSError?)
-    {
+    func mailComposeController(controller: MFMailComposeViewController, didFinishWithResult result: MFMailComposeResult, error: NSError?) {
         dismissViewControllerAnimated(true, completion: nil)
     }
     
 }
 
 
-extension SettingsViewController: PickerViewControllerDelegate
-{
+extension SettingsViewController: PickerViewControllerDelegate {
     
-    func pickerViewController(pvc: PickerViewController, didPickObject object: AnyObject)
-    {
+    func pickerViewController(pvc: PickerViewController, didPickObject object: AnyObject) {
         switch pvc.tag {
             
         case PickerViewControllerTags.AccuracyTag.rawValue:

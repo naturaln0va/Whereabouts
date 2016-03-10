@@ -2,14 +2,12 @@
 import UIKit
 
 
-class DefaultLayout: UICollectionViewFlowLayout
-{
+class DefaultLayout: UICollectionViewFlowLayout {
     
     private var itemsPerRow: Int = 2
     
     
-    override func prepareLayout()
-    {
+    override func prepareLayout() {
         sectionInset = UIEdgeInsetsMake(20, 20, 20, 20)
         
         let collectionViewWidth = collectionView?.bounds.size.width

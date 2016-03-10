@@ -4,8 +4,7 @@ import CoreData
 import CoreLocation
 
 
-class PersistentController
-{
+class PersistentController {
     
     static let sharedController = PersistentController()
     private let kMigratedLegacyDataKey: String = "migratedLegacyData"

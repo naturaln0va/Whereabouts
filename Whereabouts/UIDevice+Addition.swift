@@ -2,8 +2,7 @@
 import UIKit
 
 
-extension UIDevice
-{
+extension UIDevice {
     
     public var deviceCode: String {
         var sysInfo: [CChar] = Array(count: sizeof(utsname), repeatedValue: 0)

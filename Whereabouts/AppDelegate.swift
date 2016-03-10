@@ -3,14 +3,12 @@ import UIKit
 
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate
-{
+class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var assistant = LocationAssistant(viewController: nil)
 
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool
-    {
+    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
         let notificationSettings = UIUserNotificationSettings(
             forTypes: .Alert,
@@ -41,8 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         return true
     }
     
-    internal func settingsDidChange()
-    {
+    internal func settingsDidChange() {
         if SettingsController.sharedController.shouldMonitorVisits {
             assistant.startVisitsMonitoring()
         }
