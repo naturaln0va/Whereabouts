@@ -278,13 +278,16 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate, LocationAccessView
             }
             
             let locationOfVisit = CLLocation(latitude: visit.coordinate.latitude, longitude: visit.coordinate.longitude)
+            var addressOfVisit: CLPlacemark?
             
             if let visits = try? Visit.objectsInContext(PersistentController.sharedController.visitMOC) {
                 for visit in visits {
                     if visit.location.distanceFromLocation(locationOfVisit) < 500.0 {
+                        PersistentController.sharedController.visitWasVisited(visit)
+                        
                         let notification = UILocalNotification()
                         notification.alertAction = nil
-                        notification.alertBody = "This Visit was within 500.0 meters of a previous Visit. We wont save this just yet."
+                        notification.alertBody = "You have now Visited \(visit.address == nil ? stringFromCoordinate(visit.coordinate) : stringFromAddress(visit.address!, withNewLine: false)) \(visit.totalVisits)"
                         UIApplication.sharedApplication().presentLocalNotificationNow(notification)
                         return
                     }
@@ -292,9 +295,9 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate, LocationAccessView
             }
             
             geocoder.reverseGeocodeLocation(locationOfVisit) { placemarks, error in
-                if let p = placemarks where !p.isEmpty && error == nil {
-                    let visitedAddress = p.last!
+                if let visitedAddress = placemarks?.last where error == nil {
                     
+                    addressOfVisit = visitedAddress
                     visitNotificationString += stringFromAddress(visitedAddress, withNewLine: true)
                 }
                 else {
@@ -311,7 +314,8 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate, LocationAccessView
                 visit.arrivalDate,
                 departureDate: visit.departureDate,
                 horizontalAccuracy: visit.horizontalAccuracy,
-                location: CLLocation(latitude: visit.coordinate.latitude, longitude: visit.coordinate.longitude)
+                coordinate: visit.coordinate,
+                address: addressOfVisit
             )
         #endif
     }

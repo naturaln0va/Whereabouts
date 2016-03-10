@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9525" systemVersion="15C50" minimumToolsVersion="Xcode 7.0">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9525" systemVersion="15D21" minimumToolsVersion="Xcode 7.0">
     <entity name="Visit" representedClassName=".Visit" syncable="YES">
+        <attribute name="address" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="arrivalDate" attributeType="Date" syncable="YES"/>
+        <attribute name="coordinate" attributeType="Transformable" syncable="YES"/>
         <attribute name="departureDate" attributeType="Date" syncable="YES"/>
         <attribute name="horizontalAccuracy" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="locationCoordinate" attributeType="Transformable" syncable="YES"/>
+        <attribute name="identifier" attributeType="String" syncable="YES"/>
+        <attribute name="totalVisits" attributeType="Integer 16" minValueString="1" defaultValueString="1" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Visit" positionX="-63" positionY="-18" width="128" height="105"/>
+        <element name="Visit" positionX="-63" positionY="-18" width="128" height="150"/>
     </elements>
 </model>

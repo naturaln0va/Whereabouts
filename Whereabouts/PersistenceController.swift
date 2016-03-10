@@ -116,8 +116,7 @@ class PersistentController
     }()
     
     // MARK: - Core Data Helpers
-    func migrateLegacyData()
-    {
+    func migrateLegacyData() {
         if NSUserDefaults.standardUserDefaults().boolForKey(kMigratedLegacyDataKey) == true {
             return
         }
@@ -154,8 +153,7 @@ class PersistentController
     }
     
     // MARK: - Location Management
-    func deleteLocation(locationToDelete: Location)
-    {
+    func deleteLocation(locationToDelete: Location) {
         locationMOC.deleteObject(locationToDelete)
         
         if locationMOC.hasChanges {
@@ -171,8 +169,7 @@ class PersistentController
         }
     }
     
-    func updateLocation(locationToUpdate: Location, title: String, color: UIColor?, placemark: CLPlacemark?)
-    {
+    func updateLocation(locationToUpdate: Location, title: String, color: UIColor?, placemark: CLPlacemark?) {
         do {
             if let result = try Location.singleObjectInContext(locationMOC, predicate: NSPredicate(format: "identifier == [c] %@", locationToUpdate.identifier), sortedBy: nil, ascending: false) {
                 result.placemark = placemark
@@ -201,8 +198,7 @@ class PersistentController
         }
     }
     
-    func saveLocation(title: String, color: UIColor?, placemark: CLPlacemark?, location: CLLocation)
-    {
+    func saveLocation(title: String, color: UIColor?, placemark: CLPlacemark?, location: CLLocation) {
         guard let dataToSave = NSEntityDescription.insertNewObjectForEntityForName(Location.entityName(), inManagedObjectContext: locationMOC) as? Location else {
             fatalError("Expected to insert and entity of type 'Location'.")
         }
@@ -228,8 +224,7 @@ class PersistentController
     }
     
     // MARK: - Visits Management
-    func cleanUpVisits()
-    {
+    func cleanUpVisits() {
         if let allVisits = try? Visit.objectsInContext(visitMOC) {
             var visitsToDelete = [Visit]()
             for visit in allVisits {
@@ -241,8 +236,7 @@ class PersistentController
         }
     }
     
-    func deleteVisit(visitToDelete: Visit)
-    {
+    func deleteVisit(visitToDelete: Visit) {
         visitMOC.deleteObject(visitToDelete)
         
         if visitMOC.hasChanges {
@@ -258,8 +252,7 @@ class PersistentController
         }
     }
     
-    func deleteVisits(visitsToDelete: [Visit])
-    {
+    func deleteVisits(visitsToDelete: [Visit]) {
         for visit in visitsToDelete {
             visitMOC.deleteObject(visit)
         }
@@ -275,18 +268,20 @@ class PersistentController
         }
     }
     
-    func saveVisit(arrivalDate: NSDate, departureDate: NSDate, horizontalAccuracy: CLLocationAccuracy, location: CLLocation)
-    {
+    func saveVisit(arrivalDate: NSDate, departureDate: NSDate, horizontalAccuracy: CLLocationAccuracy, coordinate: CLLocationCoordinate2D, address: CLPlacemark?) {
         cleanUpVisits()
         
         guard let dataToSave = NSEntityDescription.insertNewObjectForEntityForName(Visit.entityName(), inManagedObjectContext: visitMOC) as? Visit else {
             fatalError("Expected to insert and entity of type 'Visit'.")
         }
         
+        dataToSave.identifier = NSUUID().UUIDString
+        dataToSave.totalVisits = 1
         dataToSave.arrivalDate = arrivalDate
         dataToSave.departureDate = departureDate
         dataToSave.horizontalAccuracy = horizontalAccuracy
-        dataToSave.locationCoordinate = location
+        dataToSave.coordinate = coordinate
+        dataToSave.address = address
         
         if visitMOC.hasChanges {
             visitMOC.performBlockAndWait { [unowned self] in
@@ -298,6 +293,33 @@ class PersistentController
                     fatalError("Error saving visit: \(error)")
                 }
             }
+        }
+    }
+    
+    func visitWasVisited(visit: Visit) {
+        if let result = try? Visit.singleObjectInContext(visitMOC, predicate: NSPredicate(format: "identifier == [c] %@", visit.identifier), sortedBy: nil, ascending: false) {
+            
+            if let visitToUpdate = result {
+                visitToUpdate.totalVisits = visitToUpdate.totalVisits + 1
+                
+                if visitMOC.hasChanges {
+                    visitMOC.performBlockAndWait { [unowned self] in
+                        do {
+                            try self.visitMOC.save()
+                        }
+                            
+                        catch {
+                            fatalError("Error saving location: \(error)")
+                        }
+                    }
+                }
+            }
+            else {
+                print("Error adding or updating location: \(visit.identifier)")
+            }
+        }
+        else {
+            print("Error there was no entity with that identifier.")
         }
     }
     

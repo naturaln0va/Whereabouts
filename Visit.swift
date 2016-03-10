@@ -9,7 +9,8 @@ class Visit: NSManagedObject
     
     private lazy var dateFormatter: NSDateFormatter = {
         let formatter = NSDateFormatter()
-        formatter.dateFormat = "EEEE MMM d"
+        formatter.timeStyle = .ShortStyle
+        formatter.dateStyle = .MediumStyle
         return formatter
     }()
     
@@ -23,16 +24,12 @@ class Visit: NSManagedObject
 extension Visit: MKAnnotation
 {
     
-    var coordinate: CLLocationCoordinate2D {
-        return locationCoordinate.coordinate
-    }
-    
     var title: String? {
-        return "Visited on: " + dateFormatter.stringFromDate(arrivalDate)
+        return (totalVisits == 1 ? "Visited on: " : "\(totalVisits) since ") + dateFormatter.stringFromDate(arrivalDate)
     }
     
     var subtitle: String? {
-        return stringFromCoordinate(locationCoordinate.coordinate)
+        return address != nil ? stringFromAddress(address!, withNewLine: true) : stringFromCoordinate(coordinate)
     }
     
 }
