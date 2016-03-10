@@ -22,6 +22,12 @@ class LocationDetailViewController: StyledViewController
     
     var lastUserLocation: CLLocation?
 
+    private lazy var dateTimeFormatter: NSDateFormatter = {
+        let formatter = NSDateFormatter()
+        formatter.timeStyle = .ShortStyle
+        formatter.dateStyle = .MediumStyle
+        return formatter
+    }()
     private lazy var openMapsButton: UIBarButtonItem = {
         return UIBarButtonItem(image: UIImage(named: "open-location"), style: .Plain, target: self, action: "mapsButtonPressed")
     }()
@@ -268,7 +274,7 @@ class LocationDetailViewController: StyledViewController
         }
         
         altitudeLabel.text = altitudeString(locationToDisplay.location.altitude)
-        dateLabel.text = relativeStringForDate(locationToDisplay.location.timestamp)
+        dateLabel.text = dateTimeFormatter.stringFromDate(locationToDisplay.date)
         colorView.backgroundColor = locationToDisplay.color ?? UIColor.clearColor()
     }
 
