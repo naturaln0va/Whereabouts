@@ -22,14 +22,11 @@ class VisitsMapViewController: UIViewController
             if let visits = visits {
                 mapView.removeAnnotations(mapView.annotations)
                 mapView.addAnnotations(visits)
+                mapView.showAnnotations(visits, animated: false)
             }
         }
     }
     private var shouldContinueUpdatingUserLocation = true
-    
-    private lazy var centerLocationItem: UIBarButtonItem = {
-        return UIBarButtonItem(image: UIImage(named: "location-arrow"), style: .Plain, target: self, action: "locateButtonPressed")
-    }()
     
     override func viewDidLoad()
     {
@@ -45,7 +42,7 @@ class VisitsMapViewController: UIViewController
             action: "doneButtonPressed"
         )
         
-        navigationItem.leftBarButtonItem = centerLocationItem
+        navigationItem.leftBarButtonItem = MKUserTrackingBarButtonItem(mapView: mapView)
         navigationItem.leftBarButtonItem?.enabled = false
         
         view.translatesAutoresizingMaskIntoConstraints = true
@@ -72,14 +69,7 @@ class VisitsMapViewController: UIViewController
         dismissViewControllerAnimated(true, completion: nil)
     }
     
-    internal func locateButtonPressed()
-    {
-        guard let userLocation = mapView.userLocation.location else { return }
-        mapView.setCenterCoordinate(userLocation.coordinate, animated: true)
-    }
-
 }
-
 
 extension VisitsMapViewController: MKMapViewDelegate
 {
