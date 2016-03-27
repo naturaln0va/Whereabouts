@@ -2,7 +2,7 @@
 import UIKit
 import MapKit
 
-class VisitsMapViewController: UIViewController {
+class VisitsMapViewController: StyledViewController {
     
     private lazy var mapView: MKMapView = {
         let mapView = MKMapView()
@@ -30,7 +30,6 @@ class VisitsMapViewController: UIViewController {
         super.viewDidLoad()
         
         title = "Recent Visits"
-        view.backgroundColor = ColorController.backgroundColor
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             title: "Done",

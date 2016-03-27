@@ -14,7 +14,7 @@ class TextEntryCell: UITableViewCell {
         super.awakeFromNib()
         
         textField.delegate = self
-        textField.tintColor = ColorController.navBarBackgroundColor
+        textField.tintColor = StyleController.sharedController.mainTintColor
     }
 
 }

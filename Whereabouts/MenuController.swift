@@ -5,22 +5,14 @@ class MenuController: NSObject
 {
     static let sharedController = MenuController()
     
-    private var presenterViewController: UIViewController?
-    private var window = UIWindow()
+    private(set) var presenterViewController: UIViewController?
+    private(set) var window: UIWindow?
     
-    lazy var locationsNC: StyledNavigationController = {
-        return StyledNavigationController(rootViewController: LocationsViewController())
-    }()
-    
-    override init() {
-        super.init()
+    static func setupMenuWithViewController(viewController: UIViewController, andWindow window: UIWindow) {
+        sharedController.presenterViewController = viewController
+        sharedController.window = window
+        sharedController.window?.rootViewController = viewController
+        window.makeKeyAndVisible()
     }
     
-    func showInWindow(window: UIWindow) {
-        presenterViewController = self.locationsNC
-        
-        self.window = window
-        window.rootViewController = presenterViewController
-        window.makeKeyAndVisible()        
-    }
 }

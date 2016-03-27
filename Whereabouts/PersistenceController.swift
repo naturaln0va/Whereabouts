@@ -125,7 +125,7 @@ class PersistentController {
         request.entity = entity
         
         do {
-            let fetched = try legacyManagedObjectContext.executeFetchRequest(request) as! Array<NSManagedObject>
+            let fetched = try legacyManagedObjectContext.executeFetchRequest(request) as! [NSManagedObject]
             print("Found \(fetched.count) objects: \(fetched)")
             
             for legacyLocation in fetched {

@@ -18,7 +18,7 @@ class NewLocationViewController: UITableViewController {
     
     private lazy var loadingBarButtonItem: UIBarButtonItem = {
         let activityView = UIActivityIndicatorView(activityIndicatorStyle: .White)
-        activityView.color = ColorController.navBarBackgroundColor
+        activityView.color = StyleController.sharedController.mainTintColor
         activityView.startAnimating()
         return UIBarButtonItem(customView: activityView)
     }()
@@ -78,7 +78,7 @@ class NewLocationViewController: UITableViewController {
         tableView = UITableView(frame: view.bounds, style: .Grouped)
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.backgroundColor = ColorController.backgroundColor
+        tableView.backgroundColor = StyleController.sharedController.backgroundColor
         tableView.registerNib(UINib(nibName: TextEntryCell.reuseIdentifier, bundle: nil), forCellReuseIdentifier: TextEntryCell.reuseIdentifier)
         tableView.registerNib(UINib(nibName: ColorPreviewCell.reuseIdentifier, bundle: nil), forCellReuseIdentifier: ColorPreviewCell.reuseIdentifier)
         
@@ -125,7 +125,7 @@ class NewLocationViewController: UITableViewController {
     }
     
     func actionButtonPressed() {
-        var activityItems = Array<AnyObject>()
+        var activityItems = [AnyObject]()
         
         guard let locationToSave = location else {
             print("Tried to share without a locaiton!")
@@ -289,7 +289,7 @@ class NewLocationViewController: UITableViewController {
         else {
             var numberOfRows = 4
             if placemark != nil {
-                numberOfRows++
+                numberOfRows += 1
             }
             return numberOfRows
             

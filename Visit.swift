@@ -19,7 +19,6 @@ class Visit: NSManagedObject {
     
 }
 
-
 extension Visit: MKAnnotation {
     
     var title: String? {
@@ -32,6 +31,17 @@ extension Visit: MKAnnotation {
     
 }
 
+extension Visit {
+    
+    @NSManaged var totalVisits: Int
+    @NSManaged var identifier: String
+    @NSManaged var coordinate: CLLocationCoordinate2D
+    @NSManaged var address: CLPlacemark?
+    @NSManaged var horizontalAccuracy: Double
+    @NSManaged var arrivalDate: NSDate
+    @NSManaged var departureDate: NSDate
+    
+}
 
 extension Visit: Fetchable {
     

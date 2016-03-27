@@ -6,7 +6,7 @@ import MapKit
 
 class Location: NSManagedObject {
     
-    func shareableString() -> String {
+    var shareableString: String {
         var shareString = ""
         
         if let title = title {
@@ -27,6 +27,16 @@ class Location: NSManagedObject {
     
 }
 
+extension Location {
+    
+    @NSManaged var date: NSDate
+    @NSManaged var identifier: String
+    @NSManaged var color: UIColor?
+    @NSManaged var placemark: CLPlacemark?
+    @NSManaged var locationTitle: String
+    @NSManaged var location: CLLocation
+    
+}
 
 extension Location: MKAnnotation {
     
@@ -43,7 +53,6 @@ extension Location: MKAnnotation {
     }
     
 }
-
 
 extension Location: Fetchable {
     

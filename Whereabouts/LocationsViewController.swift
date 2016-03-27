@@ -6,7 +6,7 @@ import CoreData
 class LocationsViewController: UITableViewController {
     
     private let searchController = UISearchController(searchResultsController: nil)
-    private var filteredLocations: Array<Location>? {
+    private var filteredLocations: [Location]? {
         didSet {
             tableView.reloadData()
         }
@@ -34,7 +34,7 @@ class LocationsViewController: UITableViewController {
         super.viewDidLoad()
         
         title = "Whereabouts"
-        view.backgroundColor = ColorController.backgroundColor
+        view.backgroundColor = StyleController.sharedController.backgroundColor
 
         navigationController?.toolbarHidden = false
         
@@ -45,7 +45,7 @@ class LocationsViewController: UITableViewController {
         navigationItem.leftBarButtonItem = leftBarButtonItem
         
         tableView.separatorStyle = .None
-        tableView.backgroundColor = ColorController.backgroundColor
+        tableView.backgroundColor = view.backgroundColor
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = LocationCell.cellHeight
         tableView.registerNib(UINib(nibName: LocationCell.reuseIdentifier, bundle: nil), forCellReuseIdentifier: LocationCell.reuseIdentifier)
@@ -63,8 +63,8 @@ class LocationsViewController: UITableViewController {
         searchController.searchBar.delegate = self
         searchController.searchBar.autocapitalizationType = .Sentences
         searchController.searchBar.searchBarStyle = .Minimal
-        searchController.searchBar.backgroundColor = ColorController.backgroundColor
-        searchController.searchBar.tintColor = ColorController.navBarBackgroundColor
+        searchController.searchBar.backgroundColor = StyleController.sharedController.backgroundColor
+        searchController.searchBar.tintColor = StyleController.sharedController.mainTintColor
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -77,15 +77,15 @@ class LocationsViewController: UITableViewController {
     func locateBarButtonWasPressed() {
         let newlocationVC = NewLocationViewController()
         newlocationVC.assistant = LocationAssistant(viewController: newlocationVC)
-        presentViewController(StyledNavigationController(rootViewController: newlocationVC), animated: true, completion: nil)
+        presentViewController(UINavigationController(rootViewController: newlocationVC), animated: true, completion: nil)
     }
     
     func settingsBarButtonWasPressed() {
-        presentViewController(StyledNavigationController(rootViewController: SettingsViewController()), animated: true, completion: nil)
+        presentViewController(UINavigationController(rootViewController: SettingsViewController()), animated: true, completion: nil)
     }
     
     func visitsBarButtonPressed() {
-        presentViewController(StyledNavigationController(rootViewController: VisitsMapViewController()), animated: true, completion: nil)
+        presentViewController(UINavigationController(rootViewController: VisitsMapViewController()), animated: true, completion: nil)
     }
     
     // MARK: - Private

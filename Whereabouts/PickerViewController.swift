@@ -3,9 +3,9 @@ import UIKit
 
 struct PickerData {
     var currentIndex: Int
-    var values: Array<AnyObject>
-    var labels: Array<String>
-    var detailLabels: Array<String>?
+    var values: [AnyObject]
+    var labels: [String]
+    var detailLabels: [String]?
     var footerDescription: String?
     var count: Int {
         get {
@@ -13,7 +13,7 @@ struct PickerData {
         }
     }
     
-    init(values: Array<AnyObject>, currentIndex: Int, labels: Array<String>, detailLabels: Array<String>? = nil, footerDescription: String? = nil) {
+    init(values: [AnyObject], currentIndex: Int, labels: [String], detailLabels: [String]? = nil, footerDescription: String? = nil) {
         self.values = values
         self.currentIndex = currentIndex
         self.labels = labels
@@ -55,7 +55,7 @@ class PickerViewController: UITableViewController {
         guard let data = dataForPicker else { fatalError("There was no data") }
 
         tableView = UITableView(frame: view.bounds, style: .Grouped)
-        tableView.backgroundColor = ColorController.backgroundColor
+        tableView.backgroundColor = StyleController.sharedController.backgroundColor
         tableView.delegate = self
         tableView.dataSource = self
         
@@ -110,7 +110,7 @@ class PickerViewController: UITableViewController {
         }
         
         if data.currentIndex == indexPath.row {
-            cell.tintColor = ColorController.navBarBackgroundColor
+            cell.tintColor = StyleController.sharedController.mainTintColor
             cell.accessoryType = .Checkmark
         }
         

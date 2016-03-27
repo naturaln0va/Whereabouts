@@ -5,10 +5,14 @@ import UIKit
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-    var window: UIWindow?
     var assistant = LocationAssistant(viewController: nil)
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+        
+        MenuController.setupMenuWithViewController(
+            UINavigationController(rootViewController: LocationsViewController()),
+            andWindow: UIWindow(frame: UIScreen.mainScreen().bounds)
+        )
         
         let notificationSettings = UIUserNotificationSettings(
             forTypes: .Alert,
@@ -17,17 +21,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         UIApplication.sharedApplication().registerUserNotificationSettings(notificationSettings)
         
+        StyleController.sharedController
+        
         PersistentController.sharedController.migrateLegacyData()
         PersistentController.sharedController.cleanUpVisits()
         
-        window = UIWindow(frame: UIScreen.mainScreen().bounds)
-        
-        if let window = window {
-            MenuController.sharedController.showInWindow(window)
-        }
-        
-        NSNotificationCenter.defaultCenter().addObserver(self,
-            selector: "settingsDidChange",
+        NSNotificationCenter.defaultCenter().addObserver(
+            self,
+            selector: #selector(AppDelegate.settingsDidChange),
             name: kSettingsControllerDidChangeNotification,
             object: nil
         )

@@ -39,7 +39,7 @@ class LocationDetailViewController: StyledViewController {
     }()
     
     var locationToDisplay: Location!
-    var nearbyPhotos: Array<UIImage>?
+    var nearbyPhotos: [UIImage]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -106,7 +106,7 @@ class LocationDetailViewController: StyledViewController {
         let newlocationVC = NewLocationViewController()
         newlocationVC.locationToEdit = locationToDisplay
         newlocationVC.delegate = self
-        presentViewController(StyledNavigationController(rootViewController: newlocationVC), animated: true, completion: nil)
+        presentViewController(UINavigationController(rootViewController: newlocationVC), animated: true, completion: nil)
     }
     
     func mapsButtonPressed() {
@@ -117,7 +117,7 @@ class LocationDetailViewController: StyledViewController {
     }
     
     func actionButtonPressed() {
-        let firstActivityItem = locationToDisplay.shareableString()
+        let firstActivityItem = locationToDisplay.shareableString
         
         let activityViewController: UIActivityViewController = UIActivityViewController(
             activityItems: [firstActivityItem],
@@ -191,7 +191,7 @@ class LocationDetailViewController: StyledViewController {
         }
     }
     
-    func getNearbyPhotos(completion: (Array<UIImage>?, Bool) -> Void) {
+    func getNearbyPhotos(completion: ([UIImage]?, Bool) -> Void) {
         PHPhotoLibrary.requestAuthorization { status in
             if status == .Authorized {
                 let options = PHFetchOptions()
@@ -200,7 +200,7 @@ class LocationDetailViewController: StyledViewController {
                 let manager = PHImageManager.defaultManager()
                 let option = PHImageRequestOptions()
                 option.synchronous = true
-                var images = Array<UIImage>()
+                var images = [UIImage]()
                 
                 results.enumerateObjectsUsingBlock { asset, idx, stop in
                     if let asset = asset as? PHAsset where asset.location != nil {

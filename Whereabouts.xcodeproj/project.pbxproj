@@ -35,17 +35,13 @@
 		48DEDA4119F592F80094CB8F /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48DEDA3F19F592F80094CB8F /* LaunchScreen.xib */; };
 		48E3B8561B193FA3003DD726 /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E3B8551B193FA3003DD726 /* MenuController.swift */; };
 		48E3B85C1B1951AA003DD726 /* StyledViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E3B85B1B1951AA003DD726 /* StyledViewController.swift */; };
-		48E3B85E1B195804003DD726 /* StyledNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E3B85D1B195804003DD726 /* StyledNavigationController.swift */; };
-		48E3B8601B195896003DD726 /* ColorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E3B85F1B195896003DD726 /* ColorController.swift */; };
+		48E3B8601B195896003DD726 /* StyleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E3B85F1B195896003DD726 /* StyleController.swift */; };
 		690667721C11E83800862742 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 690667701C11E83800862742 /* DataModel.xcdatamodeld */; };
 		6924A6471C6B9D4100D5F0E6 /* NSDate+Relative.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6924A6461C6B9D4100D5F0E6 /* NSDate+Relative.swift */; };
 		6937217A1C03877100A5C8BC /* LocationAssistant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48642D101BAE1E0400935358 /* LocationAssistant.swift */; };
 		6937217B1C038AA400A5C8BC /* RHACLStringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4882D9D41B1A99FD00BAADAD /* RHACLStringExtensions.swift */; };
-		6937217C1C038B4C00A5C8BC /* LocationAccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48642D121BAE27D300935358 /* LocationAccessViewController.swift */; };
-		6937217D1C038C1D00A5C8BC /* StyledViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E3B85B1B1951AA003DD726 /* StyledViewController.swift */; };
 		6937217E1C038C2B00A5C8BC /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69B7A3BA1BFCD76B000BEBA0 /* SettingsController.swift */; };
 		693AF7971C1B38A4003AFB24 /* VisitModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 693AF7951C1B38A4003AFB24 /* VisitModel.xcdatamodeld */; };
-		693AF79B1C1B3CCD003AFB24 /* Visit+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 693AF7991C1B3CCD003AFB24 /* Visit+CoreDataProperties.swift */; };
 		693AF79C1C1B3CCD003AFB24 /* Visit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 693AF79A1C1B3CCD003AFB24 /* Visit.swift */; };
 		6954E20B1C177BD500106EB0 /* PhotoTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6954E20A1C177BD500106EB0 /* PhotoTransition.swift */; };
 		69640E901BFBCDE80050722D /* PhotosLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69640E8F1BFBCDE80050722D /* PhotosLayout.swift */; };
@@ -55,7 +51,6 @@
 		698AF38D1BF6D66D00F1E745 /* TextEntryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 698AF38B1BF6D66D00F1E745 /* TextEntryCell.xib */; };
 		698AF3941BF7910100F1E745 /* ColorPreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698AF3921BF7910100F1E745 /* ColorPreviewCell.swift */; };
 		698AF3951BF7910100F1E745 /* ColorPreviewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 698AF3931BF7910100F1E745 /* ColorPreviewCell.xib */; };
-		698AF3981BF79A3F00F1E745 /* Location+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698AF3961BF79A3F00F1E745 /* Location+CoreDataProperties.swift */; };
 		698AF3991BF79A3F00F1E745 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698AF3971BF79A3F00F1E745 /* Location.swift */; };
 		698AF39B1BF79A4D00F1E745 /* Fetchable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698AF39A1BF79A4D00F1E745 /* Fetchable.swift */; };
 		69B7A3B61BFCD436000BEBA0 /* PhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69B7A3B41BFCD436000BEBA0 /* PhotoViewController.swift */; };
@@ -123,12 +118,10 @@
 		48DEDA4019F592F80094CB8F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		48E3B8551B193FA3003DD726 /* MenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
 		48E3B85B1B1951AA003DD726 /* StyledViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledViewController.swift; sourceTree = "<group>"; };
-		48E3B85D1B195804003DD726 /* StyledNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledNavigationController.swift; sourceTree = "<group>"; };
-		48E3B85F1B195896003DD726 /* ColorController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorController.swift; sourceTree = "<group>"; };
+		48E3B85F1B195896003DD726 /* StyleController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleController.swift; sourceTree = "<group>"; };
 		690667711C11E83800862742 /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
 		6924A6461C6B9D4100D5F0E6 /* NSDate+Relative.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDate+Relative.swift"; sourceTree = "<group>"; };
 		693AF7961C1B38A4003AFB24 /* VisitModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = VisitModel.xcdatamodel; sourceTree = "<group>"; };
-		693AF7991C1B3CCD003AFB24 /* Visit+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Visit+CoreDataProperties.swift"; path = "../Visit+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		693AF79A1C1B3CCD003AFB24 /* Visit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Visit.swift; path = ../Visit.swift; sourceTree = "<group>"; };
 		6954E20A1C177BD500106EB0 /* PhotoTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoTransition.swift; sourceTree = "<group>"; };
 		69640E8F1BFBCDE80050722D /* PhotosLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotosLayout.swift; sourceTree = "<group>"; };
@@ -138,7 +131,6 @@
 		698AF38B1BF6D66D00F1E745 /* TextEntryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TextEntryCell.xib; sourceTree = "<group>"; };
 		698AF3921BF7910100F1E745 /* ColorPreviewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorPreviewCell.swift; sourceTree = "<group>"; };
 		698AF3931BF7910100F1E745 /* ColorPreviewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ColorPreviewCell.xib; sourceTree = "<group>"; };
-		698AF3961BF79A3F00F1E745 /* Location+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Location+CoreDataProperties.swift"; path = "../Location+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		698AF3971BF79A3F00F1E745 /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Location.swift; path = ../Location.swift; sourceTree = "<group>"; };
 		698AF39A1BF79A4D00F1E745 /* Fetchable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fetchable.swift; sourceTree = "<group>"; };
 		69B7A3B41BFCD436000BEBA0 /* PhotoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoViewController.swift; sourceTree = "<group>"; };
@@ -213,7 +205,6 @@
 				48AA3C321C01732800A0935A /* PickerViewController.swift */,
 				69B7A3B81BFCD6FE000BEBA0 /* SettingsViewController.swift */,
 				48E3B85B1B1951AA003DD726 /* StyledViewController.swift */,
-				48E3B85D1B195804003DD726 /* StyledNavigationController.swift */,
 				483BBE471C1CE4DB002E5DB2 /* VisitsMapViewController.swift */,
 			);
 			name = ViewControllers;
@@ -284,7 +275,7 @@
 				48DEDA3619F592F80094CB8F /* AppDelegate.swift */,
 				483AF54C1B0BFF2700A00BED /* PersistenceController.swift */,
 				48E3B8551B193FA3003DD726 /* MenuController.swift */,
-				48E3B85F1B195896003DD726 /* ColorController.swift */,
+				48E3B85F1B195896003DD726 /* StyleController.swift */,
 				48642D101BAE1E0400935358 /* LocationAssistant.swift */,
 				69B7A3BA1BFCD76B000BEBA0 /* SettingsController.swift */,
 			);
@@ -345,9 +336,7 @@
 			isa = PBXGroup;
 			children = (
 				693AF7981C1B38AE003AFB24 /* DataModels */,
-				698AF3961BF79A3F00F1E745 /* Location+CoreDataProperties.swift */,
 				698AF3971BF79A3F00F1E745 /* Location.swift */,
-				693AF7991C1B3CCD003AFB24 /* Visit+CoreDataProperties.swift */,
 				693AF79A1C1B3CCD003AFB24 /* Visit.swift */,
 				698AF39A1BF79A4D00F1E745 /* Fetchable.swift */,
 			);
@@ -518,8 +507,6 @@
 				482CABE019FF565300B5F1E2 /* TodayViewController.swift in Sources */,
 				6937217B1C038AA400A5C8BC /* RHACLStringExtensions.swift in Sources */,
 				6937217A1C03877100A5C8BC /* LocationAssistant.swift in Sources */,
-				6937217D1C038C1D00A5C8BC /* StyledViewController.swift in Sources */,
-				6937217C1C038B4C00A5C8BC /* LocationAccessViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -532,11 +519,9 @@
 				698AF39B1BF79A4D00F1E745 /* Fetchable.swift in Sources */,
 				48510BEB1BF7F3D10041C7C1 /* String+Additions.swift in Sources */,
 				487A553F1BB4C61A00D0D320 /* NewLocationViewController.swift in Sources */,
-				48E3B8601B195896003DD726 /* ColorController.swift in Sources */,
+				48E3B8601B195896003DD726 /* StyleController.swift in Sources */,
 				48D4FFE61BF7D08F006DA09C /* DefaultLayout.swift in Sources */,
 				69640E931BFBCEA60050722D /* PhotoCell.swift in Sources */,
-				698AF3981BF79A3F00F1E745 /* Location+CoreDataProperties.swift in Sources */,
-				693AF79B1C1B3CCD003AFB24 /* Visit+CoreDataProperties.swift in Sources */,
 				698AF3941BF7910100F1E745 /* ColorPreviewCell.swift in Sources */,
 				698AF38C1BF6D66D00F1E745 /* TextEntryCell.swift in Sources */,
 				48E3B85C1B1951AA003DD726 /* StyledViewController.swift in Sources */,
@@ -558,7 +543,6 @@
 				698AF3991BF79A3F00F1E745 /* Location.swift in Sources */,
 				483AF54D1B0BFF2700A00BED /* PersistenceController.swift in Sources */,
 				690667721C11E83800862742 /* DataModel.xcdatamodeld in Sources */,
-				48E3B85E1B195804003DD726 /* StyledNavigationController.swift in Sources */,
 				69B7A3B91BFCD6FE000BEBA0 /* SettingsViewController.swift in Sources */,
 				69B7A3B61BFCD436000BEBA0 /* PhotoViewController.swift in Sources */,
 				48DEDA3719F592F80094CB8F /* AppDelegate.swift in Sources */,

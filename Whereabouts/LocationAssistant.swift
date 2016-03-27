@@ -18,11 +18,12 @@ let kLocationTimeoutVeryLong:   Int = 45
     func receivedLocation(location: CLLocation, finished: Bool)
     optional func receivedAddress(placemark: CLPlacemark)
     optional func authorizationDenied()
+    optional func authorizationNeeded()
     optional func failedToGetLocation()
     optional func failedToGetAddress()
 }
 
-class LocationAssistant: NSObject, CLLocationManagerDelegate, LocationAccessViewControllerDelegate {
+class LocationAssistant: NSObject, CLLocationManagerDelegate {
     
     private let manager = CLLocationManager()
     private let geocoder = CLGeocoder()
@@ -43,19 +44,6 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate, LocationAccessView
     }
     
     // MARK: - Public Methods
-    func promptForLocationAccess() {
-        if let parentVC = parentViewController {
-            let locationAccessVC = LocationAccessViewController()
-            locationAccessVC.delegate = self
-            parentVC.presentViewController(locationAccessVC, animated: true, completion: nil)
-        }
-        else {
-            if let delegate = delegate {
-                delegate.authorizationDenied?()
-            }
-        }
-    }
-    
     func getLocation() {
         checkLocationAuthorization()
         
@@ -154,13 +142,16 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate, LocationAccessView
             if let delegate = delegate {
                 delegate.authorizationDenied?()
             }
-            promptForLocationAccess()
             break
         case .NotDetermined:
-            promptForLocationAccess()
+            if let delegate = delegate {
+                delegate.authorizationNeeded?()
+            }
             break
         case .Restricted:
-            promptForLocationAccess()
+            if let delegate = delegate {
+                delegate.authorizationNeeded?()
+            }
             break
         }
     }
@@ -183,7 +174,7 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate, LocationAccessView
             updatingLocation = true
             
             let interval = NSTimeInterval(SettingsController.sharedController.locationTimeout)
-            timer = NSTimer.scheduledTimerWithTimeInterval(interval, target: self, selector: "didTimeOut", userInfo: nil, repeats: false)
+            timer = NSTimer.scheduledTimerWithTimeInterval(interval, target: self, selector: #selector(LocationAssistant.didTimeOut), userInfo: nil, repeats: false)
         }
     }
     

@@ -69,7 +69,7 @@ class SettingsViewController: UITableViewController {
         title = "Settings"
 
         tableView = UITableView(frame: view.bounds, style: .Grouped)
-        tableView.backgroundColor = ColorController.backgroundColor
+        tableView.backgroundColor = StyleController.sharedController.backgroundColor
         tableView.tableFooterView = footerView
         tableView.delegate = self
         tableView.dataSource = self
@@ -304,7 +304,7 @@ class SettingsViewController: UITableViewController {
                     "Very High"
                 ]
                 
-                var details = Array<String>()
+                var details = [String]()
                 if SettingsController.sharedController.isUnitStyleImperial {
                     details = [
                         "165 feet",
