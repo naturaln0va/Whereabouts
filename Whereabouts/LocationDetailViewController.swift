@@ -27,11 +27,11 @@ class LocationDetailViewController: StyledViewController {
         return formatter
     }()
     private lazy var openMapsButton: UIBarButtonItem = {
-        return UIBarButtonItem(image: UIImage(named: "open-location"), style: .Plain, target: self, action: "mapsButtonPressed")
+        return UIBarButtonItem(image: UIImage(named: "open-location"), style: .Plain, target: self, action: #selector(LocationDetailViewController.mapsButtonPressed))
     }()
     
     private lazy var actionBarButtonItem: UIBarButtonItem = {
-        return UIBarButtonItem(barButtonSystemItem: .Action, target: self, action: "actionButtonPressed")
+        return UIBarButtonItem(barButtonSystemItem: .Action, target: self, action: #selector(LocationDetailViewController.actionButtonPressed))
     }()
     
     private lazy var spaceBarButtonItem: UIBarButtonItem = {
@@ -44,7 +44,7 @@ class LocationDetailViewController: StyledViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: "editButtonPressed")
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: #selector(LocationDetailViewController.editButtonPressed))
         
         photosCollectionView.delegate = self
         photosCollectionView.dataSource = self

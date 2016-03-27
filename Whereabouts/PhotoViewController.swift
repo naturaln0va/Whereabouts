@@ -36,7 +36,7 @@ class PhotoViewController: UIViewController {
     func loadImageView() {
         imageView = UIImageView(image: photoToDisplay)
         imageView.userInteractionEnabled = true
-        imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "imageTapped"))
+        imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(PhotoViewController.imageTapped)))
         imageView.frame = CGRect(origin: CGPoint.zero, size: photoToDisplay.size)
         scrollView.addSubview(imageView)
         scrollView.contentSize = photoToDisplay.size

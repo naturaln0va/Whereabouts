@@ -38,8 +38,8 @@ class LocationsViewController: UITableViewController {
 
         navigationController?.toolbarHidden = false
         
-        let rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "locateBarButtonWasPressed")
-        let leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "Settings-BarButton"), style: .Plain, target: self, action: "settingsBarButtonWasPressed")
+        let rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: #selector(LocationsViewController.locateBarButtonWasPressed))
+        let leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "Settings-BarButton"), style: .Plain, target: self, action: #selector(LocationsViewController.settingsBarButtonWasPressed))
         
         navigationItem.rightBarButtonItem = rightBarButtonItem
         navigationItem.leftBarButtonItem = leftBarButtonItem
@@ -110,7 +110,7 @@ class LocationsViewController: UITableViewController {
         if numberOfVisits > 0 {
             navigationController?.toolbarHidden = false
             
-            let visitItem = UIBarButtonItem(title: "\(numberOfVisits) Visits", style: .Plain, target: self, action: "visitsBarButtonPressed")
+            let visitItem = UIBarButtonItem(title: "\(numberOfVisits) Visits", style: .Plain, target: self, action: #selector(LocationsViewController.visitsBarButtonPressed))
             
             toolbarItems = [spaceBarButtonItem, visitItem, spaceBarButtonItem]
         }

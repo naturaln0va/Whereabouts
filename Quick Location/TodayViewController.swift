@@ -5,7 +5,7 @@ import CoreLocation
 
 
 class TodayViewController: UIViewController, NCWidgetProviding {
-        
+    
     @IBOutlet weak var locationLabel: UILabel!
     @IBOutlet var activityIndicator: UIActivityIndicatorView!
     @IBOutlet var altitudeLabel: UILabel!
@@ -35,7 +35,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
         locationLabel.text = "Locating..."
         altitudeLabel.text = "-"
         
-        let doubleTapGesture = UITapGestureRecognizer(target: self, action: "relocate")
+        let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(TodayViewController.relocate))
         doubleTapGesture.numberOfTapsRequired = 2
         view.addGestureRecognizer(doubleTapGesture)
     }

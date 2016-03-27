@@ -35,7 +35,7 @@ class VisitsMapViewController: StyledViewController {
             title: "Done",
             style: .Plain,
             target: self,
-            action: "doneButtonPressed"
+            action: #selector(VisitsMapViewController.doneButtonPressed)
         )
         
         navigationItem.leftBarButtonItem = MKUserTrackingBarButtonItem(mapView: mapView)

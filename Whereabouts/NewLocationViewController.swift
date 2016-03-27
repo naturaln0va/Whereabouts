@@ -24,11 +24,11 @@ class NewLocationViewController: UITableViewController {
     }()
     
     private lazy var refreshBarButtonItem: UIBarButtonItem = {
-        return UIBarButtonItem(barButtonSystemItem: .Refresh, target: self, action: "refreshButtonPressed")
+        return UIBarButtonItem(barButtonSystemItem: .Refresh, target: self, action: #selector(NewLocationViewController.refreshButtonPressed))
     }()
     
     private lazy var actionBarButtonItem: UIBarButtonItem = {
-        return UIBarButtonItem(barButtonSystemItem: .Action, target: self, action: "actionButtonPressed")
+        return UIBarButtonItem(barButtonSystemItem: .Action, target: self, action: #selector(NewLocationViewController.actionButtonPressed))
     }()
     
     private lazy var spaceBarButtonItem: UIBarButtonItem = {
@@ -69,8 +69,8 @@ class NewLocationViewController: UITableViewController {
         navigationController?.toolbarHidden = false        
         toolbarItems = [spaceBarButtonItem, loadingBarButtonItem]
         
-        let rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Save, target: self, action: "saveBarButtonPressed")
-        let leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: "cancelBarButtonPressed")
+        let rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Save, target: self, action: #selector(NewLocationViewController.saveBarButtonPressed))
+        let leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: #selector(NewLocationViewController.cancelBarButtonPressed))
         
         navigationItem.rightBarButtonItem = rightBarButtonItem
         navigationItem.leftBarButtonItem = leftBarButtonItem

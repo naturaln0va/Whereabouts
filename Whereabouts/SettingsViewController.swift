@@ -74,9 +74,9 @@ class SettingsViewController: UITableViewController {
         tableView.delegate = self
         tableView.dataSource = self
         
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Done", style: .Plain, target: self, action: "doneButtonPressed")
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Done", style: .Plain, target: self, action: #selector(SettingsViewController.doneButtonPressed))
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "settingsDidChange", name: kSettingsControllerDidChangeNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SettingsViewController.settingsDidChange), name: kSettingsControllerDidChangeNotification, object: nil)
     }
     
     // MARK: - Actions
@@ -178,7 +178,7 @@ class SettingsViewController: UITableViewController {
                 visitSwitch.tag = SettingSwitchTag.VisitSwitch.rawValue
                 visitSwitch.on = SettingsController.sharedController.shouldMonitorVisits
                 visitSwitch.addTarget(self,
-                    action: "switchWasToggled:",
+                    action: #selector(SettingsViewController.switchWasToggled(_:)),
                     forControlEvents: .ValueChanged
                 )
                 
