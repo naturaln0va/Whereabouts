@@ -3,7 +3,7 @@ import UIKit
 import MapKit
 import Photos
 
-class LocationDetailViewController: StyledViewController {
+class LocationDetailViewController: UIViewController {
 
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var scrollView: UIScrollView!
@@ -106,7 +106,7 @@ class LocationDetailViewController: StyledViewController {
         let newlocationVC = NewLocationViewController()
         newlocationVC.locationToEdit = locationToDisplay
         newlocationVC.delegate = self
-        presentViewController(UINavigationController(rootViewController: newlocationVC), animated: true, completion: nil)
+        presentViewController(StyledNavigationController(rootViewController: newlocationVC), animated: true, completion: nil)
     }
     
     func mapsButtonPressed() {

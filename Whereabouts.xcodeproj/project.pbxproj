@@ -36,6 +36,11 @@
 		48E3B8561B193FA3003DD726 /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E3B8551B193FA3003DD726 /* MenuController.swift */; };
 		48E3B85C1B1951AA003DD726 /* StyledViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E3B85B1B1951AA003DD726 /* StyledViewController.swift */; };
 		48E3B8601B195896003DD726 /* StyleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E3B85F1B195896003DD726 /* StyleController.swift */; };
+		48F763411CA8778700BCE740 /* StyledNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F763401CA8778700BCE740 /* StyledNavigationController.swift */; };
+		48F763431CA87FF500BCE740 /* CloudController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F763421CA87FF500BCE740 /* CloudController.swift */; };
+		48F763441CA87FF500BCE740 /* CloudController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F763421CA87FF500BCE740 /* CloudController.swift */; };
+		48F763461CA890D200BCE740 /* CloudLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F763451CA890D200BCE740 /* CloudLocation.swift */; };
+		48F763471CA890D200BCE740 /* CloudLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F763451CA890D200BCE740 /* CloudLocation.swift */; };
 		690667721C11E83800862742 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 690667701C11E83800862742 /* DataModel.xcdatamodeld */; };
 		6924A6471C6B9D4100D5F0E6 /* NSDate+Relative.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6924A6461C6B9D4100D5F0E6 /* NSDate+Relative.swift */; };
 		6937217A1C03877100A5C8BC /* LocationAssistant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48642D101BAE1E0400935358 /* LocationAssistant.swift */; };
@@ -119,6 +124,9 @@
 		48E3B8551B193FA3003DD726 /* MenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
 		48E3B85B1B1951AA003DD726 /* StyledViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledViewController.swift; sourceTree = "<group>"; };
 		48E3B85F1B195896003DD726 /* StyleController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleController.swift; sourceTree = "<group>"; };
+		48F763401CA8778700BCE740 /* StyledNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledNavigationController.swift; sourceTree = "<group>"; };
+		48F763421CA87FF500BCE740 /* CloudController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudController.swift; sourceTree = "<group>"; };
+		48F763451CA890D200BCE740 /* CloudLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudLocation.swift; sourceTree = "<group>"; };
 		690667711C11E83800862742 /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
 		6924A6461C6B9D4100D5F0E6 /* NSDate+Relative.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDate+Relative.swift"; sourceTree = "<group>"; };
 		693AF7961C1B38A4003AFB24 /* VisitModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = VisitModel.xcdatamodel; sourceTree = "<group>"; };
@@ -204,6 +212,7 @@
 				69B7A3B41BFCD436000BEBA0 /* PhotoViewController.swift */,
 				48AA3C321C01732800A0935A /* PickerViewController.swift */,
 				69B7A3B81BFCD6FE000BEBA0 /* SettingsViewController.swift */,
+				48F763401CA8778700BCE740 /* StyledNavigationController.swift */,
 				48E3B85B1B1951AA003DD726 /* StyledViewController.swift */,
 				483BBE471C1CE4DB002E5DB2 /* VisitsMapViewController.swift */,
 			);
@@ -273,10 +282,11 @@
 			isa = PBXGroup;
 			children = (
 				48DEDA3619F592F80094CB8F /* AppDelegate.swift */,
-				483AF54C1B0BFF2700A00BED /* PersistenceController.swift */,
-				48E3B8551B193FA3003DD726 /* MenuController.swift */,
-				48E3B85F1B195896003DD726 /* StyleController.swift */,
+				48F763421CA87FF500BCE740 /* CloudController.swift */,
 				48642D101BAE1E0400935358 /* LocationAssistant.swift */,
+				48E3B8551B193FA3003DD726 /* MenuController.swift */,
+				483AF54C1B0BFF2700A00BED /* PersistenceController.swift */,
+				48E3B85F1B195896003DD726 /* StyleController.swift */,
 				69B7A3BA1BFCD76B000BEBA0 /* SettingsController.swift */,
 			);
 			name = Controllers;
@@ -339,6 +349,7 @@
 				698AF3971BF79A3F00F1E745 /* Location.swift */,
 				693AF79A1C1B3CCD003AFB24 /* Visit.swift */,
 				698AF39A1BF79A4D00F1E745 /* Fetchable.swift */,
+				48F763451CA890D200BCE740 /* CloudLocation.swift */,
 			);
 			name = CoreData;
 			sourceTree = "<group>";
@@ -503,9 +514,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				48F763441CA87FF500BCE740 /* CloudController.swift in Sources */,
 				6937217E1C038C2B00A5C8BC /* SettingsController.swift in Sources */,
 				482CABE019FF565300B5F1E2 /* TodayViewController.swift in Sources */,
 				6937217B1C038AA400A5C8BC /* RHACLStringExtensions.swift in Sources */,
+				48F763471CA890D200BCE740 /* CloudLocation.swift in Sources */,
 				6937217A1C03877100A5C8BC /* LocationAssistant.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -521,6 +534,7 @@
 				487A553F1BB4C61A00D0D320 /* NewLocationViewController.swift in Sources */,
 				48E3B8601B195896003DD726 /* StyleController.swift in Sources */,
 				48D4FFE61BF7D08F006DA09C /* DefaultLayout.swift in Sources */,
+				48F763431CA87FF500BCE740 /* CloudController.swift in Sources */,
 				69640E931BFBCEA60050722D /* PhotoCell.swift in Sources */,
 				698AF3941BF7910100F1E745 /* ColorPreviewCell.swift in Sources */,
 				698AF38C1BF6D66D00F1E745 /* TextEntryCell.swift in Sources */,
@@ -528,6 +542,7 @@
 				693AF7971C1B38A4003AFB24 /* VisitModel.xcdatamodeld in Sources */,
 				48642D0F1BAE166F00935358 /* LocationsViewController.swift in Sources */,
 				4863ACAE1B24EF4D009F008F /* LocationCell.swift in Sources */,
+				48F763411CA8778700BCE740 /* StyledNavigationController.swift in Sources */,
 				69EA5BBA1BFE4E1A0009B709 /* UIDevice+Addition.swift in Sources */,
 				48E3B8561B193FA3003DD726 /* MenuController.swift in Sources */,
 				6924A6471C6B9D4100D5F0E6 /* NSDate+Relative.swift in Sources */,
@@ -538,6 +553,7 @@
 				48AA3C331C01732800A0935A /* PickerViewController.swift in Sources */,
 				48D4FFE41BF7CB7A006DA09C /* ColorSelectionViewController.swift in Sources */,
 				48D73D6B1C012AA900B1A9B5 /* LocationModel.xcdatamodeld in Sources */,
+				48F763461CA890D200BCE740 /* CloudLocation.swift in Sources */,
 				48C7636419F59D230096B27A /* RHAUtilExtensions.swift in Sources */,
 				6954E20B1C177BD500106EB0 /* PhotoTransition.swift in Sources */,
 				698AF3991BF79A3F00F1E745 /* Location.swift in Sources */,

@@ -10,7 +10,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
         MenuController.setupMenuWithViewController(
-            UINavigationController(rootViewController: LocationsViewController()),
+            StyledNavigationController(rootViewController: LocationsViewController()),
             andWindow: UIWindow(frame: UIScreen.mainScreen().bounds)
         )
         

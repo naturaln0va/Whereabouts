@@ -6,9 +6,11 @@ class StyleController {
     
     static let sharedController = StyleController()
     
-    let navBarTintColor = UIColor(white: 1.0, alpha: 1.0)
-    let backgroundColor = UIColor(red: 0.906, green: 0.906, blue: 0.906, alpha: 1.0)
-    let mainTintColor = UIColor(red: 0.353, green: 0.553,  blue: 0.980, alpha: 1.0)
+    lazy var navBarTintColor = UIColor(white: 1.0, alpha: 1.0)
+    lazy var backgroundColor = UIColor(red: 0.94,  green: 0.94,  blue: 0.96, alpha: 1.0)
+    lazy var mainTintColor = UIColor(red: 0.35, green: 0.55,  blue: 0.98, alpha: 1.0)
+    
+    lazy var statusBarStyle: UIStatusBarStyle = .LightContent
     
     init() {
         let navigationStyle = UINavigationBar.appearance()

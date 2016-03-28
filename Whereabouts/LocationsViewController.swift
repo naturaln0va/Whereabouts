@@ -39,7 +39,7 @@ class LocationsViewController: UITableViewController {
         navigationController?.toolbarHidden = false
         
         let rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: #selector(LocationsViewController.locateBarButtonWasPressed))
-        let leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "Settings-BarButton"), style: .Plain, target: self, action: #selector(LocationsViewController.settingsBarButtonWasPressed))
+        let leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "settings-gear"), style: .Plain, target: self, action: #selector(LocationsViewController.settingsBarButtonWasPressed))
         
         navigationItem.rightBarButtonItem = rightBarButtonItem
         navigationItem.leftBarButtonItem = leftBarButtonItem
@@ -55,8 +55,9 @@ class LocationsViewController: UITableViewController {
         
         searchController.searchBar.sizeToFit()
         tableView.tableHeaderView = searchController.searchBar
-        searchController.delegate = self
         
+        searchController.delegate = self
+        searchController.hidesNavigationBarDuringPresentation = false
         searchController.dimsBackgroundDuringPresentation = false
         definesPresentationContext = true
         
@@ -77,15 +78,15 @@ class LocationsViewController: UITableViewController {
     func locateBarButtonWasPressed() {
         let newlocationVC = NewLocationViewController()
         newlocationVC.assistant = LocationAssistant(viewController: newlocationVC)
-        presentViewController(UINavigationController(rootViewController: newlocationVC), animated: true, completion: nil)
+        presentViewController(StyledNavigationController(rootViewController: newlocationVC), animated: true, completion: nil)
     }
     
     func settingsBarButtonWasPressed() {
-        presentViewController(UINavigationController(rootViewController: SettingsViewController()), animated: true, completion: nil)
+        presentViewController(StyledNavigationController(rootViewController: SettingsViewController()), animated: true, completion: nil)
     }
     
     func visitsBarButtonPressed() {
-        presentViewController(UINavigationController(rootViewController: VisitsMapViewController()), animated: true, completion: nil)
+        presentViewController(StyledNavigationController(rootViewController: VisitsMapViewController()), animated: true, completion: nil)
     }
     
     // MARK: - Private
