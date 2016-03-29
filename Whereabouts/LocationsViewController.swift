@@ -21,6 +21,7 @@ class LocationsViewController: UITableViewController {
         return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: "locations")
     }()
     
+    var infoBarButtonItem: UIBarButtonItem?
     private lazy var spaceBarButtonItem: UIBarButtonItem = {
         return UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
     }()
@@ -66,12 +67,24 @@ class LocationsViewController: UITableViewController {
         searchController.searchBar.searchBarStyle = .Minimal
         searchController.searchBar.backgroundColor = StyleController.sharedController.backgroundColor
         searchController.searchBar.tintColor = StyleController.sharedController.mainTintColor
-    }
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
         
-        refreshVisits()
+        NSNotificationCenter.defaultCenter().addObserver(
+            self,
+            selector: #selector(LocationsViewController.cloudSyncComplete),
+            name: CloudController.kSyncCompleteNotificationKey,
+            object: nil
+        )
+        
+        CloudController.sharedController.sync()
+        
+        let label = UILabel()
+        label.font = UIFont.systemFontOfSize(12.0, weight: UIFontWeightRegular)
+        label.textAlignment = .Center
+        label.text = "Syncing with iCloud"
+        label.sizeToFit()
+        let labelButton = UIBarButtonItem(customView: label)
+        
+        toolbarItems = [spaceBarButtonItem, labelButton, spaceBarButtonItem]
     }
     
     // MARK: - BarButon Actions
@@ -90,6 +103,10 @@ class LocationsViewController: UITableViewController {
     }
     
     // MARK: - Private
+    internal func cloudSyncComplete() {
+        toolbarItems = [spaceBarButtonItem, spaceBarButtonItem]
+    }
+    
     private func fetchLocations() {
         do {
             try fetchedResultsController.performFetch()

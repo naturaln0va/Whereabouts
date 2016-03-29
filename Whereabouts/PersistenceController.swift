@@ -126,7 +126,12 @@ class PersistentController {
         
         do {
             let fetched = try legacyManagedObjectContext.executeFetchRequest(request) as! [NSManagedObject]
-            print("Found \(fetched.count) objects: \(fetched)")
+            if fetched.count > 0 {
+                print("Found \(fetched.count) legacy objects: \(fetched)")
+            }
+            else {
+                print("No legacy data to transfer.")
+            }
             
             for legacyLocation in fetched {
                 if let placemark = legacyLocation.valueForKey("placemark") as? CLPlacemark where placemark.location != nil {
@@ -152,6 +157,53 @@ class PersistentController {
     }
     
     // MARK: - Location Management
+    func allLocalLocations() -> [Location] {
+        if let locations = try? Location.objectsInContext(locationMOC) {
+            return locations
+        }
+        return []
+    }
+    
+    func saveCloudLocationIfNeeded(location: CloudLocation) {
+        guard locationForIdentifier(location.identifier) == nil else {
+            print("Cloud location already exisits locally.")
+            return
+        }
+        
+        guard let dataToSave = NSEntityDescription.insertNewObjectForEntityForName(Location.entityName(), inManagedObjectContext: locationMOC) as? Location else {
+            fatalError("Expected to insert and entity of type 'Location'.")
+        }
+        
+        dataToSave.date = location.createdDate
+        dataToSave.locationTitle = location.title
+        dataToSave.color = location.color.characters.count > 0 ? UIColor(rgba: location.color) : nil
+        dataToSave.placemark = location.place
+        dataToSave.location = location.location
+        dataToSave.mapItem = location.mapItem
+        dataToSave.identifier = location.identifier
+        
+        if locationMOC.hasChanges {
+            locationMOC.performBlockAndWait { [unowned self] in
+                do {
+                    try self.locationMOC.save()
+                }
+                    
+                catch {
+                    fatalError("Error saving location: \(error)")
+                }
+            }
+        }
+    }
+    
+    func locationForIdentifier(identifier: String) -> Location? {
+        if let location = try? Location.singleObjectInContext(locationMOC, predicate: NSPredicate(format: "identifier == [c] %@", identifier), sortedBy: nil, ascending: false) {
+            return location
+        }
+        else {
+            return nil
+        }
+    }
+    
     func deleteLocation(locationToDelete: Location) {
         locationMOC.deleteObject(locationToDelete)
         
@@ -207,7 +259,7 @@ class PersistentController {
         dataToSave.color = color
         dataToSave.placemark = placemark
         dataToSave.location = location
-        dataToSave.identifier = "\(location.timestamp.timeIntervalSince1970)+\(title)+\(location.coordinate.longitude)+\(location.coordinate.latitude)"
+        dataToSave.identifier = "\(location.timestamp.timeIntervalSince1970.hashValue)+\(title.hashValue)+\(location.coordinate.longitude.hashValue)+\(location.coordinate.latitude.hashValue)"
         
         if locationMOC.hasChanges {
             locationMOC.performBlockAndWait { [unowned self] in
