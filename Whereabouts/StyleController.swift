@@ -20,5 +20,8 @@ class StyleController {
         navigationStyle.titleTextAttributes = [
             NSForegroundColorAttributeName: navBarTintColor
         ]
+        
+        let toolbarStyle = UIToolbar.appearance()
+        toolbarStyle.clipsToBounds = true
     }
 }

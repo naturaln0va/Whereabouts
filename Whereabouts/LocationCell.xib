@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -32,13 +32,6 @@
                         <color key="textColor" red="0.46666666666666667" green="0.46666666666666667" blue="0.46666666666666667" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FTf-GO-7Av">
-                        <rect key="frame" x="0.0" y="65" width="320" height="2"/>
-                        <color key="backgroundColor" red="0.93333333330000001" green="0.93333333330000001" blue="0.93333333330000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="2" id="xjL-Tw-F7n"/>
-                        </constraints>
-                    </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yM1-LD-A0L">
                         <rect key="frame" x="0.0" y="0.0" width="8" height="67"/>
                         <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -50,11 +43,9 @@
                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 <constraints>
                     <constraint firstItem="Cte-QE-42b" firstAttribute="leading" secondItem="yM1-LD-A0L" secondAttribute="trailing" constant="15" id="2SI-W2-Rah"/>
-                    <constraint firstItem="FTf-GO-7Av" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="9w7-YJ-hTG"/>
                     <constraint firstItem="rJa-hN-OVp" firstAttribute="leading" secondItem="yM1-LD-A0L" secondAttribute="trailing" constant="15" id="AJO-a9-IDI"/>
                     <constraint firstAttribute="trailing" secondItem="47S-tx-B7t" secondAttribute="trailing" constant="10" id="DU7-du-2uG"/>
                     <constraint firstAttribute="bottom" secondItem="rJa-hN-OVp" secondAttribute="bottom" constant="10" id="K8P-sT-LWV"/>
-                    <constraint firstAttribute="bottom" secondItem="FTf-GO-7Av" secondAttribute="bottom" id="KIo-vs-u3N"/>
                     <constraint firstAttribute="trailing" secondItem="Cte-QE-42b" secondAttribute="trailing" constant="10" id="UiD-Vm-1Jk"/>
                     <constraint firstAttribute="bottom" secondItem="yM1-LD-A0L" secondAttribute="bottom" id="Xne-0s-28G"/>
                     <constraint firstItem="Cte-QE-42b" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="ZCc-Mz-uki"/>
@@ -63,7 +54,6 @@
                     <constraint firstItem="47S-tx-B7t" firstAttribute="leading" secondItem="rJa-hN-OVp" secondAttribute="trailing" constant="8" id="gUE-0G-0Ep"/>
                     <constraint firstItem="yM1-LD-A0L" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="gxL-cZ-mci"/>
                     <constraint firstAttribute="bottom" secondItem="47S-tx-B7t" secondAttribute="bottom" constant="10" id="sDz-Dl-mEt"/>
-                    <constraint firstAttribute="trailing" secondItem="FTf-GO-7Av" secondAttribute="trailing" id="v0W-4f-PFM"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>

@@ -3,32 +3,37 @@ import UIKit
 import CoreData
 
 
-class LocationsViewController: UITableViewController {
+class LocationsViewController: UIViewController {
     
-    private let searchController = UISearchController(searchResultsController: nil)
-    private var filteredLocations: [Location]? {
-        didSet {
-            tableView.reloadData()
-        }
-    }
-    
-    private lazy var fetchedResultsController: NSFetchedResultsController = {
-        let moc = PersistentController.sharedController.locationMOC
-        
-        let fetchRequest = Location.fetchRequest(moc, predicate: nil, sortedBy: "date", ascending: false)
-        fetchRequest.fetchBatchSize = 20
-        
-        return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: "locations")
+    private lazy var messageLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFontOfSize(12.0, weight: UIFontWeightRegular)
+        label.textAlignment = .Center
+        label.text = "Syncing with iCloud"
+        label.sizeToFit()
+        return label
     }()
-    
-    var infoBarButtonItem: UIBarButtonItem?
+    private lazy var messageBarButtonItem: UIBarButtonItem = {
+        return UIBarButtonItem(customView: self.messageLabel)
+    }()
     private lazy var spaceBarButtonItem: UIBarButtonItem = {
         return UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
     }()
+    private lazy var titleToggle: UISegmentedControl = {
+        let control = UISegmentedControl(items: ["List", "Map"])
+        control.selectedSegmentIndex = 0
+        control.tintColor = StyleController.sharedController.navBarTintColor
+        control.frame.size.width = CGFloat.max
+        control.addTarget(self, action: #selector(LocationsViewController.toggleWasChanged), forControlEvents: .ValueChanged)
+        return control
+    }()
     
+    private let listViewController = ListViewController()
+    private let mapViewController = MapViewController()
     
-    deinit {
-        fetchedResultsController.delegate = nil
+    private enum ToggleIndex: Int {
+        case List
+        case Map
     }
     
     override func viewDidLoad() {
@@ -36,38 +41,25 @@ class LocationsViewController: UITableViewController {
         
         title = "Whereabouts"
         view.backgroundColor = StyleController.sharedController.backgroundColor
-
-        navigationController?.toolbarHidden = false
         
         let rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: #selector(LocationsViewController.locateBarButtonWasPressed))
         let leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "settings-gear"), style: .Plain, target: self, action: #selector(LocationsViewController.settingsBarButtonWasPressed))
         
         navigationItem.rightBarButtonItem = rightBarButtonItem
         navigationItem.leftBarButtonItem = leftBarButtonItem
+        navigationItem.titleView = titleToggle
         
-        tableView.separatorStyle = .None
-        tableView.backgroundColor = view.backgroundColor
-        tableView.rowHeight = UITableViewAutomaticDimension
-        tableView.estimatedRowHeight = LocationCell.cellHeight
-        tableView.registerNib(UINib(nibName: LocationCell.reuseIdentifier, bundle: nil), forCellReuseIdentifier: LocationCell.reuseIdentifier)
+        navigationController?.toolbarHidden = false
+        toolbarItems = [spaceBarButtonItem, messageBarButtonItem, spaceBarButtonItem]
         
-        fetchedResultsController.delegate = self
-        fetchLocations()
+        CloudController.sharedController.sync()
         
-        searchController.searchBar.sizeToFit()
-        tableView.tableHeaderView = searchController.searchBar
-        
-        searchController.delegate = self
-        searchController.hidesNavigationBarDuringPresentation = false
-        searchController.dimsBackgroundDuringPresentation = false
-        definesPresentationContext = true
-        
-        searchController.searchBar.delegate = self
-        searchController.searchBar.autocapitalizationType = .Sentences
-        searchController.searchBar.searchBarStyle = .Minimal
-        searchController.searchBar.backgroundColor = StyleController.sharedController.backgroundColor
-        searchController.searchBar.tintColor = StyleController.sharedController.mainTintColor
-        
+        beginObserving()
+        refreshToggleState()
+    }
+    
+    // MARK: - Helpers
+    func beginObserving() {
         NSNotificationCenter.defaultCenter().addObserver(
             self,
             selector: #selector(LocationsViewController.cloudSyncComplete),
@@ -75,195 +67,97 @@ class LocationsViewController: UITableViewController {
             object: nil
         )
         
-        CloudController.sharedController.sync()
-        
-        let label = UILabel()
-        label.font = UIFont.systemFontOfSize(12.0, weight: UIFontWeightRegular)
-        label.textAlignment = .Center
-        label.text = "Syncing with iCloud"
-        label.sizeToFit()
-        let labelButton = UIBarButtonItem(customView: label)
-        
-        toolbarItems = [spaceBarButtonItem, labelButton, spaceBarButtonItem]
+        NSNotificationCenter.defaultCenter().addObserver(
+            self,
+            selector: #selector(LocationsViewController.cloudSyncComplete),
+            name: CloudController.kCloudErrorNotificationKey,
+            object: nil
+        )
     }
     
-    // MARK: - BarButon Actions
-    func locateBarButtonWasPressed() {
-        let newlocationVC = NewLocationViewController()
-        newlocationVC.assistant = LocationAssistant(viewController: newlocationVC)
-        presentViewController(StyledNavigationController(rootViewController: newlocationVC), animated: true, completion: nil)
+    private func updateMessageLabel(updatedText: String?) {
+        messageLabel.text = updatedText
+        messageLabel.sizeToFit()
     }
     
-    func settingsBarButtonWasPressed() {
-        presentViewController(StyledNavigationController(rootViewController: SettingsViewController()), animated: true, completion: nil)
-    }
-    
-    func visitsBarButtonPressed() {
-        presentViewController(StyledNavigationController(rootViewController: VisitsMapViewController()), animated: true, completion: nil)
-    }
-    
-    // MARK: - Private
-    internal func cloudSyncComplete() {
-        toolbarItems = [spaceBarButtonItem, spaceBarButtonItem]
-    }
-    
-    private func fetchLocations() {
-        do {
-            try fetchedResultsController.performFetch()
-        }
-        
-        catch {
-            print("Error fetching for the results controller: \(error)")
-        }
-    }
-    
-    private func refreshVisits() {
-        guard SettingsController.sharedController.shouldMonitorVisits else {
-            toolbarItems = nil
-            navigationController?.toolbarHidden = true
+    private func refreshToggleState() {
+        guard let tab = ToggleIndex(rawValue: titleToggle.selectedSegmentIndex) else {
             return
         }
         
-        let numberOfVisits = Visit.objectCountInContext(PersistentController.sharedController.visitMOC)
-        if numberOfVisits > 0 {
-            navigationController?.toolbarHidden = false
-            
-            let visitItem = UIBarButtonItem(title: "\(numberOfVisits) Visits", style: .Plain, target: self, action: #selector(LocationsViewController.visitsBarButtonPressed))
-            
-            toolbarItems = [spaceBarButtonItem, visitItem, spaceBarButtonItem]
+        if tab == .List {
+            removeMapChildVC()
+            addListChildVC()
         }
         else {
-            toolbarItems = nil
-            navigationController?.toolbarHidden = true
+            removeListChildVC()
+            addMapChildVC()
         }
     }
     
-    // MARK: - UITableViewDelegate
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCellWithIdentifier(LocationCell.reuseIdentifier) as? LocationCell else {
-            fatalError("Expected to dequeue a 'LocationCell'.")
-        }
-
-        if filteredLocations != nil {
-            cell.configureCell(filteredLocations![indexPath.row])
-        }
-        else if let location = fetchedResultsController.objectAtIndexPath(indexPath) as? Location {
-            cell.configureCell(location)
+    // MARK: - ViewController Containment Managment
+    private func wrappedAddChildVC(vc: UIViewController) {
+        if vc.view.isDescendantOfView(view) {
+            return
         }
         
-        return cell
-    }
-    
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        searchController.searchBar.resignFirstResponder()
+        vc.view.translatesAutoresizingMaskIntoConstraints = false
+        addChildViewController(vc)
+        view.addSubview(vc.view)
         
-        if filteredLocations != nil {
-            let detailVC = LocationDetailViewController()
-            detailVC.locationToDisplay = filteredLocations![indexPath.row]
-            navigationController?.pushViewController(detailVC, animated: true)
-        }
-        else if let location = self.fetchedResultsController.objectAtIndexPath(indexPath) as? Location {
-            let detailVC = LocationDetailViewController()
-            detailVC.locationToDisplay = location
-            navigationController?.pushViewController(detailVC, animated: true)
-        }
+        let views = ["view": vc.view]
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[view]|", options: [], metrics: nil, views: views))
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[view]|", options: [], metrics: nil, views: views))
+        vc.didMoveToParentViewController(self)
     }
     
-    override func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
-        if filteredLocations == nil {
-            return .Delete
-        }
-        else {
-            return .None
-        }
-    }
-    
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if let location = self.fetchedResultsController.objectAtIndexPath(indexPath) as? Location {
-            PersistentController.sharedController.deleteLocation(location)
-        }
-    }
-    
-    // MARK: - UITableViewDataSource
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if filteredLocations != nil {
-            return filteredLocations!.count
+    private func wrappedRemoveChildVC(vc: UIViewController) {
+        if !vc.isViewLoaded() {
+            return
         }
         
-        let section = fetchedResultsController.sections?[section]
-        
-        return section?.numberOfObjects ?? 0
+        vc.willMoveToParentViewController(nil)
+        vc.view.removeFromSuperview()
+        vc.removeFromParentViewController()
     }
     
-}
-
-
-extension LocationsViewController: NSFetchedResultsControllerDelegate {
-    
-    func controllerWillChangeContent(controller: NSFetchedResultsController) {
-        tableView.beginUpdates()
+    private func addListChildVC() {
+        wrappedAddChildVC(listViewController)
     }
     
-    func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
-        switch type {
-        case .Insert:
-            tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
-            
-        case .Delete:
-            tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
-            
-        case .Update:
-            if let cell = tableView.cellForRowAtIndexPath(indexPath!) as? LocationCell {
-                if let location = fetchedResultsController.objectAtIndexPath(indexPath!) as? Location {
-                    cell.configureCell(location)
-                }
-            }
-            
-        case .Move:
-            tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
-            tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
-        }
+    private func removeListChildVC() {
+        wrappedRemoveChildVC(listViewController)
     }
     
-    func controllerDidChangeContent(controller: NSFetchedResultsController) {
-        tableView.endUpdates()
+    private func addMapChildVC() {
+        wrappedAddChildVC(mapViewController)
     }
     
-}
-
-
-extension LocationsViewController: UISearchBarDelegate, UISearchControllerDelegate {
-    
-    // MARK: UISearchBarDelegate
-    func searchBarShouldBeginEditing(searchBar: UISearchBar) -> Bool {
-        return true
+    private func removeMapChildVC() {
+        wrappedRemoveChildVC(mapViewController)
     }
     
-    func searchBarShouldEndEditing(searchBar: UISearchBar) -> Bool {
-        return true
+    // MARK: - Actions
+    internal func locateBarButtonWasPressed() {
+        let newlocationVC = NewLocationViewController()
+        presentViewController(StyledNavigationController(rootViewController: newlocationVC), animated: true, completion: nil)
     }
     
-    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
-        filteredLocations = nil
+    internal func settingsBarButtonWasPressed() {
+        presentViewController(StyledNavigationController(rootViewController: SettingsViewController()), animated: true, completion: nil)
     }
     
-    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
-        if let fetched: NSArray = fetchedResultsController.fetchedObjects, let searchText = searchBar.text {
-            if searchText.characters.count == 0 {
-                filteredLocations = nil
-                return
-            }
-            
-            let filteredFetch = fetched.filteredArrayUsingPredicate(NSPredicate(format: "locationTitle CONTAINS[c] %@", searchText))
-            filteredLocations = filteredFetch.map { obj in
-                return obj as! Location
-            }
-        }
+    internal func toggleWasChanged() {
+        refreshToggleState()
     }
     
-    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-        searchBar.resignFirstResponder()
+    // MARK: - Notifications
+    internal func cloudSyncComplete() {
+        updateMessageLabel(nil)
     }
-
+    
+    internal func cloudErrorOccurred() {
+        updateMessageLabel("An error occurred")
+    }
+    
 }

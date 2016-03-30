@@ -10,7 +10,7 @@ class NewLocationViewController: UITableViewController {
     
     var accuracyBarButtonItem: UIBarButtonItem?
     var delegate: NewLocationViewControllerDelegate?
-    var assistant: LocationAssistant?
+    private lazy var assistant = LocationAssistant(viewController: nil)
     var locationToEdit: Location?
     var isFirstLoadForLocationEdit = true
     
@@ -82,24 +82,24 @@ class NewLocationViewController: UITableViewController {
         tableView.registerNib(UINib(nibName: TextEntryCell.reuseIdentifier, bundle: nil), forCellReuseIdentifier: TextEntryCell.reuseIdentifier)
         tableView.registerNib(UINib(nibName: ColorPreviewCell.reuseIdentifier, bundle: nil), forCellReuseIdentifier: ColorPreviewCell.reuseIdentifier)
         
-        if let _ = assistant {
-            assistant?.delegate = self
-            assistant?.getLocation()
-        }
-        else if let editingLocation = locationToEdit {
+        if let editingLocation = locationToEdit {
             location = editingLocation.location
             placemark = editingLocation.placemark
             selectedColor = editingLocation.color
             
             if editingLocation.placemark == nil {
                 assistant = LocationAssistant(viewController: self)
-                assistant?.delegate = self
-                assistant?.getAddressForLocation(editingLocation.location)
+                assistant.delegate = self
+                assistant.getAddressForLocation(editingLocation.location)
                 toolbarItems = [spaceBarButtonItem, loadingBarButtonItem]
             }
             else {
                 toolbarItems = nil
             }
+        }
+        else {
+            assistant.delegate = self
+            assistant.getLocation()
         }
     }
     
@@ -117,10 +117,10 @@ class NewLocationViewController: UITableViewController {
         }
         
         if let editingLocation = locationToEdit {
-            assistant?.getAddressForLocation(editingLocation.location)
+            assistant.getAddressForLocation(editingLocation.location)
         }
-        else if let _ = assistant {
-            assistant?.getLocation()
+        else {
+            assistant.getLocation()
         }
     }
     
@@ -192,7 +192,7 @@ class NewLocationViewController: UITableViewController {
     // MARK: - Private
     private func dismiss() {
         view.endEditing(true)
-        if let _ = assistant { assistant?.terminate() }
+        assistant.terminate()
         dismissViewControllerAnimated(true, completion: nil)
     }
     
@@ -352,7 +352,7 @@ extension NewLocationViewController: LocationAssistantDelegate {
         toolbarItems = [spaceBarButtonItem, labelButton, spaceBarButtonItem, loadingBarButtonItem]
         
         if finished {
-            assistant?.getAddressForLocation(location)
+            assistant.getAddressForLocation(location)
         }
     }
     

@@ -13,7 +13,7 @@
 		482CABE519FF565300B5F1E2 /* Quick Location.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 482CABD819FF565200B5F1E2 /* Quick Location.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		482CE19F19FD9F9A00682940 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 482CE19E19FD9F9A00682940 /* MapKit.framework */; };
 		483AF54D1B0BFF2700A00BED /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483AF54C1B0BFF2700A00BED /* PersistenceController.swift */; };
-		483BBE491C1CE4DB002E5DB2 /* VisitsMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483BBE471C1CE4DB002E5DB2 /* VisitsMapViewController.swift */; };
+		483BBE491C1CE4DB002E5DB2 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483BBE471C1CE4DB002E5DB2 /* MapViewController.swift */; };
 		48510BEB1BF7F3D10041C7C1 /* String+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48510BEA1BF7F3D10041C7C1 /* String+Additions.swift */; };
 		4863ACAE1B24EF4D009F008F /* LocationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4863ACAC1B24EF4D009F008F /* LocationCell.swift */; };
 		4863ACAF1B24EF4D009F008F /* LocationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4863ACAD1B24EF4D009F008F /* LocationCell.xib */; };
@@ -63,6 +63,8 @@
 		69BF50BB1C15F85B0041848F /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69BF50BA1C15F85B0041848F /* CloudKit.framework */; };
 		69D590FA1C74DCEE00481E44 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 69D590F91C74DCEE00481E44 /* Images.xcassets */; };
 		69EA5BBA1BFE4E1A0009B709 /* UIDevice+Addition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69EA5BB91BFE4E1A0009B709 /* UIDevice+Addition.swift */; };
+		69F7CEE61CAAF286007EB03F /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69F7CEE51CAAF286007EB03F /* ListViewController.swift */; };
+		69F7CEEC1CAB5E46007EB03F /* AddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69F7CEEB1CAB5E46007EB03F /* AddViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -96,7 +98,7 @@
 		482CABDF19FF565300B5F1E2 /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
 		482CE19E19FD9F9A00682940 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		483AF54C1B0BFF2700A00BED /* PersistenceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
-		483BBE471C1CE4DB002E5DB2 /* VisitsMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisitsMapViewController.swift; sourceTree = "<group>"; };
+		483BBE471C1CE4DB002E5DB2 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		48510BEA1BF7F3D10041C7C1 /* String+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Additions.swift"; sourceTree = "<group>"; };
 		4863ACAC1B24EF4D009F008F /* LocationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationCell.swift; sourceTree = "<group>"; };
 		4863ACAD1B24EF4D009F008F /* LocationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LocationCell.xib; sourceTree = "<group>"; };
@@ -147,6 +149,8 @@
 		69BF50BA1C15F85B0041848F /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		69D590F91C74DCEE00481E44 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		69EA5BB91BFE4E1A0009B709 /* UIDevice+Addition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIDevice+Addition.swift"; sourceTree = "<group>"; };
+		69F7CEE51CAAF286007EB03F /* ListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
+		69F7CEEB1CAB5E46007EB03F /* AddViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -202,6 +206,7 @@
 		4849BD021B093A44003A40AF /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				69F7CEEB1CAB5E46007EB03F /* AddViewController.swift */,
 				48D4FFE31BF7CB7A006DA09C /* ColorSelectionViewController.swift */,
 				48642D131BAE27D300935358 /* LocationAccessViewController.xib */,
 				48642D121BAE27D300935358 /* LocationAccessViewController.swift */,
@@ -214,7 +219,8 @@
 				69B7A3B81BFCD6FE000BEBA0 /* SettingsViewController.swift */,
 				48F763401CA8778700BCE740 /* StyledNavigationController.swift */,
 				48E3B85B1B1951AA003DD726 /* StyledViewController.swift */,
-				483BBE471C1CE4DB002E5DB2 /* VisitsMapViewController.swift */,
+				483BBE471C1CE4DB002E5DB2 /* MapViewController.swift */,
+				69F7CEE51CAAF286007EB03F /* ListViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -526,7 +532,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				483BBE491C1CE4DB002E5DB2 /* VisitsMapViewController.swift in Sources */,
+				483BBE491C1CE4DB002E5DB2 /* MapViewController.swift in Sources */,
 				48D4FFEA1BF7D2ED006DA09C /* LocationDetailViewController.swift in Sources */,
 				698AF39B1BF79A4D00F1E745 /* Fetchable.swift in Sources */,
 				48510BEB1BF7F3D10041C7C1 /* String+Additions.swift in Sources */,
@@ -536,7 +542,9 @@
 				48F763431CA87FF500BCE740 /* CloudController.swift in Sources */,
 				69640E931BFBCEA60050722D /* PhotoCell.swift in Sources */,
 				698AF3941BF7910100F1E745 /* ColorPreviewCell.swift in Sources */,
+				69F7CEEC1CAB5E46007EB03F /* AddViewController.swift in Sources */,
 				698AF38C1BF6D66D00F1E745 /* TextEntryCell.swift in Sources */,
+				69F7CEE61CAAF286007EB03F /* ListViewController.swift in Sources */,
 				48E3B85C1B1951AA003DD726 /* StyledViewController.swift in Sources */,
 				693AF7971C1B38A4003AFB24 /* VisitModel.xcdatamodeld in Sources */,
 				48642D0F1BAE166F00935358 /* LocationsViewController.swift in Sources */,
