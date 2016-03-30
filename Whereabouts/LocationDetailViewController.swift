@@ -152,9 +152,7 @@ class LocationDetailViewController: UIViewController {
             
             if let response = response where error == nil {
                 var responseString = ""
-                if #available(iOS 9.0, *) {
-                    responseString += distanceString(response.distance)
-                }
+                responseString += distanceString(response.distance)
                 
                 let timeString = timeStringFromSeconds(response.expectedTravelTime)
                 if timeString.characters.count > 0 {
@@ -245,11 +243,8 @@ class LocationDetailViewController: UIViewController {
         mapView.removeAnnotation(locationToDisplay)
         mapView.addAnnotation(locationToDisplay)
         mapView.showAnnotations(mapView.annotations, animated: false)
-        
-        if #available(iOS 9.0, *) {
-            mapView.showsCompass = true
-            mapView.showsScale = true
-        }
+        mapView.showsCompass = true
+        mapView.showsScale = true
         
         if let address = locationToDisplay.placemark {
             addressLabel.attributedText = stringFromAddress(address, withNewLine: true).basicAttributedString()
@@ -297,13 +292,7 @@ extension LocationDetailViewController: MKMapViewDelegate {
             annotationView.enabled = true
             annotationView.canShowCallout = true
             annotationView.animatesDrop = false
-            
-            if #available(iOS 9.0, *) {
-                annotationView.pinTintColor = locationToDisplay.color
-            }
-            else {
-                annotationView.pinColor = .Red
-            }
+            annotationView.pinTintColor = locationToDisplay.color
             
             return annotationView
         }

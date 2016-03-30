@@ -166,7 +166,6 @@ class PersistentController {
     
     func saveCloudLocationIfNeeded(location: CloudLocation) {
         guard locationForIdentifier(location.identifier) == nil else {
-            print("Cloud location already exisits locally.")
             return
         }
         

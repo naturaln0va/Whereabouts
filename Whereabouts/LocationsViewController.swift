@@ -139,8 +139,7 @@ class LocationsViewController: UIViewController {
     
     // MARK: - Actions
     internal func locateBarButtonWasPressed() {
-        let newlocationVC = NewLocationViewController()
-        presentViewController(StyledNavigationController(rootViewController: newlocationVC), animated: true, completion: nil)
+        presentViewController(StyledNavigationController(rootViewController: AddViewController()), animated: true, completion: nil)
     }
     
     internal func settingsBarButtonWasPressed() {

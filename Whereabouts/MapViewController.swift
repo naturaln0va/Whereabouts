@@ -7,10 +7,8 @@ class MapViewController: UIViewController {
     private lazy var mapView: MKMapView = {
         let mapView = MKMapView()
         mapView.showsUserLocation = true
-        if #available(iOS 9.0, *) {
-            mapView.showsCompass = true
-            mapView.showsScale = true
-        }
+        mapView.showsCompass = true
+        mapView.showsScale = true
         return mapView
     }()
     
