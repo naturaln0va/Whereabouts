@@ -331,7 +331,7 @@ class NewLocationViewController: UITableViewController {
 //MARK: - LocationAssistantDelegate
 extension NewLocationViewController: LocationAssistantDelegate {
     
-    func receivedLocation(location: CLLocation, finished: Bool) {
+    func locationAssistantReceivedLocation(location: CLLocation, finished: Bool) {
         self.location = location
         
         let formatter = NSNumberFormatter()
@@ -356,7 +356,7 @@ extension NewLocationViewController: LocationAssistantDelegate {
         }
     }
     
-    func receivedAddress(placemark: CLPlacemark) {
+    func locationAssistantReceivedAddress(placemark: CLPlacemark) {
         self.placemark = placemark
         
         if locationToEdit != nil {
@@ -372,11 +372,11 @@ extension NewLocationViewController: LocationAssistantDelegate {
         }
     }
     
-    func authorizationDenied() {
+    func locationAssistantAuthorizationDenied() {
         dismiss()
     }
     
-    func failedToGetLocation() {
+    func locationAssistantFailedToGetLocation() {
         if let accuracyButton = accuracyBarButtonItem {
             toolbarItems = [actionBarButtonItem, spaceBarButtonItem, accuracyButton, spaceBarButtonItem, refreshBarButtonItem]
         }
@@ -388,7 +388,7 @@ extension NewLocationViewController: LocationAssistantDelegate {
         }
     }
     
-    func failedToGetAddress() {
+    func locationAssistantFailedToGetAddress() {
         if let accuracyButton = accuracyBarButtonItem {
             toolbarItems = [actionBarButtonItem, spaceBarButtonItem, accuracyButton, spaceBarButtonItem, refreshBarButtonItem]
         }

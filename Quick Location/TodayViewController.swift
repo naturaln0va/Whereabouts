@@ -99,7 +99,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
 
 extension TodayViewController: LocationAssistantDelegate {
     
-    func receivedLocation(location: CLLocation, finished: Bool) {
+    func locationAssistantReceivedLocation(location: CLLocation, finished: Bool) {
         self.location = location
         
         if finished {
@@ -107,26 +107,26 @@ extension TodayViewController: LocationAssistantDelegate {
         }
     }
     
-    func receivedAddress(placemark: CLPlacemark) {
+    func locationAssistantReceivedAddress(placemark: CLPlacemark) {
         self.placemark = placemark
         activityIndicator.stopAnimating()
     }
     
-    func authorizationDenied() {
+    func locationAssistantAuthorizationDenied() {
         locationLabel.text = "Location Access Denied."
         altitudeLabel.text = "-"
         activityIndicator.stopAnimating()
     }
     
-    func failedToGetLocation() {
+    func locationAssistantFailedToGetLocation() {
         if location == nil {
             locationLabel.text = "Could not get a location."
         }
         activityIndicator.stopAnimating()
     }
     
-    func failedToGetAddress() {
+    func locationAssistantFailedToGetAddress() {
         activityIndicator.stopAnimating()
     }
-    
+        
 }

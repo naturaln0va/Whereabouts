@@ -15,12 +15,12 @@ let kLocationTimeoutLong:       Int = 25
 let kLocationTimeoutVeryLong:   Int = 45
 
 @objc protocol LocationAssistantDelegate {
-    func receivedLocation(location: CLLocation, finished: Bool)
-    optional func receivedAddress(placemark: CLPlacemark)
-    optional func authorizationDenied()
-    optional func authorizationNeeded()
-    optional func failedToGetLocation()
-    optional func failedToGetAddress()
+    func locationAssistantReceivedLocation(location: CLLocation, finished: Bool)
+    optional func locationAssistantReceivedAddress(placemark: CLPlacemark)
+    optional func locationAssistantAuthorizationDenied()
+    optional func locationAssistantAuthorizationNeeded()
+    optional func locationAssistantFailedToGetLocation()
+    optional func locationAssistantFailedToGetAddress()
 }
 
 class LocationAssistant: NSObject, CLLocationManagerDelegate {
@@ -33,11 +33,15 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate {
     private(set) var parentViewController: UIViewController?
     private(set) var location: CLLocation?
     private(set) var placemark: CLPlacemark?
-    private(set) var timer: NSTimer?
+    private var timer: NSTimer?
     
     private var updatingLocation = false
     private var monitoringLocationUpdates = false
     private var reverseGeocoding = false
+    
+    override init() {
+        super.init()
+    }
     
     init(viewController: UIViewController?) {
         parentViewController = viewController
@@ -47,7 +51,7 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate {
     func getLocation() {
         checkLocationAuthorization()
         
-        if !locationAccess() {
+        guard locationAccess() else {
             return
         }
         
@@ -91,13 +95,13 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate {
                 #endif
                 if let p = placemarks where !p.isEmpty && error == nil {
                     if let delegate = self.delegate {
-                        delegate.receivedAddress?(p.last!)
+                        delegate.locationAssistantReceivedAddress?(p.last!)
                     }
                     self.placemark = p.last!
                 }
                 else {
                     if let delegate = self.delegate {
-                        delegate.failedToGetAddress?()
+                        delegate.locationAssistantFailedToGetAddress?()
                     }
                     self.placemark = nil
                 }
@@ -115,11 +119,13 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate {
             monitoringLocationUpdates = true
             
             manager.delegate = self
-            manager.desiredAccuracy = SettingsController.sharedController.distanceAccuracy
+            manager.desiredAccuracy = kHorizontalAccuracyAverage
             manager.startMonitoringVisits()
         }
         else {
-            manager.requestAlwaysAuthorization()
+            if let delegate = delegate {
+                delegate.locationAssistantAuthorizationNeeded?()
+            }
         }
     }
     
@@ -140,25 +146,26 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate {
             break
         case .Denied:
             if let delegate = delegate {
-                delegate.authorizationDenied?()
+                delegate.locationAssistantAuthorizationDenied?()
             }
             break
         case .NotDetermined:
             if let delegate = delegate {
-                delegate.authorizationNeeded?()
+                delegate.locationAssistantAuthorizationNeeded?()
             }
             break
         case .Restricted:
             if let delegate = delegate {
-                delegate.authorizationNeeded?()
+                delegate.locationAssistantAuthorizationNeeded?()
             }
             break
         }
     }
     
     private func locationAccess() -> Bool {
-        if CLLocationManager.authorizationStatus() == .Denied ||
-            CLLocationManager.authorizationStatus() == .Restricted {
+        if (CLLocationManager.authorizationStatus() == .Denied ||
+            CLLocationManager.authorizationStatus() == .Restricted)
+            && !CLLocationManager.locationServicesEnabled() {
                 return false
         }
         else {
@@ -193,7 +200,7 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate {
             updatingLocation = false
             
             if let delegate = delegate where location != nil {
-                delegate.receivedLocation(location!, finished: true)
+                delegate.locationAssistantReceivedLocation(location!, finished: true)
             }
         }
     }
@@ -202,25 +209,7 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate {
         stopLocationManager()
         
         if let delegate = delegate {
-            delegate.failedToGetLocation?()
-        }
-    }
-    
-    // MARK: - LocationAccessViewController Delegate
-    func accessGranted() {
-        if !locationAccess() {
-            #if MAIN_APP
-                UIApplication.sharedApplication().openURL(NSURL(string: UIApplicationOpenSettingsURLString)!)
-            #endif
-        }
-        else {
-            manager.requestWhenInUseAuthorization()
-        }
-    }
-    
-    func accessDenied() {
-        if let delegate = delegate {
-            delegate.authorizationDenied?()
+            delegate.locationAssistantFailedToGetLocation?()
         }
     }
     
@@ -229,7 +218,7 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate {
         print("Failed with error: \(error.localizedDescription)")
         
         if let delegate = delegate {
-            delegate.failedToGetLocation?()
+            delegate.locationAssistantFailedToGetLocation?()
         }
         
         if error.code == CLError.LocationUnknown.rawValue {
@@ -322,7 +311,7 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate {
                 }
                 
                 if let delegate = delegate {
-                    delegate.receivedLocation(location!, finished: finished)
+                    delegate.locationAssistantReceivedLocation(location!, finished: finished)
                 }
             }
         }

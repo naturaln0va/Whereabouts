@@ -17,6 +17,8 @@
 		48510BEB1BF7F3D10041C7C1 /* String+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48510BEA1BF7F3D10041C7C1 /* String+Additions.swift */; };
 		4863ACAE1B24EF4D009F008F /* LocationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4863ACAC1B24EF4D009F008F /* LocationCell.swift */; };
 		4863ACAF1B24EF4D009F008F /* LocationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4863ACAD1B24EF4D009F008F /* LocationCell.xib */; };
+		4863E6FA1CAD3C800072C304 /* CurrentLocationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4863E6F81CAD3C800072C304 /* CurrentLocationCell.swift */; };
+		4863E6FB1CAD3C800072C304 /* CurrentLocationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4863E6F91CAD3C800072C304 /* CurrentLocationCell.xib */; };
 		48642D0F1BAE166F00935358 /* LocationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48642D0E1BAE166F00935358 /* LocationsViewController.swift */; };
 		48642D111BAE1E0400935358 /* LocationAssistant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48642D101BAE1E0400935358 /* LocationAssistant.swift */; };
 		48642D141BAE27D300935358 /* LocationAccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48642D121BAE27D300935358 /* LocationAccessViewController.swift */; };
@@ -106,6 +108,8 @@
 		48510BEA1BF7F3D10041C7C1 /* String+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Additions.swift"; sourceTree = "<group>"; };
 		4863ACAC1B24EF4D009F008F /* LocationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationCell.swift; sourceTree = "<group>"; };
 		4863ACAD1B24EF4D009F008F /* LocationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LocationCell.xib; sourceTree = "<group>"; };
+		4863E6F81CAD3C800072C304 /* CurrentLocationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentLocationCell.swift; sourceTree = "<group>"; };
+		4863E6F91CAD3C800072C304 /* CurrentLocationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CurrentLocationCell.xib; sourceTree = "<group>"; };
 		48642D0E1BAE166F00935358 /* LocationsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationsViewController.swift; sourceTree = "<group>"; };
 		48642D101BAE1E0400935358 /* LocationAssistant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationAssistant.swift; sourceTree = "<group>"; };
 		48642D121BAE27D300935358 /* LocationAccessViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationAccessViewController.swift; sourceTree = "<group>"; };
@@ -248,6 +252,8 @@
 				488BE6411CABF3EF00BA24C8 /* SearchCompleterCell.xib */,
 				488BE6441CABF41100BA24C8 /* SearchResultCell.swift */,
 				488BE6451CABF41100BA24C8 /* SearchResultCell.xib */,
+				4863E6F81CAD3C800072C304 /* CurrentLocationCell.swift */,
+				4863E6F91CAD3C800072C304 /* CurrentLocationCell.xib */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -489,6 +495,7 @@
 				48D4FFEB1BF7D2ED006DA09C /* LocationDetailViewController.xib in Resources */,
 				69D590FA1C74DCEE00481E44 /* Images.xcassets in Resources */,
 				698AF3951BF7910100F1E745 /* ColorPreviewCell.xib in Resources */,
+				4863E6FB1CAD3C800072C304 /* CurrentLocationCell.xib in Resources */,
 				48DEDA4119F592F80094CB8F /* LaunchScreen.xib in Resources */,
 				4863ACAF1B24EF4D009F008F /* LocationCell.xib in Resources */,
 				69640E941BFBCEA60050722D /* PhotoCell.xib in Resources */,
@@ -568,6 +575,7 @@
 				48E3B8561B193FA3003DD726 /* MenuController.swift in Sources */,
 				6924A6471C6B9D4100D5F0E6 /* NSDate+Relative.swift in Sources */,
 				693AF79C1C1B3CCD003AFB24 /* Visit.swift in Sources */,
+				4863E6FA1CAD3C800072C304 /* CurrentLocationCell.swift in Sources */,
 				69B7A3BB1BFCD76B000BEBA0 /* SettingsController.swift in Sources */,
 				69640E901BFBCDE80050722D /* PhotosLayout.swift in Sources */,
 				4882D9D51B1A99FD00BAADAD /* RHACLStringExtensions.swift in Sources */,
