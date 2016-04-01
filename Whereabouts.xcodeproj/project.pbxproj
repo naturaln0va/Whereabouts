@@ -61,13 +61,20 @@
 		698AF38D1BF6D66D00F1E745 /* TextEntryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 698AF38B1BF6D66D00F1E745 /* TextEntryCell.xib */; };
 		698AF3941BF7910100F1E745 /* ColorPreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698AF3921BF7910100F1E745 /* ColorPreviewCell.swift */; };
 		698AF3951BF7910100F1E745 /* ColorPreviewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 698AF3931BF7910100F1E745 /* ColorPreviewCell.xib */; };
-		698AF3991BF79A3F00F1E745 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698AF3971BF79A3F00F1E745 /* Location.swift */; };
+		698AF3991BF79A3F00F1E745 /* DatabaseLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698AF3971BF79A3F00F1E745 /* DatabaseLocation.swift */; };
 		698AF39B1BF79A4D00F1E745 /* Fetchable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698AF39A1BF79A4D00F1E745 /* Fetchable.swift */; };
+		698E782F1CAED0B3004A4178 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698E782E1CAED0B3004A4178 /* Location.swift */; };
 		69B7A3B61BFCD436000BEBA0 /* PhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69B7A3B41BFCD436000BEBA0 /* PhotoViewController.swift */; };
 		69B7A3B91BFCD6FE000BEBA0 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69B7A3B81BFCD6FE000BEBA0 /* SettingsViewController.swift */; };
 		69B7A3BB1BFCD76B000BEBA0 /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69B7A3BA1BFCD76B000BEBA0 /* SettingsController.swift */; };
 		69BF50BB1C15F85B0041848F /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69BF50BA1C15F85B0041848F /* CloudKit.framework */; };
 		69D590FA1C74DCEE00481E44 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 69D590F91C74DCEE00481E44 /* Images.xcassets */; };
+		69E367E01CADAD3E00604790 /* EditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69E367DF1CADAD3E00604790 /* EditViewController.swift */; };
+		69E367E31CAE0B2D00604790 /* LocationInfoDisplayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69E367E11CAE0B2D00604790 /* LocationInfoDisplayCell.swift */; };
+		69E367E41CAE0B2D00604790 /* LocationInfoDisplayCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 69E367E21CAE0B2D00604790 /* LocationInfoDisplayCell.xib */; };
+		69E367E71CAE8E3E00604790 /* MapItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69E367E51CAE8E3E00604790 /* MapItemCell.swift */; };
+		69E367E81CAE8E3E00604790 /* MapItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 69E367E61CAE8E3E00604790 /* MapItemCell.xib */; };
+		69E367EA1CAE979C00604790 /* CLPlacemark+Display.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69E367E91CAE979C00604790 /* CLPlacemark+Display.swift */; };
 		69EA5BBA1BFE4E1A0009B709 /* UIDevice+Addition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69EA5BB91BFE4E1A0009B709 /* UIDevice+Addition.swift */; };
 		69F7CEE61CAAF286007EB03F /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69F7CEE51CAAF286007EB03F /* ListViewController.swift */; };
 		69F7CEEC1CAB5E46007EB03F /* AddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69F7CEEB1CAB5E46007EB03F /* AddViewController.swift */; };
@@ -153,13 +160,20 @@
 		698AF38B1BF6D66D00F1E745 /* TextEntryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TextEntryCell.xib; sourceTree = "<group>"; };
 		698AF3921BF7910100F1E745 /* ColorPreviewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorPreviewCell.swift; sourceTree = "<group>"; };
 		698AF3931BF7910100F1E745 /* ColorPreviewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ColorPreviewCell.xib; sourceTree = "<group>"; };
-		698AF3971BF79A3F00F1E745 /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Location.swift; path = ../Location.swift; sourceTree = "<group>"; };
+		698AF3971BF79A3F00F1E745 /* DatabaseLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DatabaseLocation.swift; path = ../DatabaseLocation.swift; sourceTree = "<group>"; };
 		698AF39A1BF79A4D00F1E745 /* Fetchable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fetchable.swift; sourceTree = "<group>"; };
+		698E782E1CAED0B3004A4178 /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		69B7A3B41BFCD436000BEBA0 /* PhotoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoViewController.swift; sourceTree = "<group>"; };
 		69B7A3B81BFCD6FE000BEBA0 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		69B7A3BA1BFCD76B000BEBA0 /* SettingsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
 		69BF50BA1C15F85B0041848F /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		69D590F91C74DCEE00481E44 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		69E367DF1CADAD3E00604790 /* EditViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditViewController.swift; sourceTree = "<group>"; };
+		69E367E11CAE0B2D00604790 /* LocationInfoDisplayCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationInfoDisplayCell.swift; sourceTree = "<group>"; };
+		69E367E21CAE0B2D00604790 /* LocationInfoDisplayCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LocationInfoDisplayCell.xib; sourceTree = "<group>"; };
+		69E367E51CAE8E3E00604790 /* MapItemCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapItemCell.swift; sourceTree = "<group>"; };
+		69E367E61CAE8E3E00604790 /* MapItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MapItemCell.xib; sourceTree = "<group>"; };
+		69E367E91CAE979C00604790 /* CLPlacemark+Display.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CLPlacemark+Display.swift"; sourceTree = "<group>"; };
 		69EA5BB91BFE4E1A0009B709 /* UIDevice+Addition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIDevice+Addition.swift"; sourceTree = "<group>"; };
 		69F7CEE51CAAF286007EB03F /* ListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		69F7CEEB1CAB5E46007EB03F /* AddViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddViewController.swift; sourceTree = "<group>"; };
@@ -220,6 +234,7 @@
 			children = (
 				69F7CEEB1CAB5E46007EB03F /* AddViewController.swift */,
 				48D4FFE31BF7CB7A006DA09C /* ColorSelectionViewController.swift */,
+				69E367DF1CADAD3E00604790 /* EditViewController.swift */,
 				48642D131BAE27D300935358 /* LocationAccessViewController.xib */,
 				48642D121BAE27D300935358 /* LocationAccessViewController.swift */,
 				48D4FFE91BF7D2ED006DA09C /* LocationDetailViewController.xib */,
@@ -240,20 +255,24 @@
 		48CB17591AD1F2A000864CBF /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				4863ACAC1B24EF4D009F008F /* LocationCell.swift */,
-				4863ACAD1B24EF4D009F008F /* LocationCell.xib */,
-				698AF38A1BF6D66D00F1E745 /* TextEntryCell.swift */,
-				698AF38B1BF6D66D00F1E745 /* TextEntryCell.xib */,
 				698AF3921BF7910100F1E745 /* ColorPreviewCell.swift */,
 				698AF3931BF7910100F1E745 /* ColorPreviewCell.xib */,
+				4863E6F81CAD3C800072C304 /* CurrentLocationCell.swift */,
+				4863E6F91CAD3C800072C304 /* CurrentLocationCell.xib */,
+				4863ACAC1B24EF4D009F008F /* LocationCell.swift */,
+				4863ACAD1B24EF4D009F008F /* LocationCell.xib */,
+				69E367E11CAE0B2D00604790 /* LocationInfoDisplayCell.swift */,
+				69E367E21CAE0B2D00604790 /* LocationInfoDisplayCell.xib */,
+				69E367E51CAE8E3E00604790 /* MapItemCell.swift */,
+				69E367E61CAE8E3E00604790 /* MapItemCell.xib */,
 				69640E911BFBCEA60050722D /* PhotoCell.swift */,
 				69640E921BFBCEA60050722D /* PhotoCell.xib */,
+				698AF38A1BF6D66D00F1E745 /* TextEntryCell.swift */,
+				698AF38B1BF6D66D00F1E745 /* TextEntryCell.xib */,
 				488BE6401CABF3EF00BA24C8 /* SearchCompleterCell.swift */,
 				488BE6411CABF3EF00BA24C8 /* SearchCompleterCell.xib */,
 				488BE6441CABF41100BA24C8 /* SearchResultCell.swift */,
 				488BE6451CABF41100BA24C8 /* SearchResultCell.xib */,
-				4863E6F81CAD3C800072C304 /* CurrentLocationCell.swift */,
-				4863E6F91CAD3C800072C304 /* CurrentLocationCell.xib */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -290,7 +309,7 @@
 			isa = PBXGroup;
 			children = (
 				48CB17591AD1F2A000864CBF /* Cells */,
-				69CEA4AA1BF63B0F00F5022B /* CoreData */,
+				69CEA4AA1BF63B0F00F5022B /* Model */,
 				48FF04FB1AD036A000A2FA34 /* Controllers */,
 				48FF04FD1AD036C700A2FA34 /* Extensions */,
 				69CEA4A81BF63AC200F5022B /* Frameworks */,
@@ -325,6 +344,7 @@
 				69EA5BB91BFE4E1A0009B709 /* UIDevice+Addition.swift */,
 				6924A6461C6B9D4100D5F0E6 /* NSDate+Relative.swift */,
 				48707CCB1CAA96090003F792 /* UIColor+Hex.swift */,
+				69E367E91CAE979C00604790 /* CLPlacemark+Display.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -367,16 +387,17 @@
 			path = ..;
 			sourceTree = "<group>";
 		};
-		69CEA4AA1BF63B0F00F5022B /* CoreData */ = {
+		69CEA4AA1BF63B0F00F5022B /* Model */ = {
 			isa = PBXGroup;
 			children = (
 				693AF7981C1B38AE003AFB24 /* DataModels */,
-				698AF3971BF79A3F00F1E745 /* Location.swift */,
-				693AF79A1C1B3CCD003AFB24 /* Visit.swift */,
-				698AF39A1BF79A4D00F1E745 /* Fetchable.swift */,
 				48F763451CA890D200BCE740 /* CloudLocation.swift */,
+				698AF3971BF79A3F00F1E745 /* DatabaseLocation.swift */,
+				698AF39A1BF79A4D00F1E745 /* Fetchable.swift */,
+				698E782E1CAED0B3004A4178 /* Location.swift */,
+				693AF79A1C1B3CCD003AFB24 /* Visit.swift */,
 			);
-			name = CoreData;
+			name = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -498,7 +519,9 @@
 				4863E6FB1CAD3C800072C304 /* CurrentLocationCell.xib in Resources */,
 				48DEDA4119F592F80094CB8F /* LaunchScreen.xib in Resources */,
 				4863ACAF1B24EF4D009F008F /* LocationCell.xib in Resources */,
+				69E367E81CAE8E3E00604790 /* MapItemCell.xib in Resources */,
 				69640E941BFBCEA60050722D /* PhotoCell.xib in Resources */,
+				69E367E41CAE0B2D00604790 /* LocationInfoDisplayCell.xib in Resources */,
 				488BE6471CABF41100BA24C8 /* SearchResultCell.xib in Resources */,
 				698AF38D1BF6D66D00F1E745 /* TextEntryCell.xib in Resources */,
 				48642D151BAE27D300935358 /* LocationAccessViewController.xib in Resources */,
@@ -568,11 +591,13 @@
 				69F7CEE61CAAF286007EB03F /* ListViewController.swift in Sources */,
 				48E3B85C1B1951AA003DD726 /* StyledViewController.swift in Sources */,
 				693AF7971C1B38A4003AFB24 /* VisitModel.xcdatamodeld in Sources */,
+				69E367EA1CAE979C00604790 /* CLPlacemark+Display.swift in Sources */,
 				48642D0F1BAE166F00935358 /* LocationsViewController.swift in Sources */,
 				4863ACAE1B24EF4D009F008F /* LocationCell.swift in Sources */,
 				48F763411CA8778700BCE740 /* StyledNavigationController.swift in Sources */,
 				69EA5BBA1BFE4E1A0009B709 /* UIDevice+Addition.swift in Sources */,
 				48E3B8561B193FA3003DD726 /* MenuController.swift in Sources */,
+				69E367E01CADAD3E00604790 /* EditViewController.swift in Sources */,
 				6924A6471C6B9D4100D5F0E6 /* NSDate+Relative.swift in Sources */,
 				693AF79C1C1B3CCD003AFB24 /* Visit.swift in Sources */,
 				4863E6FA1CAD3C800072C304 /* CurrentLocationCell.swift in Sources */,
@@ -581,12 +606,15 @@
 				4882D9D51B1A99FD00BAADAD /* RHACLStringExtensions.swift in Sources */,
 				48AA3C331C01732800A0935A /* PickerViewController.swift in Sources */,
 				48D4FFE41BF7CB7A006DA09C /* ColorSelectionViewController.swift in Sources */,
+				69E367E71CAE8E3E00604790 /* MapItemCell.swift in Sources */,
 				48D73D6B1C012AA900B1A9B5 /* LocationModel.xcdatamodeld in Sources */,
+				69E367E31CAE0B2D00604790 /* LocationInfoDisplayCell.swift in Sources */,
 				488BE6461CABF41100BA24C8 /* SearchResultCell.swift in Sources */,
 				48F763461CA890D200BCE740 /* CloudLocation.swift in Sources */,
 				48C7636419F59D230096B27A /* RHAUtilExtensions.swift in Sources */,
 				6954E20B1C177BD500106EB0 /* PhotoTransition.swift in Sources */,
-				698AF3991BF79A3F00F1E745 /* Location.swift in Sources */,
+				698E782F1CAED0B3004A4178 /* Location.swift in Sources */,
+				698AF3991BF79A3F00F1E745 /* DatabaseLocation.swift in Sources */,
 				483AF54D1B0BFF2700A00BED /* PersistenceController.swift in Sources */,
 				690667721C11E83800862742 /* DataModel.xcdatamodeld in Sources */,
 				69B7A3B91BFCD6FE000BEBA0 /* SettingsViewController.swift in Sources */,

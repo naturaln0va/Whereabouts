@@ -2,9 +2,9 @@
 import UIKit
 
 
-protocol LocationAccessViewControllerDelegate {
-    func accessGranted()
-    func accessDenied()
+@objc protocol LocationAccessViewControllerDelegate {
+    optional func locationAccessViewControllerAccessGranted()
+    optional func locationAccessViewControllerAccessDenied()
 }
 
 
@@ -26,14 +26,14 @@ class LocationAccessViewController: StyledViewController {
 
     @IBAction func accessButtonPressed(sender: AnyObject) {
         if let delegate = delegate {
-            delegate.accessGranted()
+            delegate.locationAccessViewControllerAccessGranted?()
         }
         dismiss()
     }
     
     @IBAction func noThanksButtonPressed(sender: AnyObject) {
         if let delegate = delegate {
-            delegate.accessDenied()
+            delegate.locationAccessViewControllerAccessDenied?()
         }
         dismiss()
     }

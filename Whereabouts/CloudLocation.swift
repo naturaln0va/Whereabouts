@@ -8,23 +8,27 @@ struct CloudLocation {
     static let recordType = "Location"
     
     enum CloudKeys: String {
-        case CreatedDate = "createdDate"
-        case Color = "colorString"
+        case CreatedDate = "created_date"
+        case Color = "color_string"
         case Identifier = "identifier"
         case Location = "location"
-        case Title = "locationTitle"
-        case MapItem = "mapItem"
+        case Content = "text_content"
         case Place = "place"
+        case ItemName = "item_name"
+        case ItemNumber = "item_number"
+        case ItemLink = "item_link"
     }
     
     let color: String
     let createdDate: NSDate
     let identifier: String
     let location: CLLocation
-    let title: String
     
-    private(set) var mapItem: MKMapItem? = nil
     private(set) var place: CLPlacemark? = nil
+    private(set) var textContent: String? = nil
+    private(set) var itemName: String? = nil
+    private(set) var itemPhoneNumber: String? = nil
+    private(set) var itemWebLink: String? = nil
     
     var record: CKRecord {
         let record = CKRecord(recordType: "Location")
@@ -33,11 +37,11 @@ struct CloudLocation {
         record[CloudKeys.CreatedDate.rawValue] = createdDate
         record[CloudKeys.Identifier.rawValue] = identifier
         record[CloudKeys.Location.rawValue] = location
-        record[CloudKeys.Title.rawValue] = title
+        record[CloudKeys.Content.rawValue] = textContent
+        record[CloudKeys.ItemName.rawValue] = itemName
+        record[CloudKeys.ItemNumber.rawValue] = itemPhoneNumber
+        record[CloudKeys.ItemLink.rawValue] = itemWebLink
         
-        if let mapItem = mapItem {
-            record[CloudKeys.MapItem.rawValue] = NSKeyedArchiver.archivedDataWithRootObject(mapItem)
-        }
         if let place = place {
             record[CloudKeys.Place.rawValue] = NSKeyedArchiver.archivedDataWithRootObject(place)
         }
@@ -50,11 +54,11 @@ struct CloudLocation {
         createdDate = record[CloudKeys.CreatedDate.rawValue] as! NSDate
         identifier = record[CloudKeys.Identifier.rawValue] as? String ?? ""
         location = record[CloudKeys.Location.rawValue] as! CLLocation
-        title = record[CloudKeys.Title.rawValue] as? String ?? ""
+        textContent = record[CloudKeys.Content.rawValue] as? String ?? ""
+        itemName = record[CloudKeys.ItemName.rawValue] as? String ?? ""
+        itemPhoneNumber = record[CloudKeys.ItemNumber.rawValue] as? String ?? ""
+        itemWebLink = record[CloudKeys.ItemLink.rawValue] as? String ?? ""
         
-        if let mapData = record[CloudKeys.MapItem.rawValue] as? NSData {
-            mapItem = NSKeyedUnarchiver.unarchiveObjectWithData(mapData) as? MKMapItem
-        }
         if let placemarkData = record[CloudKeys.Place.rawValue] as? NSData {
             place = NSKeyedUnarchiver.unarchiveObjectWithData(placemarkData) as? CLPlacemark
         }
@@ -65,9 +69,11 @@ struct CloudLocation {
         createdDate = localLocation.date
         identifier = localLocation.identifier
         location = localLocation.location
-        title = localLocation.locationTitle
-        mapItem = localLocation.mapItem
+        textContent = localLocation.textContent
         place = localLocation.placemark
+        itemName = localLocation.mapItem?.name
+        itemPhoneNumber = localLocation.mapItem?.phoneNumber
+        itemWebLink = String(localLocation.mapItem?.url)
     }
     
 }

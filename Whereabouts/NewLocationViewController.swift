@@ -166,22 +166,22 @@ class NewLocationViewController: UITableViewController {
             return
         }
         
-        if let location = locationToEdit {
-            PersistentController.sharedController.updateLocation(location, title: title, color: selectedColor, placemark: placemark)
-            if let delegate = delegate {
-                delegate.newLocationViewControllerDidEditLocation(location)
-            }
-        }
-        else {
-            guard let locationToSave = location, let items = toolbarItems where !items.contains(loadingBarButtonItem) else {
-                let alert = UIAlertController(title: "Sorry", message: "Please wait for an accurate location to be found.", preferredStyle: .Alert)
-                alert.addAction(UIAlertAction(title: "Okay", style: .Default, handler: nil))
-                presentViewController(alert, animated: true, completion: nil)
-                return
-            }
-
-            PersistentController.sharedController.saveLocation(title, color: selectedColor, placemark: placemark, location: locationToSave)
-        }
+//        if let location = locationToEdit {
+//            PersistentController.sharedController.updateLocation(location, content: title, color: selectedColor, placemark: placemark)
+//            if let delegate = delegate {
+//                delegate.newLocationViewControllerDidEditLocation(location)
+//            }
+//        }
+//        else {
+//            guard let locationToSave = location, let items = toolbarItems where !items.contains(loadingBarButtonItem) else {
+//                let alert = UIAlertController(title: "Sorry", message: "Please wait for an accurate location to be found.", preferredStyle: .Alert)
+//                alert.addAction(UIAlertAction(title: "Okay", style: .Default, handler: nil))
+//                presentViewController(alert, animated: true, completion: nil)
+//                return
+//            }
+//
+//            PersistentController.sharedController.saveLocation(title, color: selectedColor, placemark: placemark, location: locationToSave)
+//        }
         dismiss()
     }
     

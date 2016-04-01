@@ -13,12 +13,7 @@ class LocationsViewController: UIViewController {
         label.sizeToFit()
         return label
     }()
-    private lazy var messageBarButtonItem: UIBarButtonItem = {
-        return UIBarButtonItem(customView: self.messageLabel)
-    }()
-    private lazy var spaceBarButtonItem: UIBarButtonItem = {
-        return UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
-    }()
+    
     private lazy var titleToggle: UISegmentedControl = {
         let control = UISegmentedControl(items: ["List", "Map"])
         control.selectedSegmentIndex = 0
@@ -27,6 +22,9 @@ class LocationsViewController: UIViewController {
         control.addTarget(self, action: #selector(LocationsViewController.toggleWasChanged), forControlEvents: .ValueChanged)
         return control
     }()
+    
+    private lazy var messageBarButtonItem: UIBarButtonItem = UIBarButtonItem(customView: self.messageLabel)
+    private lazy var spaceBarButtonItem: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
     
     private let listViewController = ListViewController()
     private let mapViewController = MapViewController()

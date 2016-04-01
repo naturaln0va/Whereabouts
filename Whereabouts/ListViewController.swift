@@ -7,7 +7,7 @@ class ListViewController: UITableViewController {
     private lazy var fetchedResultsController: NSFetchedResultsController = {
         let moc = PersistentController.sharedController.locationMOC
         
-        let fetchRequest = Location.fetchRequest(moc, predicate: nil, sortedBy: "date", ascending: false)
+        let fetchRequest = DatabaseLocation.fetchRequest(moc, predicate: nil, sortedBy: "date", ascending: false)
         fetchRequest.fetchBatchSize = 24
         
         return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: "locations")
@@ -54,8 +54,8 @@ class ListViewController: UITableViewController {
             fatalError("Expected to dequeue a 'LocationCell'.")
         }
         
-        if let location = fetchedResultsController.objectAtIndexPath(indexPath) as? Location {
-            cell.configureCell(location)
+        if let location = fetchedResultsController.objectAtIndexPath(indexPath) as? DatabaseLocation {
+            cell.configureCell(Location(dbLocation: location))
         }
         
         return cell
@@ -64,9 +64,9 @@ class ListViewController: UITableViewController {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
-        if let location = self.fetchedResultsController.objectAtIndexPath(indexPath) as? Location {
+        if let location = fetchedResultsController.objectAtIndexPath(indexPath) as? DatabaseLocation {
             let detailVC = LocationDetailViewController()
-            detailVC.locationToDisplay = location
+            detailVC.locationToDisplay = Location(dbLocation: location)
             navigationController?.pushViewController(detailVC, animated: true)
         }
     }
@@ -76,7 +76,7 @@ class ListViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if let location = self.fetchedResultsController.objectAtIndexPath(indexPath) as? Location {
+        if let location = self.fetchedResultsController.objectAtIndexPath(indexPath) as? DatabaseLocation {
             CloudController.sharedController.deleteLocationFromCloud(location) {
                 PersistentController.sharedController.deleteLocation(location)
             }
@@ -108,8 +108,8 @@ extension ListViewController: NSFetchedResultsControllerDelegate {
             
         case .Update:
             if let cell = tableView.cellForRowAtIndexPath(indexPath!) as? LocationCell {
-                if let location = fetchedResultsController.objectAtIndexPath(indexPath!) as? Location {
-                    cell.configureCell(location)
+                if let location = fetchedResultsController.objectAtIndexPath(indexPath!) as? DatabaseLocation {
+                    cell.configureCell(Location(dbLocation: location))
                 }
             }
             

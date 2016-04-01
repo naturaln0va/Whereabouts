@@ -14,13 +14,26 @@ class LocationCell: UITableViewCell {
     func configureCell(locationToDisplay: Location) {
         colorCategoryStripView.backgroundColor = locationToDisplay.color
         createdDateLabel.text = locationToDisplay.date.relativeString()
-        titleLabel.text = locationToDisplay.title
         
-        if let place = locationToDisplay.placemark {
-            addressLabel.text = stringFromAddress(place, withNewLine: false)
+        if let item = locationToDisplay.mapItem {
+            titleLabel.text = item.name
+            addressLabel.text = item.placemark.fullFormatedString()
+        }
+        else if let place = locationToDisplay.placemark {
+            let addressComps = stringFromAddress(place, withNewLine: true).componentsSeparatedByString("\n")
+            
+            if let firstComp = addressComps.first, let lastComp = addressComps.last where addressComps.count == 2 {
+                titleLabel.text = firstComp
+                addressLabel.text = lastComp
+            }
+            else {
+                titleLabel.text = stringFromAddress(place, withNewLine: false)
+                addressLabel.text = stringFromCoordinate(locationToDisplay.coordinate)
+            }
         }
         else {
-            addressLabel.text = stringFromCoordinate(locationToDisplay.location.coordinate)
+            titleLabel.text = stringFromCoordinate(locationToDisplay.location.coordinate)
+            addressLabel.text = "No address found."
         }
     }
     

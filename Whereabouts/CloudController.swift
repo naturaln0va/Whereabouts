@@ -30,7 +30,7 @@ class CloudController {
                         print("Error retrieving locations from the cloud: \(e)")
                     }
                     
-                    for localLocation in PersistentController.sharedController.allLocalLocations() {
+                    for localLocation in PersistentController.sharedController.locations() {
                         if let _ = self.cloudLocations.indexOf({ $0.identifier == localLocation.identifier }) { continue }
                         
                         let semaphore = dispatch_semaphore_create(0)
@@ -59,7 +59,7 @@ class CloudController {
         }
     }
     
-    func deleteLocationFromCloud(location: Location, completion: (Void -> Void)?) {
+    func deleteLocationFromCloud(location: DatabaseLocation, completion: (Void -> Void)?) {
         let query = CKQuery(recordType: CloudLocation.recordType, predicate: NSPredicate(format: "%K == %@", CloudLocation.CloudKeys.Identifier.rawValue, location.identifier))
         
         container.privateCloudDatabase.performQuery(query, inZoneWithID: nil) { records, error in

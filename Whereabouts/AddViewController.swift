@@ -37,6 +37,12 @@ class AddViewController: UITableViewController {
         }
     }
     
+    private var placemark: CLPlacemark? {
+        didSet {
+            tableView.reloadData()
+        }
+    }
+    
     private enum SearchType {
         case None
         case Completer
@@ -44,6 +50,21 @@ class AddViewController: UITableViewController {
     }
     
     private var searchType: SearchType = .None {
+        didSet {
+            tableView.reloadData()
+        }
+    }
+    
+    private var regionForSearching: MKCoordinateRegion? {
+        if let location = location {
+            return MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 1, longitudeDelta: 1))
+        }
+        else {
+            return nil
+        }
+    }
+    
+    private var isCurrentlyLocating = false {
         didSet {
             tableView.reloadData()
         }
@@ -58,40 +79,32 @@ class AddViewController: UITableViewController {
         view.backgroundColor = StyleController.sharedController.backgroundColor
         
         navigationItem.titleView = titleSearchBar
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
-            image: UIImage(named: "close-cross"),
-            landscapeImagePhone: nil, style: .Plain,
-            target: self,
-            action: #selector(AddViewController.closeButtonPressed)
-        )
         
-        tableView.backgroundColor = view.backgroundColor
         tableView = UITableView(frame: CGRect.zero, style: .Grouped)
+        tableView.keyboardDismissMode = .Interactive
+        tableView.backgroundColor = view.backgroundColor
+        tableView.rowHeight = UITableViewAutomaticDimension
+        
         tableView.registerNib(UINib(nibName: String(SearchResultCell), bundle: nil), forCellReuseIdentifier: String(SearchResultCell))
         tableView.registerNib(UINib(nibName: String(SearchCompleterCell), bundle: nil), forCellReuseIdentifier: String(SearchCompleterCell))
         tableView.registerNib(UINib(nibName: String(CurrentLocationCell), bundle: nil), forCellReuseIdentifier: String(CurrentLocationCell))
-        tableView.keyboardDismissMode = .Interactive
         
         assistant.delegate = self
+        
+        assistant.getLocation()
+        isCurrentlyLocating = true
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         titleSearchBar.becomeFirstResponder()
-        assistant.getLocation()
-    }
-    
-    // MARK: - Actions
-    internal func closeButtonPressed() {
-        titleSearchBar.endEditing(true)
-        
-        dismissViewControllerAnimated(true, completion: nil)
     }
     
     // MARK: - Helpers
-    private func searchWithQuery(query: String?, completion: MKLocalSearchCompletionHandler) {
-        let request = MKLocalSearchRequest()
-        request.naturalLanguageQuery = query
+    private func searchWithRequest(request: MKLocalSearchRequest, completion: MKLocalSearchCompletionHandler) {
+        if let region = regionForSearching {
+            request.region = region
+        }
         
         let search = MKLocalSearch(request: request)
         search.startWithCompletionHandler(completion)
@@ -119,11 +132,26 @@ class AddViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if tableView.numberOfSections > 1 && indexPath.section == 0 && searchType != .Completer {
-            guard let location = location, let cell = tableView.dequeueReusableCellWithIdentifier(String(CurrentLocationCell)) as? CurrentLocationCell else {
+            guard let cell = tableView.dequeueReusableCellWithIdentifier(String(CurrentLocationCell)) as? CurrentLocationCell else {
                 fatalError("Expected to dequeue a 'CurrentLocationCell' or location was nil.")
             }
             
-            cell.coordinateLabel.text = stringFromCoordinate(location.coordinate)
+            if isCurrentlyLocating {
+                cell.loadingActivityView.startAnimating()
+            }
+            else {
+                cell.loadingActivityView.stopAnimating()
+            }
+            
+            if let place = placemark {
+                cell.locationLabel.text = stringFromAddress(place, withNewLine: true)
+            }
+            else if let location = location {
+                cell.locationLabel.text = stringFromCoordinate(location.coordinate)
+            }
+            else {
+                cell.locationLabel.text = "Location Error"
+            }
             
             return cell
         }
@@ -175,6 +203,13 @@ class AddViewController: UITableViewController {
             
             cell.titleLabel.text = searchedMapItems?[indexPath.row].name
             
+            if let webURL = searchedMapItems?[indexPath.row].url {
+                cell.websiteLabel.text = "\(webURL)"
+            }
+            else {
+                cell.websiteLabel.text = searchedMapItems?[indexPath.row].phoneNumber
+            }
+            
             if let place = searchedMapItems?[indexPath.row].placemark {
                 cell.addressLabel.text = stringFromAddress(place, withNewLine: false)
                 
@@ -202,10 +237,19 @@ class AddViewController: UITableViewController {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
-        if searchType == .Completer {
+        titleSearchBar.endEditing(true)
+        
+        if tableView.numberOfSections > 1 && indexPath.section == 0 && searchType != .Completer {
+            if let currentLocation = location {
+                let newLocation = Location(location: currentLocation)
+                newLocation.placemark = placemark
+                
+                navigationController?.pushViewController(EditViewController(location: newLocation), animated: true)
+            }
+        }
+        else if searchType == .Completer {
             if let results = completionResults {
-                let search = MKLocalSearch(request: MKLocalSearchRequest(completion: results[indexPath.row]))
-                search.startWithCompletionHandler { response, error in
+                searchWithRequest(MKLocalSearchRequest(completion: results[indexPath.row])) { response, error in
                     if let response = response where error == nil {
                         self.searchedMapItems = response.mapItems
                         self.titleSearchBar.endEditing(true)
@@ -215,6 +259,14 @@ class AddViewController: UITableViewController {
                     }
                 }
             }
+        }
+        else if let results = searchedMapItems where searchType == .Results {
+            if let newLocation = Location(mapItem: results[indexPath.row]) {
+                navigationController?.pushViewController(EditViewController(location: newLocation), animated: true)
+            }
+        }
+        else {
+            fatalError("ERROR: Failed to handle row in didSelectRowAtIndexPath.")
         }
     }
     
@@ -269,14 +321,48 @@ class AddViewController: UITableViewController {
 
 }
 
+// MARK: - LocationAssistantDelegate
 extension AddViewController: LocationAssistantDelegate {
     
     func locationAssistantReceivedLocation(location: CLLocation, finished: Bool) {
         self.location = location
+        
+        if finished {
+            assistant.getAddressForLocation(location)
+        }
+    }
+    
+    func locationAssistantReceivedAddress(placemark: CLPlacemark) {
+        self.placemark = placemark
+        isCurrentlyLocating = false
+    }
+    
+    func locationAssistantFailedToGetAddress() {
+        isCurrentlyLocating = false
+    }
+    
+    func locationAssistantFailedToGetLocation() {
+        isCurrentlyLocating = false
+    }
+    
+    func locationAssistantAuthorizationNeeded() {
+        let accessVC = LocationAccessViewController()
+        accessVC.delegate = self
+        presentViewController(accessVC, animated: true, completion: nil)
     }
     
 }
 
+extension AddViewController: LocationAccessViewControllerDelegate {
+    
+    func locationAccessViewControllerAccessGranted() {
+        CLLocationManager().requestWhenInUseAuthorization()
+    }
+    
+}
+
+
+// MARK: - MKLocalSearchCompleterDelegate
 extension AddViewController: MKLocalSearchCompleterDelegate {
     
     func completerDidUpdateResults(completer: MKLocalSearchCompleter) {
@@ -316,10 +402,15 @@ extension AddViewController: UISearchBarDelegate {
     
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {
         searchBar.endEditing(true)
+        
+        dismissViewControllerAnimated(true, completion: nil)
     }
     
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-        searchWithQuery(searchBar.text) { response, error in
+        let request = MKLocalSearchRequest()
+        request.naturalLanguageQuery = searchBar.text
+        
+        searchWithRequest(request) { response, error in
             if let response = response where error == nil {
                 self.searchedMapItems = response.mapItems
                 searchBar.endEditing(true)

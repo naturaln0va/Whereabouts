@@ -14,29 +14,44 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="55.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="255" verticalHuggingPriority="251" image="current-location" translatesAutoresizingMaskIntoConstraints="NO" id="rdg-qt-os1">
+                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="258" verticalHuggingPriority="251" horizontalCompressionResistancePriority="756" image="current-location" translatesAutoresizingMaskIntoConstraints="NO" id="rdg-qt-os1">
                         <rect key="frame" x="16" y="16" width="24" height="24"/>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="127.98321, -97.467812" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OHK-mh-66c">
-                        <rect key="frame" x="48" y="18" width="256" height="20"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="127.98321, -97.467812" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OHK-mh-66c">
+                        <rect key="frame" x="56" y="4" width="220" height="47.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="bD1-lm-Q7c">
+                        <rect key="frame" x="284" y="18" width="20" height="20"/>
+                    </activityIndicatorView>
                 </subviews>
                 <constraints>
                     <constraint firstItem="rdg-qt-os1" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="1Bg-IT-kYW"/>
                     <constraint firstAttribute="trailing" secondItem="OHK-mh-66c" secondAttribute="trailing" constant="16" id="7tI-gD-rl6"/>
                     <constraint firstItem="rdg-qt-os1" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="NyG-eJ-muo"/>
-                    <constraint firstItem="OHK-mh-66c" firstAttribute="leading" secondItem="rdg-qt-os1" secondAttribute="trailing" constant="8" id="tHF-Zd-5yD"/>
+                    <constraint firstItem="bD1-lm-Q7c" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="QaL-Rp-3Yw"/>
+                    <constraint firstItem="OHK-mh-66c" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="4" id="VwC-zW-Npf"/>
+                    <constraint firstAttribute="bottom" secondItem="OHK-mh-66c" secondAttribute="bottom" constant="4" id="jg7-2X-Db1"/>
+                    <constraint firstItem="bD1-lm-Q7c" firstAttribute="leading" secondItem="OHK-mh-66c" secondAttribute="trailing" constant="8" id="kee-G2-xhS"/>
+                    <constraint firstItem="OHK-mh-66c" firstAttribute="leading" secondItem="rdg-qt-os1" secondAttribute="trailing" constant="16" id="tHF-Zd-5yD"/>
+                    <constraint firstAttribute="trailing" secondItem="bD1-lm-Q7c" secondAttribute="trailing" constant="16" id="ym0-dg-I0L"/>
                     <constraint firstItem="OHK-mh-66c" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="zKE-45-vGD"/>
                 </constraints>
+                <variation key="default">
+                    <mask key="constraints">
+                        <exclude reference="7tI-gD-rl6"/>
+                        <exclude reference="zKE-45-vGD"/>
+                    </mask>
+                </variation>
             </tableViewCellContentView>
             <connections>
                 <outlet property="arrowImageView" destination="rdg-qt-os1" id="jBG-l7-gLa"/>
-                <outlet property="coordinateLabel" destination="OHK-mh-66c" id="67G-tL-vtP"/>
+                <outlet property="loadingActivityView" destination="bD1-lm-Q7c" id="At7-l6-65v"/>
+                <outlet property="locationLabel" destination="OHK-mh-66c" id="jAY-GT-5Ab"/>
             </connections>
-            <point key="canvasLocation" x="159" y="336"/>
+            <point key="canvasLocation" x="-127" y="331"/>
         </tableViewCell>
     </objects>
     <resources>

@@ -34,7 +34,9 @@ class MapViewController: UIViewController {
     
     // MARK: Helpers
     private func loadLocationsAndDisplay() {
-        if let locations = try? Location.objectsInContext(PersistentController.sharedController.locationMOC) {
+        let locations = PersistentController.sharedController.locations()
+        
+        if locations.count > 0 {
             mapView.addAnnotations(locations)
             mapView.showAnnotations(locations, animated: true)
         }

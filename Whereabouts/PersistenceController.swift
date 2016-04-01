@@ -142,7 +142,8 @@ class PersistentController {
                     if let state = placemark.administrativeArea {
                         titleForLocation += ", \(state)"
                     }
-                    saveLocation(titleForLocation, color: nil, placemark: placemark, location: placemark.location!)
+                    
+                    //saveLocation(titleForLocation, color: nil, placemark: placemark, location: placemark.location!)
                 }
                 else {
                     print("Did not find a placemark in: \(legacyLocation), or the location was nil.")
@@ -157,9 +158,11 @@ class PersistentController {
     }
     
     // MARK: - Location Management
-    func allLocalLocations() -> [Location] {
-        if let locations = try? Location.objectsInContext(locationMOC) {
-            return locations
+    func locations() -> [Location] {
+        if let locations = try? DatabaseLocation.objectsInContext(locationMOC) {
+            return locations.map { dbLocation in
+                return Location(dbLocation: dbLocation)
+            }
         }
         return []
     }
@@ -169,17 +172,19 @@ class PersistentController {
             return
         }
         
-        guard let dataToSave = NSEntityDescription.insertNewObjectForEntityForName(Location.entityName(), inManagedObjectContext: locationMOC) as? Location else {
+        guard let dataToSave = NSEntityDescription.insertNewObjectForEntityForName(DatabaseLocation.entityName(), inManagedObjectContext: locationMOC) as? DatabaseLocation else {
             fatalError("Expected to insert and entity of type 'Location'.")
         }
         
         dataToSave.date = location.createdDate
-        dataToSave.locationTitle = location.title
+        dataToSave.textContent = location.textContent
         dataToSave.color = location.color.characters.count > 0 ? UIColor(rgba: location.color) : nil
         dataToSave.placemark = location.place
         dataToSave.location = location.location
-        dataToSave.mapItem = location.mapItem
         dataToSave.identifier = location.identifier
+        dataToSave.itemName = location.itemName
+        dataToSave.itemPhoneNumber = location.itemPhoneNumber
+        dataToSave.itemWebLink = location.itemWebLink
         
         if locationMOC.hasChanges {
             locationMOC.performBlockAndWait { [unowned self] in
@@ -194,8 +199,8 @@ class PersistentController {
         }
     }
     
-    func locationForIdentifier(identifier: String) -> Location? {
-        if let location = try? Location.singleObjectInContext(locationMOC, predicate: NSPredicate(format: "identifier == [c] %@", identifier), sortedBy: nil, ascending: false) {
+    func locationForIdentifier(identifier: String) -> DatabaseLocation? {
+        if let location = try? DatabaseLocation.singleObjectInContext(locationMOC, predicate: NSPredicate(format: "identifier == [c] %@", identifier), sortedBy: nil, ascending: false) {
             return location
         }
         else {
@@ -203,7 +208,7 @@ class PersistentController {
         }
     }
     
-    func deleteLocation(locationToDelete: Location) {
+    func deleteLocation(locationToDelete: DatabaseLocation) {
         locationMOC.deleteObject(locationToDelete)
         
         if locationMOC.hasChanges {
@@ -219,46 +224,24 @@ class PersistentController {
         }
     }
     
-    func updateLocation(locationToUpdate: Location, title: String, color: UIColor?, placemark: CLPlacemark?) {
-        do {
-            if let result = try Location.singleObjectInContext(locationMOC, predicate: NSPredicate(format: "identifier == [c] %@", locationToUpdate.identifier), sortedBy: nil, ascending: false) {
-                result.placemark = placemark
-                result.locationTitle = title
-                result.color = color
-                
-                if locationMOC.hasChanges {
-                    locationMOC.performBlockAndWait { [unowned self] in
-                        do {
-                            try self.locationMOC.save()
-                        }
-                            
-                        catch {
-                            fatalError("Error saving location: \(error)")
-                        }
-                    }
-                }
-            }
-            else {
-                print("Error there was no entity with that identifier.")
-            }
-        }
-            
-        catch {
-            print("Error adding or updating location: \(locationToUpdate.title) ・ \(locationToUpdate.date)")
-        }
+    func updateDatabaseLocationWithID(identifier: String, location: Location) {
+        // TODO
     }
     
-    func saveLocation(title: String, color: UIColor?, placemark: CLPlacemark?, location: CLLocation) {
-        guard let dataToSave = NSEntityDescription.insertNewObjectForEntityForName(Location.entityName(), inManagedObjectContext: locationMOC) as? Location else {
+    func saveLocation(location: Location) {
+        guard let dataToSave = NSEntityDescription.insertNewObjectForEntityForName(DatabaseLocation.entityName(), inManagedObjectContext: locationMOC) as? DatabaseLocation else {
             fatalError("Expected to insert and entity of type 'Location'.")
         }
         
-        dataToSave.date = NSDate()
-        dataToSave.locationTitle = title
-        dataToSave.color = color
-        dataToSave.placemark = placemark
-        dataToSave.location = location
-        dataToSave.identifier = "\(location.timestamp.timeIntervalSince1970.hashValue)+\(title.hashValue)+\(location.coordinate.longitude.hashValue)+\(location.coordinate.latitude.hashValue)"
+        dataToSave.date = location.date
+        dataToSave.textContent = location.textContent
+        dataToSave.color = location.color
+        dataToSave.placemark = location.placemark
+        dataToSave.location = location.location
+        dataToSave.identifier = location.identifier
+        dataToSave.itemName = location.mapItem?.name
+        dataToSave.itemPhoneNumber = location.mapItem?.phoneNumber
+        dataToSave.itemWebLink = String(location.mapItem?.url)
         
         if locationMOC.hasChanges {
             locationMOC.performBlockAndWait { [unowned self] in
