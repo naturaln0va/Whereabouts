@@ -35,6 +35,7 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate {
     private(set) var placemark: CLPlacemark?
     private var timer: NSTimer?
     
+    private var wasLocating = false
     private var updatingLocation = false
     private var monitoringLocationUpdates = false
     private var reverseGeocoding = false
@@ -49,6 +50,8 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate {
     
     // MARK: - Public Methods
     func getLocation() {
+        wasLocating = true
+        
         checkLocationAuthorization()
         
         guard locationAccess() else {
@@ -63,6 +66,14 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate {
             placemark = nil
             startLocationManager()
         }
+    }
+    
+    func requestWhenInUse() {
+        manager.requestWhenInUseAuthorization()
+    }
+    
+    func requestAlways() {
+        manager.requestAlwaysAuthorization()
     }
     
     func placemarkFromString(stringToGeocode geocodeString: String, completion: (CLPlacemark?, NSError?) -> Void) {
@@ -174,6 +185,8 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate {
     }
     
     private func startLocationManager() {
+        wasLocating = false
+        
         if CLLocationManager.locationServicesEnabled() {
             manager.delegate = self
             manager.desiredAccuracy = SettingsController.sharedController.distanceAccuracy
@@ -198,6 +211,7 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate {
             manager.stopUpdatingLocation()
             manager.delegate = nil
             updatingLocation = false
+            wasLocating = false
             
             if let delegate = delegate where location != nil {
                 delegate.locationAssistantReceivedLocation(location!, finished: true)
@@ -314,6 +328,18 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate {
                     delegate.locationAssistantReceivedLocation(location!, finished: finished)
                 }
             }
+        }
+    }
+    
+    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+        switch status {
+            
+        case .AuthorizedAlways, .AuthorizedWhenInUse:
+            if wasLocating { getLocation() }
+            
+        default:
+            break
+            
         }
     }
     

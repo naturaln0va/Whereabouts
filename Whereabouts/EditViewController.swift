@@ -24,11 +24,11 @@ class EditViewController: UITableViewController {
     
     private var shouldDisplayAddress = true {
         didSet {
-            if let _ = location.placemark {
-                tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)], withRowAnimation: .Automatic)
-            }
-            else if let _ = location.mapItem {
+            if let _ = location.mapItem {
                 tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 1, inSection: 0)], withRowAnimation: .Automatic)
+            }
+            else if let _ = location.placemark {
+                tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)], withRowAnimation: .Automatic)
             }
         }
     }
@@ -46,7 +46,7 @@ class EditViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = location.placemark?.locality ?? location.mapItem?.placemark.locality ?? "New Location"
+        title = location.placemark?.locality ?? "New Location"
         view.backgroundColor = StyleController.sharedController.backgroundColor
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(
@@ -93,30 +93,7 @@ class EditViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if let place = location.placemark {
-            guard let cell = tableView.dequeueReusableCellWithIdentifier(String(LocationInfoDisplayCell)) as? LocationInfoDisplayCell else {
-                fatalError("Expected to dequeue a 'LocationInfoDisplayCell'.")
-            }
-            
-            if shouldDisplayAddress {
-                cell.typeLabel.text = "Address"
-                cell.locationLabel.text = place.fullFormatedString()
-            }
-            else {
-                cell.typeLabel.text = "Location"
-                
-                var locationInfo = [String]()
-                
-                locationInfo.append("Coordinate: \(stringFromCoordinate(location.location.coordinate))")
-                locationInfo.append("Altitude: \(altitudeString(location.location.altitude))")
-                locationInfo.append("Timestamp: \(dateTimeFormatter.stringFromDate(location.date))")
-                
-                cell.locationLabel.text = locationInfo.joinWithSeparator("\n")
-            }
-            
-            return cell
-        }
-        else if let item = location.mapItem {
+        if let item = location.mapItem {
             if indexPath.row == 0 {
                 guard let cell = tableView.dequeueReusableCellWithIdentifier(String(MapItemCell)) as? MapItemCell else {
                     fatalError("Expected to dequeue a 'MapItemCell'.")
@@ -125,8 +102,8 @@ class EditViewController: UITableViewController {
                 cell.nameLabel.text = item.name
                 cell.phoneNumberLabel.text = item.phoneNumber
                 
-                if let url = item.url {
-                    cell.webPageLabel.text = String(url)
+                if let urlString = item.url?.absoluteString {
+                    cell.webPageLabel.text = urlString
                 }
                 
                 return cell
@@ -158,6 +135,29 @@ class EditViewController: UITableViewController {
                 fatalError("ERROR: Failed to handle all rows for a mapItem datasource in cellForRowAtIndexPath.")
             }
         }
+        else if let place = location.placemark {
+            guard let cell = tableView.dequeueReusableCellWithIdentifier(String(LocationInfoDisplayCell)) as? LocationInfoDisplayCell else {
+                fatalError("Expected to dequeue a 'LocationInfoDisplayCell'.")
+            }
+            
+            if shouldDisplayAddress {
+                cell.typeLabel.text = "Address"
+                cell.locationLabel.text = place.fullFormatedString()
+            }
+            else {
+                cell.typeLabel.text = "Location"
+                
+                var locationInfo = [String]()
+                
+                locationInfo.append("Coordinate: \(stringFromCoordinate(location.location.coordinate))")
+                locationInfo.append("Altitude: \(altitudeString(location.location.altitude))")
+                locationInfo.append("Timestamp: \(dateTimeFormatter.stringFromDate(location.date))")
+                
+                cell.locationLabel.text = locationInfo.joinWithSeparator("\n")
+            }
+            
+            return cell
+        }
         else {
             guard let cell = tableView.dequeueReusableCellWithIdentifier(String(LocationInfoDisplayCell)) as? LocationInfoDisplayCell else {
                 fatalError("Expected to dequeue a 'LocationInfoDisplayCell'.")
@@ -180,24 +180,27 @@ class EditViewController: UITableViewController {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
-        if let _ = location.placemark {
-            shouldDisplayAddress = !shouldDisplayAddress
-        }
-        else if let _ = location.mapItem {
+        if let _ = location.mapItem {
             if indexPath.row == 1 {
                 shouldDisplayAddress = !shouldDisplayAddress
             }
         }
+        else if let _ = location.placemark {
+            shouldDisplayAddress = !shouldDisplayAddress
+        }
     }
     
     override func tableView(tableView: UITableView, shouldHighlightRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        if let _ = location.placemark {
-            return true
-        }
-        else if let _ = location.mapItem {
+        if let _ = location.mapItem {
             if indexPath.row == 1 {
                 return true
             }
+            else {
+                return false
+            }
+        }
+        if let _ = location.placemark {
+            return true
         }
         
         return false

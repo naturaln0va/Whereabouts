@@ -6,9 +6,9 @@ class AddViewController: UITableViewController {
 
     private lazy var titleSearchBar: UISearchBar = {
         let bar = UISearchBar()
+        bar.sizeToFit()
         bar.delegate = self
         bar.placeholder = "Search for place or address"
-        bar.sizeToFit()
         bar.keyboardType = .Default
         UITextField.appearanceWhenContainedInInstancesOfClasses([UISearchBar.self]).tintColor = StyleController.sharedController.mainTintColor
         return bar
@@ -71,6 +71,7 @@ class AddViewController: UITableViewController {
     }
     
     private lazy var assistant = LocationAssistant()
+    private var isFirstApperance = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -90,14 +91,19 @@ class AddViewController: UITableViewController {
         tableView.registerNib(UINib(nibName: String(CurrentLocationCell), bundle: nil), forCellReuseIdentifier: String(CurrentLocationCell))
         
         assistant.delegate = self
-        
-        assistant.getLocation()
-        isCurrentlyLocating = true
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        titleSearchBar.becomeFirstResponder()
+                
+        if isFirstApperance {
+            assistant.getLocation()
+            isCurrentlyLocating = true
+            
+            titleSearchBar.becomeFirstResponder()
+            
+            isFirstApperance = false
+        }
     }
     
     // MARK: - Helpers
@@ -348,7 +354,12 @@ extension AddViewController: LocationAssistantDelegate {
     func locationAssistantAuthorizationNeeded() {
         let accessVC = LocationAccessViewController()
         accessVC.delegate = self
-        presentViewController(accessVC, animated: true, completion: nil)
+        
+        if titleSearchBar.isFirstResponder() {
+            titleSearchBar.endEditing(true)
+        }
+
+        presentViewController(accessVC, animated: true, completion:  nil)
     }
     
 }
@@ -356,7 +367,16 @@ extension AddViewController: LocationAssistantDelegate {
 extension AddViewController: LocationAccessViewControllerDelegate {
     
     func locationAccessViewControllerAccessGranted() {
-        CLLocationManager().requestWhenInUseAuthorization()
+        dismissViewControllerAnimated(true) {
+            dispatch_async(dispatch_get_main_queue()) {
+                self.assistant.requestWhenInUse()
+            }
+        }
+    }
+    
+    func locationAccessViewControllerAccessDenied() {
+        assistant.terminate()
+        dismissViewControllerAnimated(true, completion: nil)
     }
     
 }

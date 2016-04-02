@@ -1,7 +1,7 @@
 
 import UIKit
 import CoreData
-
+import CoreLocation
 
 class LocationsViewController: UIViewController {
     
@@ -18,7 +18,7 @@ class LocationsViewController: UIViewController {
         let control = UISegmentedControl(items: ["List", "Map"])
         control.selectedSegmentIndex = 0
         control.tintColor = StyleController.sharedController.navBarTintColor
-        control.frame.size.width = CGFloat.max
+        control.frame.size.width = 150.0
         control.addTarget(self, action: #selector(LocationsViewController.toggleWasChanged), forControlEvents: .ValueChanged)
         return control
     }()

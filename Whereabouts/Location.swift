@@ -17,13 +17,13 @@ class Location: NSObject {
     private var itemWebLink: String?
     
     var mapItem: MKMapItem? {
-        guard let place = placemark else {
+        guard let place = placemark, let name = itemName, let phone = itemPhoneNumber else {
             return nil
         }
         
         let item = MKMapItem(placemark: MKPlacemark(placemark: place))
-        item.name = itemName
-        item.phoneNumber = itemPhoneNumber
+        item.name = name
+        item.phoneNumber = phone
         
         if let urlString = itemWebLink {
             item.url = NSURL(string: urlString)
@@ -64,7 +64,7 @@ class Location: NSObject {
         identifier = "\(location.hashValue)+\(location.timestamp.timeIntervalSince1970.hashValue)+\(location.coordinate.longitude.hashValue)+\(location.coordinate.latitude.hashValue)"
         itemName = mapItem.name
         itemPhoneNumber = mapItem.phoneNumber
-        itemWebLink = String(mapItem.url)
+        itemWebLink = mapItem.url?.absoluteString ?? ""
         
         super.init()
     }
