@@ -24,6 +24,7 @@ struct CloudLocation {
     let identifier: String
     let location: CLLocation
     
+    private(set) var recordID: CKRecordID? = nil
     private(set) var place: CLPlacemark? = nil
     private(set) var textContent: String? = nil
     private(set) var itemName: String? = nil
@@ -50,6 +51,7 @@ struct CloudLocation {
     }
     
     init(record: CKRecord) {
+        recordID = record.recordID
         color = record[CloudKeys.Color.rawValue] as? String ?? ""
         createdDate = record[CloudKeys.CreatedDate.rawValue] as! NSDate
         identifier = record[CloudKeys.Identifier.rawValue] as? String ?? ""

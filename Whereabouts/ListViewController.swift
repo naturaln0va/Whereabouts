@@ -77,7 +77,7 @@ class ListViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if let location = self.fetchedResultsController.objectAtIndexPath(indexPath) as? DatabaseLocation {
-            CloudController.sharedController.deleteLocationFromCloud(location) {
+            CloudController.sharedController.deleteLocationFromCloud(location) { success in
                 PersistentController.sharedController.deleteLocation(location)
             }
         }

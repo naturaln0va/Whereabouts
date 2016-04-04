@@ -14,6 +14,7 @@ class SettingsController {
     static let kUnitStyleKey = "unitStyle" // customary, metric
     static let kShouldMonitorVisits = "shouldMonitorVisits" // user preference
     static let kUserFirstLaunchedKey = "firstLaunched" // date user first installed
+    static let kUserHasSubscribed = "userSubscribed" // user has subscribed to cloud changes
     
     private let defaults = NSUserDefaults.standardUserDefaults()
     
@@ -23,7 +24,8 @@ class SettingsController {
             kLocationTimeoutKey: kLocationTimeoutNormal,
             kNearbyPhotoRangeKey: 250,
             kUnitStyleKey: true,
-            kShouldMonitorVisits: false
+            kShouldMonitorVisits: false,
+            kUserHasSubscribed: false
         ]
     }()
     
@@ -133,6 +135,16 @@ class SettingsController {
             defaults.setBool(newValue, forKey: SettingsController.kShouldMonitorVisits)
             defaults.synchronize()
             NSNotificationCenter.defaultCenter().postNotificationName(kSettingsControllerDidChangeNotification, object: nil)
+        }
+    }
+    
+    var hasSubscribed: Bool {
+        get {
+            return defaults.boolForKey(SettingsController.kUserHasSubscribed)
+        }
+        set {
+            defaults.setBool(newValue, forKey: SettingsController.kUserHasSubscribed)
+            defaults.synchronize()
         }
     }
     

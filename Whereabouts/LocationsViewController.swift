@@ -25,6 +25,8 @@ class LocationsViewController: UIViewController {
     
     private lazy var messageBarButtonItem: UIBarButtonItem = UIBarButtonItem(customView: self.messageLabel)
     private lazy var spaceBarButtonItem: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
+    private lazy var editBarButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: #selector(LocationsViewController.editButtonPressed))
+    private lazy var doneBarButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: #selector(LocationsViewController.doneButtonPressed))
     
     private let listViewController = ListViewController()
     private let mapViewController = MapViewController()
@@ -48,9 +50,9 @@ class LocationsViewController: UIViewController {
         navigationItem.titleView = titleToggle
         
         navigationController?.toolbarHidden = false
-        toolbarItems = [spaceBarButtonItem, messageBarButtonItem, spaceBarButtonItem]
+        toolbarItems = [editBarButton, spaceBarButtonItem, messageBarButtonItem, spaceBarButtonItem]
         
-        CloudController.sharedController.sync()
+        CloudController.sharedController.getChanges()
         
         beginObserving()
         refreshToggleState()
@@ -142,6 +144,16 @@ class LocationsViewController: UIViewController {
     
     internal func settingsBarButtonWasPressed() {
         presentViewController(StyledNavigationController(rootViewController: SettingsViewController()), animated: true, completion: nil)
+    }
+    
+    internal func editButtonPressed() {
+        listViewController.tableView.setEditing(true, animated: true)
+        toolbarItems = [doneBarButton, spaceBarButtonItem, messageBarButtonItem, spaceBarButtonItem]
+    }
+    
+    internal func doneButtonPressed() {
+        listViewController.tableView.setEditing(false, animated: true)
+        toolbarItems = [editBarButton, spaceBarButtonItem, messageBarButtonItem, spaceBarButtonItem]
     }
     
     internal func toggleWasChanged() {

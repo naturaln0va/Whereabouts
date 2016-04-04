@@ -79,7 +79,11 @@ class EditViewController: UITableViewController {
     // MARK: - Actions
     internal func saveButtonPressed() {
         PersistentController.sharedController.saveLocation(location)
-        CloudController.sharedController.saveLocalLocationToCloud(location, completion: nil)
+        CloudController.sharedController.saveLocalLocationToCloud(location) { cloudLocation in
+            if let location = cloudLocation, let recordID = location.recordID {
+                PersistentController.sharedController.updateDatabaseLocationWithID(location.identifier, cloudID: recordID)
+            }
+        }
         dismissViewControllerAnimated(true, completion: nil)
     }
     

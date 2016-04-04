@@ -2,12 +2,14 @@
 import UIKit
 import CoreData
 import CoreLocation
-
+import CloudKit
 
 class PersistentController {
     
     static let sharedController = PersistentController()
     private let kMigratedLegacyDataKey: String = "migratedLegacyData"
+    
+    private let DEBUG_DATABASE = true
     
     //MARK: - Legacy Model
     lazy var legacyManagedObjectContext: NSManagedObjectContext = {
@@ -127,10 +129,10 @@ class PersistentController {
         do {
             let fetched = try legacyManagedObjectContext.executeFetchRequest(request) as! [NSManagedObject]
             if fetched.count > 0 {
-                print("Found \(fetched.count) legacy objects: \(fetched)")
+                if DEBUG_DATABASE { debugPrint("***PERSISTENTCONTROLLER: Found \(fetched.count) legacy objects: \(fetched)") }
             }
             else {
-                print("No legacy data to transfer.")
+                if DEBUG_DATABASE { debugPrint("***PERSISTENTCONTROLLER: No legacy data to transfer.") }
             }
             
             for legacyLocation in fetched {
@@ -143,17 +145,18 @@ class PersistentController {
                         titleForLocation += ", \(state)"
                     }
                     
+                    // TODO
                     //saveLocation(titleForLocation, color: nil, placemark: placemark, location: placemark.location!)
                 }
                 else {
-                    print("Did not find a placemark in: \(legacyLocation), or the location was nil.")
+                    if DEBUG_DATABASE { debugPrint("***PERSISTENTCONTROLLER: Did not find a placemark in: \(legacyLocation), or the location was nil.") }
                 }
             }
             NSUserDefaults.standardUserDefaults().setBool(true, forKey: kMigratedLegacyDataKey)
         }
             
         catch {
-            print("Could not get old objects")
+            if DEBUG_DATABASE { debugPrint("***PERSISTENTCONTROLLER: Could not get old objects") }
         }
     }
     
@@ -173,7 +176,7 @@ class PersistentController {
         }
         
         guard let dataToSave = NSEntityDescription.insertNewObjectForEntityForName(DatabaseLocation.entityName(), inManagedObjectContext: locationMOC) as? DatabaseLocation else {
-            fatalError("Expected to insert and entity of type 'Location'.")
+            fatalError("Expected to insert and entity of type 'DatabaseLocation'.")
         }
         
         dataToSave.date = location.createdDate
@@ -185,6 +188,10 @@ class PersistentController {
         dataToSave.itemName = location.itemName
         dataToSave.itemPhoneNumber = location.itemPhoneNumber
         dataToSave.itemWebLink = location.itemWebLink
+        
+        if let recordID = location.recordID {
+            dataToSave.cloudRecordIdentifierData = NSKeyedArchiver.archivedDataWithRootObject(recordID)
+        }
         
         if locationMOC.hasChanges {
             locationMOC.performBlockAndWait { [unowned self] in
@@ -224,13 +231,53 @@ class PersistentController {
         }
     }
     
-    func updateDatabaseLocationWithID(identifier: String, location: Location) {
+    func deleteLocationWithCloudID(cloudID: CKRecordID) {
+        guard let locations = try? DatabaseLocation.objectsInContext(locationMOC) else {
+            if DEBUG_DATABASE { debugPrint("***PERSISTENTCONTROLLER: No locations in the database.") }
+            return
+        }
+        
+        if let locationIndexToDelete = locations.indexOf({ location in
+            if let data = location.cloudRecordIdentifierData, let recordID = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? CKRecordID where recordID == cloudID {
+                return true
+            }
+            return false
+        }) {
+            deleteLocation(locations[locationIndexToDelete])
+        }
+    }
+    
+    func updateDatabaseLocationWithLocation(location: Location) {
+//        guard let locationToUpdate = locationForIdentifier(location.identifier) else {
+//            return
+//        }
+        
         // TODO
+    }
+    
+    func updateDatabaseLocationWithID(identifier: String, cloudID: CKRecordID) {
+        guard let locationToUpdate = locationForIdentifier(identifier) else {
+            return
+        }
+        
+        locationToUpdate.cloudRecordIdentifierData = NSKeyedArchiver.archivedDataWithRootObject(cloudID)
+        
+        if locationMOC.hasChanges {
+            locationMOC.performBlockAndWait { [unowned self] in
+                do {
+                    try self.locationMOC.save()
+                }
+                    
+                catch {
+                    fatalError("Error saving location: \(error)")
+                }
+            }
+        }
     }
     
     func saveLocation(location: Location) {
         guard let dataToSave = NSEntityDescription.insertNewObjectForEntityForName(DatabaseLocation.entityName(), inManagedObjectContext: locationMOC) as? DatabaseLocation else {
-            fatalError("Expected to insert and entity of type 'Location'.")
+            fatalError("Expected to insert and entity of type 'DatabaseLocation'.")
         }
         
         dataToSave.date = location.date
@@ -348,11 +395,11 @@ class PersistentController {
                 }
             }
             else {
-                print("Error adding or updating location: \(visit.identifier)")
+                if DEBUG_DATABASE { debugPrint("***PERSISTENTCONTROLLER: Error adding or updating location with identifier: \(visit.identifier)") }
             }
         }
         else {
-            print("Error there was no entity with that identifier.")
+            if DEBUG_DATABASE { debugPrint("***PERSISTENTCONTROLLER: Error failed to get entity with identifier: \(visit.identifier).") }
         }
     }
     

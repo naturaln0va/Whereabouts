@@ -14,12 +14,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             andWindow: UIWindow(frame: UIScreen.mainScreen().bounds)
         )
         
-        let notificationSettings = UIUserNotificationSettings(
-            forTypes: .Alert,
-            categories: nil
-        )
+        application.registerForRemoteNotifications()
         
-        UIApplication.sharedApplication().registerUserNotificationSettings(notificationSettings)
+        CloudController.sharedController.sync()
+        if SettingsController.sharedController.fisrtLaunchDate == nil {
+            SettingsController.sharedController.fisrtLaunchDate = NSDate()
+        }
+        
+        if !SettingsController.sharedController.hasSubscribed {
+            CloudController.sharedController.subscribeToChanges()
+        }
         
         StyleController.sharedController
         
@@ -38,6 +42,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         return true
+    }
+    
+    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {        
+        CloudController.sharedController.handleNotificationInfo(userInfo, completion: completionHandler)
     }
     
     internal func settingsDidChange() {

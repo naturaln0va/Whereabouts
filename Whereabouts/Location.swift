@@ -43,12 +43,29 @@ class Location: NSObject {
         itemName = dbLocation.itemName
         itemPhoneNumber = dbLocation.itemPhoneNumber
         itemWebLink = dbLocation.itemWebLink
+        
+        super.init()
     }
     
     init(location: CLLocation) {
         date = NSDate()
         identifier = "\(location.hashValue)+\(location.timestamp.timeIntervalSince1970.hashValue)+\(location.coordinate.longitude.hashValue)+\(location.coordinate.latitude.hashValue)"
         self.location = location
+        
+        super.init()
+    }
+    
+    init(cloudLocation: CloudLocation) {
+        date = cloudLocation.createdDate
+        identifier = cloudLocation.identifier
+        color = UIColor(rgba: cloudLocation.color)
+        textContent = cloudLocation.textContent
+        location = cloudLocation.location
+        placemark = cloudLocation.place
+        
+        itemName = cloudLocation.itemName
+        itemPhoneNumber = cloudLocation.itemPhoneNumber
+        itemWebLink = cloudLocation.itemWebLink
         
         super.init()
     }

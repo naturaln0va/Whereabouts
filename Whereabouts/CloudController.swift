@@ -1,5 +1,5 @@
 
-import Foundation
+import UIKit
 import CloudKit
 
 class CloudController {
@@ -11,6 +11,9 @@ class CloudController {
     private lazy var cloudSyncQueue = dispatch_queue_create("io.ackermann.whereabouts.cloud.sync", nil)
     private lazy var container = CKContainer.defaultContainer()
     private lazy var cloudLocations = [CloudLocation]()
+    private lazy var fetchedNotificationIDs = [CKNotificationID]()
+    
+    private let DEBUG_CLOUD = true
         
     // MARK: - Public
     func sync() {
@@ -27,14 +30,14 @@ class CloudController {
                 }, completion: { error in
                     if let e = error {
                         NSNotificationCenter.defaultCenter().postNotificationName(CloudController.kCloudErrorNotificationKey, object: e)
-                        print("Error retrieving locations from the cloud: \(e)")
+                        if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: Error retrieving locations from the cloud: \(e.localizedDescription)") }
                     }
                     
                     for localLocation in PersistentController.sharedController.locations() {
                         if let _ = self.cloudLocations.indexOf({ $0.identifier == localLocation.identifier }) { continue }
                         
                         let semaphore = dispatch_semaphore_create(0)
-                        self.saveLocalLocationToCloud(localLocation) {
+                        self.saveLocalLocationToCloud(localLocation) { cloudLocation in
                             dispatch_semaphore_signal(semaphore)
                         }
                         dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
@@ -47,36 +50,137 @@ class CloudController {
         }
     }
     
-    func saveLocalLocationToCloud(location: Location, completion: (Void -> Void)?) {
-        container.privateCloudDatabase.saveRecord(CloudLocation(localLocation: location).record) { record, error in
-            if let savedRecord = record where error == nil {
-                print("Saved \(savedRecord) to the cloud.")
+    func subscribeToChanges() {
+        container.privateCloudDatabase.fetchAllSubscriptionsWithCompletionHandler { subscriptions, error in
+            guard let subscriptions = subscriptions where error == nil else {
+                if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: Failed fetching subscriptions with error: \(error?.localizedDescription)") }
+                return
             }
-            else {
-                print("Error saving to the cloud: \(error)")
+            
+            let subscriptionOptions: CKSubscriptionOptions = [.FiresOnRecordCreation, .FiresOnRecordUpdate, .FiresOnRecordDeletion]
+            
+            for subscription in subscriptions {
+                if subscription.recordType == "Location" && subscription.subscriptionOptions == subscriptionOptions {
+                    if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: User is already subscribed.") }
+                    SettingsController.sharedController.hasSubscribed = true
+                    return
+                }
             }
-            completion?()
+            
+            let subscription = CKSubscription(recordType: CloudLocation.recordType, predicate: NSPredicate(value: true), options: subscriptionOptions)
+            
+            self.container.privateCloudDatabase.saveSubscription(subscription) { subscription, error in
+                if let sub = subscription where error == nil {
+                    if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: User has subscribed. Subscription: \(sub)") }
+                    SettingsController.sharedController.hasSubscribed = true
+                }
+                else {
+                    if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: User failed to subscribe.") }
+                }
+            }
         }
     }
     
-    func deleteLocationFromCloud(location: DatabaseLocation, completion: (Void -> Void)?) {
-        let query = CKQuery(recordType: CloudLocation.recordType, predicate: NSPredicate(format: "%K == %@", CloudLocation.CloudKeys.Identifier.rawValue, location.identifier))
-        
-        container.privateCloudDatabase.performQuery(query, inZoneWithID: nil) { records, error in
-            if let recordToDelete = records?.first {
-                self.container.privateCloudDatabase.deleteRecordWithID(recordToDelete.recordID) { deletedRecordID, error in
-                    if let deletedRecordID = deletedRecordID where error == nil {
-                        print("Deleted record with id: \(deletedRecordID)")
+    func getChanges() {
+        dispatch_async(cloudSyncQueue) {
+            let fetchChangesOperation = CKFetchNotificationChangesOperation()
+            fetchChangesOperation.allowsCellularAccess = true
+            fetchChangesOperation.qualityOfService = .UserInitiated
+            
+            fetchChangesOperation.notificationChangedBlock = { notification in
+                if let queryNotification = notification as? CKQueryNotification where notification.notificationType == .Query {
+                    self.handleNotification(queryNotification)
+                    
+                    if let notificationID = queryNotification.notificationID {
+                        self.fetchedNotificationIDs.append(notificationID)
                     }
-                    else if let error = error {
-                        print("Error deleting record with id: \(deletedRecordID) error: \(error)")
-                    }
-                    completion?()
                 }
             }
-            else if let error = error {
-                print("Error retrieving record: \(error)")
+            
+            fetchChangesOperation.fetchNotificationChangesCompletionBlock = { token, error in
+                if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: Finished fetching notifications with error: \(error?.localizedDescription).") }
+                
+                if self.fetchedNotificationIDs.count > 0 {
+                    let markOperation = CKMarkNotificationsReadOperation(notificationIDsToMarkRead: self.fetchedNotificationIDs)
+                    markOperation.allowsCellularAccess = true
+                    markOperation.qualityOfService = .Utility
+                    
+                    markOperation.markNotificationsReadCompletionBlock = { notificationIDs, error in
+                        if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: Marked notifications as read with error: \(error?.localizedDescription).") }
+                        self.fetchedNotificationIDs.removeAll()
+                        
+                        dispatch_async(dispatch_get_main_queue()) {
+                            NSNotificationCenter.defaultCenter().postNotificationName(CloudController.kSyncCompleteNotificationKey, object: nil)
+                        }
+                    }
+                    
+                    self.container.addOperation(markOperation)
+                }
             }
+            
+            self.container.addOperation(fetchChangesOperation)
+        }
+    }
+    
+    func saveLocalLocationToCloud(location: Location, completion: (CloudLocation? -> Void)?) {
+        container.privateCloudDatabase.saveRecord(CloudLocation(localLocation: location).record) { record, error in
+            if let _ = record where error == nil {
+                if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: Successfully saved location record") }
+            }
+            else {
+                if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: Failed to save location record with error: \(error?.localizedDescription)") }
+            }
+            
+            if let cloudRecord = record {
+                completion?(CloudLocation(record: cloudRecord))
+            }
+            else {
+                completion?(nil)
+            }
+        }
+    }
+    
+    func deleteLocationFromCloud(location: DatabaseLocation, completion: (Bool -> Void)?) {
+        guard let data = location.cloudRecordIdentifierData, let recordID = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? CKRecordID else {
+            print("Failed to parse location's record id.")
+            completion?(false)
+            return
+        }
+        
+        container.privateCloudDatabase.deleteRecordWithID(recordID) { id, error in
+            if let e = error {
+                if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: Failed to deleted location record with error: \(e.localizedDescription)") }
+                completion?(false)
+            }
+            else {
+                if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: Successfully deleted location record") }
+                completion?(true)
+            }
+        }
+    }
+    
+    func handleNotificationInfo(notificationInfo: [NSObject : AnyObject], completion: (UIBackgroundFetchResult -> Void)) {
+        guard let info = notificationInfo as? [String: NSObject] else {
+            completion(.Failed)
+            return
+        }
+        
+        let notification = CKNotification(fromRemoteNotificationDictionary: info)
+        
+        switch notification.notificationType {
+        case .Query:
+            if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: About to handle a 'Query' notification.") }
+            handleNotification(CKQueryNotification(fromRemoteNotificationDictionary: info))
+            completion(.NewData)
+            
+        case .ReadNotification:
+            if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: About to handle a 'ReadNotification' notification.") }
+            completion(.NoData)
+            
+        case .RecordZone:
+            if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: About to handle a 'RecordZone' notification.") }
+            completion(.NoData)
+            
         }
     }
     
@@ -86,6 +190,7 @@ class CloudController {
             status, error in
             
             if error != nil {
+                if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: An error occured getting auth. Error: \(error?.localizedDescription)") }
                 completion(false, error)
             }
             
@@ -102,14 +207,59 @@ class CloudController {
         queryOperation.qualityOfService = .UserInitiated
         
         queryOperation.queryCompletionBlock = { cursor, error in
+            if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: Completed cloud location fetch with error: \(error?.localizedDescription)") }
             dispatch_async(dispatch_get_main_queue()) { completion(error) }
         }
         
         queryOperation.recordFetchedBlock = { record in
+            if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: Recieved a location record.") }
             dispatch_async(dispatch_get_main_queue()) { location(CloudLocation(record: record)) }
         }
         
         container.privateCloudDatabase.addOperation(queryOperation)
+    }
+    
+    private func getCloudLocationWithRecordID(recordID: CKRecordID, completion: (CloudLocation? -> Void)) {
+        container.privateCloudDatabase.fetchRecordWithID(recordID) { record, error in
+            if let record = record where error == nil {
+                if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: Recieved a location record with error: \(error?.localizedDescription)") }
+                completion(CloudLocation(record: record))
+            }
+            else {
+                if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: Failed to recieve a location record with error: \(error?.localizedDescription)") }
+                completion(nil)
+            }
+        }
+    }
+    
+    private func handleNotification(notification: CKQueryNotification) {
+        guard let recordID = notification.recordID else {
+            if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: No record id in the notification. We can't do anything with that.") }
+            return
+        }
+        
+        switch notification.queryNotificationReason {
+            
+        case .RecordCreated:
+            if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: Recieved a record creation notification.") }
+            getCloudLocationWithRecordID(recordID) { cloudLocation in
+                if let location = cloudLocation {
+                    PersistentController.sharedController.saveCloudLocationIfNeeded(location)
+                }
+            }
+            
+        case .RecordUpdated:
+            if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: Recieved a record update notification.") }
+            getCloudLocationWithRecordID(recordID) { cloudLocation in
+                if let location = cloudLocation, cloudID = location.recordID {
+                    PersistentController.sharedController.updateDatabaseLocationWithID(location.identifier, cloudID: cloudID)
+                }
+            }
+            
+        case .RecordDeleted:
+            if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: Recieved a record deletion notification.") }
+            PersistentController.sharedController.deleteLocationWithCloudID(recordID)
+        }
     }
     
 }

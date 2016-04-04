@@ -15,7 +15,7 @@ class LocationCell: UITableViewCell {
         colorCategoryStripView.backgroundColor = locationToDisplay.color
         createdDateLabel.text = locationToDisplay.date.relativeString()
         
-        if let item = locationToDisplay.mapItem {
+        if let item = locationToDisplay.mapItem where item.name?.characters.count > 0 {
             titleLabel.text = item.name
             addressLabel.text = item.placemark.fullFormatedString()
         }
