@@ -61,6 +61,17 @@ class ListViewController: UITableViewController {
         return cell
     }
     
+    
+    override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        guard let cell = tableView.dequeueReusableCellWithIdentifier(LocationCell.reuseIdentifier) as? LocationCell else {
+            fatalError("Expected to dequeue a 'LocationCell'.")
+        }
+        
+        if let location = fetchedResultsController.objectAtIndexPath(indexPath) as? DatabaseLocation {
+            cell.configureCell(Location(dbLocation: location))
+        }
+    }
+    
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         

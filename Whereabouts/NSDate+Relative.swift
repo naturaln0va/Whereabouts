@@ -2,7 +2,8 @@
 import Foundation
 
 
-extension NSDate {
+extension NSDate
+{
     
     func hoursSince(date: NSDate) -> Int {
         return NSCalendar.currentCalendar().components(.Hour, fromDate: date, toDate: self, options: []).hour
@@ -29,10 +30,10 @@ extension NSDate {
         let daysAgo = NSDate().daysSince(self)
         let hoursAgo = Int(intervalDifference / NSTimeInterval(60 * 60))
         
-        if daysAgo <= 1 {
+        if daysAgo < 1 {
             return "\(hoursAgo)h"
         }
-        else if daysAgo <= 6 {
+        else if daysAgo < 6 {
             return "\(daysAgo)d"
         }
         

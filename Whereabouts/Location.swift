@@ -6,7 +6,8 @@ class Location: NSObject {
     
     let date: NSDate
     let identifier: String
-    let location: CLLocation
+    
+    var location: CLLocation
     
     var color: UIColor?
     var placemark: CLPlacemark?

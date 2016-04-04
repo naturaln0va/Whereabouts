@@ -4,7 +4,7 @@ import MapKit
 
 class MapViewController: UIViewController {
     
-    private lazy var mapView: MKMapView = {
+    lazy var mapView: MKMapView = {
         let mapView = MKMapView()
         mapView.showsUserLocation = true
         mapView.showsCompass = true

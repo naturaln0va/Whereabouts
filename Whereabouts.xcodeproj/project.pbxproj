@@ -12,6 +12,9 @@
 		482CABE019FF565300B5F1E2 /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482CABDF19FF565300B5F1E2 /* TodayViewController.swift */; };
 		482CABE519FF565300B5F1E2 /* Quick Location.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 482CABD819FF565200B5F1E2 /* Quick Location.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		482CE19F19FD9F9A00682940 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 482CE19E19FD9F9A00682940 /* MapKit.framework */; };
+		482FBFE71CB291BE00E30EF2 /* TextContentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FBFE51CB291BE00E30EF2 /* TextContentCell.swift */; };
+		482FBFE81CB291BE00E30EF2 /* TextContentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 482FBFE61CB291BE00E30EF2 /* TextContentCell.xib */; };
+		482FBFEA1CB292E100E30EF2 /* PlaceholderTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FBFE91CB292E100E30EF2 /* PlaceholderTextView.swift */; };
 		483AF54D1B0BFF2700A00BED /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483AF54C1B0BFF2700A00BED /* PersistenceController.swift */; };
 		483BBE491C1CE4DB002E5DB2 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483BBE471C1CE4DB002E5DB2 /* MapViewController.swift */; };
 		48510BEB1BF7F3D10041C7C1 /* String+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48510BEA1BF7F3D10041C7C1 /* String+Additions.swift */; };
@@ -110,6 +113,9 @@
 		482CABDE19FF565300B5F1E2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		482CABDF19FF565300B5F1E2 /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
 		482CE19E19FD9F9A00682940 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		482FBFE51CB291BE00E30EF2 /* TextContentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextContentCell.swift; sourceTree = "<group>"; };
+		482FBFE61CB291BE00E30EF2 /* TextContentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TextContentCell.xib; sourceTree = "<group>"; };
+		482FBFE91CB292E100E30EF2 /* PlaceholderTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaceholderTextView.swift; sourceTree = "<group>"; };
 		483AF54C1B0BFF2700A00BED /* PersistenceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
 		483BBE471C1CE4DB002E5DB2 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		48510BEA1BF7F3D10041C7C1 /* String+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Additions.swift"; sourceTree = "<group>"; };
@@ -229,6 +235,14 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		482FBFEB1CB292E500E30EF2 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				482FBFE91CB292E100E30EF2 /* PlaceholderTextView.swift */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
 		4849BD021B093A44003A40AF /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -267,6 +281,8 @@
 				69E367E61CAE8E3E00604790 /* MapItemCell.xib */,
 				69640E911BFBCEA60050722D /* PhotoCell.swift */,
 				69640E921BFBCEA60050722D /* PhotoCell.xib */,
+				482FBFE51CB291BE00E30EF2 /* TextContentCell.swift */,
+				482FBFE61CB291BE00E30EF2 /* TextContentCell.xib */,
 				698AF38A1BF6D66D00F1E745 /* TextEntryCell.swift */,
 				698AF38B1BF6D66D00F1E745 /* TextEntryCell.xib */,
 				488BE6401CABF3EF00BA24C8 /* SearchCompleterCell.swift */,
@@ -317,6 +333,7 @@
 				48FF05011AD0372400A2FA34 /* Resources */,
 				697FBD721C19D24B00743212 /* Transitions */,
 				4849BD021B093A44003A40AF /* ViewControllers */,
+				482FBFEB1CB292E500E30EF2 /* Views */,
 			);
 			path = Whereabouts;
 			sourceTree = "<group>";
@@ -352,9 +369,9 @@
 		48FF05011AD0372400A2FA34 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				48DEDA3519F592F80094CB8F /* Info.plist */,
 				48DEDA3F19F592F80094CB8F /* LaunchScreen.xib */,
 				69D590F91C74DCEE00481E44 /* Images.xcassets */,
-				48DEDA3519F592F80094CB8F /* Info.plist */,
 				4880D47F1A5331960077E68B /* Whereabouts.entitlements */,
 			);
 			name = Resources;
@@ -519,6 +536,7 @@
 				4863E6FB1CAD3C800072C304 /* CurrentLocationCell.xib in Resources */,
 				48DEDA4119F592F80094CB8F /* LaunchScreen.xib in Resources */,
 				4863ACAF1B24EF4D009F008F /* LocationCell.xib in Resources */,
+				482FBFE81CB291BE00E30EF2 /* TextContentCell.xib in Resources */,
 				69E367E81CAE8E3E00604790 /* MapItemCell.xib in Resources */,
 				69640E941BFBCEA60050722D /* PhotoCell.xib in Resources */,
 				69E367E41CAE0B2D00604790 /* LocationInfoDisplayCell.xib in Resources */,
@@ -585,10 +603,12 @@
 				48D4FFE61BF7D08F006DA09C /* DefaultLayout.swift in Sources */,
 				48F763431CA87FF500BCE740 /* CloudController.swift in Sources */,
 				69640E931BFBCEA60050722D /* PhotoCell.swift in Sources */,
+				482FBFEA1CB292E100E30EF2 /* PlaceholderTextView.swift in Sources */,
 				698AF3941BF7910100F1E745 /* ColorPreviewCell.swift in Sources */,
 				69F7CEEC1CAB5E46007EB03F /* AddViewController.swift in Sources */,
 				698AF38C1BF6D66D00F1E745 /* TextEntryCell.swift in Sources */,
 				69F7CEE61CAAF286007EB03F /* ListViewController.swift in Sources */,
+				482FBFE71CB291BE00E30EF2 /* TextContentCell.swift in Sources */,
 				48E3B85C1B1951AA003DD726 /* StyledViewController.swift in Sources */,
 				693AF7971C1B38A4003AFB24 /* VisitModel.xcdatamodeld in Sources */,
 				69E367EA1CAE979C00604790 /* CLPlacemark+Display.swift in Sources */,

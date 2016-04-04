@@ -261,6 +261,7 @@ class PersistentController {
         }
         
         locationToUpdate.cloudRecordIdentifierData = NSKeyedArchiver.archivedDataWithRootObject(cloudID)
+        if DEBUG_DATABASE { debugPrint("***PERSISTENTCONTROLLER: Updated local location with cloud id.") }
         
         if locationMOC.hasChanges {
             locationMOC.performBlockAndWait { [unowned self] in

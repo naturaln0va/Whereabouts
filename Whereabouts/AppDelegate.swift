@@ -48,6 +48,38 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         CloudController.sharedController.handleNotificationInfo(userInfo, completion: completionHandler)
     }
     
+    // MARK: - Quick Actions
+    
+    private func handleShortcutItem(shortcutItem: UIApplicationShortcutItem) -> Bool {
+        if let type = shortcutItem.type.componentsSeparatedByString(".").last {
+            if type == "Add" {
+                MenuController.sharedController.presenterViewController?.presentViewController(
+                    StyledNavigationController(rootViewController: EditViewController(location: nil)),
+                    animated: true,
+                    completion: nil
+                )
+            }
+            else if type == "Search" {
+                MenuController.sharedController.presenterViewController?.presentViewController(
+                    StyledNavigationController(rootViewController: AddViewController()),
+                    animated: true,
+                    completion: nil
+                )
+            }
+            else {
+                return false
+            }
+        }
+        
+        return false
+    }
+    
+    func application(application: UIApplication, performActionForShortcutItem shortcutItem: UIApplicationShortcutItem, completionHandler: (Bool) -> Void) {
+        completionHandler(handleShortcutItem(shortcutItem))
+    }
+    
+    // MARK: - Notifications
+    
     internal func settingsDidChange() {
         if SettingsController.sharedController.shouldMonitorVisits {
             assistant.startVisitsMonitoring()

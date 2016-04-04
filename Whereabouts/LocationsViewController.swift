@@ -2,6 +2,7 @@
 import UIKit
 import CoreData
 import CoreLocation
+import MapKit
 
 class LocationsViewController: UIViewController {
     
@@ -85,6 +86,8 @@ class LocationsViewController: UIViewController {
             return
         }
         
+        refreshToolbarForToggleState(tab)
+        
         if tab == .List {
             removeMapChildVC()
             addListChildVC()
@@ -92,6 +95,20 @@ class LocationsViewController: UIViewController {
         else {
             removeListChildVC()
             addMapChildVC()
+        }
+    }
+    
+    private func refreshToolbarForToggleState(tab: ToggleIndex) {
+        if tab == .List {
+            if listViewController.tableView.editing {
+                toolbarItems = [doneBarButton, spaceBarButtonItem, messageBarButtonItem, spaceBarButtonItem]
+            }
+            else {
+                toolbarItems = [editBarButton, spaceBarButtonItem, messageBarButtonItem, spaceBarButtonItem]
+            }
+        }
+        else {
+            toolbarItems = [MKUserTrackingBarButtonItem(mapView: mapViewController.mapView) ,spaceBarButtonItem, messageBarButtonItem, spaceBarButtonItem]
         }
     }
     

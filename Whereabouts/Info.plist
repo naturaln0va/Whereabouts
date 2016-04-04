@@ -40,7 +40,7 @@
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>This app monitors changes to your location in the background.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>This app uses your device's GPS to provide you with detailed information about your surroundings. </string>
+	<string>This app uses your device&apos;s GPS to provide you with detailed information about your surroundings. </string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>location</string>
@@ -63,5 +63,24 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+	<key>UIApplicationShortcutItems</key>
+	<array>
+		<dict>
+			<key>UIApplicationShortcutItemIconType</key>
+			<string>UIApplicationShortcutIconTypeAdd</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>Current Location</string>
+			<key>UIApplicationShortcutItemType</key>
+			<string>$(PRODUCT_BUNDLE_IDENTIFIER).Add</string>
+		</dict>
+		<dict>
+			<key>UIApplicationShortcutItemIconType</key>
+			<string>UIApplicationShortcutIconTypeSearch</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>Search</string>
+			<key>UIApplicationShortcutItemType</key>
+			<string>$(PRODUCT_BUNDLE_IDENTIFIER).Search</string>
+		</dict>
+	</array>
 </dict>
 </plist>
