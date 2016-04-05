@@ -142,7 +142,7 @@ class CloudController {
     
     func deleteLocationFromCloud(location: DatabaseLocation, completion: (Bool -> Void)?) {
         guard let data = location.cloudRecordIdentifierData, let recordID = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? CKRecordID else {
-            print("Failed to parse location's record id.")
+            print("Failed to parse location's record id. Data: \(location.cloudRecordIdentifierData)")
             completion?(false)
             return
         }

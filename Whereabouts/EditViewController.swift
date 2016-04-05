@@ -75,6 +75,8 @@ class EditViewController: UITableViewController {
         tableView.registerNib(UINib(nibName: String(MapItemCell), bundle: nil), forCellReuseIdentifier: String(MapItemCell))
         tableView.registerNib(UINib(nibName: String(LocationInfoDisplayCell), bundle: nil), forCellReuseIdentifier: String(LocationInfoDisplayCell))
         tableView.registerNib(UINib(nibName: String(TextContentCell), bundle: nil), forCellReuseIdentifier: String(TextContentCell))
+        tableView.registerNib(UINib(nibName: String(ColorPreviewCell), bundle: nil), forCellReuseIdentifier: String(ColorPreviewCell))
+        tableView.registerNib(UINib(nibName: String(TextEntryCell), bundle: nil), forCellReuseIdentifier: String(TextEntryCell))
         
         if locationToEdit == nil && assistant.delegate != nil {
             navigationItem.rightBarButtonItem?.enabled = false
@@ -86,13 +88,15 @@ class EditViewController: UITableViewController {
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         
-        if let location = locationToEdit, let _ = locationToEdit?.mapItem where tableView.tableHeaderView == nil {
+        if tableView.tableHeaderView == nil {
+            mapView.delegate = self
             mapView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 145)
             tableView.tableHeaderView = mapView
             
-            mapView.addAnnotation(location)
-            mapView.showAnnotations(mapView.annotations, animated: false)
-            mapView.delegate = self
+            if let location = locationToEdit, let _ = locationToEdit?.mapItem {
+                mapView.addAnnotation(location)
+                mapView.showAnnotations(mapView.annotations, animated: false)
+            }
         }
     }
     
@@ -127,61 +131,54 @@ class EditViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 0.0001
+        return section == 0 ? 32.0 : 0.0001
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if let item = locationToEdit?.mapItem {
-            if indexPath.row == 0 {
-                guard let cell = tableView.dequeueReusableCellWithIdentifier(String(MapItemCell)) as? MapItemCell else {
-                    fatalError("Expected to dequeue a 'MapItemCell'.")
+        if indexPath.section == 0 {
+            if let item = locationToEdit?.mapItem {
+                if indexPath.row == 0 {
+                    guard let cell = tableView.dequeueReusableCellWithIdentifier(String(MapItemCell)) as? MapItemCell else {
+                        fatalError("Expected to dequeue a 'MapItemCell'.")
+                    }
+                    
+                    cell.nameLabel.text = item.name
+                    cell.phoneNumberLabel.text = item.phoneNumber
+                    
+                    if let urlString = item.url?.absoluteString {
+                        cell.webPageLabel.text = urlString
+                    }
+                    
+                    return cell
                 }
-                
-                cell.nameLabel.text = item.name
-                cell.phoneNumberLabel.text = item.phoneNumber
-                
-                if let urlString = item.url?.absoluteString {
-                    cell.webPageLabel.text = urlString
-                }
-                
-                return cell
-            }
-            else if indexPath.row == 1 {
-                guard let location = locationToEdit, let cell = tableView.dequeueReusableCellWithIdentifier(String(LocationInfoDisplayCell)) as? LocationInfoDisplayCell else {
-                    fatalError("Expected to dequeue a 'LocationInfoDisplayCell'.")
-                }
-                
-                if shouldDisplayAddress {
-                    cell.typeLabel.text = "Address"
-                    cell.locationLabel.text = item.placemark.fullFormatedString()
+                else if indexPath.row == 1 {
+                    guard let location = locationToEdit, let cell = tableView.dequeueReusableCellWithIdentifier(String(LocationInfoDisplayCell)) as? LocationInfoDisplayCell else {
+                        fatalError("Expected to dequeue a 'LocationInfoDisplayCell'.")
+                    }
+                    
+                    if shouldDisplayAddress {
+                        cell.typeLabel.text = "Address"
+                        cell.locationLabel.text = item.placemark.fullFormatedString()
+                    }
+                    else {
+                        cell.typeLabel.text = "Location"
+                        
+                        var locationInfo = [String]()
+                        
+                        locationInfo.append("Coordinate: \(stringFromCoordinate(location.location.coordinate))")
+                        locationInfo.append("Altitude: \(altitudeString(location.location.altitude))")
+                        locationInfo.append("Timestamp: \(dateTimeFormatter.stringFromDate(location.date))")
+                        
+                        cell.locationLabel.text = locationInfo.joinWithSeparator("\n")
+                    }
+                    
+                    return cell
                 }
                 else {
-                    cell.typeLabel.text = "Location"
-                    
-                    var locationInfo = [String]()
-                    
-                    locationInfo.append("Coordinate: \(stringFromCoordinate(location.location.coordinate))")
-                    locationInfo.append("Altitude: \(altitudeString(location.location.altitude))")
-                    locationInfo.append("Timestamp: \(dateTimeFormatter.stringFromDate(location.date))")
-                    
-                    cell.locationLabel.text = locationInfo.joinWithSeparator("\n")
+                    fatalError("ERROR: Failed to handle row in 'cellForRowAtIndexPath'.")
                 }
-                
-                return cell
             }
-            else if indexPath.row == 2 {
-                guard let cell = tableView.dequeueReusableCellWithIdentifier(String(TextContentCell)) as? TextContentCell else {
-                    fatalError("Expected to dequeue a 'TextContentCell'.")
-                }
-                
-                return cell
-            }
-            else {
-                fatalError("ERROR: Failed to handle all rows for a mapItem datasource in cellForRowAtIndexPath.")
-            }
-        }
-        else if let place = locationToEdit?.placemark {
-            if indexPath.row == 0 {
+            else if let place = locationToEdit?.placemark {
                 guard let location = locationToEdit, let cell = tableView.dequeueReusableCellWithIdentifier(String(LocationInfoDisplayCell)) as? LocationInfoDisplayCell else {
                     fatalError("Expected to dequeue a 'LocationInfoDisplayCell'.")
                 }
@@ -204,19 +201,7 @@ class EditViewController: UITableViewController {
                 
                 return cell
             }
-            else if indexPath.row == 1 {
-                guard let cell = tableView.dequeueReusableCellWithIdentifier(String(TextContentCell)) as? TextContentCell else {
-                    fatalError("Expected to dequeue a 'TextContentCell'.")
-                }
-                
-                return cell
-            }
             else {
-                fatalError("ERROR: Failed to handle all rows for a mapItem datasource in cellForRowAtIndexPath.")
-            }
-        }
-        else {
-            if indexPath.row == 0 {
                 guard let location = locationToEdit, let cell = tableView.dequeueReusableCellWithIdentifier(String(LocationInfoDisplayCell)) as? LocationInfoDisplayCell else {
                     fatalError("Expected to dequeue a 'LocationInfoDisplayCell'.")
                 }
@@ -233,16 +218,35 @@ class EditViewController: UITableViewController {
                 
                 return cell
             }
+        }
+        else if indexPath.section == 1 {
+            if indexPath.row == 0 {
+                guard let cell = tableView.dequeueReusableCellWithIdentifier(String(TextEntryCell)) as? TextEntryCell else {
+                    fatalError("Expected to dequeue a 'TextEntryCell'.")
+                }
+                
+                return cell
+            }
             else if indexPath.row == 1 {
+                guard let cell = tableView.dequeueReusableCellWithIdentifier(String(ColorPreviewCell)) as? ColorPreviewCell else {
+                    fatalError("Expected to dequeue a 'ColorPreviewCell'.")
+                }
+                
+//                cell.colorToDisplay = selectedColor
+                cell.accessoryType = .DisclosureIndicator
+                
+                return cell
+            }
+            else {
                 guard let cell = tableView.dequeueReusableCellWithIdentifier(String(TextContentCell)) as? TextContentCell else {
                     fatalError("Expected to dequeue a 'TextContentCell'.")
                 }
                 
                 return cell
             }
-            else {
-                fatalError("ERROR: Failed to handle all rows for a mapItem datasource in cellForRowAtIndexPath.")
-            }
+        }
+        else {
+            fatalError("ERROR: Failed to handle section, \(indexPath.section), in 'cellForRowAtIndexPath'.")
         }
     }
     
@@ -277,68 +281,100 @@ class EditViewController: UITableViewController {
     
     // MARK: - UITableViewDataSource
     override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if let _ = locationToEdit?.mapItem {
-            if indexPath.row == 0 {
-                return MapItemCell.cellHeight
-            }
-            else if indexPath.row == 1 {
-                return LocationInfoDisplayCell.cellHeight
-            }
-            else if indexPath.row == 2 {
-                return TextContentCell.cellHeight
+        if indexPath.section == 0 {
+            if let _ = locationToEdit?.mapItem {
+                if indexPath.row == 0 {
+                    return MapItemCell.cellHeight
+                }
+                else if indexPath.row == 1 {
+                    return LocationInfoDisplayCell.cellHeight
+                }
+                else {
+                    fatalError("ERROR: Failed to handle all rows for a mapItem datasource in heightForRowAtIndexPath.")
+                }
             }
             else {
-                fatalError("ERROR: Failed to handle all rows for a mapItem datasource in heightForRowAtIndexPath.")
+                if indexPath.row == 0 {
+                    return LocationInfoDisplayCell.cellHeight
+                }
+                else {
+                    fatalError("ERROR: Failed to handle all rows for a mapItem datasource in heightForRowAtIndexPath.")
+                }
+            }
+        }
+        else if indexPath.section == 1 {
+            if indexPath.row == 0 {
+                return TextEntryCell.cellHeight
+            }
+            else if indexPath.row == 1 {
+                return ColorPreviewCell.cellHeight
+            }
+            else {
+                return TextContentCell.cellHeight
             }
         }
         else {
-            if indexPath.row == 0 {
-                return LocationInfoDisplayCell.cellHeight
-            }
-            else if indexPath.row == 1 {
-                return TextContentCell.cellHeight
-            }
-            else {
-                fatalError("ERROR: Failed to handle all rows for a mapItem datasource in heightForRowAtIndexPath.")
-            }
+            fatalError("ERROR: Failed to handle section, \(indexPath.section), in 'estimatedHeightForRowAtIndexPath'.")
         }
     }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if let _ = locationToEdit?.mapItem {
-            if indexPath.row == 0 {
-                return MapItemCell.cellHeight
-            }
-            else if indexPath.row == 1 {
-                return LocationInfoDisplayCell.cellHeight
-            }
-            else if indexPath.row == 2 {
-                return TextContentCell.cellHeight
+        if indexPath.section == 0 {
+            if let _ = locationToEdit?.mapItem {
+                if indexPath.row == 0 {
+                    return MapItemCell.cellHeight
+                }
+                else if indexPath.row == 1 {
+                    return LocationInfoDisplayCell.cellHeight
+                }
+                else {
+                    fatalError("ERROR: Failed to handle all rows for a mapItem datasource in heightForRowAtIndexPath.")
+                }
             }
             else {
-                fatalError("ERROR: Failed to handle all rows for a mapItem datasource in heightForRowAtIndexPath.")
+                if indexPath.row == 0 {
+                    return LocationInfoDisplayCell.cellHeight
+                }
+                else {
+                    fatalError("ERROR: Failed to handle all rows for in heightForRowAtIndexPath.")
+                }
+            }
+        }
+        else if indexPath.section == 1 {
+            if indexPath.row == 0 {
+                return TextEntryCell.cellHeight
+            }
+            else if indexPath.row == 1 {
+                return ColorPreviewCell.cellHeight
+            }
+            else {
+                return TextContentCell.cellHeight
             }
         }
         else {
-            if indexPath.row == 0 {
-                return LocationInfoDisplayCell.cellHeight
-            }
-            else if indexPath.row == 1 {
-                return TextContentCell.cellHeight
-            }
-            else {
-                fatalError("ERROR: Failed to handle all rows for a mapItem datasource in heightForRowAtIndexPath.")
-            }
+            fatalError("ERROR: Failed to handle section, \(indexPath.section), in 'heightForRowAtIndexPath'.")
         }
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let _ = locationToEdit?.mapItem {
+        if section == 0 {
+            if let _ = locationToEdit?.mapItem {
+                return 2
+            }
+            else {
+                return locationToEdit == nil ? 0 : 1
+            }
+        }
+        else if section == 1 {
             return 3
         }
         else {
-            return locationToEdit == nil ? 0 : 2
+            fatalError("ERROR: Failed to handle section, \(section), in 'numberOfRowsInSection'.")
         }
+    }
+    
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 2
     }
 
 }

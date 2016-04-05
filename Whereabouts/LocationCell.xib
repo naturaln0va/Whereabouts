@@ -15,13 +15,13 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Home" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cte-QE-42b">
-                        <rect key="frame" x="23" y="10" width="287" height="22"/>
+                        <rect key="frame" x="18" y="10" width="292" height="22"/>
                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="18"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="157 Stonebridge Blvd Edmond, OK" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rJa-hN-OVp">
-                        <rect key="frame" x="23" y="39" width="266" height="19"/>
+                        <rect key="frame" x="18" y="39" width="271" height="19"/>
                         <fontDescription key="fontDescription" type="system" weight="light" pointSize="16"/>
                         <color key="textColor" red="0.5490196078431373" green="0.5490196078431373" blue="0.5490196078431373" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
@@ -33,17 +33,17 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yM1-LD-A0L">
-                        <rect key="frame" x="0.0" y="0.0" width="8" height="67"/>
+                        <rect key="frame" x="0.0" y="0.0" width="2" height="67"/>
                         <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="8" id="bI3-dm-CcB"/>
+                            <constraint firstAttribute="width" constant="2" id="bI3-dm-CcB"/>
                         </constraints>
                     </view>
                 </subviews>
                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 <constraints>
-                    <constraint firstItem="Cte-QE-42b" firstAttribute="leading" secondItem="yM1-LD-A0L" secondAttribute="trailing" constant="15" id="2SI-W2-Rah"/>
-                    <constraint firstItem="rJa-hN-OVp" firstAttribute="leading" secondItem="yM1-LD-A0L" secondAttribute="trailing" constant="15" id="AJO-a9-IDI"/>
+                    <constraint firstItem="Cte-QE-42b" firstAttribute="leading" secondItem="yM1-LD-A0L" secondAttribute="trailing" constant="16" id="2SI-W2-Rah"/>
+                    <constraint firstItem="rJa-hN-OVp" firstAttribute="leading" secondItem="yM1-LD-A0L" secondAttribute="trailing" constant="16" id="AJO-a9-IDI"/>
                     <constraint firstAttribute="trailing" secondItem="47S-tx-B7t" secondAttribute="trailing" constant="10" id="DU7-du-2uG"/>
                     <constraint firstAttribute="bottom" secondItem="rJa-hN-OVp" secondAttribute="bottom" constant="10" id="K8P-sT-LWV"/>
                     <constraint firstAttribute="trailing" secondItem="Cte-QE-42b" secondAttribute="trailing" constant="10" id="UiD-Vm-1Jk"/>
@@ -62,7 +62,7 @@
                 <outlet property="createdDateLabel" destination="47S-tx-B7t" id="Hp1-2Y-WEt"/>
                 <outlet property="titleLabel" destination="Cte-QE-42b" id="GDu-0o-7W6"/>
             </connections>
-            <point key="canvasLocation" x="-40" y="218"/>
+            <point key="canvasLocation" x="-358" y="305"/>
         </tableViewCell>
     </objects>
 </document>
