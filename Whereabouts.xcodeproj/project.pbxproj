@@ -28,6 +28,8 @@
 		48642D141BAE27D300935358 /* LocationAccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48642D121BAE27D300935358 /* LocationAccessViewController.swift */; };
 		48642D151BAE27D300935358 /* LocationAccessViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48642D131BAE27D300935358 /* LocationAccessViewController.xib */; };
 		48707CCC1CAA96090003F792 /* UIColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48707CCB1CAA96090003F792 /* UIColor+Hex.swift */; };
+		48759B451CBDBE6100789DB8 /* DatabaseLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48759B441CBDBE6100789DB8 /* DatabaseLocation.swift */; };
+		48759B471CBDBE7100789DB8 /* Visit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48759B461CBDBE7100789DB8 /* Visit.swift */; };
 		487A553F1BB4C61A00D0D320 /* NewLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487A553D1BB4C61A00D0D320 /* NewLocationViewController.swift */; };
 		4882D9D51B1A99FD00BAADAD /* RHACLStringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4882D9D41B1A99FD00BAADAD /* RHACLStringExtensions.swift */; };
 		488A81261CBC606A00452101 /* ContentDisplayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488A81241CBC606A00452101 /* ContentDisplayCell.swift */; };
@@ -59,7 +61,6 @@
 		6937217B1C038AA400A5C8BC /* RHACLStringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4882D9D41B1A99FD00BAADAD /* RHACLStringExtensions.swift */; };
 		6937217E1C038C2B00A5C8BC /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69B7A3BA1BFCD76B000BEBA0 /* SettingsController.swift */; };
 		693AF7971C1B38A4003AFB24 /* VisitModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 693AF7951C1B38A4003AFB24 /* VisitModel.xcdatamodeld */; };
-		693AF79C1C1B3CCD003AFB24 /* Visit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 693AF79A1C1B3CCD003AFB24 /* Visit.swift */; };
 		6954E20B1C177BD500106EB0 /* PhotoTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6954E20A1C177BD500106EB0 /* PhotoTransition.swift */; };
 		69640E901BFBCDE80050722D /* PhotosLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69640E8F1BFBCDE80050722D /* PhotosLayout.swift */; };
 		69640E931BFBCEA60050722D /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69640E911BFBCEA60050722D /* PhotoCell.swift */; };
@@ -68,7 +69,6 @@
 		698AF38D1BF6D66D00F1E745 /* TextEntryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 698AF38B1BF6D66D00F1E745 /* TextEntryCell.xib */; };
 		698AF3941BF7910100F1E745 /* ColorPreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698AF3921BF7910100F1E745 /* ColorPreviewCell.swift */; };
 		698AF3951BF7910100F1E745 /* ColorPreviewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 698AF3931BF7910100F1E745 /* ColorPreviewCell.xib */; };
-		698AF3991BF79A3F00F1E745 /* DatabaseLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698AF3971BF79A3F00F1E745 /* DatabaseLocation.swift */; };
 		698AF39B1BF79A4D00F1E745 /* Fetchable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698AF39A1BF79A4D00F1E745 /* Fetchable.swift */; };
 		698E782F1CAED0B3004A4178 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698E782E1CAED0B3004A4178 /* Location.swift */; };
 		69B7A3B61BFCD436000BEBA0 /* PhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69B7A3B41BFCD436000BEBA0 /* PhotoViewController.swift */; };
@@ -133,6 +133,8 @@
 		48642D121BAE27D300935358 /* LocationAccessViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationAccessViewController.swift; sourceTree = "<group>"; };
 		48642D131BAE27D300935358 /* LocationAccessViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LocationAccessViewController.xib; sourceTree = "<group>"; };
 		48707CCB1CAA96090003F792 /* UIColor+Hex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Hex.swift"; sourceTree = "<group>"; };
+		48759B441CBDBE6100789DB8 /* DatabaseLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseLocation.swift; sourceTree = "<group>"; };
+		48759B461CBDBE7100789DB8 /* Visit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Visit.swift; sourceTree = "<group>"; };
 		487A553D1BB4C61A00D0D320 /* NewLocationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewLocationViewController.swift; sourceTree = "<group>"; };
 		4880D47F1A5331960077E68B /* Whereabouts.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Whereabouts.entitlements; path = Whereabouts/Whereabouts.entitlements; sourceTree = SOURCE_ROOT; };
 		4880D4801A5331DA0077E68B /* Quick Location.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = "Quick Location.entitlements"; path = "Quick Location/Quick Location.entitlements"; sourceTree = SOURCE_ROOT; };
@@ -165,7 +167,6 @@
 		690667711C11E83800862742 /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
 		6924A6461C6B9D4100D5F0E6 /* NSDate+Relative.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDate+Relative.swift"; sourceTree = "<group>"; };
 		693AF7961C1B38A4003AFB24 /* VisitModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = VisitModel.xcdatamodel; sourceTree = "<group>"; };
-		693AF79A1C1B3CCD003AFB24 /* Visit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Visit.swift; path = ../Visit.swift; sourceTree = "<group>"; };
 		6954E20A1C177BD500106EB0 /* PhotoTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoTransition.swift; sourceTree = "<group>"; };
 		69640E8F1BFBCDE80050722D /* PhotosLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotosLayout.swift; sourceTree = "<group>"; };
 		69640E911BFBCEA60050722D /* PhotoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoCell.swift; sourceTree = "<group>"; };
@@ -174,7 +175,6 @@
 		698AF38B1BF6D66D00F1E745 /* TextEntryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TextEntryCell.xib; sourceTree = "<group>"; };
 		698AF3921BF7910100F1E745 /* ColorPreviewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorPreviewCell.swift; sourceTree = "<group>"; };
 		698AF3931BF7910100F1E745 /* ColorPreviewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ColorPreviewCell.xib; sourceTree = "<group>"; };
-		698AF3971BF79A3F00F1E745 /* DatabaseLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DatabaseLocation.swift; path = ../DatabaseLocation.swift; sourceTree = "<group>"; };
 		698AF39A1BF79A4D00F1E745 /* Fetchable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fetchable.swift; sourceTree = "<group>"; };
 		698E782E1CAED0B3004A4178 /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		69B7A3B41BFCD436000BEBA0 /* PhotoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoViewController.swift; sourceTree = "<group>"; };
@@ -420,11 +420,11 @@
 			isa = PBXGroup;
 			children = (
 				693AF7981C1B38AE003AFB24 /* DataModels */,
+				48759B441CBDBE6100789DB8 /* DatabaseLocation.swift */,
 				48F763451CA890D200BCE740 /* CloudLocation.swift */,
-				698AF3971BF79A3F00F1E745 /* DatabaseLocation.swift */,
 				698AF39A1BF79A4D00F1E745 /* Fetchable.swift */,
 				698E782E1CAED0B3004A4178 /* Location.swift */,
-				693AF79A1C1B3CCD003AFB24 /* Visit.swift */,
+				48759B461CBDBE7100789DB8 /* Visit.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -609,6 +609,7 @@
 			files = (
 				483BBE491C1CE4DB002E5DB2 /* MapViewController.swift in Sources */,
 				48D4FFEA1BF7D2ED006DA09C /* LocationDetailViewController.swift in Sources */,
+				48759B471CBDBE7100789DB8 /* Visit.swift in Sources */,
 				698AF39B1BF79A4D00F1E745 /* Fetchable.swift in Sources */,
 				48510BEB1BF7F3D10041C7C1 /* String+Additions.swift in Sources */,
 				487A553F1BB4C61A00D0D320 /* NewLocationViewController.swift in Sources */,
@@ -635,7 +636,6 @@
 				69E367E01CADAD3E00604790 /* EditViewController.swift in Sources */,
 				488A81291CBC6F0800452101 /* CLLocation+VCard.swift in Sources */,
 				6924A6471C6B9D4100D5F0E6 /* NSDate+Relative.swift in Sources */,
-				693AF79C1C1B3CCD003AFB24 /* Visit.swift in Sources */,
 				4863E6FA1CAD3C800072C304 /* CurrentLocationCell.swift in Sources */,
 				69B7A3BB1BFCD76B000BEBA0 /* SettingsController.swift in Sources */,
 				69640E901BFBCDE80050722D /* PhotosLayout.swift in Sources */,
@@ -647,10 +647,10 @@
 				69E367E31CAE0B2D00604790 /* LocationInfoDisplayCell.swift in Sources */,
 				488BE6461CABF41100BA24C8 /* SearchResultCell.swift in Sources */,
 				48F763461CA890D200BCE740 /* CloudLocation.swift in Sources */,
+				48759B451CBDBE6100789DB8 /* DatabaseLocation.swift in Sources */,
 				48C7636419F59D230096B27A /* RHAUtilExtensions.swift in Sources */,
 				6954E20B1C177BD500106EB0 /* PhotoTransition.swift in Sources */,
 				698E782F1CAED0B3004A4178 /* Location.swift in Sources */,
-				698AF3991BF79A3F00F1E745 /* DatabaseLocation.swift in Sources */,
 				483AF54D1B0BFF2700A00BED /* PersistenceController.swift in Sources */,
 				690667721C11E83800862742 /* DataModel.xcdatamodeld in Sources */,
 				69B7A3B91BFCD6FE000BEBA0 /* SettingsViewController.swift in Sources */,
