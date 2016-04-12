@@ -76,9 +76,9 @@ func altitudeString(altitude: CLLocationDistance) -> String
     }
     else {
         let formatter = MKDistanceFormatter()
-        formatter.unitStyle = .Abbreviated
+        formatter.unitStyle = .Full
         formatter.units = SettingsController.sharedController.isUnitStyleImperial ? .Imperial : .Metric
-        return "\(formatter.stringFromDistance(altitude)) \(altitude > 0 ? "above sea level" : "below sea level")"
+        return "\(Int(altitude * 3.2808399))ft \(altitude > 0 ? "above sea level" : "below sea level")"
     }
 }
 

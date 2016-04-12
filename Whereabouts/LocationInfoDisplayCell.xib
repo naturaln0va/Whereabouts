@@ -21,7 +21,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YEd-jA-wnH">
-                        <rect key="frame" x="16" y="25.5" width="288" height="50.5"/>
+                        <rect key="frame" x="16" y="25.5" width="288" height="55"/>
                         <string key="text">157 Stonebridge Blvd
 Edmond, OK 73013
 United States</string>
@@ -34,7 +34,7 @@ United States</string>
                     <constraint firstAttribute="trailing" secondItem="YEd-jA-wnH" secondAttribute="trailing" constant="16" id="4Fy-Y6-Bai"/>
                     <constraint firstItem="ruy-eO-7Bj" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="DqV-5J-65z"/>
                     <constraint firstAttribute="trailing" secondItem="ruy-eO-7Bj" secondAttribute="trailing" constant="16" id="EV2-gs-0Ig"/>
-                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="YEd-jA-wnH" secondAttribute="bottom" constant="4" id="Ft3-Eo-8vC"/>
+                    <constraint firstAttribute="bottom" secondItem="YEd-jA-wnH" secondAttribute="bottom" constant="8" id="Ft3-Eo-8vC"/>
                     <constraint firstItem="YEd-jA-wnH" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="RHB-un-gW1"/>
                     <constraint firstItem="ruy-eO-7Bj" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="RT8-UH-8ed"/>
                     <constraint firstItem="YEd-jA-wnH" firstAttribute="top" secondItem="ruy-eO-7Bj" secondAttribute="bottom" constant="4" id="SMP-Rn-nBH"/>

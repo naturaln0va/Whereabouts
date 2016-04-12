@@ -1,12 +1,9 @@
 
 import UIKit
 
-protocol ColorSelectionViewControllerDelegate {
-    func colorSelectionViewControllerDidSelectColor(color: UIColor)
+protocol ColorSelectionViewControllerDelegate: class {
+    func colorSelectionViewControllerDidSelectColor(viewController: ColorSelectionViewController, color: UIColor?)
 }
-
-private let reuseIdentifier = "Cell"
-
 
 class ColorSelectionViewController: UICollectionViewController {
     
@@ -33,20 +30,28 @@ class ColorSelectionViewController: UICollectionViewController {
         UIColor(red:0.224,  green:0.624,  blue:0.525, alpha:1)
     ]
     
-    var delegate: ColorSelectionViewControllerDelegate?
+    weak var delegate: ColorSelectionViewControllerDelegate?
+    private let reuseIdentifier = "Cell"
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         title = "Select a Color"
         
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "No Color", style: .Plain, target: self, action: #selector(ColorSelectionViewController.noColorButtonPressed))
+        
         collectionView?.backgroundColor = UIColor.whiteColor()
         collectionView!.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         
         navigationController?.setToolbarHidden(true, animated: true)
     }
+    
+    // MARK: - Actions
+    @objc private func noColorButtonPressed() {
+        delegate?.colorSelectionViewControllerDidSelectColor(self, color: nil)
+    }
 
-    // MARK: UICollectionViewDataSource
+    // MARK: - UICollectionViewDataSource
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return colors.count
     }
@@ -61,10 +66,7 @@ class ColorSelectionViewController: UICollectionViewController {
 
     // MARK: UICollectionViewDelegate
     override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        if let delegate = delegate {
-            delegate.colorSelectionViewControllerDidSelectColor(colors[indexPath.item])
-            navigationController?.popViewControllerAnimated(true)
-        }
+        delegate?.colorSelectionViewControllerDidSelectColor(self, color: colors[indexPath.item])
     }
     
 }

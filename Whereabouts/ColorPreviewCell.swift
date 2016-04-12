@@ -5,7 +5,6 @@ import UIKit
 class ColorPreviewCell: UITableViewCell {
 
     static let cellHeight: CGFloat = 44.0
-    static let reuseIdentifier = "ColorPreviewCell"
     
     @IBOutlet var mainTextLabel: UILabel!
     @IBOutlet var infoLabel: UILabel!

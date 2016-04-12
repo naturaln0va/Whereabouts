@@ -170,6 +170,35 @@ class PersistentController {
         return []
     }
     
+    func saveLocation(location: Location) {
+        guard let dataToSave = NSEntityDescription.insertNewObjectForEntityForName(DatabaseLocation.entityName(), inManagedObjectContext: locationMOC) as? DatabaseLocation else {
+            fatalError("Expected to insert and entity of type 'DatabaseLocation'.")
+        }
+        
+        dataToSave.date = location.date
+        dataToSave.textContent = location.textContent
+        dataToSave.color = location.color
+        dataToSave.locationTitle = location.locationTitle
+        dataToSave.placemark = location.placemark
+        dataToSave.location = location.location
+        dataToSave.identifier = location.identifier
+        dataToSave.itemName = location.mapItem?.name
+        dataToSave.itemPhoneNumber = location.mapItem?.phoneNumber
+        dataToSave.itemWebLink = String(location.mapItem?.url)
+        
+        if locationMOC.hasChanges {
+            locationMOC.performBlockAndWait { [unowned self] in
+                do {
+                    try self.locationMOC.save()
+                }
+                    
+                catch {
+                    fatalError("Error saving location: \(error)")
+                }
+            }
+        }
+    }
+    
     func saveCloudLocationIfNeeded(location: CloudLocation) {
         guard locationForIdentifier(location.identifier) == nil else {
             return
@@ -180,8 +209,9 @@ class PersistentController {
         }
         
         dataToSave.date = location.createdDate
+        dataToSave.locationTitle = location.locationTitle
         dataToSave.textContent = location.textContent
-        dataToSave.color = location.color.characters.count > 0 ? UIColor(rgba: location.color) : nil
+        dataToSave.color = location.color
         dataToSave.placemark = location.place
         dataToSave.location = location.location
         dataToSave.identifier = location.identifier
@@ -262,34 +292,6 @@ class PersistentController {
         
         locationToUpdate.cloudRecordIdentifierData = NSKeyedArchiver.archivedDataWithRootObject(cloudID)
         if DEBUG_DATABASE { debugPrint("***PERSISTENTCONTROLLER: Updated local location with cloud id.") }
-        
-        if locationMOC.hasChanges {
-            locationMOC.performBlockAndWait { [unowned self] in
-                do {
-                    try self.locationMOC.save()
-                }
-                    
-                catch {
-                    fatalError("Error saving location: \(error)")
-                }
-            }
-        }
-    }
-    
-    func saveLocation(location: Location) {
-        guard let dataToSave = NSEntityDescription.insertNewObjectForEntityForName(DatabaseLocation.entityName(), inManagedObjectContext: locationMOC) as? DatabaseLocation else {
-            fatalError("Expected to insert and entity of type 'DatabaseLocation'.")
-        }
-        
-        dataToSave.date = location.date
-        dataToSave.textContent = location.textContent
-        dataToSave.color = location.color
-        dataToSave.placemark = location.placemark
-        dataToSave.location = location.location
-        dataToSave.identifier = location.identifier
-        dataToSave.itemName = location.mapItem?.name
-        dataToSave.itemPhoneNumber = location.mapItem?.phoneNumber
-        dataToSave.itemWebLink = String(location.mapItem?.url)
         
         if locationMOC.hasChanges {
             locationMOC.performBlockAndWait { [unowned self] in

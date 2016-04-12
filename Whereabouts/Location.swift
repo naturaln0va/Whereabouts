@@ -9,8 +9,9 @@ class Location: NSObject {
     
     var location: CLLocation
     
-    var color: UIColor?
+    var color: String?
     var placemark: CLPlacemark?
+    var locationTitle: String?
     var textContent: String?
     
     private var itemName: String?
@@ -18,13 +19,16 @@ class Location: NSObject {
     private var itemWebLink: String?
     
     var mapItem: MKMapItem? {
-        guard let place = placemark, let name = itemName, let phone = itemPhoneNumber else {
+        guard let place = placemark, let name = itemName else {
             return nil
         }
         
         let item = MKMapItem(placemark: MKPlacemark(placemark: place))
         item.name = name
-        item.phoneNumber = phone
+        
+        if let phone = itemPhoneNumber {
+            item.phoneNumber = phone
+        }
         
         if let urlString = itemWebLink {
             item.url = NSURL(string: urlString)
@@ -37,6 +41,7 @@ class Location: NSObject {
         date = dbLocation.date
         identifier = dbLocation.identifier
         color = dbLocation.color
+        locationTitle = dbLocation.locationTitle
         textContent = dbLocation.textContent
         placemark = dbLocation.placemark
         location = dbLocation.location
@@ -59,7 +64,8 @@ class Location: NSObject {
     init(cloudLocation: CloudLocation) {
         date = cloudLocation.createdDate
         identifier = cloudLocation.identifier
-        color = UIColor(rgba: cloudLocation.color)
+        color = cloudLocation.color
+        locationTitle = cloudLocation.locationTitle
         textContent = cloudLocation.textContent
         location = cloudLocation.location
         placemark = cloudLocation.place

@@ -14,26 +14,18 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="55.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Search completer text" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iI7-Bo-sHI">
-                        <rect key="frame" x="16" y="8" width="288" height="19.5"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Search completer text" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iI7-Bo-sHI">
+                        <rect key="frame" x="16" y="16" width="288" height="23.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Secondary text label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XtU-oX-f7m">
-                        <rect key="frame" x="16" y="32.5" width="288" height="15"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                        <nil key="highlightedColor"/>
-                    </label>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="bottom" secondItem="XtU-oX-f7m" secondAttribute="bottom" constant="8" id="MH4-f8-DXh"/>
                     <constraint firstItem="iI7-Bo-sHI" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Sas-Qk-FLd"/>
-                    <constraint firstItem="iI7-Bo-sHI" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="dxI-fM-RzI"/>
+                    <constraint firstItem="iI7-Bo-sHI" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="16" id="dxI-fM-RzI"/>
                     <constraint firstItem="iI7-Bo-sHI" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="g1h-2A-13K"/>
-                    <constraint firstAttribute="trailing" secondItem="XtU-oX-f7m" secondAttribute="trailing" constant="16" id="iiV-SR-84Z"/>
-                    <constraint firstItem="XtU-oX-f7m" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="oMg-xe-UDW"/>
+                    <constraint firstAttribute="bottom" secondItem="iI7-Bo-sHI" secondAttribute="bottom" constant="16" id="lt8-Zf-fsC"/>
                     <constraint firstAttribute="trailing" secondItem="iI7-Bo-sHI" secondAttribute="trailing" constant="16" id="xhF-hs-5Cv"/>
                 </constraints>
                 <variation key="default">
@@ -44,7 +36,6 @@
             </tableViewCellContentView>
             <connections>
                 <outlet property="mainTextLabel" destination="iI7-Bo-sHI" id="3YE-fW-dLp"/>
-                <outlet property="secondaryTextLabel" destination="XtU-oX-f7m" id="R8E-kj-YjB"/>
             </connections>
             <point key="canvasLocation" x="-213" y="253"/>
         </tableViewCell>

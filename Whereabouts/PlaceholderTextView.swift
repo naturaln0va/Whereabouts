@@ -46,8 +46,8 @@ class PlaceholderTextView: UITextView {
         
         if shouldDrawPlaceholder {
             let converted = placeholder as NSString
-            let attributes: [String: AnyObject] = [NSFontAttributeName: font!, NSForegroundColorAttributeName: UIColor.lightGrayColor()]
-            converted.drawInRect(CGRectInset(bounds, 6, textContainerInset.top), withAttributes: attributes)
+            let attributes: [String: AnyObject] = [NSFontAttributeName: font!, NSForegroundColorAttributeName: UIColor(red: 0.78,  green: 0.78,  blue: 0.80, alpha: 1.0)]
+            converted.drawInRect(CGRectInset(bounds, 7, textContainerInset.top), withAttributes: attributes)
         }
     }
     

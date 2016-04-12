@@ -21,8 +21,15 @@ class EditViewController: UITableViewController {
         mapView.showsUserLocation = true
         mapView.showsCompass = true
         mapView.showsScale = true
+        mapView.tintColor = StyleController.sharedController.mainTintColor
         return mapView
     }()
+    
+    private var selectedColor: UIColor? {
+        didSet {
+            tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 1)], withRowAnimation: .Automatic)
+        }
+    }
     
     private var shouldDisplayAddress = true {
         didSet {
@@ -38,9 +45,6 @@ class EditViewController: UITableViewController {
     init(location: Location?) {
         super.init(nibName: nil, bundle: nil)
         
-        if location == nil {
-            assistant.delegate = self
-        }
         self.locationToEdit = location
     }
     
@@ -71,15 +75,15 @@ class EditViewController: UITableViewController {
         tableView = UITableView(frame: CGRect.zero, style: .Grouped)
         tableView.keyboardDismissMode = .OnDrag
         tableView.backgroundColor = view.backgroundColor
-
         tableView.registerNib(UINib(nibName: String(MapItemCell), bundle: nil), forCellReuseIdentifier: String(MapItemCell))
         tableView.registerNib(UINib(nibName: String(LocationInfoDisplayCell), bundle: nil), forCellReuseIdentifier: String(LocationInfoDisplayCell))
         tableView.registerNib(UINib(nibName: String(TextContentCell), bundle: nil), forCellReuseIdentifier: String(TextContentCell))
         tableView.registerNib(UINib(nibName: String(ColorPreviewCell), bundle: nil), forCellReuseIdentifier: String(ColorPreviewCell))
         tableView.registerNib(UINib(nibName: String(TextEntryCell), bundle: nil), forCellReuseIdentifier: String(TextEntryCell))
         
-        if locationToEdit == nil && assistant.delegate != nil {
+        if locationToEdit == nil || locationToEdit?.placemark == nil {
             navigationItem.rightBarButtonItem?.enabled = false
+            assistant.delegate = self
             assistant.getLocation()
             title = "Locating..."
         }
@@ -106,6 +110,18 @@ class EditViewController: UITableViewController {
     }
     
     internal func saveButtonPressed() {
+        if let color = selectedColor {
+            locationToEdit?.color = color.hexString(false)
+        }
+        
+        if let titleCell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 1)) as? TextEntryCell {
+            locationToEdit?.locationTitle = titleCell.textField.text
+        }
+        
+        if let contentCell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 1)) as? TextContentCell {
+            locationToEdit?.textContent = contentCell.textView.text
+        }
+        
         if let location = locationToEdit {
             PersistentController.sharedController.saveLocation(location)
             CloudController.sharedController.saveLocalLocationToCloud(location) { cloudLocation in
@@ -144,10 +160,7 @@ class EditViewController: UITableViewController {
                     
                     cell.nameLabel.text = item.name
                     cell.phoneNumberLabel.text = item.phoneNumber
-                    
-                    if let urlString = item.url?.absoluteString {
-                        cell.webPageLabel.text = urlString
-                    }
+                    cell.webPageLabel.text = item.url?.absoluteString ?? "No Website"
                     
                     return cell
                 }
@@ -221,19 +234,19 @@ class EditViewController: UITableViewController {
         }
         else if indexPath.section == 1 {
             if indexPath.row == 0 {
-                guard let cell = tableView.dequeueReusableCellWithIdentifier(String(TextEntryCell)) as? TextEntryCell else {
-                    fatalError("Expected to dequeue a 'TextEntryCell'.")
-                }
-                
-                return cell
-            }
-            else if indexPath.row == 1 {
                 guard let cell = tableView.dequeueReusableCellWithIdentifier(String(ColorPreviewCell)) as? ColorPreviewCell else {
                     fatalError("Expected to dequeue a 'ColorPreviewCell'.")
                 }
                 
-//                cell.colorToDisplay = selectedColor
+                cell.colorToDisplay = selectedColor
                 cell.accessoryType = .DisclosureIndicator
+                
+                return cell
+            }
+            else if indexPath.row == 1 {
+                guard let cell = tableView.dequeueReusableCellWithIdentifier(String(TextEntryCell)) as? TextEntryCell else {
+                    fatalError("Expected to dequeue a 'TextEntryCell'.")
+                }
                 
                 return cell
             }
@@ -253,30 +266,49 @@ class EditViewController: UITableViewController {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
-        if let _ = locationToEdit?.mapItem {
-            if indexPath.row == 1 {
+        if indexPath.section == 1 && indexPath.row == 0 {
+            view.endEditing(true)
+            let vc = ColorSelectionViewController(collectionViewLayout: DefaultLayout())
+            vc.delegate = self
+            navigationController?.pushViewController(vc, animated: true)
+        }
+        else {
+            if let _ = locationToEdit?.mapItem {
+                if indexPath.row == 1 {
+                    shouldDisplayAddress = !shouldDisplayAddress
+                }
+            }
+            else if let _ = locationToEdit?.placemark {
                 shouldDisplayAddress = !shouldDisplayAddress
             }
-        }
-        else if let _ = locationToEdit?.placemark {
-            shouldDisplayAddress = !shouldDisplayAddress
         }
     }
     
     override func tableView(tableView: UITableView, shouldHighlightRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        if let _ = locationToEdit?.mapItem {
-            if indexPath.row == 1 {
+        if indexPath.section == 1 {
+            if indexPath.row == 0 {
                 return true
             }
             else {
                 return false
             }
         }
-        if let _ = locationToEdit?.placemark {
-            return true
+        else {
+            if let _ = locationToEdit?.mapItem {
+                if indexPath.row == 1 {
+                    return true
+                }
+                else {
+                    return false
+                }
+            }
+            else if let _ = locationToEdit?.placemark {
+                return true
+            }
+            else {
+                return false
+            }
         }
-        
-        return false
     }
     
     // MARK: - UITableViewDataSource
@@ -304,10 +336,10 @@ class EditViewController: UITableViewController {
         }
         else if indexPath.section == 1 {
             if indexPath.row == 0 {
-                return TextEntryCell.cellHeight
+                return ColorPreviewCell.cellHeight
             }
             else if indexPath.row == 1 {
-                return ColorPreviewCell.cellHeight
+                return TextEntryCell.cellHeight
             }
             else {
                 return TextContentCell.cellHeight
@@ -336,23 +368,23 @@ class EditViewController: UITableViewController {
                     return LocationInfoDisplayCell.cellHeight
                 }
                 else {
-                    fatalError("ERROR: Failed to handle all rows for in heightForRowAtIndexPath.")
+                    fatalError("ERROR: Failed to handle all rows for a mapItem datasource in heightForRowAtIndexPath.")
                 }
             }
         }
         else if indexPath.section == 1 {
             if indexPath.row == 0 {
-                return TextEntryCell.cellHeight
+                return ColorPreviewCell.cellHeight
             }
             else if indexPath.row == 1 {
-                return ColorPreviewCell.cellHeight
+                return TextEntryCell.cellHeight
             }
             else {
                 return TextContentCell.cellHeight
             }
         }
         else {
-            fatalError("ERROR: Failed to handle section, \(indexPath.section), in 'heightForRowAtIndexPath'.")
+            fatalError("ERROR: Failed to handle section, \(indexPath.section), in 'estimatedHeightForRowAtIndexPath'.")
         }
     }
     
@@ -455,6 +487,16 @@ extension EditViewController: LocationAccessViewControllerDelegate {
         assistant.terminate()
         
         dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+}
+
+extension EditViewController: ColorSelectionViewControllerDelegate {
+    
+    
+    func colorSelectionViewControllerDidSelectColor(viewController: ColorSelectionViewController, color: UIColor?) {
+        selectedColor = color
+        navigationController?.popViewControllerAnimated(true)
     }
     
 }

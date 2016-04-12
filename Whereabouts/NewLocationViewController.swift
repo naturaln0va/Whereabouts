@@ -80,12 +80,12 @@ class NewLocationViewController: UITableViewController {
         tableView.dataSource = self
         tableView.backgroundColor = StyleController.sharedController.backgroundColor
         tableView.registerNib(UINib(nibName: TextEntryCell.reuseIdentifier, bundle: nil), forCellReuseIdentifier: TextEntryCell.reuseIdentifier)
-        tableView.registerNib(UINib(nibName: ColorPreviewCell.reuseIdentifier, bundle: nil), forCellReuseIdentifier: ColorPreviewCell.reuseIdentifier)
+//        tableView.registerNib(UINib(nibName: ColorPreviewCell.reuseIdentifier, bundle: nil), forCellReuseIdentifier: ColorPreviewCell.reuseIdentifier)
         
         if let editingLocation = locationToEdit {
             location = editingLocation.location
             placemark = editingLocation.placemark
-            selectedColor = editingLocation.color
+//            selectedColor = editingLocation.color
             
             if editingLocation.placemark == nil {
                 assistant = LocationAssistant(viewController: self)
@@ -199,12 +199,7 @@ class NewLocationViewController: UITableViewController {
     //MARK: - TableView Deleagte & DataSource
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
-            if indexPath.row == 0 {
-                return tableView.dequeueReusableCellWithIdentifier(TextEntryCell.reuseIdentifier, forIndexPath: indexPath)
-            }
-            else {
-                return tableView.dequeueReusableCellWithIdentifier(ColorPreviewCell.reuseIdentifier, forIndexPath: indexPath)
-            }
+            return tableView.dequeueReusableCellWithIdentifier(TextEntryCell.reuseIdentifier, forIndexPath: indexPath)
         }
         else {
             return UITableViewCell(style: .Value1, reuseIdentifier: "infoCell")
@@ -403,7 +398,7 @@ extension NewLocationViewController: LocationAssistantDelegate {
 //MARK: - ColorSelectionViewControllerDelegate
 extension NewLocationViewController: ColorSelectionViewControllerDelegate {
     
-    func colorSelectionViewControllerDidSelectColor(color: UIColor) {
+    func colorSelectionViewControllerDidSelectColor(viewController: ColorSelectionViewController, color: UIColor?) {
         selectedColor = color
         tableView.reloadData()
     }

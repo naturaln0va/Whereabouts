@@ -9,7 +9,6 @@ class TextEntryCell: UITableViewCell {
     
     @IBOutlet var textField: UITextField!
     
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         

@@ -167,38 +167,7 @@ class AddViewController: UITableViewController {
                 fatalError("Expected to dequeue a 'SearchCompleterCell'.")
             }
             
-            cell.mainTextLabel.text = ""
-            cell.secondaryTextLabel.text = ""
-            
-            if let mainString = completionResults?[indexPath.row].title {
-                let mainAttrText = NSMutableAttributedString(string: mainString)
-                
-                if let ranges = completionResults?[indexPath.row].titleHighlightRanges {
-                    for range in ranges {
-                        mainAttrText.addAttributes(
-                            [NSBackgroundColorAttributeName: UIColor(red: 0.95,  green: 0.77,  blue: 0.05, alpha: 0.50)],
-                            range: range.rangeValue
-                        )
-                    }
-                }
-                
-                cell.mainTextLabel.attributedText = mainAttrText
-            }
-            
-            if let secondaryString = completionResults?[indexPath.row].subtitle {
-                let secondaryAttrText = NSMutableAttributedString(string: secondaryString)
-                
-                if let ranges = completionResults?[indexPath.row].subtitleHighlightRanges {
-                    for range in ranges {
-                        secondaryAttrText.addAttributes(
-                            [NSBackgroundColorAttributeName: UIColor(red: 0.95,  green: 0.77,  blue: 0.05, alpha: 0.50)],
-                            range: range.rangeValue
-                        )
-                    }
-                }
-                
-                cell.secondaryTextLabel.text = secondaryString
-            }
+            cell.configureCellWithResult(completionResults?[indexPath.row])
             
             return cell
         }
@@ -208,13 +177,7 @@ class AddViewController: UITableViewController {
             }
             
             cell.titleLabel.text = searchedMapItems?[indexPath.row].name
-            
-            if let webURL = searchedMapItems?[indexPath.row].url {
-                cell.websiteLabel.text = "\(webURL)"
-            }
-            else {
-                cell.websiteLabel.text = searchedMapItems?[indexPath.row].phoneNumber
-            }
+            cell.websiteLabel.text = searchedMapItems?[indexPath.row].url?.absoluteString ?? searchedMapItems?[indexPath.row].phoneNumber ?? "No Additional Info"
             
             if let place = searchedMapItems?[indexPath.row].placemark {
                 cell.addressLabel.text = stringFromAddress(place, withNewLine: false)
@@ -291,15 +254,6 @@ class AddViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if tableView.numberOfSections > 1 && indexPath.section == 0 && searchType != .Completer {
-            return CurrentLocationCell.cellHeight
-        }
-        else {
-            return searchType == .Results ? SearchResultCell.cellHeight : SearchCompleterCell.cellHeight
-        }
-    }
-    
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if tableView.numberOfSections > 1 && indexPath.section == 0 && searchType != .Completer {
             return CurrentLocationCell.cellHeight
         }

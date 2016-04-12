@@ -26,6 +26,14 @@ class LocationDetailViewController: UIViewController {
         formatter.dateStyle = .MediumStyle
         return formatter
     }()
+    private lazy var messageLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFontOfSize(12.0, weight: UIFontWeightRegular)
+        label.textAlignment = .Center
+        label.text = "Syncing with iCloud"
+        label.sizeToFit()
+        return label
+    }()
     private lazy var openMapsButton: UIBarButtonItem = {
         return UIBarButtonItem(image: UIImage(named: "open-location"), style: .Plain, target: self, action: #selector(LocationDetailViewController.mapsButtonPressed))
     }()
@@ -117,10 +125,15 @@ class LocationDetailViewController: UIViewController {
     }
     
     func actionButtonPressed() {
-        let firstActivityItem = locationToDisplay.shareableString
+        var items = [AnyObject]()
+        items.append(locationToDisplay.shareableString)
+        
+        if let url = locationToDisplay.location.vCardURL() {
+            items.append(url)
+        }
         
         let activityViewController: UIActivityViewController = UIActivityViewController(
-            activityItems: [firstActivityItem],
+            activityItems: items,
             applicationActivities: nil
         )
         
@@ -257,7 +270,7 @@ class LocationDetailViewController: UIViewController {
         
         altitudeLabel.text = altitudeString(locationToDisplay.location.altitude)
         dateLabel.text = dateTimeFormatter.stringFromDate(locationToDisplay.date)
-        colorView.backgroundColor = locationToDisplay.color ?? UIColor.clearColor()
+//        colorView.backgroundColor = locationToDisplay.color ?? UIColor.clearColor()
     }
 
 }
@@ -292,7 +305,13 @@ extension LocationDetailViewController: MKMapViewDelegate {
             annotationView.enabled = true
             annotationView.canShowCallout = true
             annotationView.animatesDrop = false
-            annotationView.pinTintColor = locationToDisplay.color
+            
+            if let color = locationToDisplay.color {
+                annotationView.pinTintColor = UIColor(rgba: color)
+            }
+            else {
+                annotationView.pinTintColor = UIColor.redColor()
+            }
             
             return annotationView
         }

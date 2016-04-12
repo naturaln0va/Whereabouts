@@ -55,7 +55,7 @@ class ListViewController: UITableViewController {
         }
         
         if let location = fetchedResultsController.objectAtIndexPath(indexPath) as? DatabaseLocation {
-            cell.configureCell(Location(dbLocation: location))
+            cell.configureCellWithLocation(Location(dbLocation: location))
         }
         
         return cell
@@ -68,7 +68,7 @@ class ListViewController: UITableViewController {
         }
         
         if let location = fetchedResultsController.objectAtIndexPath(indexPath) as? DatabaseLocation {
-            cell.configureCell(Location(dbLocation: location))
+            cell.configureCellWithLocation(Location(dbLocation: location))
         }
     }
     
@@ -76,9 +76,8 @@ class ListViewController: UITableViewController {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
         if let location = fetchedResultsController.objectAtIndexPath(indexPath) as? DatabaseLocation {
-            let detailVC = LocationDetailViewController()
-            detailVC.locationToDisplay = Location(dbLocation: location)
-            navigationController?.pushViewController(detailVC, animated: true)
+            let vc = DetailViewController(location: Location(dbLocation: location))
+            navigationController?.pushViewController(vc, animated: true)
         }
     }
     
@@ -123,7 +122,7 @@ extension ListViewController: NSFetchedResultsControllerDelegate {
         case .Update:
             if let cell = tableView.cellForRowAtIndexPath(indexPath!) as? LocationCell {
                 if let location = fetchedResultsController.objectAtIndexPath(indexPath!) as? DatabaseLocation {
-                    cell.configureCell(Location(dbLocation: location))
+                    cell.configureCellWithLocation(Location(dbLocation: location))
                 }
             }
             
