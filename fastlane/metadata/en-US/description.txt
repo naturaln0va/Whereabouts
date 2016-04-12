@@ -1,0 +1,22 @@
+Whereabouts is an easy way to keep track of the places you visit. Whereabouts can utilize your phone's GPS to provide a information based upon your surroundings.
+
+Locations can be saved for later and shared. Photos taken near the saved location can be viewed in a detail view. Settings can tweak the accuracy of locating and range of nearby photos.
+
+Features:
+●  Get accurate latitude & longitude info from your location
+●  Determine your altitude
+●  Search your saved locations
+●  Quickly view your location via a Notification Center widget
+●  Add a color to the location to group similar places
+●  Easily share locations with your family and friends
+●  View photos taken near the location
+●  Open a saved location in Apple’s maps app
+●  View the distance between you and the saved location
+
+Designed to work with iPhones running iOS 8.2 or later.
+
+Feel free to contact me with comments, questions, or any feedback.
+Ratings are highly appreciated.
+
+Twitter:	@naturaln0va
+Email:	support@ackermann.io

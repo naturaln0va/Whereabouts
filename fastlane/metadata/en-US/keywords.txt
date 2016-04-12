@@ -1,0 +1,1 @@
+location,map,place,info,tracking,nearby,gps,family,travel,finder,cheap,simple,utility,lost,later,fun

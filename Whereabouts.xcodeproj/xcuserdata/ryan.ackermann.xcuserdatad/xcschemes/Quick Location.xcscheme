@@ -43,13 +43,23 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "69840FEE1CBD4D09000CBFCB"
+               BuildableName = "WhereaboutsUITestsForScreens.xctest"
+               BlueprintName = "WhereaboutsUITestsForScreens"
+               ReferencedContainer = "container:Whereabouts.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "482CABD719FF565200B5F1E2"
-            BuildableName = "Quick Location.appex"
-            BlueprintName = "Quick Location"
+            BlueprintIdentifier = "48DEDA3019F592F80094CB8F"
+            BuildableName = "Whereabouts.app"
+            BlueprintName = "Whereabouts"
             ReferencedContainer = "container:Whereabouts.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
