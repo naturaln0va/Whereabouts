@@ -7,7 +7,11 @@ class DetailViewController: UITableViewController {
     private let locationToDisplay: Location
     private lazy var nearbyPhotos = [UIImage]()
     
+    private var isLoadingHeader = false
+    
+    private lazy var headerContainerView = UIView()
     private lazy var mapHeaderImageView = UIImageView()
+    
     private let mapHeaderHeight: CGFloat = 145.0
     private let mapHeaderContainerHeight: CGFloat = 500.0
     
@@ -29,6 +33,7 @@ class DetailViewController: UITableViewController {
     private lazy var messageBarButtonItem: UIBarButtonItem = UIBarButtonItem(customView: self.messageLabel)
     private lazy var actionBarButtonItem: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Action, target: self, action: #selector(DetailViewController.actionButtonPressed))
     private lazy var spaceBarButtonItem: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
+    private lazy var navigateBarButtonItem: UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "directions-arrow"), style: .Plain, target: self, action: #selector(DetailViewController.navigateButtonPressed))
     
     init(location: Location) {
         locationToDisplay = location
@@ -42,7 +47,19 @@ class DetailViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = locationToDisplay.locationTitle ?? locationToDisplay.placemark?.name ?? locationToDisplay.placemark?.locality ?? "Location"
+        if let locationTitle = locationToDisplay.locationTitle where locationTitle.characters.count > 0 {
+            title = locationTitle
+        }
+        else if let mapName = locationToDisplay.mapItem?.name where mapName.characters.count > 0 {
+            title = mapName
+        }
+        else if let cityName = locationToDisplay.placemark?.locality where cityName.characters.count > 0 {
+            title = cityName
+        }
+        else {
+            title = "Location"
+        }
+        
         view.backgroundColor = StyleController.sharedController.backgroundColor
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(
@@ -57,7 +74,7 @@ class DetailViewController: UITableViewController {
         tableView.registerNib(UINib(nibName: String(ContentDisplayCell), bundle: nil), forCellReuseIdentifier: String(ContentDisplayCell))
         tableView.registerNib(UINib(nibName: String(LocationInfoDisplayCell), bundle: nil), forCellReuseIdentifier: String(LocationInfoDisplayCell))
         
-        toolbarItems = [spaceBarButtonItem, messageBarButtonItem, spaceBarButtonItem, actionBarButtonItem]
+        toolbarItems = [navigateBarButtonItem, spaceBarButtonItem, messageBarButtonItem, spaceBarButtonItem, actionBarButtonItem]
         
         if let crowFlyDistance = MKMapItem.mapItemForCurrentLocation().placemark.location?.distanceFromLocation(locationToDisplay.location) {
             updateMessageLabel(NSAttributedString(string: distanceString(crowFlyDistance)))
@@ -69,9 +86,14 @@ class DetailViewController: UITableViewController {
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         
-        guard tableView.tableHeaderView == nil else {
+        guard tableView.tableHeaderView == nil && !isLoadingHeader else {
             return
         }
+        
+        headerContainerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: mapHeaderContainerHeight))
+        headerContainerView.clipsToBounds = true
+        tableView.tableHeaderView = headerContainerView
+        refreshTableViewInsets()
         
         let options = MKMapSnapshotOptions()
         options.region = MKCoordinateRegion(
@@ -82,16 +104,14 @@ class DetailViewController: UITableViewController {
         options.size = CGSize(width: self.view.bounds.width, height: self.view.bounds.width)
         options.mapType = .Hybrid
         
+        isLoadingHeader = true
+        
         MKMapSnapshotter(options: options).startWithCompletionHandler { snapshot, error in
             if let e = error {
                 print("Error creating a snapshot of a location: \(e)")
             }
             
             if let shot = snapshot {
-                let containerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.mapHeaderContainerHeight))
-                containerView.clipsToBounds = true
-                self.tableView.tableHeaderView = containerView
-                
                 let imageView = UIImageView(image: shot.image)
                 imageView.frame = CGRect(
                     x: 0,
@@ -102,16 +122,15 @@ class DetailViewController: UITableViewController {
                 imageView.contentMode = .ScaleAspectFill
                 imageView.alpha = 0
                 
-                containerView.addSubview(imageView)
+                self.headerContainerView.addSubview(imageView)
                 self.mapHeaderImageView = imageView
                 
-                UIView.animateWithDuration(0.25, animations: {
+                UIView.animateWithDuration(0.25) {
                     imageView.alpha = 1
-                }, completion: { _ in
-                    containerView.backgroundColor = UIColor.blackColor()
-                })
+                }
                 
                 self.refreshTableViewInsets()
+                self.isLoadingHeader = false
             }
         }
     }
@@ -119,6 +138,29 @@ class DetailViewController: UITableViewController {
     // MARK: - Actions
     @objc private func editButtonPressed() {
         print("Pressed the edit button, yay.")
+    }
+    
+    @objc private func navigateButtonPressed() {
+        let mapItem = self.locationToDisplay.mapItem ?? MKMapItem(placemark: MKPlacemark(coordinate: self.locationToDisplay.location.coordinate, addressDictionary: nil))
+        mapItem.name = self.title
+
+        guard let url = NSURL(string: "comgooglemaps://?daddr=\(locationToDisplay.location.coordinate.latitude),\(locationToDisplay.location.coordinate.longitude)") where UIApplication.sharedApplication().canOpenURL(url) else {
+            mapItem.openInMapsWithLaunchOptions([MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving])
+            return
+        }
+        let alertController = UIAlertController(title: "Directions", message: nil, preferredStyle: .ActionSheet)
+        
+        alertController.addAction(UIAlertAction(title: "Apple Maps", style: .Default) { action in
+            mapItem.openInMapsWithLaunchOptions([MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving])
+        })
+        
+        alertController.addAction(UIAlertAction(title: "Google Maps", style: .Default) { action in
+            UIApplication.sharedApplication().openURL(url)
+        })
+        
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+        
+        presentViewController(alertController, animated: true, completion: nil)
     }
     
     @objc private func actionButtonPressed() {
@@ -152,17 +194,7 @@ class DetailViewController: UITableViewController {
     
     // MARK: - Helpers
     private func refreshTableViewInsets() {
-        let top: CGFloat = {
-            let inset = topLayoutGuide.length
-            
-            if mapHeaderImageView.superview != nil {
-                return -1 * (mapHeaderContainerHeight - mapHeaderHeight - inset)
-            }
-            else {
-                return inset
-            }
-        }()
-        
+        let top: CGFloat = -1 * (mapHeaderContainerHeight - mapHeaderHeight - topLayoutGuide.length)
         tableView.contentInset = UIEdgeInsets(top: top, left: 0, bottom: 0, right: 0)
         tableView.scrollIndicatorInsets = tableView.contentInset
     }
@@ -226,7 +258,6 @@ class DetailViewController: UITableViewController {
         let difference = offset - (-1 * scrollView.contentInset.top)
         
         if difference < 0 {
-            // pulling down
             let scale = 1 + (-1 * difference) / mapHeaderHeight
             let transform = CGAffineTransformMakeScale(scale, scale)
             mapHeaderImageView.transform = CGAffineTransformTranslate(transform, 0, difference / 2 / scale)

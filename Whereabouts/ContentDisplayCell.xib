@@ -15,20 +15,20 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Content Here" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oV7-YD-xdx">
-                        <rect key="frame" x="16" y="40.5" width="288" height="24"/>
+                        <rect key="frame" x="16" y="27.5" width="288" height="37"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="255" verticalHuggingPriority="255" text="Notes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O4l-Hb-MUP">
-                        <rect key="frame" x="16" y="16" width="288" height="21"/>
-                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <rect key="frame" x="16" y="8" width="288" height="16"/>
+                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="13"/>
+                        <color key="textColor" red="0.3411764706" green="0.54117647059999996" blue="0.99215686270000003" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="O4l-Hb-MUP" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="16" id="33W-1H-fow"/>
+                    <constraint firstItem="O4l-Hb-MUP" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="33W-1H-fow"/>
                     <constraint firstAttribute="bottom" secondItem="oV7-YD-xdx" secondAttribute="bottom" constant="24" id="7fh-He-hz1"/>
                     <constraint firstItem="O4l-Hb-MUP" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="Fo3-cf-OfU"/>
                     <constraint firstItem="oV7-YD-xdx" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="Jic-Yl-2Kt"/>
