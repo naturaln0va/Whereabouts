@@ -254,19 +254,19 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate {
             let locationOfVisit = CLLocation(latitude: visit.coordinate.latitude, longitude: visit.coordinate.longitude)
             var addressOfVisit: CLPlacemark?
             
-            if let visits = try? Visit.objectsInContext(PersistentController.sharedController.visitMOC) {
-                for visit in visits {
-                    if visit.location.distanceFromLocation(locationOfVisit) < 500.0 {
-                        PersistentController.sharedController.visitWasVisited(visit)
-                        
-                        let notification = UILocalNotification()
-                        notification.alertAction = nil
-                        notification.alertBody = "You have now Visited \(visit.address == nil ? stringFromCoordinate(visit.coordinate) : stringFromAddress(visit.address!, withNewLine: false)) \(visit.totalVisits)"
-                        UIApplication.sharedApplication().presentLocalNotificationNow(notification)
-                        return
-                    }
-                }
-            }
+//            if let visits = try? Visit.objectsInContext(PersistentController.sharedController.visitMOC) {
+//                for visit in visits {
+//                    if visit.location.distanceFromLocation(locationOfVisit) < 500.0 {
+//                        PersistentController.sharedController.visitWasVisited(visit)
+//                        
+//                        let notification = UILocalNotification()
+//                        notification.alertAction = nil
+//                        notification.alertBody = "You have now Visited \(visit.address == nil ? stringFromCoordinate(visit.coordinate) : stringFromAddress(visit.address!, withNewLine: false)) \(visit.totalVisits)"
+//                        UIApplication.sharedApplication().presentLocalNotificationNow(notification)
+//                        return
+//                    }
+//                }
+//            }
             
             geocoder.reverseGeocodeLocation(locationOfVisit) { placemarks, error in
                 if let visitedAddress = placemarks?.last where error == nil {

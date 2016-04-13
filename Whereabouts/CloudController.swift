@@ -14,20 +14,29 @@ class CloudController {
     private lazy var fetchedNotificationIDs = [CKNotificationID]()
     
     private let DEBUG_CLOUD = true
+    
+    var syncing = false
         
     // MARK: - Public
     func sync() {
+        syncing = true
         dispatch_async(cloudSyncQueue) { 
             self.getAuthentication { hasAuth, error in
                 guard hasAuth else {
                     NSNotificationCenter.defaultCenter().postNotificationName(CloudController.kCloudErrorNotificationKey, object: error)
+                    if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: Error getting auth for the cloud: \(error?.localizedDescription)") }
+                    self.syncing = false
                     return
                 }
                 
                 self.getCloudLocations({ location in
-                    PersistentController.sharedController.saveCloudLocationIfNeeded(location)
+                    PersistentController.sharedController.saveCloudLocation(location)
                     self.cloudLocations.append(location)
                 }, completion: { error in
+                    defer {
+                        self.syncing = false
+                    }
+                    
                     if let e = error {
                         NSNotificationCenter.defaultCenter().postNotificationName(CloudController.kCloudErrorNotificationKey, object: e)
                         if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: Error retrieving locations from the cloud: \(e.localizedDescription)") }
@@ -51,31 +60,41 @@ class CloudController {
     }
     
     func subscribeToChanges() {
-        container.privateCloudDatabase.fetchAllSubscriptionsWithCompletionHandler { subscriptions, error in
-            guard let subscriptions = subscriptions where error == nil else {
-                if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: Failed fetching subscriptions with error: \(error?.localizedDescription)") }
-                return
-            }
-            
-            let subscriptionOptions: CKSubscriptionOptions = [.FiresOnRecordCreation, .FiresOnRecordUpdate, .FiresOnRecordDeletion]
-            
-            for subscription in subscriptions {
-                if subscription.recordType == "Location" && subscription.subscriptionOptions == subscriptionOptions {
-                    if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: User is already subscribed.") }
-                    SettingsController.sharedController.hasSubscribed = true
+        dispatch_async(cloudSyncQueue) {
+            self.getAuthentication { hasAuth, error in
+                guard hasAuth else {
+                    NSNotificationCenter.defaultCenter().postNotificationName(CloudController.kCloudErrorNotificationKey, object: error)
+                    if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: Error getting auth for the cloud: \(error?.localizedDescription)") }
                     return
                 }
-            }
-            
-            let subscription = CKSubscription(recordType: CloudLocation.recordType, predicate: NSPredicate(value: true), options: subscriptionOptions)
-            
-            self.container.privateCloudDatabase.saveSubscription(subscription) { subscription, error in
-                if let sub = subscription where error == nil {
-                    if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: User has subscribed. Subscription: \(sub)") }
-                    SettingsController.sharedController.hasSubscribed = true
-                }
-                else {
-                    if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: User failed to subscribe.") }
+                
+                self.container.privateCloudDatabase.fetchAllSubscriptionsWithCompletionHandler { subscriptions, error in
+                    guard let subscriptions = subscriptions where error == nil else {
+                        if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: Failed fetching subscriptions with error: \(error?.localizedDescription)") }
+                        return
+                    }
+                    
+                    let subscriptionOptions: CKSubscriptionOptions = [.FiresOnRecordCreation, .FiresOnRecordUpdate, .FiresOnRecordDeletion]
+                    
+                    for subscription in subscriptions {
+                        if subscription.recordType == "Location" && subscription.subscriptionOptions == subscriptionOptions {
+                            if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: User is already subscribed.") }
+                            SettingsController.sharedController.hasSubscribed = true
+                            return
+                        }
+                    }
+                    
+                    let subscription = CKSubscription(recordType: CloudLocation.recordType, predicate: NSPredicate(value: true), options: subscriptionOptions)
+                    
+                    self.container.privateCloudDatabase.saveSubscription(subscription) { subscription, error in
+                        if let sub = subscription where error == nil {
+                            if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: User has subscribed. Subscription: \(sub)") }
+                            SettingsController.sharedController.hasSubscribed = true
+                        }
+                        else {
+                            if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: User failed to subscribe.") }
+                        }
+                    }
                 }
             }
         }
@@ -83,59 +102,77 @@ class CloudController {
     
     func getChanges() {
         dispatch_async(cloudSyncQueue) {
-            let fetchChangesOperation = CKFetchNotificationChangesOperation()
-            fetchChangesOperation.allowsCellularAccess = true
-            fetchChangesOperation.qualityOfService = .UserInitiated
-            
-            fetchChangesOperation.notificationChangedBlock = { notification in
-                if let queryNotification = notification as? CKQueryNotification where notification.notificationType == .Query {
-                    self.handleNotification(queryNotification)
-                    
-                    if let notificationID = queryNotification.notificationID {
-                        self.fetchedNotificationIDs.append(notificationID)
-                    }
+            self.getAuthentication { hasAuth, error in
+                guard hasAuth else {
+                    NSNotificationCenter.defaultCenter().postNotificationName(CloudController.kCloudErrorNotificationKey, object: error)
+                    if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: Error getting auth for the cloud: \(error?.localizedDescription)") }
+                    return
                 }
-            }
-            
-            fetchChangesOperation.fetchNotificationChangesCompletionBlock = { token, error in
-                if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: Finished fetching notifications with error: \(error?.localizedDescription).") }
                 
-                if self.fetchedNotificationIDs.count > 0 {
-                    let markOperation = CKMarkNotificationsReadOperation(notificationIDsToMarkRead: self.fetchedNotificationIDs)
-                    markOperation.allowsCellularAccess = true
-                    markOperation.qualityOfService = .Utility
-                    
-                    markOperation.markNotificationsReadCompletionBlock = { notificationIDs, error in
-                        if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: Marked notifications as read with error: \(error?.localizedDescription).") }
-                        self.fetchedNotificationIDs.removeAll()
+                let fetchChangesOperation = CKFetchNotificationChangesOperation()
+                fetchChangesOperation.allowsCellularAccess = true
+                fetchChangesOperation.qualityOfService = .UserInitiated
+                
+                fetchChangesOperation.notificationChangedBlock = { notification in
+                    if let queryNotification = notification as? CKQueryNotification where notification.notificationType == .Query {
+                        self.handleNotification(queryNotification)
                         
-                        dispatch_async(dispatch_get_main_queue()) {
-                            NSNotificationCenter.defaultCenter().postNotificationName(CloudController.kSyncCompleteNotificationKey, object: nil)
+                        if let notificationID = queryNotification.notificationID {
+                            self.fetchedNotificationIDs.append(notificationID)
                         }
                     }
-                    
-                    self.container.addOperation(markOperation)
                 }
+                
+                fetchChangesOperation.fetchNotificationChangesCompletionBlock = { token, error in
+                    if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: Finished fetching notifications with error: \(error?.localizedDescription).") }
+                    
+                    if self.fetchedNotificationIDs.count > 0 {
+                        let markOperation = CKMarkNotificationsReadOperation(notificationIDsToMarkRead: self.fetchedNotificationIDs)
+                        markOperation.allowsCellularAccess = true
+                        markOperation.qualityOfService = .Utility
+                        
+                        markOperation.markNotificationsReadCompletionBlock = { notificationIDs, error in
+                            if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: Marked notifications as read with error: \(error?.localizedDescription).") }
+                            self.fetchedNotificationIDs.removeAll()
+                            
+                            dispatch_async(dispatch_get_main_queue()) {
+                                NSNotificationCenter.defaultCenter().postNotificationName(CloudController.kSyncCompleteNotificationKey, object: nil)
+                            }
+                        }
+                        
+                        self.container.addOperation(markOperation)
+                    }
+                }
+                
+                self.container.addOperation(fetchChangesOperation)
             }
-            
-            self.container.addOperation(fetchChangesOperation)
         }
     }
     
     func saveLocalLocationToCloud(location: Location, completion: (CloudLocation? -> Void)?) {
-        container.privateCloudDatabase.saveRecord(CloudLocation(localLocation: location).record) { record, error in
-            if let _ = record where error == nil {
-                if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: Successfully saved location record") }
-            }
-            else {
-                if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: Failed to save location record with error: \(error?.localizedDescription)") }
-            }
-            
-            if let cloudRecord = record {
-                completion?(CloudLocation(record: cloudRecord))
-            }
-            else {
-                completion?(nil)
+        dispatch_async(cloudSyncQueue) {
+            self.getAuthentication { hasAuth, error in
+                guard hasAuth else {
+                    NSNotificationCenter.defaultCenter().postNotificationName(CloudController.kCloudErrorNotificationKey, object: error)
+                    if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: Error getting auth for the cloud: \(error?.localizedDescription)") }
+                    return
+                }
+                
+                self.container.privateCloudDatabase.saveRecord(CloudLocation(localLocation: location).record) { record, error in
+                    if let _ = record where error == nil {
+                        if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: Successfully saved location record") }
+                    }
+                    else {
+                        if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: Failed to save location record with error: \(error?.localizedDescription)") }
+                    }
+                    
+                    if let cloudRecord = record {
+                        completion?(CloudLocation(record: cloudRecord))
+                    }
+                    else {
+                        completion?(nil)
+                    }
+                }
             }
         }
     }
@@ -147,14 +184,60 @@ class CloudController {
             return
         }
         
-        container.privateCloudDatabase.deleteRecordWithID(recordID) { id, error in
-            if let e = error {
-                if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: Failed to deleted location record with error: \(e.localizedDescription)") }
-                completion?(false)
+        dispatch_async(cloudSyncQueue) {
+            self.getAuthentication { hasAuth, error in
+                guard hasAuth else {
+                    NSNotificationCenter.defaultCenter().postNotificationName(CloudController.kCloudErrorNotificationKey, object: error)
+                    if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: Error getting auth for the cloud: \(error?.localizedDescription)") }
+                    return
+                }
+                
+                self.container.privateCloudDatabase.deleteRecordWithID(recordID) { id, error in
+                    if let e = error {
+                        if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: Failed to deleted location record with error: \(e.localizedDescription)") }
+                        completion?(false)
+                    }
+                    else {
+                        if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: Successfully deleted location record") }
+                        completion?(true)
+                    }
+                }
             }
-            else {
-                if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: Successfully deleted location record") }
-                completion?(true)
+        }
+    }
+    
+    func updateLocationOnCloud(location: DatabaseLocation, completion: (Bool -> Void)?) {
+        guard let data = location.cloudRecordIdentifierData, let _ = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? CKRecordID else {
+            print("Failed to parse location's record id. Data: \(location.cloudRecordIdentifierData)")
+            completion?(false)
+            return
+        }
+        
+        dispatch_async(cloudSyncQueue) {
+            self.getAuthentication { hasAuth, error in
+                guard hasAuth else {
+                    NSNotificationCenter.defaultCenter().postNotificationName(CloudController.kCloudErrorNotificationKey, object: error)
+                    if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: Error getting auth for the cloud: \(error?.localizedDescription)") }
+                    return
+                }
+                
+                let modifyOperation = CKModifyRecordsOperation(recordsToSave: [CloudLocation(dbLocation: location).record], recordIDsToDelete: nil)
+                modifyOperation.savePolicy = .ChangedKeys
+                modifyOperation.allowsCellularAccess = true
+                modifyOperation.qualityOfService = .UserInitiated
+                
+                modifyOperation.modifyRecordsCompletionBlock = { records, recordIDs, error in
+                    if let e = error {
+                        if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: Failed to update location record with error: \(e.localizedDescription)") }
+                        completion?(false)
+                    }
+                    else {
+                        if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: Successfully updated location record") }
+                        completion?(true)
+                    }
+                }
+                
+                self.container.privateCloudDatabase.addOperation(modifyOperation)
             }
         }
     }
@@ -244,15 +327,15 @@ class CloudController {
             if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: Recieved a record creation notification.") }
             getCloudLocationWithRecordID(recordID) { cloudLocation in
                 if let location = cloudLocation {
-                    PersistentController.sharedController.saveCloudLocationIfNeeded(location)
+                    PersistentController.sharedController.saveCloudLocation(location)
                 }
             }
             
         case .RecordUpdated:
             if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: Recieved a record update notification.") }
             getCloudLocationWithRecordID(recordID) { cloudLocation in
-                if let location = cloudLocation, cloudID = location.recordID {
-                    PersistentController.sharedController.updateDatabaseLocationWithID(location.identifier, cloudID: cloudID)
+                if let location = cloudLocation {
+                    PersistentController.sharedController.saveCloudLocation(location)
                 }
             }
             

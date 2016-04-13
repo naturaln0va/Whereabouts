@@ -7,6 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LocationAccessViewController" customModule="Whereabouts" customModuleProvider="target">
             <connections>
+                <outlet property="mapView" destination="EUI-nS-tNc" id="a6D-FA-Ox2"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -15,70 +16,101 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="100" verticalCompressionResistancePriority="100" image="flat-logo" translatesAutoresizingMaskIntoConstraints="NO" id="YzV-fN-azg">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="371"/>
-                    <color key="backgroundColor" red="0.14117647058823529" green="0.14117647058823529" blue="0.14117647058823529" alpha="1" colorSpace="calibratedRGB"/>
-                </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your location access is required in order to provide detailed information about your whereabouts" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Ofi-hF-sSQ">
-                    <rect key="frame" x="32" y="421.5" width="311" height="95.5"/>
-                    <fontDescription key="fontDescription" type="system" weight="light" pointSize="20"/>
-                    <color key="textColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pli-LI-Q3x">
-                    <rect key="frame" x="32" y="533" width="311" height="56"/>
-                    <color key="backgroundColor" red="0.93333333333333335" green="0.93333333333333335" blue="0.93333333333333335" alpha="1" colorSpace="calibratedRGB"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="56" id="RFV-jQ-E3i"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
-                    <state key="normal" title="Allow Access">
-                        <color key="titleColor" red="0.1803921568627451" green="0.1803921568627451" blue="0.1803921568627451" alpha="1" colorSpace="calibratedRGB"/>
-                    </state>
-                    <connections>
-                        <action selector="accessButtonPressed:" destination="-1" eventType="touchUpInside" id="uvo-ha-pxQ"/>
-                    </connections>
-                </button>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ReB-S4-RaU">
-                    <rect key="frame" x="32" y="387" width="311" height="26.5"/>
-                    <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
-                    <color key="textColor" red="0.93333333333333335" green="0.93333333333333335" blue="0.93333333333333335" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8YO-CM-F9S">
-                    <rect key="frame" x="153" y="613" width="69" height="30"/>
-                    <fontDescription key="fontDescription" type="system" weight="light" pointSize="15"/>
-                    <state key="normal" title="No thanks">
-                        <color key="titleColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="calibratedRGB"/>
-                    </state>
-                    <connections>
-                        <action selector="noThanksButtonPressed:" destination="-1" eventType="touchUpInside" id="GBY-Ct-0BU"/>
-                    </connections>
-                </button>
+                <mapView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" mapType="standard" zoomEnabled="NO" scrollEnabled="NO" rotateEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EUI-nS-tNc">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                </mapView>
+                <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GCS-CK-93N">
+                    <rect key="frame" x="0.0" y="416" width="375" height="251"/>
+                    <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="ieH-XK-I2f">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="251"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Atj-tT-AOM">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="251"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="35U-2t-bmK">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="251"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your location access is required in order to provide detailed information about your whereabouts" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Ofi-hF-sSQ">
+                                            <rect key="frame" x="32" y="48" width="311" height="61"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pli-LI-Q3x">
+                                            <rect key="frame" x="32" y="125" width="311" height="56"/>
+                                            <color key="backgroundColor" red="0.93333333333333335" green="0.93333333333333335" blue="0.93333333333333335" alpha="1" colorSpace="calibratedRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="56" id="Hwp-Aa-vxQ"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
+                                            <state key="normal" title="Allow Access">
+                                                <color key="titleColor" red="0.1803921568627451" green="0.1803921568627451" blue="0.1803921568627451" alpha="1" colorSpace="calibratedRGB"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="accessButtonPressed:" destination="-1" eventType="touchUpInside" id="uvo-ha-pxQ"/>
+                                            </connections>
+                                        </button>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ReB-S4-RaU">
+                                            <rect key="frame" x="32" y="16" width="311" height="24"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                            <color key="textColor" red="0.93333333333333335" green="0.93333333333333335" blue="0.93333333333333335" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8YO-CM-F9S">
+                                            <rect key="frame" x="153" y="205" width="69" height="30"/>
+                                            <fontDescription key="fontDescription" type="system" weight="light" pointSize="15"/>
+                                            <state key="normal" title="No thanks">
+                                                <color key="titleColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="calibratedRGB"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="noThanksButtonPressed:" destination="-1" eventType="touchUpInside" id="GBY-Ct-0BU"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="pli-LI-Q3x" firstAttribute="top" secondItem="Ofi-hF-sSQ" secondAttribute="bottom" constant="16" id="1ma-dA-e8s"/>
+                                        <constraint firstItem="pli-LI-Q3x" firstAttribute="leading" secondItem="35U-2t-bmK" secondAttribute="leading" constant="32" id="6BN-JZ-znn"/>
+                                        <constraint firstAttribute="trailing" secondItem="Ofi-hF-sSQ" secondAttribute="trailing" constant="32" id="6ES-YU-s0A"/>
+                                        <constraint firstAttribute="trailing" secondItem="ReB-S4-RaU" secondAttribute="trailing" constant="32" id="Bov-hs-yIs"/>
+                                        <constraint firstItem="8YO-CM-F9S" firstAttribute="top" secondItem="pli-LI-Q3x" secondAttribute="bottom" constant="24" id="Crr-23-Sz9"/>
+                                        <constraint firstItem="8YO-CM-F9S" firstAttribute="centerX" secondItem="35U-2t-bmK" secondAttribute="centerX" id="H1F-e2-Lef"/>
+                                        <constraint firstItem="ReB-S4-RaU" firstAttribute="leading" secondItem="35U-2t-bmK" secondAttribute="leading" constant="32" id="KAE-BQ-5oy"/>
+                                        <constraint firstItem="ReB-S4-RaU" firstAttribute="top" secondItem="35U-2t-bmK" secondAttribute="top" constant="16" id="OkU-IB-Bqv"/>
+                                        <constraint firstItem="pli-LI-Q3x" firstAttribute="top" secondItem="Ofi-hF-sSQ" secondAttribute="bottom" constant="16" id="WFL-fX-LDz"/>
+                                        <constraint firstAttribute="trailing" secondItem="pli-LI-Q3x" secondAttribute="trailing" constant="32" id="ir2-Lj-BXz"/>
+                                        <constraint firstItem="Ofi-hF-sSQ" firstAttribute="leading" secondItem="35U-2t-bmK" secondAttribute="leading" constant="32" id="msX-yT-ZiG"/>
+                                        <constraint firstItem="Ofi-hF-sSQ" firstAttribute="top" secondItem="ReB-S4-RaU" secondAttribute="bottom" constant="8" id="p7A-Zm-uSX"/>
+                                        <constraint firstAttribute="bottom" secondItem="8YO-CM-F9S" secondAttribute="bottom" constant="16" id="zqH-OA-Sl9"/>
+                                    </constraints>
+                                </view>
+                                <vibrancyEffect>
+                                    <blurEffect style="dark"/>
+                                </vibrancyEffect>
+                            </visualEffectView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="Atj-tT-AOM" firstAttribute="top" secondItem="ieH-XK-I2f" secondAttribute="top" id="JLW-Cc-Fm1"/>
+                            <constraint firstItem="Atj-tT-AOM" firstAttribute="leading" secondItem="ieH-XK-I2f" secondAttribute="leading" id="c5H-4Q-4hD"/>
+                            <constraint firstAttribute="bottom" secondItem="Atj-tT-AOM" secondAttribute="bottom" id="tVr-aB-KCF"/>
+                            <constraint firstAttribute="trailing" secondItem="Atj-tT-AOM" secondAttribute="trailing" id="v25-mn-P0h"/>
+                        </constraints>
+                    </view>
+                    <blurEffect style="dark"/>
+                </visualEffectView>
             </subviews>
             <color key="backgroundColor" red="0.23921568627450979" green="0.23921568627450979" blue="0.23921568627450979" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstItem="8YO-CM-F9S" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="1Ux-0R-tQb"/>
-                <constraint firstItem="pli-LI-Q3x" firstAttribute="top" secondItem="Ofi-hF-sSQ" secondAttribute="bottom" constant="16" id="1X2-gu-VeF"/>
-                <constraint firstItem="Ofi-hF-sSQ" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="32" id="2ZQ-X7-KmI"/>
-                <constraint firstItem="8YO-CM-F9S" firstAttribute="top" secondItem="pli-LI-Q3x" secondAttribute="bottom" constant="24" id="7Kd-wZ-IjL"/>
-                <constraint firstItem="pli-LI-Q3x" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="32" id="BVH-79-ESO"/>
-                <constraint firstAttribute="trailing" secondItem="ReB-S4-RaU" secondAttribute="trailing" constant="32" id="VQe-87-5B8"/>
-                <constraint firstItem="YzV-fN-azg" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="XjG-i1-kC3"/>
-                <constraint firstItem="Ofi-hF-sSQ" firstAttribute="top" secondItem="ReB-S4-RaU" secondAttribute="bottom" constant="8" id="dJD-Vs-esw"/>
-                <constraint firstAttribute="trailing" secondItem="Ofi-hF-sSQ" secondAttribute="trailing" constant="32" id="fj2-Zy-evP"/>
-                <constraint firstItem="ReB-S4-RaU" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="32" id="gPd-lf-ewn"/>
-                <constraint firstItem="YzV-fN-azg" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="j6O-Xg-2ye"/>
-                <constraint firstAttribute="trailing" secondItem="YzV-fN-azg" secondAttribute="trailing" id="jEj-b6-KgB"/>
-                <constraint firstAttribute="bottom" secondItem="8YO-CM-F9S" secondAttribute="bottom" constant="24" id="oVF-fT-sYN"/>
-                <constraint firstAttribute="trailing" secondItem="pli-LI-Q3x" secondAttribute="trailing" constant="32" id="pg2-fJ-ThU"/>
-                <constraint firstItem="ReB-S4-RaU" firstAttribute="top" secondItem="YzV-fN-azg" secondAttribute="bottom" constant="16" id="qcK-Vc-uHi"/>
+                <constraint firstAttribute="trailing" secondItem="GCS-CK-93N" secondAttribute="trailing" id="DVA-rG-GJR"/>
+                <constraint firstAttribute="bottom" secondItem="EUI-nS-tNc" secondAttribute="bottom" id="Gz0-9U-i0b"/>
+                <constraint firstAttribute="bottom" secondItem="GCS-CK-93N" secondAttribute="bottom" id="IBA-lJ-vRY"/>
+                <constraint firstItem="EUI-nS-tNc" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Ivj-SU-x8r"/>
+                <constraint firstItem="GCS-CK-93N" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="UfL-CX-w5K"/>
+                <constraint firstAttribute="trailing" secondItem="EUI-nS-tNc" secondAttribute="trailing" id="WFH-p1-6rF"/>
+                <constraint firstItem="EUI-nS-tNc" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="bV9-Nr-wfN"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
-            <point key="canvasLocation" x="357.5" y="315.5"/>
+            <point key="canvasLocation" x="238.5" y="256.5"/>
         </view>
     </objects>
-    <resources>
-        <image name="flat-logo" width="160" height="160"/>
-    </resources>
 </document>

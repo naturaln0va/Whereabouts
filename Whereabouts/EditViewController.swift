@@ -2,6 +2,10 @@
 import UIKit
 import MapKit
 
+protocol EditViewControllerDelegate: class {
+    func editViewControllerDidEditLocation(viewController: EditViewController, editedLocation: Location)
+}
+
 class EditViewController: UITableViewController {
     
     private var locationToEdit: Location?
@@ -25,12 +29,6 @@ class EditViewController: UITableViewController {
         return mapView
     }()
     
-    private var selectedColor: UIColor? {
-        didSet {
-            tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 1)], withRowAnimation: .Automatic)
-        }
-    }
-    
     private var shouldDisplayAddress = true {
         didSet {
             if let _ = locationToEdit?.mapItem {
@@ -41,6 +39,8 @@ class EditViewController: UITableViewController {
             }
         }
     }
+    
+    weak var delegate: EditViewControllerDelegate?
     
     init(location: Location?) {
         super.init(nibName: nil, bundle: nil)
@@ -110,25 +110,17 @@ class EditViewController: UITableViewController {
     }
     
     internal func saveButtonPressed() {
-        if let color = selectedColor {
-            locationToEdit?.color = color.hexString(false)
-        }
-        
-        if let titleCell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 1)) as? TextEntryCell {
+        if let titleCell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 1)) as? TextEntryCell {
             locationToEdit?.locationTitle = titleCell.textField.text
         }
         
-        if let contentCell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 1)) as? TextContentCell {
+        if let contentCell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 1)) as? TextContentCell {
             locationToEdit?.textContent = contentCell.textView.text
         }
         
         if let location = locationToEdit {
             PersistentController.sharedController.saveLocation(location)
-            CloudController.sharedController.saveLocalLocationToCloud(location) { cloudLocation in
-                if let location = cloudLocation, let recordID = location.recordID {
-                    PersistentController.sharedController.updateDatabaseLocationWithID(location.identifier, cloudID: recordID)
-                }
-            }
+            delegate?.editViewControllerDidEditLocation(self, editedLocation: location)
             dismiss()
         }
     }
@@ -138,10 +130,16 @@ class EditViewController: UITableViewController {
     private func dismiss() {
         view.endEditing(true)
         
-        dismissViewControllerAnimated(true, completion: nil)
+        if delegate != nil {
+            navigationController?.popViewControllerAnimated(true)
+        }
+        else {
+            dismissViewControllerAnimated(true, completion: nil)
+        }
     }
     
     // MARK: - UITableViewDelegate
+    
     override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 0.0001
     }
@@ -234,19 +232,11 @@ class EditViewController: UITableViewController {
         }
         else if indexPath.section == 1 {
             if indexPath.row == 0 {
-                guard let cell = tableView.dequeueReusableCellWithIdentifier(String(ColorPreviewCell)) as? ColorPreviewCell else {
-                    fatalError("Expected to dequeue a 'ColorPreviewCell'.")
-                }
-                
-                cell.colorToDisplay = selectedColor
-                cell.accessoryType = .DisclosureIndicator
-                
-                return cell
-            }
-            else if indexPath.row == 1 {
                 guard let cell = tableView.dequeueReusableCellWithIdentifier(String(TextEntryCell)) as? TextEntryCell else {
                     fatalError("Expected to dequeue a 'TextEntryCell'.")
                 }
+                
+                cell.textField.text = locationToEdit?.locationTitle
                 
                 return cell
             }
@@ -254,6 +244,8 @@ class EditViewController: UITableViewController {
                 guard let cell = tableView.dequeueReusableCellWithIdentifier(String(TextContentCell)) as? TextContentCell else {
                     fatalError("Expected to dequeue a 'TextContentCell'.")
                 }
+                
+                cell.textView.text = locationToEdit?.textContent
                 
                 return cell
             }
@@ -266,32 +258,19 @@ class EditViewController: UITableViewController {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
-        if indexPath.section == 1 && indexPath.row == 0 {
-            view.endEditing(true)
-            let vc = ColorSelectionViewController(collectionViewLayout: DefaultLayout())
-            vc.delegate = self
-            navigationController?.pushViewController(vc, animated: true)
-        }
-        else {
-            if let _ = locationToEdit?.mapItem {
-                if indexPath.row == 1 {
-                    shouldDisplayAddress = !shouldDisplayAddress
-                }
-            }
-            else if let _ = locationToEdit?.placemark {
+        if let _ = locationToEdit?.mapItem {
+            if indexPath.row == 1 {
                 shouldDisplayAddress = !shouldDisplayAddress
             }
+        }
+        else if let _ = locationToEdit?.placemark {
+            shouldDisplayAddress = !shouldDisplayAddress
         }
     }
     
     override func tableView(tableView: UITableView, shouldHighlightRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         if indexPath.section == 1 {
-            if indexPath.row == 0 {
-                return true
-            }
-            else {
-                return false
-            }
+            return false
         }
         else {
             if let _ = locationToEdit?.mapItem {
@@ -312,6 +291,7 @@ class EditViewController: UITableViewController {
     }
     
     // MARK: - UITableViewDataSource
+    
     override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if indexPath.section == 0 {
             if let _ = locationToEdit?.mapItem {
@@ -336,9 +316,6 @@ class EditViewController: UITableViewController {
         }
         else if indexPath.section == 1 {
             if indexPath.row == 0 {
-                return ColorPreviewCell.cellHeight
-            }
-            else if indexPath.row == 1 {
                 return TextEntryCell.cellHeight
             }
             else {
@@ -357,7 +334,7 @@ class EditViewController: UITableViewController {
                     return MapItemCell.cellHeight
                 }
                 else if indexPath.row == 1 {
-                    return LocationInfoDisplayCell.cellHeight
+                    return UITableViewAutomaticDimension
                 }
                 else {
                     fatalError("ERROR: Failed to handle all rows for a mapItem datasource in heightForRowAtIndexPath.")
@@ -365,7 +342,7 @@ class EditViewController: UITableViewController {
             }
             else {
                 if indexPath.row == 0 {
-                    return LocationInfoDisplayCell.cellHeight
+                    return UITableViewAutomaticDimension
                 }
                 else {
                     fatalError("ERROR: Failed to handle all rows for a mapItem datasource in heightForRowAtIndexPath.")
@@ -374,9 +351,6 @@ class EditViewController: UITableViewController {
         }
         else if indexPath.section == 1 {
             if indexPath.row == 0 {
-                return ColorPreviewCell.cellHeight
-            }
-            else if indexPath.row == 1 {
                 return TextEntryCell.cellHeight
             }
             else {
@@ -398,7 +372,7 @@ class EditViewController: UITableViewController {
             }
         }
         else if section == 1 {
-            return 3
+            return 2
         }
         else {
             fatalError("ERROR: Failed to handle section, \(section), in 'numberOfRowsInSection'.")
@@ -487,16 +461,6 @@ extension EditViewController: LocationAccessViewControllerDelegate {
         assistant.terminate()
         
         dismissViewControllerAnimated(true, completion: nil)
-    }
-    
-}
-
-extension EditViewController: ColorSelectionViewControllerDelegate {
-    
-    
-    func colorSelectionViewControllerDidSelectColor(viewController: ColorSelectionViewController, color: UIColor?) {
-        selectedColor = color
-        navigationController?.popViewControllerAnimated(true)
     }
     
 }

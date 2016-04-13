@@ -95,12 +95,12 @@ class AddViewController: UITableViewController {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-                
+        
+        titleSearchBar.becomeFirstResponder()
+        
         if isFirstApperance {
             assistant.getLocation()
             isCurrentlyLocating = true
-            
-            titleSearchBar.becomeFirstResponder()
             
             isFirstApperance = false
         }

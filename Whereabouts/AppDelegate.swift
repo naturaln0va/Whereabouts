@@ -16,9 +16,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         application.registerForRemoteNotifications()
         
-        CloudController.sharedController.sync()
         if SettingsController.sharedController.fisrtLaunchDate == nil {
             SettingsController.sharedController.fisrtLaunchDate = NSDate()
+            CloudController.sharedController.sync()
+        }
+        
+        if NSProcessInfo.processInfo().environment["SIMULATOR_DEVICE_NAME"] != nil {
+            CloudController.sharedController.sync()
         }
         
         if !SettingsController.sharedController.hasSubscribed {

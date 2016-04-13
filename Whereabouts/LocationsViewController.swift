@@ -10,7 +10,7 @@ class LocationsViewController: UIViewController {
         let label = UILabel()
         label.font = UIFont.systemFontOfSize(12.0, weight: UIFontWeightRegular)
         label.textAlignment = .Center
-        label.text = "Syncing with iCloud"
+        label.text = CloudController.sharedController.syncing ? "Syncing with iCloud" : ""
         label.sizeToFit()
         return label
     }()
@@ -77,7 +77,7 @@ class LocationsViewController: UIViewController {
     }
     
     private func updateMessageLabel(updatedText: String?) {
-        messageLabel.text = updatedText
+        messageLabel.text = updatedText ?? ""
         messageLabel.sizeToFit()
     }
     

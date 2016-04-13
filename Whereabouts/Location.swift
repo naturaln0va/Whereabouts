@@ -9,7 +9,6 @@ class Location: NSObject {
     
     var location: CLLocation
     
-    var color: String?
     var placemark: CLPlacemark?
     var locationTitle: String?
     var textContent: String?
@@ -40,7 +39,6 @@ class Location: NSObject {
     init(dbLocation: DatabaseLocation) {
         date = dbLocation.date
         identifier = dbLocation.identifier
-        color = dbLocation.color
         locationTitle = dbLocation.locationTitle
         textContent = dbLocation.textContent
         placemark = dbLocation.placemark
@@ -64,7 +62,6 @@ class Location: NSObject {
     init(cloudLocation: CloudLocation) {
         date = cloudLocation.createdDate
         identifier = cloudLocation.identifier
-        color = cloudLocation.color
         locationTitle = cloudLocation.locationTitle
         textContent = cloudLocation.textContent
         location = cloudLocation.location
@@ -88,7 +85,10 @@ class Location: NSObject {
         identifier = "\(location.hashValue)+\(location.timestamp.timeIntervalSince1970.hashValue)+\(location.coordinate.longitude.hashValue)+\(location.coordinate.latitude.hashValue)"
         itemName = mapItem.name
         itemPhoneNumber = mapItem.phoneNumber
-        itemWebLink = mapItem.url?.absoluteString ?? ""
+        
+        if let urlString = mapItem.url?.absoluteString {
+            itemWebLink = urlString
+        }
         
         super.init()
     }

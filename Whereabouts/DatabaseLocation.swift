@@ -7,7 +7,6 @@ class DatabaseLocation: NSManagedObject {
     
     @NSManaged var date: NSDate
     @NSManaged var identifier: String
-    @NSManaged var color: String?
     @NSManaged var placemark: CLPlacemark?
     @NSManaged var locationTitle: String?
     @NSManaged var textContent: String?

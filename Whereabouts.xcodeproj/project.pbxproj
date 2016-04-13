@@ -56,11 +56,11 @@
 		48F763431CA87FF500BCE740 /* CloudController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F763421CA87FF500BCE740 /* CloudController.swift */; };
 		48F763461CA890D200BCE740 /* CloudLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F763451CA890D200BCE740 /* CloudLocation.swift */; };
 		690667721C11E83800862742 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 690667701C11E83800862742 /* DataModel.xcdatamodeld */; };
+		692275A81CBE9ADE007C9BA2 /* CacheController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 692275A71CBE9ADE007C9BA2 /* CacheController.swift */; };
 		6924A6471C6B9D4100D5F0E6 /* NSDate+Relative.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6924A6461C6B9D4100D5F0E6 /* NSDate+Relative.swift */; };
 		6937217A1C03877100A5C8BC /* LocationAssistant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48642D101BAE1E0400935358 /* LocationAssistant.swift */; };
 		6937217B1C038AA400A5C8BC /* RHACLStringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4882D9D41B1A99FD00BAADAD /* RHACLStringExtensions.swift */; };
 		6937217E1C038C2B00A5C8BC /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69B7A3BA1BFCD76B000BEBA0 /* SettingsController.swift */; };
-		693AF7971C1B38A4003AFB24 /* VisitModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 693AF7951C1B38A4003AFB24 /* VisitModel.xcdatamodeld */; };
 		6954E20B1C177BD500106EB0 /* PhotoTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6954E20A1C177BD500106EB0 /* PhotoTransition.swift */; };
 		69640E901BFBCDE80050722D /* PhotosLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69640E8F1BFBCDE80050722D /* PhotosLayout.swift */; };
 		69640E931BFBCEA60050722D /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69640E911BFBCEA60050722D /* PhotoCell.swift */; };
@@ -165,8 +165,8 @@
 		48F763421CA87FF500BCE740 /* CloudController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudController.swift; sourceTree = "<group>"; };
 		48F763451CA890D200BCE740 /* CloudLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudLocation.swift; sourceTree = "<group>"; };
 		690667711C11E83800862742 /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
+		692275A71CBE9ADE007C9BA2 /* CacheController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CacheController.swift; sourceTree = "<group>"; };
 		6924A6461C6B9D4100D5F0E6 /* NSDate+Relative.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDate+Relative.swift"; sourceTree = "<group>"; };
-		693AF7961C1B38A4003AFB24 /* VisitModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = VisitModel.xcdatamodel; sourceTree = "<group>"; };
 		6954E20A1C177BD500106EB0 /* PhotoTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoTransition.swift; sourceTree = "<group>"; };
 		69640E8F1BFBCDE80050722D /* PhotosLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotosLayout.swift; sourceTree = "<group>"; };
 		69640E911BFBCEA60050722D /* PhotoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoCell.swift; sourceTree = "<group>"; };
@@ -353,6 +353,7 @@
 			isa = PBXGroup;
 			children = (
 				48DEDA3619F592F80094CB8F /* AppDelegate.swift */,
+				692275A71CBE9ADE007C9BA2 /* CacheController.swift */,
 				48F763421CA87FF500BCE740 /* CloudController.swift */,
 				48642D101BAE1E0400935358 /* LocationAssistant.swift */,
 				48E3B8551B193FA3003DD726 /* MenuController.swift */,
@@ -392,7 +393,6 @@
 		693AF7981C1B38AE003AFB24 /* DataModels */ = {
 			isa = PBXGroup;
 			children = (
-				693AF7951C1B38A4003AFB24 /* VisitModel.xcdatamodeld */,
 				48D73D691C012AA900B1A9B5 /* LocationModel.xcdatamodeld */,
 				690667701C11E83800862742 /* DataModel.xcdatamodeld */,
 			);
@@ -626,7 +626,6 @@
 				69F7CEE61CAAF286007EB03F /* ListViewController.swift in Sources */,
 				482FBFE71CB291BE00E30EF2 /* TextContentCell.swift in Sources */,
 				48E3B85C1B1951AA003DD726 /* StyledViewController.swift in Sources */,
-				693AF7971C1B38A4003AFB24 /* VisitModel.xcdatamodeld in Sources */,
 				69E367EA1CAE979C00604790 /* CLPlacemark+Display.swift in Sources */,
 				48642D0F1BAE166F00935358 /* LocationsViewController.swift in Sources */,
 				4863ACAE1B24EF4D009F008F /* LocationCell.swift in Sources */,
@@ -651,6 +650,7 @@
 				48C7636419F59D230096B27A /* RHAUtilExtensions.swift in Sources */,
 				6954E20B1C177BD500106EB0 /* PhotoTransition.swift in Sources */,
 				698E782F1CAED0B3004A4178 /* Location.swift in Sources */,
+				692275A81CBE9ADE007C9BA2 /* CacheController.swift in Sources */,
 				483AF54D1B0BFF2700A00BED /* PersistenceController.swift in Sources */,
 				690667721C11E83800862742 /* DataModel.xcdatamodeld in Sources */,
 				69B7A3B91BFCD6FE000BEBA0 /* SettingsViewController.swift in Sources */,
@@ -976,16 +976,6 @@
 			);
 			currentVersion = 690667711C11E83800862742 /* DataModel.xcdatamodel */;
 			path = DataModel.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-		693AF7951C1B38A4003AFB24 /* VisitModel.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				693AF7961C1B38A4003AFB24 /* VisitModel.xcdatamodel */,
-			);
-			currentVersion = 693AF7961C1B38A4003AFB24 /* VisitModel.xcdatamodel */;
-			path = VisitModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

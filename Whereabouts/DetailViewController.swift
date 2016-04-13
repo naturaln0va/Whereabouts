@@ -2,19 +2,19 @@
 import UIKit
 import MapKit
 
-class DetailViewController: UITableViewController {
+class DetailViewController: UITableViewController, EditViewControllerDelegate {
     
-    private let locationToDisplay: Location
+    private var locationToDisplay: Location
     private lazy var nearbyPhotos = [UIImage]()
     
     private var isLoadingHeader = false
     
     private lazy var headerContainerView = UIView()
     private lazy var mapHeaderImageView = UIImageView()
-    private lazy var blurredHeaderImageView = UIImageView()
-    
     private let mapHeaderHeight: CGFloat = 145.0
     private let mapHeaderContainerHeight: CGFloat = 500.0
+    
+    private var directions: MKDirections?
     
     private lazy var dateTimeFormatter: NSDateFormatter = {
         let formatter = NSDateFormatter()
@@ -48,19 +48,6 @@ class DetailViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let locationTitle = locationToDisplay.locationTitle where locationTitle.characters.count > 0 {
-            title = locationTitle
-        }
-        else if let mapName = locationToDisplay.mapItem?.name where mapName.characters.count > 0 {
-            title = mapName
-        }
-        else if let cityName = locationToDisplay.placemark?.locality where cityName.characters.count > 0 {
-            title = cityName
-        }
-        else {
-            title = "Location"
-        }
-        
         view.backgroundColor = StyleController.sharedController.backgroundColor
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(
@@ -82,6 +69,16 @@ class DetailViewController: UITableViewController {
         }
         
         getDistanceFromLocation()
+        refreshTitle()
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        if let directions = directions where directions.calculating {
+            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+            directions.cancel()
+        }
     }
     
     override func viewWillLayoutSubviews() {
@@ -94,7 +91,34 @@ class DetailViewController: UITableViewController {
         headerContainerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: mapHeaderContainerHeight))
         headerContainerView.clipsToBounds = true
         tableView.tableHeaderView = headerContainerView
+        
         refreshTableViewInsets()
+        
+        let imageCacheKey = locationToDisplay.identifier
+        
+        let imageRect = CGRect(
+            x: 0,
+            y: self.mapHeaderContainerHeight - self.mapHeaderHeight,
+            width: self.view.bounds.width,
+            height: self.mapHeaderHeight
+        )
+        
+        let imageView = UIImageView()
+        imageView.frame = imageRect
+        imageView.contentMode = .ScaleAspectFill
+        imageView.alpha = 0
+        
+        if let image = CacheController.imageForIdentifier(imageCacheKey) {
+            imageView.image = image
+            
+            headerContainerView.addSubview(imageView)
+            mapHeaderImageView = imageView
+            
+            UIView.animateWithDuration(0.25) {
+                imageView.alpha = 1
+            }
+            return
+        }
         
         let options = MKMapSnapshotOptions()
         options.region = MKCoordinateRegion(
@@ -113,44 +137,17 @@ class DetailViewController: UITableViewController {
             }
             
             if let shot = snapshot {
-                let imageView = UIImageView(image: shot.image)
-                imageView.frame = CGRect(
-                    x: 0,
-                    y: self.mapHeaderContainerHeight - self.mapHeaderHeight,
-                    width: self.view.bounds.width,
-                    height: self.mapHeaderHeight
-                )
-                imageView.contentMode = .ScaleAspectFill
-                imageView.alpha = 0
+                imageView.image = shot.image
                 
                 self.headerContainerView.addSubview(imageView)
                 self.mapHeaderImageView = imageView
                 
-                var blurredImageView: UIImageView?
-                
-                if let inputImage = CIImage(image: shot.image), let filter = CIFilter(name: "CIGaussianBlur", withInputParameters: ["inputImage": inputImage]) {
-                    if let blurredImage = filter.outputImage?.imageByCroppingToRect(CGRect(x: 0, y: 0, width: shot.image.size.width, height: shot.image.size.height)) {
-                        blurredImageView = UIImageView(image: UIImage(CIImage: blurredImage))
-                        blurredImageView?.frame = CGRect(
-                            x: 0,
-                            y: self.mapHeaderContainerHeight - self.mapHeaderHeight,
-                            width: self.view.bounds.width,
-                            height: self.mapHeaderHeight
-                        )
-                        blurredImageView?.contentMode = .ScaleAspectFill
-                        blurredImageView?.alpha = 0
-                        
-                        self.blurredHeaderImageView = blurredImageView!
-                        self.headerContainerView.addSubview(self.blurredHeaderImageView)
-                    }
-                }
+                CacheController.cacheImageWithIdentifier(shot.image, identifier: imageCacheKey)
                 
                 UIView.animateWithDuration(0.25) {
                     imageView.alpha = 1
-                    blurredImageView?.alpha = 1
                 }
                 
-                self.refreshTableViewInsets()
                 self.isLoadingHeader = false
             }
         }
@@ -158,7 +155,9 @@ class DetailViewController: UITableViewController {
     
     // MARK: - Actions
     @objc private func editButtonPressed() {
-        print("Pressed the edit button, yay.")
+        let vc = EditViewController(location: locationToDisplay)
+        vc.delegate = self
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc private func navigateButtonPressed() {
@@ -224,16 +223,31 @@ class DetailViewController: UITableViewController {
         messageLabel.sizeToFit()
     }
     
+    private func refreshTitle() {
+        if let locationTitle = locationToDisplay.locationTitle where locationTitle.characters.count > 0 {
+            title = locationTitle
+        }
+        else if let mapName = locationToDisplay.mapItem?.name where mapName.characters.count > 0 {
+            title = mapName
+        }
+        else if let cityName = locationToDisplay.placemark?.locality where cityName.characters.count > 0 {
+            title = cityName
+        }
+        else {
+            title = "Location"
+        }
+    }
+    
     private func getDistanceFromLocation() {
         let request = MKDirectionsRequest()
         
         request.source = MKMapItem.mapItemForCurrentLocation()
         request.destination = MKMapItem(placemark: MKPlacemark(coordinate: locationToDisplay.location.coordinate, addressDictionary: nil))
         
-        let directions = MKDirections(request: request)
+        directions = MKDirections(request: request)
         
         UIApplication.sharedApplication().networkActivityIndicatorVisible = true
-        directions.calculateETAWithCompletionHandler { response, error in
+        directions?.calculateETAWithCompletionHandler { response, error in
             defer {
                 UIApplication.sharedApplication().networkActivityIndicatorVisible = false
             }
@@ -269,6 +283,12 @@ class DetailViewController: UITableViewController {
         }
     }
     
+    // MARK: - EditViewControllerDelegate
+    func editViewControllerDidEditLocation(viewController: EditViewController, editedLocation: Location) {
+        locationToDisplay = editedLocation
+        refreshTitle()
+    }
+    
     // MARK: - UIScrollView Overrides
     override func scrollViewDidScroll(scrollView: UIScrollView) {
         if mapHeaderImageView.superview == nil {
@@ -282,11 +302,9 @@ class DetailViewController: UITableViewController {
             let scale = 1 + (-1 * difference) / mapHeaderHeight
             let transform = CGAffineTransformMakeScale(scale, scale)
             mapHeaderImageView.transform = CGAffineTransformTranslate(transform, 0, difference / 2 / scale)
-            mapHeaderImageView.alpha = max(1 - (-1 * difference) / 150, 0.5)
         }
         else {
             mapHeaderImageView.transform = CGAffineTransformIdentity
-            mapHeaderImageView.alpha = 1
         }
     }
 

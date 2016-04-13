@@ -305,13 +305,7 @@ extension LocationDetailViewController: MKMapViewDelegate {
             annotationView.enabled = true
             annotationView.canShowCallout = true
             annotationView.animatesDrop = false
-            
-            if let color = locationToDisplay.color {
-                annotationView.pinTintColor = UIColor(rgba: color)
-            }
-            else {
-                annotationView.pinTintColor = UIColor.redColor()
-            }
+            annotationView.pinTintColor = UIColor.redColor()
             
             return annotationView
         }
