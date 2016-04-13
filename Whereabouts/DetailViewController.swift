@@ -11,6 +11,7 @@ class DetailViewController: UITableViewController {
     
     private lazy var headerContainerView = UIView()
     private lazy var mapHeaderImageView = UIImageView()
+    private lazy var blurredHeaderImageView = UIImageView()
     
     private let mapHeaderHeight: CGFloat = 145.0
     private let mapHeaderContainerHeight: CGFloat = 500.0
@@ -125,8 +126,28 @@ class DetailViewController: UITableViewController {
                 self.headerContainerView.addSubview(imageView)
                 self.mapHeaderImageView = imageView
                 
+                var blurredImageView: UIImageView?
+                
+                if let inputImage = CIImage(image: shot.image), let filter = CIFilter(name: "CIGaussianBlur", withInputParameters: ["inputImage": inputImage]) {
+                    if let blurredImage = filter.outputImage?.imageByCroppingToRect(CGRect(x: 0, y: 0, width: shot.image.size.width, height: shot.image.size.height)) {
+                        blurredImageView = UIImageView(image: UIImage(CIImage: blurredImage))
+                        blurredImageView?.frame = CGRect(
+                            x: 0,
+                            y: self.mapHeaderContainerHeight - self.mapHeaderHeight,
+                            width: self.view.bounds.width,
+                            height: self.mapHeaderHeight
+                        )
+                        blurredImageView?.contentMode = .ScaleAspectFill
+                        blurredImageView?.alpha = 0
+                        
+                        self.blurredHeaderImageView = blurredImageView!
+                        self.headerContainerView.addSubview(self.blurredHeaderImageView)
+                    }
+                }
+                
                 UIView.animateWithDuration(0.25) {
                     imageView.alpha = 1
+                    blurredImageView?.alpha = 1
                 }
                 
                 self.refreshTableViewInsets()
