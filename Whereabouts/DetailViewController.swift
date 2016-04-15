@@ -1,6 +1,7 @@
 
 import UIKit
 import MapKit
+import SafariServices
 
 class DetailViewController: UITableViewController, EditViewControllerDelegate {
     
@@ -123,7 +124,7 @@ class DetailViewController: UITableViewController, EditViewControllerDelegate {
         let options = MKMapSnapshotOptions()
         options.region = MKCoordinateRegion(
             center: locationToDisplay.location.coordinate,
-            span: MKCoordinateSpan(latitudeDelta: 1 / 2, longitudeDelta: 1 / 2)
+            span: MKCoordinateSpan(latitudeDelta: 1 / 5, longitudeDelta: 1 / 5)
         )
         options.showsPointsOfInterest = true
         options.size = CGSize(width: self.view.bounds.width, height: self.view.bounds.width)
@@ -215,7 +216,7 @@ class DetailViewController: UITableViewController, EditViewControllerDelegate {
     // MARK: - Helpers
     private func refreshTableViewInsets() {
         let top: CGFloat = -1 * (mapHeaderContainerHeight - mapHeaderHeight - topLayoutGuide.length)
-        tableView.contentInset = UIEdgeInsets(top: top, left: 0, bottom: 0, right: 0)
+        tableView.contentInset = UIEdgeInsets(top: top, left: 0, bottom: navigationController?.toolbar.frame.height ?? 0, right: 0)
         tableView.scrollIndicatorInsets = tableView.contentInset
     }
     private func updateMessageLabel(updatedText: NSAttributedString?) {
@@ -286,6 +287,7 @@ class DetailViewController: UITableViewController, EditViewControllerDelegate {
     // MARK: - EditViewControllerDelegate
     func editViewControllerDidEditLocation(viewController: EditViewController, editedLocation: Location) {
         locationToDisplay = editedLocation
+        tableView.reloadData()
         refreshTitle()
     }
     
@@ -353,8 +355,8 @@ class DetailViewController: UITableViewController, EditViewControllerDelegate {
     
     override func tableView(tableView: UITableView, shouldHighlightRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         if indexPath.section == 0 {
-            if locationToDisplay.placemark != nil && (indexPath.row == 0 || indexPath.row == 1) {
-                return true
+            if locationToDisplay.mapItem != nil {
+                return indexPath.row == 0
             }
             else {
                 return false
@@ -375,6 +377,53 @@ class DetailViewController: UITableViewController, EditViewControllerDelegate {
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        
+        if let item = locationToDisplay.mapItem where indexPath == NSIndexPath(forRow: 0, inSection: 0) {
+            var phoneNumber = String()
+            var urlString = String()
+            
+            var titleString = String()
+            
+            if let number = item.phoneNumber {
+                phoneNumber = number
+                titleString += "Phone number: \(number)"
+            }
+            
+            if let url = item.url?.absoluteString {
+                if titleString.characters.count > 0 {
+                    titleString += "\nHomepage: \(url)"
+                }
+                else {
+                    titleString += url
+                }
+                
+                urlString = url
+            }
+            
+            let alertController = UIAlertController(title: titleString.characters.count > 0 ? titleString : nil, message: nil, preferredStyle: .ActionSheet)
+            
+            if let numberString = "telprompt://\(phoneNumber)".stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet()), let numberURL = NSURL(string: numberString) where phoneNumber.characters.count > 0 {
+                alertController.addAction(UIAlertAction(title: "Call", style: .Default) { action in
+                    UIApplication.sharedApplication().openURL(numberURL)
+                })
+            }
+            
+            if let url = item.url where urlString.characters.count > 0 {
+                alertController.addAction(UIAlertAction(title: "Vist", style: .Default) { action in
+                    let safariVC = SFSafariViewController(URL: url)
+                    safariVC.view.tintColor = StyleController.sharedController.mainTintColor
+                    self.presentViewController(safariVC, animated: true, completion: nil)
+                })
+            }
+            
+            guard alertController.actions.count > 0 else {
+                return
+            }
+            
+            alertController.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+            
+            presentViewController(alertController, animated: true, completion: nil)
+        }
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -385,15 +434,7 @@ class DetailViewController: UITableViewController, EditViewControllerDelegate {
                         fatalError("Expected to dequeue a 'MapItemCell'.")
                     }
                     
-                    cell.nameLabel.text = mapItem.name
-                    cell.phoneNumberLabel.text = mapItem.phoneNumber
-                    
-                    if let urlString = mapItem.url?.absoluteString where urlString.characters.count > 0 {
-                        cell.webPageLabel.text = urlString
-                    }
-                    else {
-                        cell.webPageLabel.text = "No website"
-                    }
+                    cell.configureWithMapItem(mapItem)
                     
                     return cell
                 }
@@ -547,20 +588,20 @@ class DetailViewController: UITableViewController, EditViewControllerDelegate {
                     return MapItemCell.cellHeight
                 }
                 else if indexPath.row == 1 {
-                    return UITableViewAutomaticDimension
+                    return LocationInfoDisplayCell.cellHeight
                 }
                 else if indexPath.row == 2 {
-                    return UITableViewAutomaticDimension
+                    return LocationInfoDisplayCell.cellHeight
                 }
                 else {
                     fatalError("Failed to handle row: \(indexPath.row) in 'estimatedHeightForRowAtIndexPath'.")
                 }
             }
             else if locationToDisplay.placemark != nil {
-                return UITableViewAutomaticDimension
+                return LocationInfoDisplayCell.cellHeight
             }
             else {
-                return UITableViewAutomaticDimension
+                return LocationInfoDisplayCell.cellHeight
             }
         }
         else if indexPath.section == 1 {
@@ -594,7 +635,7 @@ class DetailViewController: UITableViewController, EditViewControllerDelegate {
         if indexPath.section == 0 {
             if locationToDisplay.mapItem != nil {
                 if indexPath.row == 0 {
-                    return MapItemCell.cellHeight
+                    return UITableViewAutomaticDimension
                 }
                 else if indexPath.row == 1 {
                     return UITableViewAutomaticDimension

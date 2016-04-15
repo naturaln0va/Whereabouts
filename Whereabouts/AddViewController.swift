@@ -316,6 +316,17 @@ extension AddViewController: LocationAssistantDelegate {
         presentViewController(accessVC, animated: true, completion:  nil)
     }
     
+    func locationAssistantAuthorizationDenied() {
+        let accessVC = LocationAccessViewController()
+        accessVC.delegate = self
+        
+        if titleSearchBar.isFirstResponder() {
+            titleSearchBar.endEditing(true)
+        }
+        
+        presentViewController(accessVC, animated: true, completion:  nil)
+    }
+    
 }
 
 extension AddViewController: LocationAccessViewControllerDelegate {

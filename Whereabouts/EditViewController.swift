@@ -156,9 +156,7 @@ class EditViewController: UITableViewController {
                         fatalError("Expected to dequeue a 'MapItemCell'.")
                     }
                     
-                    cell.nameLabel.text = item.name
-                    cell.phoneNumberLabel.text = item.phoneNumber
-                    cell.webPageLabel.text = item.url?.absoluteString ?? "No Website"
+                    cell.configureWithMapItem(item)
                     
                     return cell
                 }
@@ -331,7 +329,7 @@ class EditViewController: UITableViewController {
         if indexPath.section == 0 {
             if let _ = locationToEdit?.mapItem {
                 if indexPath.row == 0 {
-                    return MapItemCell.cellHeight
+                    return UITableViewAutomaticDimension
                 }
                 else if indexPath.row == 1 {
                     return UITableViewAutomaticDimension
