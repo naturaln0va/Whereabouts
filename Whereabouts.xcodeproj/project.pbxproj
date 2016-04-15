@@ -30,7 +30,8 @@
 		48707CCC1CAA96090003F792 /* UIColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48707CCB1CAA96090003F792 /* UIColor+Hex.swift */; };
 		48759B451CBDBE6100789DB8 /* DatabaseLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48759B441CBDBE6100789DB8 /* DatabaseLocation.swift */; };
 		48759B471CBDBE7100789DB8 /* Visit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48759B461CBDBE7100789DB8 /* Visit.swift */; };
-		487A553F1BB4C61A00D0D320 /* NewLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487A553D1BB4C61A00D0D320 /* NewLocationViewController.swift */; };
+		48759B4A1CC102B500789DB8 /* PocketTrackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48759B481CC102B500789DB8 /* PocketTrackViewController.swift */; };
+		48759B4B1CC102B500789DB8 /* PocketTrackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48759B491CC102B500789DB8 /* PocketTrackViewController.xib */; };
 		4882D9D51B1A99FD00BAADAD /* RHACLStringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4882D9D41B1A99FD00BAADAD /* RHACLStringExtensions.swift */; };
 		488A81261CBC606A00452101 /* ContentDisplayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488A81241CBC606A00452101 /* ContentDisplayCell.swift */; };
 		488A81271CBC606A00452101 /* ContentDisplayCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 488A81251CBC606A00452101 /* ContentDisplayCell.xib */; };
@@ -135,7 +136,8 @@
 		48707CCB1CAA96090003F792 /* UIColor+Hex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Hex.swift"; sourceTree = "<group>"; };
 		48759B441CBDBE6100789DB8 /* DatabaseLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseLocation.swift; sourceTree = "<group>"; };
 		48759B461CBDBE7100789DB8 /* Visit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Visit.swift; sourceTree = "<group>"; };
-		487A553D1BB4C61A00D0D320 /* NewLocationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewLocationViewController.swift; sourceTree = "<group>"; };
+		48759B481CC102B500789DB8 /* PocketTrackViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PocketTrackViewController.swift; sourceTree = "<group>"; };
+		48759B491CC102B500789DB8 /* PocketTrackViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PocketTrackViewController.xib; sourceTree = "<group>"; };
 		4880D47F1A5331960077E68B /* Whereabouts.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Whereabouts.entitlements; path = Whereabouts/Whereabouts.entitlements; sourceTree = SOURCE_ROOT; };
 		4880D4801A5331DA0077E68B /* Quick Location.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = "Quick Location.entitlements"; path = "Quick Location/Quick Location.entitlements"; sourceTree = SOURCE_ROOT; };
 		4882D9D41B1A99FD00BAADAD /* RHACLStringExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RHACLStringExtensions.swift; sourceTree = "<group>"; };
@@ -263,7 +265,6 @@
 				48D4FFE81BF7D2ED006DA09C /* LocationDetailViewController.swift */,
 				48D4FFE91BF7D2ED006DA09C /* LocationDetailViewController.xib */,
 				48642D0E1BAE166F00935358 /* LocationsViewController.swift */,
-				487A553D1BB4C61A00D0D320 /* NewLocationViewController.swift */,
 				69B7A3B41BFCD436000BEBA0 /* PhotoViewController.swift */,
 				48AA3C321C01732800A0935A /* PickerViewController.swift */,
 				69B7A3B81BFCD6FE000BEBA0 /* SettingsViewController.swift */,
@@ -271,6 +272,8 @@
 				48E3B85B1B1951AA003DD726 /* StyledViewController.swift */,
 				483BBE471C1CE4DB002E5DB2 /* MapViewController.swift */,
 				69F7CEE51CAAF286007EB03F /* ListViewController.swift */,
+				48759B481CC102B500789DB8 /* PocketTrackViewController.swift */,
+				48759B491CC102B500789DB8 /* PocketTrackViewController.xib */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -550,6 +553,7 @@
 				4863ACAF1B24EF4D009F008F /* LocationCell.xib in Resources */,
 				482FBFE81CB291BE00E30EF2 /* TextContentCell.xib in Resources */,
 				69E367E81CAE8E3E00604790 /* MapItemCell.xib in Resources */,
+				48759B4B1CC102B500789DB8 /* PocketTrackViewController.xib in Resources */,
 				69640E941BFBCEA60050722D /* PhotoCell.xib in Resources */,
 				69E367E41CAE0B2D00604790 /* LocationInfoDisplayCell.xib in Resources */,
 				488BE6471CABF41100BA24C8 /* SearchResultCell.xib in Resources */,
@@ -612,7 +616,6 @@
 				48759B471CBDBE7100789DB8 /* Visit.swift in Sources */,
 				698AF39B1BF79A4D00F1E745 /* Fetchable.swift in Sources */,
 				48510BEB1BF7F3D10041C7C1 /* String+Additions.swift in Sources */,
-				487A553F1BB4C61A00D0D320 /* NewLocationViewController.swift in Sources */,
 				48E3B8601B195896003DD726 /* StyleController.swift in Sources */,
 				48D4FFE61BF7D08F006DA09C /* DefaultLayout.swift in Sources */,
 				48F763431CA87FF500BCE740 /* CloudController.swift in Sources */,
@@ -658,6 +661,7 @@
 				69B7A3B61BFCD436000BEBA0 /* PhotoViewController.swift in Sources */,
 				488BE6421CABF3EF00BA24C8 /* SearchCompleterCell.swift in Sources */,
 				48DEDA3719F592F80094CB8F /* AppDelegate.swift in Sources */,
+				48759B4A1CC102B500789DB8 /* PocketTrackViewController.swift in Sources */,
 				48642D111BAE1E0400935358 /* LocationAssistant.swift in Sources */,
 				48642D141BAE27D300935358 /* LocationAccessViewController.swift in Sources */,
 			);

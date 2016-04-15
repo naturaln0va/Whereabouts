@@ -111,10 +111,6 @@ class LocationDetailViewController: UIViewController {
     
     // MARK: - Actions
     func editButtonPressed() {
-        let newlocationVC = NewLocationViewController()
-        newlocationVC.locationToEdit = locationToDisplay
-        newlocationVC.delegate = self
-        presentViewController(StyledNavigationController(rootViewController: newlocationVC), animated: true, completion: nil)
     }
     
     func mapsButtonPressed() {
@@ -309,15 +305,6 @@ extension LocationDetailViewController: MKMapViewDelegate {
             
             return annotationView
         }
-    }
-    
-}
-
-
-extension LocationDetailViewController: NewLocationViewControllerDelegate {
-    
-    func newLocationViewControllerDidEditLocation(editedLocation: Location) {
-        locationToDisplay = editedLocation
     }
     
 }

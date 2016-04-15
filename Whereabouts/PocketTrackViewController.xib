@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PocketTrackViewController" customModule="Whereabouts" customModuleProvider="target">
+            <connections>
+                <outlet property="accessDeniedView" destination="I9L-uR-mQd" id="Xgj-Bg-7hu"/>
+                <outlet property="toggleSwitch" destination="f7H-1X-H8c" id="HKy-lb-cEl"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GrG-4k-gMx">
+                    <rect key="frame" x="16" y="16" width="343" height="143.5"/>
+                    <string key="text">Pocket Track monitors changes to your location in the background. This requires the location access to be set to 'Always' since it monitors location changes even when the app is not open. 
+Pocket Track can be used to view the places you have visited throughout your day. Arrivals and departures from location trigger a Pocket Track to save on battery.</string>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enable Pocket Track:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BLA-ZP-p4I">
+                    <rect key="frame" x="16" y="209" width="278" height="21"/>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="f7H-1X-H8c">
+                    <rect key="frame" x="310" y="204" width="51" height="31"/>
+                    <connections>
+                        <action selector="toggleSwitchPressed:" destination="-1" eventType="valueChanged" id="WNK-rw-vnX"/>
+                    </connections>
+                </switch>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I9L-uR-mQd">
+                    <rect key="frame" x="8" y="167.5" width="359" height="125"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Background location access is disabled." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k3H-VU-AEe">
+                            <rect key="frame" x="16" y="16" width="327" height="21"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u1Q-4s-GMh">
+                            <rect key="frame" x="130.5" y="53" width="98" height="30"/>
+                            <state key="normal" title="Open Settings"/>
+                            <connections>
+                                <action selector="openSettingsButtonPressed" destination="-1" eventType="touchUpInside" id="rDP-zz-zWC"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="u1Q-4s-GMh" firstAttribute="top" secondItem="k3H-VU-AEe" secondAttribute="bottom" constant="16" id="3Gy-mZ-laI"/>
+                        <constraint firstAttribute="height" constant="125" id="8or-vJ-gEl"/>
+                        <constraint firstItem="u1Q-4s-GMh" firstAttribute="centerX" secondItem="I9L-uR-mQd" secondAttribute="centerX" id="O11-by-2oe"/>
+                        <constraint firstItem="k3H-VU-AEe" firstAttribute="top" secondItem="I9L-uR-mQd" secondAttribute="top" constant="16" id="ZEB-QQ-1VO"/>
+                        <constraint firstItem="k3H-VU-AEe" firstAttribute="leading" secondItem="I9L-uR-mQd" secondAttribute="leading" constant="16" id="lS2-r6-22i"/>
+                        <constraint firstAttribute="trailing" secondItem="k3H-VU-AEe" secondAttribute="trailing" constant="16" id="xf2-4R-4Hg"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="I9L-uR-mQd" firstAttribute="top" secondItem="GrG-4k-gMx" secondAttribute="bottom" constant="8" id="4Ej-Y2-PgR"/>
+                <constraint firstItem="BLA-ZP-p4I" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="5Ta-3E-tV2"/>
+                <constraint firstAttribute="trailing" secondItem="I9L-uR-mQd" secondAttribute="trailing" constant="8" id="64K-UZ-4cI"/>
+                <constraint firstItem="f7H-1X-H8c" firstAttribute="centerY" secondItem="BLA-ZP-p4I" secondAttribute="centerY" id="DNw-ez-GNB"/>
+                <constraint firstItem="I9L-uR-mQd" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="SIL-Y6-Kmg"/>
+                <constraint firstItem="BLA-ZP-p4I" firstAttribute="top" secondItem="GrG-4k-gMx" secondAttribute="bottom" constant="50" id="U7o-ok-0PW"/>
+                <constraint firstItem="GrG-4k-gMx" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="VYj-Oo-HKA"/>
+                <constraint firstAttribute="trailing" secondItem="BLA-ZP-p4I" secondAttribute="trailing" constant="16" id="eOL-rC-fXY"/>
+                <constraint firstAttribute="trailing" secondItem="GrG-4k-gMx" secondAttribute="trailing" constant="16" id="er7-VI-RNG"/>
+                <constraint firstAttribute="trailing" secondItem="f7H-1X-H8c" secondAttribute="trailing" constant="16" id="ote-bC-rAj"/>
+                <constraint firstItem="f7H-1X-H8c" firstAttribute="leading" secondItem="BLA-ZP-p4I" secondAttribute="trailing" constant="16" id="rcM-Cw-vAT"/>
+                <constraint firstItem="GrG-4k-gMx" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="16" id="xQi-lK-fEi"/>
+            </constraints>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="eOL-rC-fXY"/>
+                </mask>
+            </variation>
+            <point key="canvasLocation" x="504.5" y="277.5"/>
+        </view>
+    </objects>
+</document>

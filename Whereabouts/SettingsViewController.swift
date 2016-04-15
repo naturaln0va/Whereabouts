@@ -6,7 +6,6 @@ class SettingsViewController: UITableViewController {
 
     enum UserSectionRows: Int {
         case UnitStyleRow
-        case BatterySaverRow
         case CloudSyncRow
         case PocketTrackRow
         case TotalRows
@@ -33,7 +32,6 @@ class SettingsViewController: UITableViewController {
     
     enum SettingSwitchTag: Int {
         case UnitStyleSwitch
-        case BatterySaverSwitch
         case CloudSyncSwitch
     }
     
@@ -94,11 +92,6 @@ class SettingsViewController: UITableViewController {
             tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)], withRowAnimation: .Automatic)
             break
             
-        case SettingSwitchTag.BatterySaverSwitch.rawValue:
-            SettingsController.sharedController.batterySaverMode = sender.on
-            tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 1, inSection: 0)], withRowAnimation: .Automatic)
-            break
-            
         case SettingSwitchTag.CloudSyncSwitch.rawValue:
             SettingsController.sharedController.shouldSyncToCloud = sender.on
             tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 2, inSection: 0)], withRowAnimation: .Automatic)
@@ -155,21 +148,6 @@ class SettingsViewController: UITableViewController {
                 let unitSwitch = UISwitch()
                 unitSwitch.tag = SettingSwitchTag.UnitStyleSwitch.rawValue
                 unitSwitch.on = !SettingsController.sharedController.isUnitStyleImperial
-                unitSwitch.addTarget(
-                    self,
-                    action: #selector(SettingsViewController.switchWasToggled(_:)),
-                    forControlEvents: .ValueChanged
-                )
-                
-                cell.accessoryView = unitSwitch
-                break
-                
-            case UserSectionRows.BatterySaverRow.rawValue:
-                cell.textLabel?.text = "Battery Saver Mode"
-                
-                let unitSwitch = UISwitch()
-                unitSwitch.tag = SettingSwitchTag.BatterySaverSwitch.rawValue
-                unitSwitch.on = SettingsController.sharedController.batterySaverMode
                 unitSwitch.addTarget(
                     self,
                     action: #selector(SettingsViewController.switchWasToggled(_:)),
@@ -250,7 +228,8 @@ class SettingsViewController: UITableViewController {
             }
         }
         else if indexPath.section == TableSections.UserSection.rawValue && indexPath.row == UserSectionRows.PocketTrackRow.rawValue {
-            // present pocket track vc
+            let vc = PocketTrackViewController()
+            navigationController?.pushViewController(vc, animated: true)
         }
     }
     

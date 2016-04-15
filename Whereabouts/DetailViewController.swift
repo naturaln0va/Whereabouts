@@ -382,34 +382,34 @@ class DetailViewController: UITableViewController, EditViewControllerDelegate {
             var phoneNumber = String()
             var urlString = String()
             
-            var titleString = String()
-            
             if let number = item.phoneNumber {
                 phoneNumber = number
-                titleString += "Phone number: \(number)"
             }
             
             if let url = item.url?.absoluteString {
-                if titleString.characters.count > 0 {
-                    titleString += "\nHomepage: \(url)"
-                }
-                else {
-                    titleString += url
-                }
-                
                 urlString = url
             }
             
-            let alertController = UIAlertController(title: titleString.characters.count > 0 ? titleString : nil, message: nil, preferredStyle: .ActionSheet)
+            let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
             
             if let numberString = "telprompt://\(phoneNumber)".stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet()), let numberURL = NSURL(string: numberString) where phoneNumber.characters.count > 0 {
-                alertController.addAction(UIAlertAction(title: "Call \(item.name)", style: .Default) { action in
+                var titleString = "Call"
+                if let name = item.name {
+                    titleString += " \(name)"
+                }
+                
+                alertController.addAction(UIAlertAction(title: titleString, style: .Default) { action in
                     UIApplication.sharedApplication().openURL(numberURL)
                 })
             }
             
             if let url = item.url where urlString.characters.count > 0 {
-                alertController.addAction(UIAlertAction(title: "Visit \(item.name)", style: .Default) { action in
+                var titleString = "Visit"
+                if let name = item.name {
+                    titleString += " \(name)"
+                }
+                
+                alertController.addAction(UIAlertAction(title: titleString, style: .Default) { action in
                     let safariVC = SFSafariViewController(URL: url)
                     safariVC.view.tintColor = StyleController.sharedController.mainTintColor
                     self.presentViewController(safariVC, animated: true, completion: nil)
