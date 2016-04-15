@@ -17,9 +17,12 @@ class LocationsViewController: UIViewController {
     
     private lazy var titleToggle: UISegmentedControl = {
         let control = UISegmentedControl(items: ["List", "Map"])
+        if PersistentController.sharedController.visits().count > 0 {
+            control.insertSegmentWithTitle("Visits", atIndex: 2, animated: false)
+        }
+        control.frame.size.width = 1000.0
         control.selectedSegmentIndex = 0
         control.tintColor = StyleController.sharedController.navBarTintColor
-        control.frame.size.width = 150.0
         control.addTarget(self, action: #selector(LocationsViewController.toggleWasChanged), forControlEvents: .ValueChanged)
         return control
     }()
@@ -35,6 +38,7 @@ class LocationsViewController: UIViewController {
     private enum ToggleIndex: Int {
         case List
         case Map
+        case Visits
     }
     
     override func viewDidLoad() {
@@ -57,12 +61,7 @@ class LocationsViewController: UIViewController {
         
         beginObserving()
         refreshToggleState()
-    }
-    
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        
-        print("title segment height: \(titleToggle.frame.height)")
+        refreshTitleToggle()
     }
     
     // MARK: - Helpers
@@ -82,6 +81,19 @@ class LocationsViewController: UIViewController {
         )
     }
     
+    private func refreshTitleToggle() {
+        if PersistentController.sharedController.visits().count > 0 {
+            if titleToggle.numberOfSegments == 2 {
+                titleToggle.insertSegmentWithTitle("Visits", atIndex: 2, animated: true)
+            }
+        }
+        else {
+            if titleToggle.numberOfSegments == 3 {
+                titleToggle.removeSegmentAtIndex(2, animated: true)
+            }
+        }
+    }
+    
     private func updateMessageLabel(updatedText: String?) {
         messageLabel.text = updatedText ?? ""
         messageLabel.sizeToFit()
@@ -98,9 +110,15 @@ class LocationsViewController: UIViewController {
             removeMapChildVC()
             addListChildVC()
         }
-        else {
+        else if tab == .Map {
             removeListChildVC()
             addMapChildVC()
+        }
+        else if tab == .Visits {
+            
+        }
+        else {
+            print("Un-handled title togglt tab.")
         }
     }
     
@@ -161,34 +179,36 @@ class LocationsViewController: UIViewController {
     }
     
     // MARK: - Actions
-    internal func locateBarButtonWasPressed() {
-        presentViewController(StyledNavigationController(rootViewController: AddViewController()), animated: true, completion: nil)
+    @objc private func locateBarButtonWasPressed() {
+        let nvc = StyledNavigationController(rootViewController: AddViewController())
+        nvc.lowPowerCapable = true
+        presentViewController(nvc, animated: true, completion: nil)
     }
     
-    internal func settingsBarButtonWasPressed() {
+    @objc private func settingsBarButtonWasPressed() {
         presentViewController(StyledNavigationController(rootViewController: SettingsViewController()), animated: true, completion: nil)
     }
     
-    internal func editButtonPressed() {
+    @objc private func editButtonPressed() {
         listViewController.tableView.setEditing(true, animated: true)
         toolbarItems = [doneBarButton, spaceBarButtonItem, messageBarButtonItem, spaceBarButtonItem]
     }
     
-    internal func doneButtonPressed() {
+    @objc private func doneButtonPressed() {
         listViewController.tableView.setEditing(false, animated: true)
         toolbarItems = [editBarButton, spaceBarButtonItem, messageBarButtonItem, spaceBarButtonItem]
     }
     
-    internal func toggleWasChanged() {
+    @objc private func toggleWasChanged() {
         refreshToggleState()
     }
     
     // MARK: - Notifications
-    internal func cloudSyncComplete() {
+    @objc private func cloudSyncComplete() {
         updateMessageLabel(nil)
     }
     
-    internal func cloudErrorOccurred() {
+    @objc private func cloudErrorOccurred() {
         updateMessageLabel("An error occurred")
     }
     

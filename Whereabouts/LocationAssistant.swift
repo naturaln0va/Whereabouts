@@ -6,7 +6,7 @@ import CoreLocation
 let kHorizontalAccuracyPoor:    CLLocationAccuracy = 5000.0
 let kHorizontalAccuracyFair:    CLLocationAccuracy = 2500.0
 let kHorizontalAccuracyAverage: CLLocationAccuracy = 150.0
-let kHorizontalAccuracyGood:    CLLocationAccuracy = 22.5
+let kHorizontalAccuracyGood:    CLLocationAccuracy = 12.0
 let kHorizontalAccuracyBest:    CLLocationAccuracy = 5.0
 
 let kLocationTimeoutShort:      Int = 10
@@ -30,7 +30,6 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate {
     
     var delegate: LocationAssistantDelegate?
     
-    private(set) var parentViewController: UIViewController?
     private(set) var location: CLLocation?
     private(set) var placemark: CLPlacemark?
     private var timer: NSTimer?
@@ -40,12 +39,30 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate {
     private var monitoringLocationUpdates = false
     private var reverseGeocoding = false
     
-    override init() {
-        super.init()
+    private var shouldReducePowerConsumption: Bool {
+        if #available(iOSApplicationExtension 9.0, *) {
+            return NSProcessInfo.processInfo().lowPowerModeEnabled
+        }
+        else {
+            return false
+        }
     }
     
-    init(viewController: UIViewController?) {
-        parentViewController = viewController
+    // MARK: - Init
+    override init() {
+        super.init()
+        commonInit()
+    }
+    
+    private func commonInit() {
+        if #available(iOSApplicationExtension 9.0, *) {
+            NSNotificationCenter.defaultCenter().addObserver(
+                self,
+                selector: #selector(LocationAssistant.lowPowerModeChanged),
+                name: NSProcessInfoPowerStateDidChangeNotification,
+                object: nil
+            )
+        }
     }
     
     // MARK: - Public Methods
@@ -60,6 +77,7 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate {
         
         if updatingLocation {
             stopLocationManager()
+            getLocation()
         }
         else {
             location = nil
@@ -130,7 +148,7 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate {
             monitoringLocationUpdates = true
             
             manager.delegate = self
-            manager.desiredAccuracy = 300.0
+            manager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
             manager.startMonitoringVisits()
         }
         else {
@@ -143,10 +161,21 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate {
     func terminate() {
         delegate = nil
         stopLocationManager()
-        if monitoringLocationUpdates { manager.stopMonitoringVisits() }
+        if monitoringLocationUpdates {
+            manager.stopMonitoringVisits()
+            monitoringLocationUpdates = false
+        }
     }
     
-    // MARK: - Internal Helpers
+    // MARK: - Notifications
+    @objc private func lowPowerModeChanged() {
+        if monitoringLocationUpdates {
+            manager.stopMonitoringVisits()
+            monitoringLocationUpdates = false
+        }
+    }
+    
+    // MARK: - Helpers
     private func checkLocationAuthorization() {
         let authStatus = CLLocationManager.authorizationStatus()
         
@@ -189,11 +218,11 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate {
         
         if CLLocationManager.locationServicesEnabled() {
             manager.delegate = self
-            manager.desiredAccuracy = SettingsController.sharedController.batterySaverMode ? kHorizontalAccuracyFair : kHorizontalAccuracyGood
+            manager.desiredAccuracy = shouldReducePowerConsumption ? kCLLocationAccuracyKilometer : kHorizontalAccuracyGood
             manager.startUpdatingLocation()
             updatingLocation = true
             
-            let interval = NSTimeInterval(SettingsController.sharedController.batterySaverMode ? kLocationTimeoutShort : kLocationTimeoutNormal)
+            let interval = NSTimeInterval(shouldReducePowerConsumption ? kLocationTimeoutShort : kLocationTimeoutNormal)
             timer = NSTimer.scheduledTimerWithTimeInterval(interval, target: self, selector: #selector(LocationAssistant.didTimeOut), userInfo: nil, repeats: false)
         }
     }
@@ -219,7 +248,7 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate {
         }
     }
     
-    internal func didTimeOut() {
+    @objc private func didTimeOut() {
         stopLocationManager()
         
         if let delegate = delegate {
@@ -229,7 +258,7 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate {
     
     // MARK: - CoreLocation Delegate
     func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
-        print("Failed with error: \(error.localizedDescription)")
+        print("LOCATIONASSISTANT: Failed with error: \(error.localizedDescription)")
         
         if let delegate = delegate {
             delegate.locationAssistantFailedToGetLocation?()
@@ -246,51 +275,44 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate {
         #if MAIN_APP
             var visitNotificationString = ""
             if visit.departureDate.isEqualToDate(NSDate.distantFuture()) {
-                visitNotificationString += "Arrived at: "
+                visitNotificationString += "😸→📍Arrived at: "
             } else {
-                visitNotificationString += "Departed from: "
+                visitNotificationString += "😸←📍Departed from: "
             }
             
             let locationOfVisit = CLLocation(latitude: visit.coordinate.latitude, longitude: visit.coordinate.longitude)
-            var addressOfVisit: CLPlacemark?
             
-//            if let visits = try? Visit.objectsInContext(PersistentController.sharedController.visitMOC) {
-//                for visit in visits {
-//                    if visit.location.distanceFromLocation(locationOfVisit) < 500.0 {
-//                        PersistentController.sharedController.visitWasVisited(visit)
-//                        
-//                        let notification = UILocalNotification()
-//                        notification.alertAction = nil
-//                        notification.alertBody = "You have now Visited \(visit.address == nil ? stringFromCoordinate(visit.coordinate) : stringFromAddress(visit.address!, withNewLine: false)) \(visit.totalVisits)"
-//                        UIApplication.sharedApplication().presentLocalNotificationNow(notification)
-//                        return
-//                    }
-//                }
-//            }
+            for visit in PersistentController.sharedController.visits() {
+                if visit.location.distanceFromLocation(locationOfVisit) < 325.0 {
+                    PersistentController.sharedController.visitWasVisited(visit)
+                    
+                    let notification = UILocalNotification()
+                    notification.alertAction = nil
+                    notification.alertBody = "You have now Visited \(visit.address == nil ? stringFromCoordinate(visit.coordinate) : stringFromAddress(visit.address!, withNewLine: false)) \(visit.totalVisits)"
+                    UIApplication.sharedApplication().presentLocalNotificationNow(notification)
+                    return
+                }
+            }
             
             geocoder.reverseGeocodeLocation(locationOfVisit) { placemarks, error in
+                defer {
+                    let notification = UILocalNotification()
+                    notification.alertAction = nil
+                    notification.alertBody = visitNotificationString
+                    UIApplication.sharedApplication().presentLocalNotificationNow(notification)
+                    PersistentController.sharedController.saveVisit(visitToSave)
+                }
+                
+                let visitToSave = Visit(visit: visit)
+                
                 if let visitedAddress = placemarks?.last where error == nil {
-                    
-                    addressOfVisit = visitedAddress
+                    visitToSave.address = visitedAddress
                     visitNotificationString += stringFromAddress(visitedAddress, withNewLine: true)
                 }
                 else {
                     visitNotificationString += stringFromCoordinate(visit.coordinate)
                 }
-                
-                let notification = UILocalNotification()
-                notification.alertAction = nil
-                notification.alertBody = visitNotificationString
-                UIApplication.sharedApplication().presentLocalNotificationNow(notification)
             }
-            
-            PersistentController.sharedController.saveVisit(
-                visit.arrivalDate,
-                departureDate: visit.departureDate,
-                horizontalAccuracy: visit.horizontalAccuracy,
-                coordinate: visit.coordinate,
-                address: addressOfVisit
-            )
         #endif
     }
     

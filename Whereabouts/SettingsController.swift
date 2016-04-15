@@ -13,7 +13,6 @@ class SettingsController {
     static let kShouldMonitorVisits = "shouldMonitorVisits" // user preference
     static let kUserFirstLaunchedKey = "firstLaunched" // date user first installed
     static let kUserHasSubscribedKey = "userSubscribed" // user has subscribed to cloud changes
-    static let kBatterySaverModeKey = "batterySaver" // user wants to save energy so let make location fixes less accurate
     static let kCloudSyncKey = "cloudSync" // user watns backups to iCloud
     
     private let defaults = NSUserDefaults.standardUserDefaults()
@@ -24,7 +23,6 @@ class SettingsController {
             kUnitStyleKey: true,
             kShouldMonitorVisits: false,
             kUserHasSubscribedKey: false,
-            kBatterySaverModeKey: false,
             kCloudSyncKey: true
         ]
     }()
@@ -76,17 +74,6 @@ class SettingsController {
         }
         set {
             defaults.setBool(newValue, forKey: SettingsController.kCloudSyncKey)
-            defaults.synchronize()
-            NSNotificationCenter.defaultCenter().postNotificationName(kSettingsControllerDidChangeNotification, object: nil)
-        }
-    }
-    
-    var batterySaverMode: Bool {
-        get {
-            return defaults.boolForKey(SettingsController.kBatterySaverModeKey)
-        }
-        set {
-            defaults.setBool(newValue, forKey: SettingsController.kBatterySaverModeKey)
             defaults.synchronize()
             NSNotificationCenter.defaultCenter().postNotificationName(kSettingsControllerDidChangeNotification, object: nil)
         }

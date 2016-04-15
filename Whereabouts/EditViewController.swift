@@ -48,7 +48,7 @@ class EditViewController: UITableViewController {
         self.locationToEdit = location
     }
     
-    internal required init?(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -105,11 +105,11 @@ class EditViewController: UITableViewController {
     }
     
     // MARK: - Actions
-    internal func cancelButtonPressed() {
+    @objc private func cancelButtonPressed() {
         dismiss()
     }
     
-    internal func saveButtonPressed() {
+    @objc private func saveButtonPressed() {
         if let titleCell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 1)) as? TextEntryCell {
             locationToEdit?.locationTitle = titleCell.textField.text
         }

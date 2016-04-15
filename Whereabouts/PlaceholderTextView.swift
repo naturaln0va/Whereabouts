@@ -64,7 +64,7 @@ class PlaceholderTextView: UITextView {
     
     // MARK: - Notification
     
-    internal func textDidChange() {
+    @objc private func textDidChange() {
         refreshView()
     }
 

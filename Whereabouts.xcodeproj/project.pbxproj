@@ -29,7 +29,7 @@
 		48642D151BAE27D300935358 /* LocationAccessViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48642D131BAE27D300935358 /* LocationAccessViewController.xib */; };
 		48707CCC1CAA96090003F792 /* UIColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48707CCB1CAA96090003F792 /* UIColor+Hex.swift */; };
 		48759B451CBDBE6100789DB8 /* DatabaseLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48759B441CBDBE6100789DB8 /* DatabaseLocation.swift */; };
-		48759B471CBDBE7100789DB8 /* Visit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48759B461CBDBE7100789DB8 /* Visit.swift */; };
+		48759B471CBDBE7100789DB8 /* DatabaseVisit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48759B461CBDBE7100789DB8 /* DatabaseVisit.swift */; };
 		48759B4A1CC102B500789DB8 /* PocketTrackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48759B481CC102B500789DB8 /* PocketTrackViewController.swift */; };
 		48759B4B1CC102B500789DB8 /* PocketTrackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48759B491CC102B500789DB8 /* PocketTrackViewController.xib */; };
 		4882D9D51B1A99FD00BAADAD /* RHACLStringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4882D9D41B1A99FD00BAADAD /* RHACLStringExtensions.swift */; };
@@ -66,6 +66,7 @@
 		69640E901BFBCDE80050722D /* PhotosLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69640E8F1BFBCDE80050722D /* PhotosLayout.swift */; };
 		69640E931BFBCEA60050722D /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69640E911BFBCEA60050722D /* PhotoCell.swift */; };
 		69640E941BFBCEA60050722D /* PhotoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 69640E921BFBCEA60050722D /* PhotoCell.xib */; };
+		696C6A4E1CC18D9500F42B24 /* Visit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696C6A4D1CC18D9500F42B24 /* Visit.swift */; };
 		698AF38C1BF6D66D00F1E745 /* TextEntryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698AF38A1BF6D66D00F1E745 /* TextEntryCell.swift */; };
 		698AF38D1BF6D66D00F1E745 /* TextEntryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 698AF38B1BF6D66D00F1E745 /* TextEntryCell.xib */; };
 		698AF3941BF7910100F1E745 /* ColorPreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698AF3921BF7910100F1E745 /* ColorPreviewCell.swift */; };
@@ -135,7 +136,7 @@
 		48642D131BAE27D300935358 /* LocationAccessViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LocationAccessViewController.xib; sourceTree = "<group>"; };
 		48707CCB1CAA96090003F792 /* UIColor+Hex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Hex.swift"; sourceTree = "<group>"; };
 		48759B441CBDBE6100789DB8 /* DatabaseLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseLocation.swift; sourceTree = "<group>"; };
-		48759B461CBDBE7100789DB8 /* Visit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Visit.swift; sourceTree = "<group>"; };
+		48759B461CBDBE7100789DB8 /* DatabaseVisit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseVisit.swift; sourceTree = "<group>"; };
 		48759B481CC102B500789DB8 /* PocketTrackViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PocketTrackViewController.swift; sourceTree = "<group>"; };
 		48759B491CC102B500789DB8 /* PocketTrackViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PocketTrackViewController.xib; sourceTree = "<group>"; };
 		4880D47F1A5331960077E68B /* Whereabouts.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Whereabouts.entitlements; path = Whereabouts/Whereabouts.entitlements; sourceTree = SOURCE_ROOT; };
@@ -173,6 +174,7 @@
 		69640E8F1BFBCDE80050722D /* PhotosLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotosLayout.swift; sourceTree = "<group>"; };
 		69640E911BFBCEA60050722D /* PhotoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoCell.swift; sourceTree = "<group>"; };
 		69640E921BFBCEA60050722D /* PhotoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhotoCell.xib; sourceTree = "<group>"; };
+		696C6A4D1CC18D9500F42B24 /* Visit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Visit.swift; sourceTree = "<group>"; };
 		698AF38A1BF6D66D00F1E745 /* TextEntryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextEntryCell.swift; sourceTree = "<group>"; };
 		698AF38B1BF6D66D00F1E745 /* TextEntryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TextEntryCell.xib; sourceTree = "<group>"; };
 		698AF3921BF7910100F1E745 /* ColorPreviewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorPreviewCell.swift; sourceTree = "<group>"; };
@@ -427,7 +429,8 @@
 				48F763451CA890D200BCE740 /* CloudLocation.swift */,
 				698AF39A1BF79A4D00F1E745 /* Fetchable.swift */,
 				698E782E1CAED0B3004A4178 /* Location.swift */,
-				48759B461CBDBE7100789DB8 /* Visit.swift */,
+				48759B461CBDBE7100789DB8 /* DatabaseVisit.swift */,
+				696C6A4D1CC18D9500F42B24 /* Visit.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -613,7 +616,7 @@
 			files = (
 				483BBE491C1CE4DB002E5DB2 /* MapViewController.swift in Sources */,
 				48D4FFEA1BF7D2ED006DA09C /* LocationDetailViewController.swift in Sources */,
-				48759B471CBDBE7100789DB8 /* Visit.swift in Sources */,
+				48759B471CBDBE7100789DB8 /* DatabaseVisit.swift in Sources */,
 				698AF39B1BF79A4D00F1E745 /* Fetchable.swift in Sources */,
 				48510BEB1BF7F3D10041C7C1 /* String+Additions.swift in Sources */,
 				48E3B8601B195896003DD726 /* StyleController.swift in Sources */,
@@ -664,6 +667,7 @@
 				48759B4A1CC102B500789DB8 /* PocketTrackViewController.swift in Sources */,
 				48642D111BAE1E0400935358 /* LocationAssistant.swift in Sources */,
 				48642D141BAE27D300935358 /* LocationAccessViewController.swift in Sources */,
+				696C6A4E1CC18D9500F42B24 /* Visit.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -782,7 +786,7 @@
 				COPY_PHASE_STRIP = NO;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = Whereabouts/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				"OTHER_SWIFT_FLAGS[arch=*]" = "-DMAIN_APP";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.naturaln0va.$(PRODUCT_NAME:rfc1034identifier)";
@@ -899,7 +903,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = Whereabouts/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				"OTHER_SWIFT_FLAGS[arch=*]" = "-DMAIN_APP";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.naturaln0va.$(PRODUCT_NAME:rfc1034identifier)";
@@ -918,7 +922,7 @@
 				COPY_PHASE_STRIP = NO;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = Whereabouts/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				"OTHER_SWIFT_FLAGS[arch=*]" = "-DMAIN_APP";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.naturaln0va.$(PRODUCT_NAME:rfc1034identifier)";

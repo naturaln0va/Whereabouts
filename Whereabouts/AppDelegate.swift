@@ -5,13 +5,17 @@ import UIKit
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-    var assistant = LocationAssistant(viewController: nil)
+    private lazy var assistant = LocationAssistant()
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
         MenuController.setupMenuWithViewController(
             StyledNavigationController(rootViewController: LocationsViewController()),
             andWindow: UIWindow(frame: UIScreen.mainScreen().bounds)
+        )
+        
+        application.registerUserNotificationSettings(
+            UIUserNotificationSettings(forTypes: .Alert, categories: nil)
         )
         
         application.registerForRemoteNotifications()
@@ -64,8 +68,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 )
             }
             else if type == "Search" {
+                let nvc = StyledNavigationController(rootViewController: AddViewController())
+                nvc.lowPowerCapable = true
                 MenuController.sharedController.presenterViewController?.presentViewController(
-                    StyledNavigationController(rootViewController: AddViewController()),
+                    nvc,
                     animated: true,
                     completion: nil
                 )
@@ -84,7 +90,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // MARK: - Notifications
     
-    internal func settingsDidChange() {
+    @objc private func settingsDidChange() {
         if SettingsController.sharedController.shouldMonitorVisits {
             assistant.startVisitsMonitoring()
         }

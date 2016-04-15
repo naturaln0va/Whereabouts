@@ -46,7 +46,7 @@ class PersistentController {
     }()
     
     // MARK: - Current Models
-    lazy var locationMOC: NSManagedObjectContext = {
+    lazy var moc: NSManagedObjectContext = {
         guard let modelURL = NSBundle.mainBundle().URLForResource("LocationModel", withExtension: "momd") else {
             fatalError("Could not find the data model in the bundle")
         }
@@ -121,7 +121,7 @@ class PersistentController {
     
     // MARK: - Location Management
     func locations() -> [Location] {
-        if let locations = try? DatabaseLocation.objectsInContext(locationMOC) {
+        if let locations = try? DatabaseLocation.objectsInContext(moc) {
             return locations.map { dbLocation in
                 return Location(dbLocation: dbLocation)
             }
@@ -147,7 +147,7 @@ class PersistentController {
             }
         }
         
-        guard let dataToSave = NSEntityDescription.insertNewObjectForEntityForName(DatabaseLocation.entityName(), inManagedObjectContext: locationMOC) as? DatabaseLocation else {
+        guard let dataToSave = NSEntityDescription.insertNewObjectForEntityForName(DatabaseLocation.entityName(), inManagedObjectContext: moc) as? DatabaseLocation else {
             fatalError("Expected to insert and entity of type 'DatabaseLocation'.")
         }
         
@@ -163,10 +163,10 @@ class PersistentController {
         dataToSave.itemPhoneNumber = location.mapItem?.phoneNumber
         dataToSave.itemWebLink = location.mapItem?.url?.absoluteString
         
-        if locationMOC.hasChanges {
-            locationMOC.performBlockAndWait { [unowned self] in
+        if moc.hasChanges {
+            moc.performBlockAndWait { [unowned self] in
                 do {
-                    try self.locationMOC.save()
+                    try self.moc.save()
                 }
                     
                 catch {
@@ -182,7 +182,7 @@ class PersistentController {
             return
         }
         
-        guard let dataToSave = NSEntityDescription.insertNewObjectForEntityForName(DatabaseLocation.entityName(), inManagedObjectContext: locationMOC) as? DatabaseLocation else {
+        guard let dataToSave = NSEntityDescription.insertNewObjectForEntityForName(DatabaseLocation.entityName(), inManagedObjectContext: moc) as? DatabaseLocation else {
             fatalError("Expected to insert and entity of type 'DatabaseLocation'.")
         }
         
@@ -200,10 +200,10 @@ class PersistentController {
             dataToSave.cloudRecordIdentifierData = NSKeyedArchiver.archivedDataWithRootObject(recordID)
         }
         
-        if locationMOC.hasChanges {
-            locationMOC.performBlockAndWait { [unowned self] in
+        if moc.hasChanges {
+            moc.performBlockAndWait { [unowned self] in
                 do {
-                    try self.locationMOC.save()
+                    try self.moc.save()
                 }
                     
                 catch {
@@ -214,14 +214,14 @@ class PersistentController {
     }
     
     func deleteLocation(locationToDelete: DatabaseLocation) {
-        locationMOC.deleteObject(locationToDelete)
+        moc.deleteObject(locationToDelete)
         
         if DEBUG_DATABASE { debugPrint("***PERSISTENTCONTROLLER: Deleting database location: \(locationToDelete).") }
         
-        if locationMOC.hasChanges {
-            locationMOC.performBlockAndWait { [unowned self] in
+        if moc.hasChanges {
+            moc.performBlockAndWait { [unowned self] in
                 do {
-                    try self.locationMOC.save()
+                    try self.moc.save()
                 }
                     
                 catch {
@@ -232,7 +232,7 @@ class PersistentController {
     }
     
     func deleteLocationWithCloudID(cloudID: CKRecordID) {
-        guard let locations = try? DatabaseLocation.objectsInContext(locationMOC) else {
+        guard let locations = try? DatabaseLocation.objectsInContext(moc) else {
             if DEBUG_DATABASE { debugPrint("***PERSISTENTCONTROLLER: No locations in the database.") }
             return
         }
@@ -258,10 +258,10 @@ class PersistentController {
         locationToUpdate.cloudRecordIdentifierData = NSKeyedArchiver.archivedDataWithRootObject(cloudID)
         if DEBUG_DATABASE { debugPrint("***PERSISTENTCONTROLLER: Updated local location with cloud id.") }
         
-        if locationMOC.hasChanges {
-            locationMOC.performBlockAndWait { [unowned self] in
+        if moc.hasChanges {
+            moc.performBlockAndWait { [unowned self] in
                 do {
-                    try self.locationMOC.save()
+                    try self.moc.save()
                 }
                     
                 catch {
@@ -292,10 +292,10 @@ class PersistentController {
             dbLocation.cloudRecordIdentifierData = NSKeyedArchiver.archivedDataWithRootObject(recordID)
         }
         
-        if locationMOC.hasChanges {
-            locationMOC.performBlockAndWait { [unowned self] in
+        if moc.hasChanges {
+            moc.performBlockAndWait { [unowned self] in
                 do {
-                    try self.locationMOC.save()
+                    try self.moc.save()
                 }
                     
                 catch {
@@ -306,7 +306,7 @@ class PersistentController {
     }
     
     private func locationForIdentifier(identifier: String) -> DatabaseLocation? {
-        if let location = try? DatabaseLocation.singleObjectInContext(locationMOC, predicate: NSPredicate(format: "identifier == [c] %@", identifier), sortedBy: nil, ascending: false) {
+        if let location = try? DatabaseLocation.singleObjectInContext(moc, predicate: NSPredicate(format: "identifier == [c] %@", identifier), sortedBy: nil, ascending: false) {
             return location
         }
         else {
@@ -314,104 +314,113 @@ class PersistentController {
         }
     }
     
-    // MARK: - Visits Management
+    // MARK: - Visit Management
+    func visits() -> [Visit] {
+        if let visits = try? DatabaseVisit.objectsInContext(moc) {
+            return visits.map { dbVisit in
+                return Visit(dbVisit: dbVisit)
+            }
+        }
+        return []
+    }
+    
     func cleanUpVisits() {
-//        if let allVisits = try? Visit.objectsInContext(visitMOC) {
-//            var visitsToDelete = [Visit]()
-//            for visit in allVisits {
-//                if visit.arrivalDate.isMoreThanAWeekOld() || visit.departureDate.isMoreThanAWeekOld() {
-//                    visitsToDelete.append(visit)
-//                }
-//            }
-//            deleteVisits(visitsToDelete)
-//        }
+        if let visits = try? DatabaseVisit.objectsInContext(moc) {
+            var visitsToDelete = [DatabaseVisit]()
+            for visit in visits {
+                if visit.arrivalDate.isMoreThanAWeekOld() || visit.departureDate.isMoreThanAWeekOld() {
+                    visitsToDelete.append(visit)
+                }
+            }
+            deleteVisits(visitsToDelete)
+        }
     }
     
-    func deleteVisit(visitToDelete: Visit) {
-//        visitMOC.deleteObject(visitToDelete)
-//        
-//        if visitMOC.hasChanges {
-//            visitMOC.performBlockAndWait { [unowned self] in
-//                do {
-//                    try self.visitMOC.save()
-//                }
-//                    
-//                catch {
-//                    fatalError("Error deleting visit: \(error)")
-//                }
-//            }
-//        }
+    func deleteVisit(visitToDelete: DatabaseVisit) {
+        moc.deleteObject(visitToDelete)
+        
+        if moc.hasChanges {
+            moc.performBlockAndWait { [unowned self] in
+                do {
+                    try self.moc.save()
+                }
+                    
+                catch {
+                    fatalError("Error deleting visit: \(error)")
+                }
+            }
+        }
     }
     
-    func deleteVisits(visitsToDelete: [Visit]) {
-//        for visit in visitsToDelete {
-//            visitMOC.deleteObject(visit)
-//        }
-//        
-//        if visitMOC.hasChanges {
-//            do {
-//                try self.visitMOC.save()
-//            }
-//                
-//            catch {
-//                fatalError("Error deleting visit: \(error)")
-//            }
-//        }
+    func deleteVisits(visitsToDelete: [DatabaseVisit]) {
+        for visit in visitsToDelete {
+            moc.deleteObject(visit)
+        }
+        
+        if moc.hasChanges {
+            do {
+                try self.moc.save()
+            }
+                
+            catch {
+                fatalError("Error deleting visit: \(error)")
+            }
+        }
     }
     
-    func saveVisit(arrivalDate: NSDate, departureDate: NSDate, horizontalAccuracy: CLLocationAccuracy, coordinate: CLLocationCoordinate2D, address: CLPlacemark?) {
-//        cleanUpVisits()
-//        
-//        guard let dataToSave = NSEntityDescription.insertNewObjectForEntityForName(Visit.entityName(), inManagedObjectContext: visitMOC) as? Visit else {
-//            fatalError("Expected to insert and entity of type 'Visit'.")
-//        }
-//        
-//        dataToSave.identifier = NSUUID().UUIDString
-//        dataToSave.totalVisits = 1
-//        dataToSave.arrivalDate = arrivalDate
-//        dataToSave.departureDate = departureDate
-//        dataToSave.horizontalAccuracy = horizontalAccuracy
-//        dataToSave.coordinate = coordinate
-//        dataToSave.address = address
-//        
-//        if visitMOC.hasChanges {
-//            visitMOC.performBlockAndWait { [unowned self] in
-//                do {
-//                    try self.visitMOC.save()
-//                }
-//                    
-//                catch {
-//                    fatalError("Error saving visit: \(error)")
-//                }
-//            }
-//        }
+    func saveVisit(visitToSave: Visit) {
+        cleanUpVisits()
+        
+        guard let dataToSave = NSEntityDescription.insertNewObjectForEntityForName(DatabaseVisit.entityName(), inManagedObjectContext: moc) as? DatabaseVisit else {
+            fatalError("Expected to insert and entity of type 'Visit'.")
+        }
+        
+        dataToSave.identifier = visitToSave.identifier
+        dataToSave.totalVisits = visitToSave.totalVisits
+        dataToSave.arrivalDate = visitToSave.arrivalDate
+        dataToSave.departureDate = visitToSave.departureDate
+        dataToSave.horizontalAccuracy = visitToSave.horizontalAccuracy
+        dataToSave.coordinate = visitToSave.coordinate
+        dataToSave.address = visitToSave.address
+        
+        if moc.hasChanges {
+            moc.performBlockAndWait { [unowned self] in
+                do {
+                    try self.moc.save()
+                }
+                    
+                catch {
+                    fatalError("Error saving visit: \(error)")
+                }
+            }
+        }
     }
     
     func visitWasVisited(visit: Visit) {
-//        if let result = try? Visit.singleObjectInContext(visitMOC, predicate: NSPredicate(format: "identifier == [c] %@", visit.identifier), sortedBy: nil, ascending: false) {
-//            
-//            if let visitToUpdate = result {
-//                visitToUpdate.totalVisits = visitToUpdate.totalVisits + 1
-//                
-//                if visitMOC.hasChanges {
-//                    visitMOC.performBlockAndWait { [unowned self] in
-//                        do {
-//                            try self.visitMOC.save()
-//                        }
-//                            
-//                        catch {
-//                            fatalError("Error saving location: \(error)")
-//                        }
-//                    }
-//                }
-//            }
-//            else {
-//                if DEBUG_DATABASE { debugPrint("***PERSISTENTCONTROLLER: Error adding or updating location with identifier: \(visit.identifier)") }
-//            }
-//        }
-//        else {
-//            if DEBUG_DATABASE { debugPrint("***PERSISTENTCONTROLLER: Error failed to get entity with identifier: \(visit.identifier).") }
-//        }
+        if let result = try? DatabaseVisit.singleObjectInContext(moc, predicate: NSPredicate(format: "identifier == [c] %@", visit.identifier), sortedBy: nil, ascending: false) {
+            
+            if let visitToUpdate = result {
+                visitToUpdate.totalVisits = visitToUpdate.totalVisits + 1
+                
+                if moc.hasChanges {
+                    moc.performBlockAndWait { [unowned self] in
+                        do {
+                            try self.moc.save()
+                        }
+                            
+                        catch {
+                            fatalError("Error saving location: \(error)")
+                        }
+                    }
+                }
+            }
+            else {
+                if DEBUG_DATABASE { debugPrint("***PERSISTENTCONTROLLER: Error updating visit with identifier: \(visit.identifier)") }
+            }
+        }
+        else {
+            if DEBUG_DATABASE { debugPrint("***PERSISTENTCONTROLLER: Error failed to get visit with identifier: \(visit.identifier).") }
+        }
     }
     
 }

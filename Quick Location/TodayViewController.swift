@@ -25,7 +25,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
         }
     }
     
-    let assistant = LocationAssistant(viewController: nil)
+    let assistant = LocationAssistant()
     //let sharedDefaults = NSUserDefaults(suiteName: "group.net.naturaln0va.Whereabouts")
     
     override func viewDidLoad() {

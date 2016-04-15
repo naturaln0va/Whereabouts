@@ -5,7 +5,7 @@ import CoreData
 class ListViewController: UITableViewController {
 
     private lazy var fetchedResultsController: NSFetchedResultsController = {
-        let moc = PersistentController.sharedController.locationMOC
+        let moc = PersistentController.sharedController.moc
         
         let fetchRequest = DatabaseLocation.fetchRequest(moc, predicate: nil, sortedBy: "date", ascending: false)
         fetchRequest.fetchBatchSize = 24
