@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
@@ -16,13 +15,13 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mazzio's Pizza" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7cX-tu-nW2">
-                        <rect key="frame" x="16" y="8" width="288" height="18"/>
-                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
+                        <rect key="frame" x="16" y="8" width="288" height="16"/>
+                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="13"/>
                         <color key="textColor" red="0.3411764706" green="0.54117647059999996" blue="0.99215686270000003" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="247" text="http://www.mazzios.com" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qZy-M3-lMw">
-                        <rect key="frame" x="16" y="33" width="288" height="19"/>
+                        <rect key="frame" x="16" y="28" width="288" height="24"/>
                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
@@ -34,7 +33,7 @@
                     <constraint firstItem="7cX-tu-nW2" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="4JW-NE-bLA"/>
                     <constraint firstAttribute="trailingMargin" secondItem="qZy-M3-lMw" secondAttribute="trailing" constant="8" id="eVb-kb-iqp"/>
                     <constraint firstAttribute="bottom" secondItem="qZy-M3-lMw" secondAttribute="bottom" constant="8" id="hzz-fu-0Y7"/>
-                    <constraint firstItem="qZy-M3-lMw" firstAttribute="top" secondItem="7cX-tu-nW2" secondAttribute="bottom" constant="7" id="mQ0-1D-bK1"/>
+                    <constraint firstItem="qZy-M3-lMw" firstAttribute="top" secondItem="7cX-tu-nW2" secondAttribute="bottom" constant="4" id="mQ0-1D-bK1"/>
                     <constraint firstAttribute="trailing" secondItem="7cX-tu-nW2" secondAttribute="trailing" constant="16" id="mYN-qT-pbz"/>
                     <constraint firstItem="qZy-M3-lMw" firstAttribute="top" secondItem="7cX-tu-nW2" secondAttribute="bottom" constant="4" id="mbc-Zm-XMk"/>
                 </constraints>

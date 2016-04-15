@@ -7,7 +7,6 @@ import MapKit
     optional func locationAccessViewControllerAccessDenied()
 }
 
-
 class LocationAccessViewController: UIViewController {
     
     @IBOutlet var mapView: MKMapView!

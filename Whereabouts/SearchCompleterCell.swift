@@ -2,6 +2,7 @@
 import UIKit
 import MapKit
 
+@available(iOS 9.3, *)
 class SearchCompleterCell: UITableViewCell {
 
     static let cellHeight: CGFloat = 56.0

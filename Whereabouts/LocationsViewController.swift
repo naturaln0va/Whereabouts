@@ -59,6 +59,12 @@ class LocationsViewController: UIViewController {
         refreshToggleState()
     }
     
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        
+        print("title segment height: \(titleToggle.frame.height)")
+    }
+    
     // MARK: - Helpers
     func beginObserving() {
         NSNotificationCenter.defaultCenter().addObserver(

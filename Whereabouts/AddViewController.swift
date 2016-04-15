@@ -14,6 +14,7 @@ class AddViewController: UITableViewController {
         return bar
     }()
     
+    @available(iOS 9.3, *)
     private lazy var completer: MKLocalSearchCompleter = {
         let completer = MKLocalSearchCompleter()
         completer.delegate = self
@@ -21,7 +22,7 @@ class AddViewController: UITableViewController {
         return completer
     }()
     
-    private var completionResults: [MKLocalSearchCompletion]?
+    private var completionResults: [AnyObject]?
     
     private var searchedMapItems: [MKMapItem]? {
         didSet {
@@ -87,7 +88,9 @@ class AddViewController: UITableViewController {
         tableView.rowHeight = UITableViewAutomaticDimension
         
         tableView.registerNib(UINib(nibName: String(SearchResultCell), bundle: nil), forCellReuseIdentifier: String(SearchResultCell))
-        tableView.registerNib(UINib(nibName: String(SearchCompleterCell), bundle: nil), forCellReuseIdentifier: String(SearchCompleterCell))
+        if #available(iOS 9.3, *) {
+            tableView.registerNib(UINib(nibName: String(SearchCompleterCell), bundle: nil), forCellReuseIdentifier: String(SearchCompleterCell))
+        }
         tableView.registerNib(UINib(nibName: String(CurrentLocationCell), bundle: nil), forCellReuseIdentifier: String(CurrentLocationCell))
         
         assistant.delegate = self
@@ -118,11 +121,15 @@ class AddViewController: UITableViewController {
     
     private func startCompleterWithText(searchText: String) {
         if searchText.characters.count > 0 {
-            completer.queryFragment = searchText
+            if #available(iOS 9.3, *) {
+                completer.queryFragment = searchText
+            }
         }
         else {
-            completer.cancel()
-            completionResults?.removeAll()
+            if #available(iOS 9.3, *) {
+                completer.cancel()
+                completionResults?.removeAll()
+            }
             searchType = searchedMapItems?.count > 0 ? .Results : .None
         }
     }
@@ -163,13 +170,22 @@ class AddViewController: UITableViewController {
         }
         
         if searchType == .Completer {
-            guard let cell = tableView.dequeueReusableCellWithIdentifier(String(SearchCompleterCell)) as? SearchCompleterCell else {
-                fatalError("Expected to dequeue a 'SearchCompleterCell'.")
+            if #available(iOS 9.3, *) {
+                guard let cell = tableView.dequeueReusableCellWithIdentifier(String(SearchCompleterCell)) as? SearchCompleterCell else {
+                    fatalError("Expected to dequeue a 'SearchCompleterCell'.")
+                }
+                
+                guard let result = completionResults?[indexPath.row] as? MKLocalSearchCompletion else {
+                    fatalError("ERROR: Failed to parse a 'MKLocalSearchResponse' for the completer cell.")
+                }
+                
+                cell.configureCellWithResult(result)
+                
+                return cell
             }
-            
-            cell.configureCellWithResult(completionResults?[indexPath.row])
-            
-            return cell
+            else {
+                fatalError("ERROR: Search type should not be Completer before iOS 9.3.")
+            }
         }
         else {
             guard let cell = tableView.dequeueReusableCellWithIdentifier(String(SearchResultCell)) as? SearchResultCell else {
@@ -217,16 +233,21 @@ class AddViewController: UITableViewController {
             }
         }
         else if searchType == .Completer {
-            if let results = completionResults {
-                searchWithRequest(MKLocalSearchRequest(completion: results[indexPath.row])) { response, error in
-                    if let response = response where error == nil {
-                        self.searchedMapItems = response.mapItems
-                        self.titleSearchBar.endEditing(true)
-                    }
-                    else {
-                        print("Error searching for \(results[indexPath.row]). Error: \(error)")
+            if #available(iOS 9.3, *) {
+                if let result = completionResults?[indexPath.row] as? MKLocalSearchCompletion {
+                    searchWithRequest(MKLocalSearchRequest(completion: result)) { response, error in
+                        if let response = response where error == nil {
+                            self.searchedMapItems = response.mapItems
+                            self.titleSearchBar.endEditing(true)
+                        }
+                        else {
+                            print("Error searching for \(result). Error: \(error)")
+                        }
                     }
                 }
+            }
+            else {
+                fatalError("ERROR: Search type should not be Completer before iOS 9.3.")
             }
         }
         else if let results = searchedMapItems where searchType == .Results {
@@ -258,7 +279,12 @@ class AddViewController: UITableViewController {
             return CurrentLocationCell.cellHeight
         }
         else {
-            return searchType == .Results ? SearchResultCell.cellHeight : SearchCompleterCell.cellHeight
+            if #available(iOS 9.3, *) {
+                return searchType == .Results ? SearchResultCell.cellHeight : SearchCompleterCell.cellHeight
+            }
+            else {
+                return searchType == .Results ? SearchResultCell.cellHeight : 0.0
+            }
         }
     }
     
@@ -350,6 +376,7 @@ extension AddViewController: LocationAccessViewControllerDelegate {
 // MARK: - MKLocalSearchCompleterDelegate
 extension AddViewController: MKLocalSearchCompleterDelegate {
     
+    @available(iOS 9.3, *)
     func completerDidUpdateResults(completer: MKLocalSearchCompleter) {
         completionResults = completer.results
         
@@ -360,6 +387,7 @@ extension AddViewController: MKLocalSearchCompleterDelegate {
         tableView.reloadData()
     }
     
+    @available(iOS 9.3, *)
     func completer(completer: MKLocalSearchCompleter, didFailWithError error: NSError) {
         print("Failed to complete search: \(error)")
     }
