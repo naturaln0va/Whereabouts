@@ -334,17 +334,17 @@ extension NewLocationViewController: LocationAssistantDelegate {
         formatter.minimumFractionDigits = 0
         formatter.maximumFractionDigits = 2
         
-        let accuracyString = formatter.stringFromNumber(NSNumber(double: min(100, (SettingsController.sharedController.distanceAccuracy / location.horizontalAccuracy) * 100)))
+//        let accuracyString = formatter.stringFromNumber(NSNumber(double: min(100, (SettingsController.sharedController.distanceAccuracy / location.horizontalAccuracy) * 100)))
         
-        let label = UILabel()
-        label.font = UIFont.systemFontOfSize(12.0, weight: UIFontWeightRegular)
-        label.textAlignment = .Center
-        label.text = "\(accuracyString!)% Accurate"
-        label.sizeToFit()
-        let labelButton = UIBarButtonItem(customView: label)
-        accuracyBarButtonItem = labelButton
-        
-        toolbarItems = [spaceBarButtonItem, labelButton, spaceBarButtonItem, loadingBarButtonItem]
+//        let label = UILabel()
+//        label.font = UIFont.systemFontOfSize(12.0, weight: UIFontWeightRegular)
+//        label.textAlignment = .Center
+//        label.text = "\(accuracyString!)% Accurate"
+//        label.sizeToFit()
+//        let labelButton = UIBarButtonItem(customView: label)
+//        accuracyBarButtonItem = labelButton
+//        
+//        toolbarItems = [spaceBarButtonItem, labelButton, spaceBarButtonItem, loadingBarButtonItem]
         
         if finished {
             assistant.getAddressForLocation(location)

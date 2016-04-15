@@ -8,24 +8,24 @@ class SettingsController {
     
     static let sharedController = SettingsController()
     
-    static let kLocationAccuracyKey = "distanceAccuracy" // enum constant
-    static let kLocationTimeoutKey = "distanceTimeout" // seconds
     static let kNearbyPhotoRangeKey = "nearbyPhotoRange" // meters
     static let kUnitStyleKey = "unitStyle" // customary, metric
     static let kShouldMonitorVisits = "shouldMonitorVisits" // user preference
     static let kUserFirstLaunchedKey = "firstLaunched" // date user first installed
-    static let kUserHasSubscribed = "userSubscribed" // user has subscribed to cloud changes
+    static let kUserHasSubscribedKey = "userSubscribed" // user has subscribed to cloud changes
+    static let kBatterySaverModeKey = "batterySaver" // user wants to save energy so let make location fixes less accurate
+    static let kCloudSyncKey = "cloudSync" // user watns backups to iCloud
     
     private let defaults = NSUserDefaults.standardUserDefaults()
     
-    lazy private var baseDefaults: Dictionary<String, AnyObject> = {
+    lazy private var baseDefaults: [String: AnyObject] = {
         return [
-            kLocationAccuracyKey : kHorizontalAccuracyAverage,
-            kLocationTimeoutKey: kLocationTimeoutNormal,
             kNearbyPhotoRangeKey: 250,
             kUnitStyleKey: true,
             kShouldMonitorVisits: false,
-            kUserHasSubscribed: false
+            kUserHasSubscribedKey: false,
+            kBatterySaverModeKey: false,
+            kCloudSyncKey: true
         ]
     }()
     
@@ -40,30 +40,6 @@ class SettingsController {
     }
     
     // MARK: - Public
-    func stringForDistanceAccuracy() -> String {
-        switch distanceAccuracy {
-            
-        case kHorizontalAccuracyPoor:
-            return "Poor"
-            
-        case kHorizontalAccuracyFair:
-            return "Fair"
-            
-        case kHorizontalAccuracyAverage:
-            return "Average"
-            
-        case kHorizontalAccuracyGood:
-            return "Good"
-            
-        case kHorizontalAccuracyBest:
-            return "Best"
-            
-        default:
-            return ""
-            
-        }
-    }
-    
     func stringForPhotoRange() -> String {
         switch nearbyPhotoRange {
         case 50:
@@ -83,34 +59,34 @@ class SettingsController {
         }
     }
     
-    var distanceAccuracy: Double {
-        get {
-            return defaults.doubleForKey(SettingsController.kLocationAccuracyKey)
-        }
-        set {
-            defaults.setDouble(newValue, forKey: SettingsController.kLocationAccuracyKey)
-            defaults.synchronize()
-            NSNotificationCenter.defaultCenter().postNotificationName(kSettingsControllerDidChangeNotification, object: nil)
-        }
-    }
-    
-    var locationTimeout: Int {
-        get {
-            return defaults.integerForKey(SettingsController.kLocationTimeoutKey)
-        }
-        set {
-            defaults.setInteger(newValue, forKey: SettingsController.kLocationTimeoutKey)
-            defaults.synchronize()
-            NSNotificationCenter.defaultCenter().postNotificationName(kSettingsControllerDidChangeNotification, object: nil)
-        }
-    }
-    
     var nearbyPhotoRange: Int {
         get {
             return defaults.integerForKey(SettingsController.kNearbyPhotoRangeKey)
         }
         set {
             defaults.setInteger(newValue, forKey: SettingsController.kNearbyPhotoRangeKey)
+            defaults.synchronize()
+            NSNotificationCenter.defaultCenter().postNotificationName(kSettingsControllerDidChangeNotification, object: nil)
+        }
+    }
+    
+    var shouldSyncToCloud: Bool {
+        get {
+            return defaults.boolForKey(SettingsController.kCloudSyncKey)
+        }
+        set {
+            defaults.setBool(newValue, forKey: SettingsController.kCloudSyncKey)
+            defaults.synchronize()
+            NSNotificationCenter.defaultCenter().postNotificationName(kSettingsControllerDidChangeNotification, object: nil)
+        }
+    }
+    
+    var batterySaverMode: Bool {
+        get {
+            return defaults.boolForKey(SettingsController.kBatterySaverModeKey)
+        }
+        set {
+            defaults.setBool(newValue, forKey: SettingsController.kBatterySaverModeKey)
             defaults.synchronize()
             NSNotificationCenter.defaultCenter().postNotificationName(kSettingsControllerDidChangeNotification, object: nil)
         }
@@ -140,10 +116,10 @@ class SettingsController {
     
     var hasSubscribed: Bool {
         get {
-            return defaults.boolForKey(SettingsController.kUserHasSubscribed)
+            return defaults.boolForKey(SettingsController.kUserHasSubscribedKey)
         }
         set {
-            defaults.setBool(newValue, forKey: SettingsController.kUserHasSubscribed)
+            defaults.setBool(newValue, forKey: SettingsController.kUserHasSubscribedKey)
             defaults.synchronize()
         }
     }

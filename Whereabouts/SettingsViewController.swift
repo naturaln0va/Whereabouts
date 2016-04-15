@@ -5,11 +5,10 @@ import MessageUI
 class SettingsViewController: UITableViewController {
 
     enum UserSectionRows: Int {
-        case AccuracyRow
-        case TimeoutRow
-        case PhotoRangeRow
         case UnitStyleRow
-        case VisitSwitchRow
+        case BatterySaverRow
+        case CloudSyncRow
+        case PocketTrackRow
         case TotalRows
     }
     
@@ -33,7 +32,9 @@ class SettingsViewController: UITableViewController {
     }
     
     enum SettingSwitchTag: Int {
-        case VisitSwitch
+        case UnitStyleSwitch
+        case BatterySaverSwitch
+        case CloudSyncSwitch
     }
     
     private lazy var footerView: UIView = {
@@ -68,15 +69,16 @@ class SettingsViewController: UITableViewController {
         
         title = "Settings"
 
-        tableView = UITableView(frame: view.bounds, style: .Grouped)
+        tableView = UITableView(frame: CGRect.zero, style: .Grouped)
         tableView.backgroundColor = StyleController.sharedController.backgroundColor
         tableView.tableFooterView = footerView
-        tableView.delegate = self
-        tableView.dataSource = self
         
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Done", style: .Plain, target: self, action: #selector(SettingsViewController.doneButtonPressed))
-        
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SettingsViewController.settingsDidChange), name: kSettingsControllerDidChangeNotification, object: nil)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            title: "Done",
+            style: .Plain,
+            target: self,
+            action: #selector(SettingsViewController.doneButtonPressed)
+        )
     }
     
     // MARK: - Actions
@@ -87,41 +89,41 @@ class SettingsViewController: UITableViewController {
     func switchWasToggled(sender: UISwitch) {
         switch sender.tag {
             
-        case SettingSwitchTag.VisitSwitch.rawValue:
-            SettingsController.sharedController.shouldMonitorVisits = sender.on
+        case SettingSwitchTag.UnitStyleSwitch.rawValue:
+            SettingsController.sharedController.isUnitStyleImperial = !sender.on
+            tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)], withRowAnimation: .Automatic)
+            break
+            
+        case SettingSwitchTag.BatterySaverSwitch.rawValue:
+            SettingsController.sharedController.batterySaverMode = sender.on
+            tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 1, inSection: 0)], withRowAnimation: .Automatic)
+            break
+            
+        case SettingSwitchTag.CloudSyncSwitch.rawValue:
+            SettingsController.sharedController.shouldSyncToCloud = sender.on
+            tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 2, inSection: 0)], withRowAnimation: .Automatic)
             break
             
         default:
             break
         }
     }
-    
-    // MARK: - Notifications
-    func settingsDidChange() {
-        tableView.reloadData()
-    }
 
     // MARK: - UITableViewDataSource
     override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 35.0
+        return 32.0
     }
     
     override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 0.0001
     }
     
-    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let coloredBackgroundView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: CGRectGetWidth(tableView.bounds), height: 24.0))
-        coloredBackgroundView.backgroundColor = UIColor.clearColor()
-        return coloredBackgroundView
-    }
-    
     override func tableView(tableView: UITableView, shouldHighlightRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        if indexPath.section == TableSections.UserSection.rawValue && indexPath.row == UserSectionRows.VisitSwitchRow.rawValue {
-            return false
+        if indexPath.section == TableSections.UserSection.rawValue && indexPath.row == UserSectionRows.PocketTrackRow.rawValue {
+            return true
         }
         else {
-            return true
+            return false
         }
     }
     
@@ -147,42 +149,55 @@ class SettingsViewController: UITableViewController {
         
         if indexPath.section == TableSections.UserSection.rawValue {
             switch indexPath.row {
-            case UserSectionRows.AccuracyRow.rawValue:
-                cell.textLabel?.text = "Location Accuracy"
-                cell.detailTextLabel?.text = SettingsController.sharedController.stringForDistanceAccuracy()
-                cell.accessoryType = .DisclosureIndicator
-                break
-                
-            case UserSectionRows.TimeoutRow.rawValue:
-                cell.textLabel?.text = "Location Timeout"
-                cell.detailTextLabel?.text = "\(SettingsController.sharedController.locationTimeout)s"
-                cell.accessoryType = .DisclosureIndicator
-                break
-                
-            case UserSectionRows.PhotoRangeRow.rawValue:
-                cell.textLabel?.text = "Nearby Photo Range"
-                cell.detailTextLabel?.text = SettingsController.sharedController.stringForPhotoRange()
-                cell.accessoryType = .DisclosureIndicator
-                break
-                
             case UserSectionRows.UnitStyleRow.rawValue:
-                cell.textLabel?.text = "Unit Style"
-                cell.detailTextLabel?.text = SettingsController.sharedController.isUnitStyleImperial ? "Customary" : "Metric"
-                cell.accessoryType = .DisclosureIndicator
-                break
+                cell.textLabel?.text = "Metric Unit Style"
                 
-            case UserSectionRows.VisitSwitchRow.rawValue:
-                cell.textLabel?.text = "Visits Monitoring"
-                
-                let visitSwitch = UISwitch()
-                visitSwitch.tag = SettingSwitchTag.VisitSwitch.rawValue
-                visitSwitch.on = SettingsController.sharedController.shouldMonitorVisits
-                visitSwitch.addTarget(self,
+                let unitSwitch = UISwitch()
+                unitSwitch.tag = SettingSwitchTag.UnitStyleSwitch.rawValue
+                unitSwitch.on = !SettingsController.sharedController.isUnitStyleImperial
+                unitSwitch.addTarget(
+                    self,
                     action: #selector(SettingsViewController.switchWasToggled(_:)),
                     forControlEvents: .ValueChanged
                 )
                 
-                cell.accessoryView = visitSwitch
+                cell.accessoryView = unitSwitch
+                break
+                
+            case UserSectionRows.BatterySaverRow.rawValue:
+                cell.textLabel?.text = "Battery Saver Mode"
+                
+                let unitSwitch = UISwitch()
+                unitSwitch.tag = SettingSwitchTag.BatterySaverSwitch.rawValue
+                unitSwitch.on = SettingsController.sharedController.batterySaverMode
+                unitSwitch.addTarget(
+                    self,
+                    action: #selector(SettingsViewController.switchWasToggled(_:)),
+                    forControlEvents: .ValueChanged
+                )
+                
+                cell.accessoryView = unitSwitch
+                break
+                
+            case UserSectionRows.CloudSyncRow.rawValue:
+                cell.textLabel?.text = "iCloud Sync"
+                
+                let unitSwitch = UISwitch()
+                unitSwitch.tag = SettingSwitchTag.CloudSyncSwitch.rawValue
+                unitSwitch.on = SettingsController.sharedController.shouldSyncToCloud
+                unitSwitch.addTarget(
+                    self,
+                    action: #selector(SettingsViewController.switchWasToggled(_:)),
+                    forControlEvents: .ValueChanged
+                )
+                
+                cell.accessoryView = unitSwitch
+                break
+                
+            case UserSectionRows.PocketTrackRow.rawValue:
+                cell.textLabel?.text = "Pocket Track"
+                cell.detailTextLabel?.text = SettingsController.sharedController.shouldMonitorVisits ? "Enabled" : "Disabled"
+                cell.accessoryType = .DisclosureIndicator
                 break
                 
             default:
@@ -234,165 +249,17 @@ class SettingsViewController: UITableViewController {
                 break
             }
         }
-        else if indexPath.section == TableSections.UserSection.rawValue {
-            switch indexPath.row {
-            case UserSectionRows.AccuracyRow.rawValue:
-                let values = [
-                    kHorizontalAccuracyPoor,
-                    kHorizontalAccuracyFair,
-                    kHorizontalAccuracyAverage,
-                    kHorizontalAccuracyGood,
-                    kHorizontalAccuracyBest
-                ]
-                let labels = [
-                    "Poor",
-                    "Fair",
-                    "Average",
-                    "Good",
-                    "Best"
-                ]
-                
-                let index: Int = values.indexOf(SettingsController.sharedController.distanceAccuracy)!
-                
-                let data = PickerData(values: values, currentIndex: index, labels: labels, detailLabels: nil, footerDescription: "Higher accuracy may take longer when locating.")
-                let pvc = PickerViewController(data: data, tag: PickerViewControllerTags.AccuracyTag.rawValue, title: "Accuracy")
-                pvc.delegate = self
-                
-                navigationController?.pushViewController(pvc, animated: true)
-                break
-                
-            case UserSectionRows.TimeoutRow.rawValue:
-                let values = [
-                    kLocationTimeoutShort,
-                    kLocationTimeoutNormal,
-                    kLocationTimeoutLong,
-                    kLocationTimeoutVeryLong
-                ]
-                let labels = [
-                    "Short",
-                    "Normal",
-                    "Long",
-                    "Very Long"
-                ]
-                let details = [
-                    "10s",
-                    "15s",
-                    "25s",
-                    "45s"
-                ]
-                
-                let index: Int = values.indexOf(SettingsController.sharedController.locationTimeout)!
-                
-                let data = PickerData(values: values, currentIndex: index, labels: labels, detailLabels: details, footerDescription: "When attempting to find your location a longer timeout may increase accuracy.")
-                let pvc = PickerViewController(data: data, tag: PickerViewControllerTags.TimeoutTag.rawValue, title: "Timeout")
-                pvc.delegate = self
-                
-                navigationController?.pushViewController(pvc, animated: true)
-                break
-                
-            case UserSectionRows.PhotoRangeRow.rawValue:
-                let values = [
-                    50,
-                    250,
-                    1600,
-                    5000
-                ]
-                let labels = [
-                    "Low",
-                    "Normal",
-                    "High",
-                    "Very High"
-                ]
-                
-                var details = [String]()
-                if SettingsController.sharedController.isUnitStyleImperial {
-                    details = [
-                        "165 feet",
-                        "825 feet",
-                        "1 mile",
-                        "3 miles"
-                    ]
-                }
-                else {
-                    details = [
-                        "50 meters",
-                        "250 meters",
-                        "1.6 kilometers",
-                        "5 kilometers"
-                    ]
-                }
-                
-                let index: Int = values.indexOf(SettingsController.sharedController.nearbyPhotoRange)!
-                
-                let data = PickerData(values: values, currentIndex: index, labels: labels, detailLabels: details, footerDescription: "You can see photos you have taken near a saved location.")
-                let pvc = PickerViewController(data: data, tag: PickerViewControllerTags.PhotoRangeTag.rawValue, title: "Range")
-                pvc.delegate = self
-                
-                navigationController?.pushViewController(pvc, animated: true)
-                break
-                
-            case UserSectionRows.UnitStyleRow.rawValue:
-                let values = [
-                    true,
-                    false
-                ]
-                let labels = [
-                    "Imperial",
-                    "Metric"
-                ]
-                
-                let index: Int = SettingsController.sharedController.isUnitStyleImperial ? 0 : 1
-                
-                let data = PickerData(values: values, currentIndex: index, labels: labels, detailLabels: nil, footerDescription: "Customary: Miles, Feet\nMetric: Kilometers, Meters")
-                let pvc = PickerViewController(data: data, tag: PickerViewControllerTags.UnitStyleTag.rawValue, title: "Unit")
-                pvc.delegate = self
-                
-                navigationController?.pushViewController(pvc, animated: true)
-                break
-                
-            default:
-                break
-            }
+        else if indexPath.section == TableSections.UserSection.rawValue && indexPath.row == UserSectionRows.PocketTrackRow.rawValue {
+            // present pocket track vc
         }
     }
     
 }
-
 
 extension SettingsViewController: MFMailComposeViewControllerDelegate {
     
     func mailComposeController(controller: MFMailComposeViewController, didFinishWithResult result: MFMailComposeResult, error: NSError?) {
         dismissViewControllerAnimated(true, completion: nil)
-    }
-    
-}
-
-
-extension SettingsViewController: PickerViewControllerDelegate {
-    
-    func pickerViewController(pvc: PickerViewController, didPickObject object: AnyObject) {
-        switch pvc.tag {
-            
-        case PickerViewControllerTags.AccuracyTag.rawValue:
-            SettingsController.sharedController.distanceAccuracy = object as! Double
-            break
-            
-        case PickerViewControllerTags.TimeoutTag.rawValue:
-            SettingsController.sharedController.locationTimeout = object as! Int
-            break
-            
-        case PickerViewControllerTags.PhotoRangeTag.rawValue:
-            SettingsController.sharedController.nearbyPhotoRange = object as! Int
-            break
-            
-        case PickerViewControllerTags.UnitStyleTag.rawValue:
-            SettingsController.sharedController.isUnitStyleImperial = object as! Bool
-            break
-            
-        default:
-            break
-            
-        }
     }
     
 }

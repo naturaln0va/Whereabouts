@@ -4,9 +4,9 @@ import CoreLocation
 
 
 let kHorizontalAccuracyPoor:    CLLocationAccuracy = 5000.0
-let kHorizontalAccuracyFair:    CLLocationAccuracy = 2000.0
+let kHorizontalAccuracyFair:    CLLocationAccuracy = 2500.0
 let kHorizontalAccuracyAverage: CLLocationAccuracy = 150.0
-let kHorizontalAccuracyGood:    CLLocationAccuracy = 25.0
+let kHorizontalAccuracyGood:    CLLocationAccuracy = 22.5
 let kHorizontalAccuracyBest:    CLLocationAccuracy = 5.0
 
 let kLocationTimeoutShort:      Int = 10
@@ -130,7 +130,7 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate {
             monitoringLocationUpdates = true
             
             manager.delegate = self
-            manager.desiredAccuracy = kHorizontalAccuracyAverage
+            manager.desiredAccuracy = 300.0
             manager.startMonitoringVisits()
         }
         else {
@@ -189,11 +189,11 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate {
         
         if CLLocationManager.locationServicesEnabled() {
             manager.delegate = self
-            manager.desiredAccuracy = SettingsController.sharedController.distanceAccuracy
+            manager.desiredAccuracy = SettingsController.sharedController.batterySaverMode ? kHorizontalAccuracyFair : kHorizontalAccuracyGood
             manager.startUpdatingLocation()
             updatingLocation = true
             
-            let interval = NSTimeInterval(SettingsController.sharedController.locationTimeout)
+            let interval = NSTimeInterval(SettingsController.sharedController.batterySaverMode ? kLocationTimeoutShort : kLocationTimeoutNormal)
             timer = NSTimer.scheduledTimerWithTimeInterval(interval, target: self, selector: #selector(LocationAssistant.didTimeOut), userInfo: nil, repeats: false)
         }
     }
