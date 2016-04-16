@@ -273,6 +273,10 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate {
     
     func locationManager(manager: CLLocationManager, didVisit visit: CLVisit) {
         #if MAIN_APP
+            let notification = UILocalNotification()
+            notification.alertBody = "Visit recieved!"
+            UIApplication.sharedApplication().presentLocalNotificationNow(notification)
+
             var visitNotificationString = ""
             if visit.departureDate.isEqualToDate(NSDate.distantFuture()) {
                 visitNotificationString += "😸→📍Arrived at: "
@@ -283,12 +287,12 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate {
             let locationOfVisit = CLLocation(latitude: visit.coordinate.latitude, longitude: visit.coordinate.longitude)
             
             for visit in PersistentController.sharedController.visits() {
-                if visit.location.distanceFromLocation(locationOfVisit) < 325.0 {
+                if visit.location.distanceFromLocation(locationOfVisit) < 250.0 {
                     PersistentController.sharedController.visitWasVisited(visit)
                     
                     let notification = UILocalNotification()
                     notification.alertAction = nil
-                    notification.alertBody = "You have now Visited \(visit.address == nil ? stringFromCoordinate(visit.coordinate) : stringFromAddress(visit.address!, withNewLine: false)) \(visit.totalVisits)"
+                    notification.alertBody = "You have now visited \(visit.address == nil ? stringFromCoordinate(visit.coordinate) : stringFromAddress(visit.address!, withNewLine: false)) \(visit.totalVisits) time(s)"
                     UIApplication.sharedApplication().presentLocalNotificationNow(notification)
                     return
                 }

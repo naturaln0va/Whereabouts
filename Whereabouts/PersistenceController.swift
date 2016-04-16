@@ -369,8 +369,6 @@ class PersistentController {
     }
     
     func saveVisit(visitToSave: Visit) {
-        cleanUpVisits()
-        
         guard let dataToSave = NSEntityDescription.insertNewObjectForEntityForName(DatabaseVisit.entityName(), inManagedObjectContext: moc) as? DatabaseVisit else {
             fatalError("Expected to insert and entity of type 'Visit'.")
         }
