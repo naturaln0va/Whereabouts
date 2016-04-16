@@ -42,6 +42,7 @@
 		488BE6471CABF41100BA24C8 /* SearchResultCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 488BE6451CABF41100BA24C8 /* SearchResultCell.xib */; };
 		48AA3C331C01732800A0935A /* PickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48AA3C321C01732800A0935A /* PickerViewController.swift */; };
 		48C7636419F59D230096B27A /* RHAUtilExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C7636319F59D230096B27A /* RHAUtilExtensions.swift */; };
+		48CD67801CC294E70032A47E /* SearchIndexController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48CD677F1CC294E70032A47E /* SearchIndexController.swift */; };
 		48D225881A02F908008A419B /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 48D2258A1A02F908008A419B /* MainInterface.storyboard */; };
 		48D4FFE41BF7CB7A006DA09C /* ColorSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D4FFE31BF7CB7A006DA09C /* ColorSelectionViewController.swift */; };
 		48D4FFE61BF7D08F006DA09C /* DefaultLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D4FFE51BF7D08F006DA09C /* DefaultLayout.swift */; };
@@ -151,6 +152,7 @@
 		488BE6451CABF41100BA24C8 /* SearchResultCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchResultCell.xib; sourceTree = "<group>"; };
 		48AA3C321C01732800A0935A /* PickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerViewController.swift; sourceTree = "<group>"; };
 		48C7636319F59D230096B27A /* RHAUtilExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RHAUtilExtensions.swift; sourceTree = "<group>"; };
+		48CD677F1CC294E70032A47E /* SearchIndexController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchIndexController.swift; sourceTree = "<group>"; };
 		48D225891A02F908008A419B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		48D4FFE31BF7CB7A006DA09C /* ColorSelectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorSelectionViewController.swift; sourceTree = "<group>"; };
 		48D4FFE51BF7D08F006DA09C /* DefaultLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultLayout.swift; sourceTree = "<group>"; };
@@ -363,8 +365,9 @@
 				48642D101BAE1E0400935358 /* LocationAssistant.swift */,
 				48E3B8551B193FA3003DD726 /* MenuController.swift */,
 				483AF54C1B0BFF2700A00BED /* PersistenceController.swift */,
-				48E3B85F1B195896003DD726 /* StyleController.swift */,
+				48CD677F1CC294E70032A47E /* SearchIndexController.swift */,
 				69B7A3BA1BFCD76B000BEBA0 /* SettingsController.swift */,
+				48E3B85F1B195896003DD726 /* StyleController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -658,6 +661,7 @@
 				698E782F1CAED0B3004A4178 /* Location.swift in Sources */,
 				692275A81CBE9ADE007C9BA2 /* CacheController.swift in Sources */,
 				483AF54D1B0BFF2700A00BED /* PersistenceController.swift in Sources */,
+				48CD67801CC294E70032A47E /* SearchIndexController.swift in Sources */,
 				690667721C11E83800862742 /* DataModel.xcdatamodeld in Sources */,
 				69B7A3B91BFCD6FE000BEBA0 /* SettingsViewController.swift in Sources */,
 				48707CCC1CAA96090003F792 /* UIColor+Hex.swift in Sources */,

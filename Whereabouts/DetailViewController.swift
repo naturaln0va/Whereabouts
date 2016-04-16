@@ -57,6 +57,14 @@ class DetailViewController: UITableViewController, EditViewControllerDelegate {
             action: #selector(DetailViewController.editButtonPressed)
         )
         
+        if navigationController?.viewControllers.count == 1 {
+            navigationItem.leftBarButtonItem = UIBarButtonItem(
+                barButtonSystemItem: .Cancel,
+                target: self,
+                action: #selector(DetailViewController.cancelButtonPressed)
+            )
+        }
+        
         tableView = UITableView(frame: CGRect.zero, style: .Grouped)
         tableView.backgroundColor = view.backgroundColor
         tableView.registerNib(UINib(nibName: String(MapItemCell), bundle: nil), forCellReuseIdentifier: String(MapItemCell))
@@ -159,6 +167,10 @@ class DetailViewController: UITableViewController, EditViewControllerDelegate {
         let vc = EditViewController(location: locationToDisplay)
         vc.delegate = self
         navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    @objc private func cancelButtonPressed() {
+        dismissViewControllerAnimated(true, completion: nil)
     }
     
     @objc private func navigateButtonPressed() {

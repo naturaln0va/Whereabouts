@@ -1,6 +1,6 @@
 
 import UIKit
-
+import CoreSpotlight
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -21,12 +21,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         application.registerForRemoteNotifications()
         
         CloudController.sharedController.sync()
+        SearchIndexController.sharedController.indexLocations()
+        
         if SettingsController.sharedController.fisrtLaunchDate == nil {
             SettingsController.sharedController.fisrtLaunchDate = NSDate()
-        }
-        
-        if NSProcessInfo.processInfo().environment["SIMULATOR_DEVICE_NAME"] != nil {
-            CloudController.sharedController.sync()
         }
         
         if !SettingsController.sharedController.hasSubscribed {
@@ -54,6 +52,38 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {        
         CloudController.sharedController.handleNotificationInfo(userInfo, completion: completionHandler)
+    }
+    
+    // MARK: - NSUserActivity
+    
+    func application(application: UIApplication, continueUserActivity userActivity: NSUserActivity, restorationHandler: ([AnyObject]?) -> Void) -> Bool {
+        if userActivity.activityType == CSSearchableItemActionType {
+            guard let identifier = userActivity.userInfo?[CSSearchableItemActivityIdentifier] as? String else {
+                return false
+            }
+            
+            let locations = PersistentController.sharedController.locations()
+            
+            let index = locations.indexOf { location in
+                return location.identifier == identifier
+            }
+            
+            guard let indexOfLocation = index else {
+                return false
+            }
+            
+            let location = locations[indexOfLocation]
+            
+            MenuController.sharedController.presenterViewController?.presentViewController(
+                StyledNavigationController(rootViewController: DetailViewController(location: location)),
+                animated: true,
+                completion: nil
+            )
+            
+            return true
+        }
+        
+        return false
     }
     
     // MARK: - Quick Actions

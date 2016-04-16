@@ -1,6 +1,7 @@
 
 import UIKit
 import MapKit
+import CoreSpotlight
 
 class Location: NSObject {
     
@@ -114,6 +115,7 @@ class Location: NSObject {
     
 }
 
+// MARK: - MKAnnotation
 extension Location: MKAnnotation {
     
     var title: String? {
@@ -142,6 +144,26 @@ extension Location: MKAnnotation {
     
     var coordinate: CLLocationCoordinate2D {
         return location.coordinate
+    }
+    
+}
+
+// MARK: - CoreSpotlight
+extension Location {
+    
+    var searchableAttributes: CSSearchableItemAttributeSet {
+        let attr = CSSearchableItemAttributeSet(itemContentType: "\(NSBundle.mainBundle().bundleIdentifier).location")
+        attr.title = title
+        attr.contentCreationDate = date
+        attr.city = placemark?.locality
+        attr.country = placemark?.country
+        attr.stateOrProvince = placemark?.administrativeArea
+        attr.namedLocation = mapItem?.name
+        attr.contentDescription = textContent ?? mapItem?.phoneNumber
+        attr.altitude = NSNumber(double: location.altitude)
+        attr.latitude = NSNumber(double: coordinate.latitude)
+        attr.longitude = NSNumber(double: coordinate.longitude)
+        return attr
     }
     
 }

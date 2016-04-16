@@ -120,6 +120,9 @@ class PersistentController {
     }
     
     // MARK: - Location Management
+    
+    // MARK: Public
+    
     func locations() -> [Location] {
         if let locations = try? DatabaseLocation.objectsInContext(moc) {
             return locations.map { dbLocation in
@@ -250,6 +253,17 @@ class PersistentController {
         }
     }
     
+    // MARK: Private
+    
+    private func locationForIdentifier(identifier: String) -> DatabaseLocation? {
+        if let location = try? DatabaseLocation.singleObjectInContext(moc, predicate: NSPredicate(format: "identifier == [c] %@", identifier), sortedBy: nil, ascending: false) {
+            return location
+        }
+        else {
+            return nil
+        }
+    }
+    
     private func updateDatabaseLocationWithID(identifier: String, cloudID: CKRecordID) {
         guard let locationToUpdate = locationForIdentifier(identifier) else {
             return
@@ -305,16 +319,10 @@ class PersistentController {
         }
     }
     
-    private func locationForIdentifier(identifier: String) -> DatabaseLocation? {
-        if let location = try? DatabaseLocation.singleObjectInContext(moc, predicate: NSPredicate(format: "identifier == [c] %@", identifier), sortedBy: nil, ascending: false) {
-            return location
-        }
-        else {
-            return nil
-        }
-    }
-    
     // MARK: - Visit Management
+    
+    // MARK: Public
+    
     func visits() -> [Visit] {
         if let visits = try? DatabaseVisit.objectsInContext(moc) {
             return visits.map { dbVisit in
