@@ -1,6 +1,7 @@
 
 import UIKit
 import CoreData
+import MapKit
 
 class ListViewController: UITableViewController {
 
@@ -12,6 +13,19 @@ class ListViewController: UITableViewController {
         
         return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: "locations")
     }()
+    
+    private lazy var distanceFormatter: MKDistanceFormatter = {
+        let formatter = MKDistanceFormatter()
+        formatter.unitStyle = .Abbreviated
+        return formatter
+    }()
+    
+    private lazy var assistant = LocationAssistant()
+    private var currentLocaiton: CLLocation? {
+        didSet {
+            tableView.reloadData()
+        }
+    }
     
     deinit {
         fetchedResultsController.delegate = nil
@@ -28,6 +42,19 @@ class ListViewController: UITableViewController {
         
         fetchedResultsController.delegate = self
         fetchLocations()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        assistant.delegate = self
+        assistant.getLocation()
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        assistant.terminate()
     }
 
     private func fetchLocations() {
@@ -56,20 +83,13 @@ class ListViewController: UITableViewController {
         
         if let location = fetchedResultsController.objectAtIndexPath(indexPath) as? DatabaseLocation {
             cell.configureCellWithLocation(Location(dbLocation: location))
+            
+            if let currentLoc = currentLocaiton {
+                cell.distanceLabel.text = distanceFormatter.stringFromDistance(currentLoc.distanceFromLocation(location.location))
+            }
         }
         
         return cell
-    }
-    
-    
-    override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        guard let cell = tableView.dequeueReusableCellWithIdentifier(LocationCell.reuseIdentifier) as? LocationCell else {
-            fatalError("Expected to dequeue a 'LocationCell'.")
-        }
-        
-        if let location = fetchedResultsController.objectAtIndexPath(indexPath) as? DatabaseLocation {
-            cell.configureCellWithLocation(Location(dbLocation: location))
-        }
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -123,6 +143,10 @@ extension ListViewController: NSFetchedResultsControllerDelegate {
             if let cell = tableView.cellForRowAtIndexPath(indexPath!) as? LocationCell {
                 if let location = fetchedResultsController.objectAtIndexPath(indexPath!) as? DatabaseLocation {
                     cell.configureCellWithLocation(Location(dbLocation: location))
+                    
+                    if let currentLoc = currentLocaiton {
+                        cell.distanceLabel.text = distanceFormatter.stringFromDistance(currentLoc.distanceFromLocation(location.location))
+                    }
                 }
             }
             
@@ -134,6 +158,14 @@ extension ListViewController: NSFetchedResultsControllerDelegate {
     
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
         tableView.endUpdates()
+    }
+    
+}
+
+extension ListViewController: LocationAssistantDelegate {
+    
+    func locationAssistantReceivedLocation(location: CLLocation, finished: Bool) {
+        currentLocaiton = location
     }
     
 }

@@ -6,11 +6,13 @@ class LocationCell: UITableViewCell {
     static let cellHeight: CGFloat = 68.0
     static let reuseIdentifier = "LocationCell"
     
-    @IBOutlet weak var addressLabel: UILabel!
-    @IBOutlet weak var createdDateLabel: UILabel!
-    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet private weak var addressLabel: UILabel!
+    @IBOutlet private weak var createdDateLabel: UILabel!
+    @IBOutlet private weak var titleLabel: UILabel!
+    @IBOutlet weak var distanceLabel: UILabel!
     
     func configureCellWithLocation(locationToDisplay: Location) {
+        distanceLabel.text = ""
         createdDateLabel.text = locationToDisplay.date.relativeString()
         
         if let item = locationToDisplay.mapItem where item.name?.characters.count > 0 {

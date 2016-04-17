@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <objects>
@@ -15,13 +14,13 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Home" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cte-QE-42b">
-                        <rect key="frame" x="16" y="10" width="294" height="22"/>
+                        <rect key="frame" x="16" y="10" width="263" height="23.5"/>
                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="18"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="157 Stonebridge Blvd Edmond, OK" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rJa-hN-OVp">
-                        <rect key="frame" x="16" y="39" width="273" height="19"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="255" text="157 Stonebridge Blvd Edmond, OK" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rJa-hN-OVp">
+                        <rect key="frame" x="16" y="38.5" width="273" height="19.5"/>
                         <fontDescription key="fontDescription" type="system" weight="light" pointSize="16"/>
                         <color key="textColor" red="0.5490196078431373" green="0.5490196078431373" blue="0.5490196078431373" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
@@ -32,6 +31,12 @@
                         <color key="textColor" red="0.46666666666666667" green="0.46666666666666667" blue="0.46666666666666667" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="255" verticalHuggingPriority="251" horizontalCompressionResistancePriority="755" text="12mi" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wcc-Xq-EdN">
+                        <rect key="frame" x="287" y="10" width="23" height="12"/>
+                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="10"/>
+                        <color key="textColor" red="0.46666666670000001" green="0.46666666670000001" blue="0.46666666670000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 <constraints>
@@ -39,16 +44,27 @@
                     <constraint firstAttribute="bottom" secondItem="rJa-hN-OVp" secondAttribute="bottom" constant="10" id="K8P-sT-LWV"/>
                     <constraint firstItem="rJa-hN-OVp" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="Sgp-ct-w6a"/>
                     <constraint firstAttribute="trailing" secondItem="Cte-QE-42b" secondAttribute="trailing" constant="10" id="UiD-Vm-1Jk"/>
+                    <constraint firstItem="Wcc-Xq-EdN" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="YRq-Cc-bWF"/>
                     <constraint firstItem="Cte-QE-42b" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="ZCc-Mz-uki"/>
-                    <constraint firstItem="rJa-hN-OVp" firstAttribute="top" secondItem="Cte-QE-42b" secondAttribute="bottom" constant="7" id="afp-zC-BIt"/>
+                    <constraint firstItem="rJa-hN-OVp" firstAttribute="top" secondItem="Cte-QE-42b" secondAttribute="bottom" constant="5" id="afp-zC-BIt"/>
+                    <constraint firstAttribute="trailing" secondItem="Wcc-Xq-EdN" secondAttribute="trailing" constant="10" id="dYV-EG-1B2"/>
                     <constraint firstItem="47S-tx-B7t" firstAttribute="leading" secondItem="rJa-hN-OVp" secondAttribute="trailing" constant="8" id="gUE-0G-0Ep"/>
                     <constraint firstItem="Cte-QE-42b" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="j9d-TU-7OI"/>
+                    <constraint firstItem="Wcc-Xq-EdN" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="lNO-fZ-qFw"/>
                     <constraint firstAttribute="bottom" secondItem="47S-tx-B7t" secondAttribute="bottom" constant="10" id="sDz-Dl-mEt"/>
+                    <constraint firstItem="Wcc-Xq-EdN" firstAttribute="leading" secondItem="Cte-QE-42b" secondAttribute="trailing" constant="8" id="xL1-W1-Chy"/>
                 </constraints>
+                <variation key="default">
+                    <mask key="constraints">
+                        <exclude reference="UiD-Vm-1Jk"/>
+                        <exclude reference="lNO-fZ-qFw"/>
+                    </mask>
+                </variation>
             </tableViewCellContentView>
             <connections>
                 <outlet property="addressLabel" destination="rJa-hN-OVp" id="fJR-Gg-ubx"/>
                 <outlet property="createdDateLabel" destination="47S-tx-B7t" id="Hp1-2Y-WEt"/>
+                <outlet property="distanceLabel" destination="Wcc-Xq-EdN" id="I1d-T5-fRM"/>
                 <outlet property="titleLabel" destination="Cte-QE-42b" id="GDu-0o-7W6"/>
             </connections>
             <point key="canvasLocation" x="-511" y="432"/>

@@ -43,7 +43,6 @@
 		48C7636419F59D230096B27A /* RHAUtilExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C7636319F59D230096B27A /* RHAUtilExtensions.swift */; };
 		48CD67801CC294E70032A47E /* SearchIndexController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48CD677F1CC294E70032A47E /* SearchIndexController.swift */; };
 		48D225881A02F908008A419B /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 48D2258A1A02F908008A419B /* MainInterface.storyboard */; };
-		48D4FFE41BF7CB7A006DA09C /* ColorSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D4FFE31BF7CB7A006DA09C /* ColorSelectionViewController.swift */; };
 		48D4FFE61BF7D08F006DA09C /* DefaultLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D4FFE51BF7D08F006DA09C /* DefaultLayout.swift */; };
 		48D73D6B1C012AA900B1A9B5 /* LocationModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 48D73D691C012AA900B1A9B5 /* LocationModel.xcdatamodeld */; };
 		48DEDA3719F592F80094CB8F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DEDA3619F592F80094CB8F /* AppDelegate.swift */; };
@@ -150,7 +149,6 @@
 		48C7636319F59D230096B27A /* RHAUtilExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RHAUtilExtensions.swift; sourceTree = "<group>"; };
 		48CD677F1CC294E70032A47E /* SearchIndexController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchIndexController.swift; sourceTree = "<group>"; };
 		48D225891A02F908008A419B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
-		48D4FFE31BF7CB7A006DA09C /* ColorSelectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorSelectionViewController.swift; sourceTree = "<group>"; };
 		48D4FFE51BF7D08F006DA09C /* DefaultLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultLayout.swift; sourceTree = "<group>"; };
 		48D73D6A1C012AA900B1A9B5 /* LocationModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = LocationModel.xcdatamodel; sourceTree = "<group>"; };
 		48DEDA3119F592F80094CB8F /* Whereabouts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Whereabouts.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -255,7 +253,6 @@
 			isa = PBXGroup;
 			children = (
 				69F7CEEB1CAB5E46007EB03F /* AddViewController.swift */,
-				48D4FFE31BF7CB7A006DA09C /* ColorSelectionViewController.swift */,
 				69E367DF1CADAD3E00604790 /* EditViewController.swift */,
 				4847F22A1CB9A0CF007EE1A5 /* DetailViewController.swift */,
 				48642D121BAE27D300935358 /* LocationAccessViewController.swift */,
@@ -637,7 +634,6 @@
 				69B7A3BB1BFCD76B000BEBA0 /* SettingsController.swift in Sources */,
 				69640E901BFBCDE80050722D /* PhotosLayout.swift in Sources */,
 				4882D9D51B1A99FD00BAADAD /* RHACLStringExtensions.swift in Sources */,
-				48D4FFE41BF7CB7A006DA09C /* ColorSelectionViewController.swift in Sources */,
 				69E367E71CAE8E3E00604790 /* MapItemCell.swift in Sources */,
 				48D73D6B1C012AA900B1A9B5 /* LocationModel.xcdatamodeld in Sources */,
 				69E367E31CAE0B2D00604790 /* LocationInfoDisplayCell.swift in Sources */,
