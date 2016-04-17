@@ -28,7 +28,7 @@ class StyledNavigationController: UINavigationController {
         let primaryColor = StyleController.sharedController.mainTintColor
         
         navigationBar.barTintColor = primaryColor
-        navigationBar.tintColor = StyleController.sharedController.navBarTintColor
+        navigationBar.tintColor = StyleController.sharedController.navBarTintColor.colorWithAlphaComponent(0.65)
         
         navigationBar.titleTextAttributes = [
             NSForegroundColorAttributeName: StyleController.sharedController.navBarTintColor

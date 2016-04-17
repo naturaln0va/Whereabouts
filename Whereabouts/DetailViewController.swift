@@ -81,7 +81,7 @@ class DetailViewController: UITableViewController, EditViewControllerDelegate {
         getDistanceFromLocation()
         refreshTitle()
         
-        getnearbyAssets { [unowned self] images in
+        getNearbyAssets { [unowned self] images in
             self.nearbyAssets = images
             self.tableView.reloadData()
         }
@@ -263,7 +263,7 @@ class DetailViewController: UITableViewController, EditViewControllerDelegate {
         }
     }
     
-    func getnearbyAssets(completion: [PHAsset] -> Void) {
+    func getNearbyAssets(completion: [PHAsset] -> Void) {
         var assets = [PHAsset]()
 
         PHPhotoLibrary.requestAuthorization { status in
@@ -271,9 +271,6 @@ class DetailViewController: UITableViewController, EditViewControllerDelegate {
                 let options = PHFetchOptions()
                 options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
                 let results = PHAsset.fetchAssetsWithMediaType(.Image, options: options)
-                let manager = PHImageManager.defaultManager()
-                let option = PHImageRequestOptions()
-                option.synchronous = true
                 
                 results.enumerateObjectsUsingBlock { asset, idx, stop in
                     guard let assetWithLocationData = asset as? PHAsset where assetWithLocationData.location != nil else {
@@ -284,7 +281,6 @@ class DetailViewController: UITableViewController, EditViewControllerDelegate {
                         assets.append(assetWithLocationData)
                     }
                 }
-                
             }
             
             defer {
@@ -434,7 +430,11 @@ class DetailViewController: UITableViewController, EditViewControllerDelegate {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
-        if let item = locationToDisplay.mapItem where indexPath == NSIndexPath(forRow: 0, inSection: 0) {
+        if indexPath.section == 1 && indexPath.row == 0 && nearbyAssets.count > 0 {
+            let vc = PhotosViewController(assets: nearbyAssets, expanded: false)
+            navigationController?.pushViewController(vc, animated: true)
+        }
+        else if let item = locationToDisplay.mapItem where indexPath == NSIndexPath(forRow: 0, inSection: 0) {
             var phoneNumber = String()
             var urlString = String()
             

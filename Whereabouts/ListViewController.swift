@@ -23,7 +23,8 @@ class ListViewController: UITableViewController {
     private lazy var assistant = LocationAssistant()
     private var currentLocaiton: CLLocation? {
         didSet {
-            tableView.reloadData()
+            let set = NSIndexSet(index: 0)
+            tableView.reloadSections(set, withRowAnimation: .Automatic)
         }
     }
     
@@ -166,6 +167,7 @@ extension ListViewController: LocationAssistantDelegate {
     
     func locationAssistantReceivedLocation(location: CLLocation, finished: Bool) {
         currentLocaiton = location
+        assistant.terminate()
     }
     
 }

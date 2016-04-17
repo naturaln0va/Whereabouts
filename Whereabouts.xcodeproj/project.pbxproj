@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		481022A71A06075900000AA5 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 482CE19E19FD9F9A00682940 /* MapKit.framework */; };
+		481BB0F81CC4171A009B80FA /* PhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481BB0F71CC4171A009B80FA /* PhotosViewController.swift */; };
+		481BB0FA1CC41820009B80FA /* GridLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481BB0F91CC41820009B80FA /* GridLayout.swift */; };
 		482CABDB19FF565300B5F1E2 /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 482CABDA19FF565200B5F1E2 /* NotificationCenter.framework */; };
 		482CABE019FF565300B5F1E2 /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482CABDF19FF565300B5F1E2 /* TodayViewController.swift */; };
 		482CABE519FF565300B5F1E2 /* Quick Location.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 482CABD819FF565200B5F1E2 /* Quick Location.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -43,7 +45,6 @@
 		48C7636419F59D230096B27A /* RHAUtilExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C7636319F59D230096B27A /* RHAUtilExtensions.swift */; };
 		48CD67801CC294E70032A47E /* SearchIndexController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48CD677F1CC294E70032A47E /* SearchIndexController.swift */; };
 		48D225881A02F908008A419B /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 48D2258A1A02F908008A419B /* MainInterface.storyboard */; };
-		48D4FFE61BF7D08F006DA09C /* DefaultLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D4FFE51BF7D08F006DA09C /* DefaultLayout.swift */; };
 		48D73D6B1C012AA900B1A9B5 /* LocationModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 48D73D691C012AA900B1A9B5 /* LocationModel.xcdatamodeld */; };
 		48DEDA3719F592F80094CB8F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DEDA3619F592F80094CB8F /* AppDelegate.swift */; };
 		48DEDA4119F592F80094CB8F /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48DEDA3F19F592F80094CB8F /* LaunchScreen.xib */; };
@@ -60,7 +61,6 @@
 		6937217B1C038AA400A5C8BC /* RHACLStringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4882D9D41B1A99FD00BAADAD /* RHACLStringExtensions.swift */; };
 		6937217E1C038C2B00A5C8BC /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69B7A3BA1BFCD76B000BEBA0 /* SettingsController.swift */; };
 		6954E20B1C177BD500106EB0 /* PhotoTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6954E20A1C177BD500106EB0 /* PhotoTransition.swift */; };
-		69640E901BFBCDE80050722D /* PhotosLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69640E8F1BFBCDE80050722D /* PhotosLayout.swift */; };
 		69640E931BFBCEA60050722D /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69640E911BFBCEA60050722D /* PhotoCell.swift */; };
 		69640E941BFBCEA60050722D /* PhotoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 69640E921BFBCEA60050722D /* PhotoCell.xib */; };
 		696C6A4E1CC18D9500F42B24 /* Visit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696C6A4D1CC18D9500F42B24 /* Visit.swift */; };
@@ -70,7 +70,6 @@
 		698AF3951BF7910100F1E745 /* ColorPreviewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 698AF3931BF7910100F1E745 /* ColorPreviewCell.xib */; };
 		698AF39B1BF79A4D00F1E745 /* Fetchable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698AF39A1BF79A4D00F1E745 /* Fetchable.swift */; };
 		698E782F1CAED0B3004A4178 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698E782E1CAED0B3004A4178 /* Location.swift */; };
-		69B7A3B61BFCD436000BEBA0 /* PhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69B7A3B41BFCD436000BEBA0 /* PhotoViewController.swift */; };
 		69B7A3B91BFCD6FE000BEBA0 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69B7A3B81BFCD6FE000BEBA0 /* SettingsViewController.swift */; };
 		69B7A3BB1BFCD76B000BEBA0 /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69B7A3BA1BFCD76B000BEBA0 /* SettingsController.swift */; };
 		69BF50BB1C15F85B0041848F /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69BF50BA1C15F85B0041848F /* CloudKit.framework */; };
@@ -111,6 +110,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		481BB0F71CC4171A009B80FA /* PhotosViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotosViewController.swift; sourceTree = "<group>"; };
+		481BB0F91CC41820009B80FA /* GridLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridLayout.swift; sourceTree = "<group>"; };
 		482CABD819FF565200B5F1E2 /* Quick Location.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Quick Location.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		482CABDA19FF565200B5F1E2 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		482CABDE19FF565300B5F1E2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -149,7 +150,6 @@
 		48C7636319F59D230096B27A /* RHAUtilExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RHAUtilExtensions.swift; sourceTree = "<group>"; };
 		48CD677F1CC294E70032A47E /* SearchIndexController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchIndexController.swift; sourceTree = "<group>"; };
 		48D225891A02F908008A419B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
-		48D4FFE51BF7D08F006DA09C /* DefaultLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultLayout.swift; sourceTree = "<group>"; };
 		48D73D6A1C012AA900B1A9B5 /* LocationModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = LocationModel.xcdatamodel; sourceTree = "<group>"; };
 		48DEDA3119F592F80094CB8F /* Whereabouts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Whereabouts.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		48DEDA3519F592F80094CB8F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -165,7 +165,6 @@
 		692275A71CBE9ADE007C9BA2 /* CacheController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CacheController.swift; sourceTree = "<group>"; };
 		6924A6461C6B9D4100D5F0E6 /* NSDate+Relative.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDate+Relative.swift"; sourceTree = "<group>"; };
 		6954E20A1C177BD500106EB0 /* PhotoTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoTransition.swift; sourceTree = "<group>"; };
-		69640E8F1BFBCDE80050722D /* PhotosLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotosLayout.swift; sourceTree = "<group>"; };
 		69640E911BFBCEA60050722D /* PhotoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoCell.swift; sourceTree = "<group>"; };
 		69640E921BFBCEA60050722D /* PhotoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhotoCell.xib; sourceTree = "<group>"; };
 		696C6A4D1CC18D9500F42B24 /* Visit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Visit.swift; sourceTree = "<group>"; };
@@ -175,7 +174,6 @@
 		698AF3931BF7910100F1E745 /* ColorPreviewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ColorPreviewCell.xib; sourceTree = "<group>"; };
 		698AF39A1BF79A4D00F1E745 /* Fetchable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fetchable.swift; sourceTree = "<group>"; };
 		698E782E1CAED0B3004A4178 /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
-		69B7A3B41BFCD436000BEBA0 /* PhotoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoViewController.swift; sourceTree = "<group>"; };
 		69B7A3B81BFCD6FE000BEBA0 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		69B7A3BA1BFCD76B000BEBA0 /* SettingsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
 		69BF50BA1C15F85B0041848F /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
@@ -255,17 +253,17 @@
 				69F7CEEB1CAB5E46007EB03F /* AddViewController.swift */,
 				69E367DF1CADAD3E00604790 /* EditViewController.swift */,
 				4847F22A1CB9A0CF007EE1A5 /* DetailViewController.swift */,
+				69F7CEE51CAAF286007EB03F /* ListViewController.swift */,
 				48642D121BAE27D300935358 /* LocationAccessViewController.swift */,
 				48642D131BAE27D300935358 /* LocationAccessViewController.xib */,
 				48642D0E1BAE166F00935358 /* LocationsViewController.swift */,
-				69B7A3B41BFCD436000BEBA0 /* PhotoViewController.swift */,
+				483BBE471C1CE4DB002E5DB2 /* MapViewController.swift */,
+				481BB0F71CC4171A009B80FA /* PhotosViewController.swift */,
+				48759B481CC102B500789DB8 /* PocketTrackViewController.swift */,
+				48759B491CC102B500789DB8 /* PocketTrackViewController.xib */,
 				69B7A3B81BFCD6FE000BEBA0 /* SettingsViewController.swift */,
 				48F763401CA8778700BCE740 /* StyledNavigationController.swift */,
 				48E3B85B1B1951AA003DD726 /* StyledViewController.swift */,
-				483BBE471C1CE4DB002E5DB2 /* MapViewController.swift */,
-				69F7CEE51CAAF286007EB03F /* ListViewController.swift */,
-				48759B481CC102B500789DB8 /* PocketTrackViewController.swift */,
-				48759B491CC102B500789DB8 /* PocketTrackViewController.xib */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -302,8 +300,7 @@
 		48D4FFE71BF7D125006DA09C /* Layouts */ = {
 			isa = PBXGroup;
 			children = (
-				48D4FFE51BF7D08F006DA09C /* DefaultLayout.swift */,
-				69640E8F1BFBCDE80050722D /* PhotosLayout.swift */,
+				481BB0F91CC41820009B80FA /* GridLayout.swift */,
 			);
 			name = Layouts;
 			sourceTree = "<group>";
@@ -609,12 +606,12 @@
 				698AF39B1BF79A4D00F1E745 /* Fetchable.swift in Sources */,
 				48510BEB1BF7F3D10041C7C1 /* String+Additions.swift in Sources */,
 				48E3B8601B195896003DD726 /* StyleController.swift in Sources */,
-				48D4FFE61BF7D08F006DA09C /* DefaultLayout.swift in Sources */,
 				48F763431CA87FF500BCE740 /* CloudController.swift in Sources */,
 				69640E931BFBCEA60050722D /* PhotoCell.swift in Sources */,
 				482FBFEA1CB292E100E30EF2 /* PlaceholderTextView.swift in Sources */,
 				698AF3941BF7910100F1E745 /* ColorPreviewCell.swift in Sources */,
 				69F7CEEC1CAB5E46007EB03F /* AddViewController.swift in Sources */,
+				481BB0F81CC4171A009B80FA /* PhotosViewController.swift in Sources */,
 				488A81261CBC606A00452101 /* ContentDisplayCell.swift in Sources */,
 				4847F22B1CB9A0CF007EE1A5 /* DetailViewController.swift in Sources */,
 				698AF38C1BF6D66D00F1E745 /* TextEntryCell.swift in Sources */,
@@ -632,7 +629,6 @@
 				6924A6471C6B9D4100D5F0E6 /* NSDate+Relative.swift in Sources */,
 				4863E6FA1CAD3C800072C304 /* CurrentLocationCell.swift in Sources */,
 				69B7A3BB1BFCD76B000BEBA0 /* SettingsController.swift in Sources */,
-				69640E901BFBCDE80050722D /* PhotosLayout.swift in Sources */,
 				4882D9D51B1A99FD00BAADAD /* RHACLStringExtensions.swift in Sources */,
 				69E367E71CAE8E3E00604790 /* MapItemCell.swift in Sources */,
 				48D73D6B1C012AA900B1A9B5 /* LocationModel.xcdatamodeld in Sources */,
@@ -642,6 +638,7 @@
 				48759B451CBDBE6100789DB8 /* DatabaseLocation.swift in Sources */,
 				48C7636419F59D230096B27A /* RHAUtilExtensions.swift in Sources */,
 				6954E20B1C177BD500106EB0 /* PhotoTransition.swift in Sources */,
+				481BB0FA1CC41820009B80FA /* GridLayout.swift in Sources */,
 				698E782F1CAED0B3004A4178 /* Location.swift in Sources */,
 				692275A81CBE9ADE007C9BA2 /* CacheController.swift in Sources */,
 				483AF54D1B0BFF2700A00BED /* PersistenceController.swift in Sources */,
@@ -649,7 +646,6 @@
 				690667721C11E83800862742 /* DataModel.xcdatamodeld in Sources */,
 				69B7A3B91BFCD6FE000BEBA0 /* SettingsViewController.swift in Sources */,
 				48707CCC1CAA96090003F792 /* UIColor+Hex.swift in Sources */,
-				69B7A3B61BFCD436000BEBA0 /* PhotoViewController.swift in Sources */,
 				488BE6421CABF3EF00BA24C8 /* SearchCompleterCell.swift in Sources */,
 				48DEDA3719F592F80094CB8F /* AppDelegate.swift in Sources */,
 				48759B4A1CC102B500789DB8 /* PocketTrackViewController.swift in Sources */,
