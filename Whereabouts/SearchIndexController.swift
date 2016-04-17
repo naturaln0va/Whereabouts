@@ -36,4 +36,40 @@ class SearchIndexController {
         }
     }
     
+    func indexLocation(location: Location) {
+        guard canUseCoreSpotlight else { return }
+        
+        let item = CSSearchableItem(
+            uniqueIdentifier: location.identifier,
+            domainIdentifier: location.placemark?.locality,
+            attributeSet: location.searchableAttributes
+        )
+        
+        CSSearchableIndex.defaultSearchableIndex().indexSearchableItems([item]) { error in
+            if SearchIndexController.DEBUG_SEARCH {
+                if let e = error {
+                    print("***SEARCHINDEXCONTROLLER: Failed to index location with identifier: \(location.identifier). Error: \(e)")
+                }
+                else {
+                    print("***SEARCHINDEXCONTROLLER: Indexed location with identifier \(location.identifier).")
+                }
+            }
+        }
+    }
+    
+    func removeLocationFromIndex(location: Location) {
+        guard canUseCoreSpotlight else { return }
+        
+         CSSearchableIndex.defaultSearchableIndex().deleteSearchableItemsWithIdentifiers([location.identifier]) { error in
+            if SearchIndexController.DEBUG_SEARCH {
+                if let e = error {
+                    print("***SEARCHINDEXCONTROLLER: Failed to remove location with identifier: \(location.identifier) from the index: \(e)")
+                }
+                else {
+                    print("***SEARCHINDEXCONTROLLER: Removed location with identifier \(location.identifier) from the index.")
+                }
+            }
+        }
+    }
+    
 }

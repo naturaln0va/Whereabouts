@@ -13,7 +13,7 @@ class CloudController {
     private lazy var cloudLocations = [CloudLocation]()
     private lazy var fetchedNotificationIDs = [CKNotificationID]()
     
-    private let DEBUG_CLOUD = true
+    private let DEBUG_CLOUD = false
     
     var syncing = false
         

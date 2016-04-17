@@ -9,7 +9,7 @@ class PersistentController {
     static let sharedController = PersistentController()
     private let kMigratedLegacyDataKey: String = "migratedLegacyData"
     
-    private let DEBUG_DATABASE = true
+    private let DEBUG_DATABASE = false
     
     //MARK: - Legacy Model
     lazy var legacyManagedObjectContext: NSManagedObjectContext = {
@@ -155,6 +155,7 @@ class PersistentController {
         }
         
         if DEBUG_DATABASE { debugPrint("***PERSISTENTCONTROLLER: Saving location: \(location).") }
+        SearchIndexController.sharedController.indexLocation(location)
 
         dataToSave.date = location.date
         dataToSave.textContent = location.textContent
@@ -189,6 +190,9 @@ class PersistentController {
             fatalError("Expected to insert and entity of type 'DatabaseLocation'.")
         }
         
+        if DEBUG_DATABASE { debugPrint("***PERSISTENTCONTROLLER: Saving location from cloud: \(location).") }
+        SearchIndexController.sharedController.indexLocation(Location(cloudLocation: location))
+        
         dataToSave.date = location.createdDate
         dataToSave.locationTitle = location.locationTitle
         dataToSave.textContent = location.textContent
@@ -217,6 +221,8 @@ class PersistentController {
     }
     
     func deleteLocation(locationToDelete: DatabaseLocation) {
+        SearchIndexController.sharedController.removeLocationFromIndex(Location(dbLocation: locationToDelete))
+        
         moc.deleteObject(locationToDelete)
         
         if DEBUG_DATABASE { debugPrint("***PERSISTENTCONTROLLER: Deleting database location: \(locationToDelete).") }
