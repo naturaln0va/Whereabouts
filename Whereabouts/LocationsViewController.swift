@@ -20,7 +20,6 @@ class LocationsViewController: UIViewController {
         if PersistentController.sharedController.visits().count > 0 {
             control.insertSegmentWithTitle("Visits", atIndex: 2, animated: false)
         }
-        control.frame.size.width = 1000.0
         control.selectedSegmentIndex = 0
         control.tintColor = StyleController.sharedController.navBarTintColor
         control.addTarget(self, action: #selector(LocationsViewController.toggleWasChanged), forControlEvents: .ValueChanged)
@@ -57,11 +56,15 @@ class LocationsViewController: UIViewController {
         navigationController?.toolbarHidden = false
         toolbarItems = [editBarButton, spaceBarButtonItem, messageBarButtonItem, spaceBarButtonItem]
         
-        CloudController.sharedController.getChanges()
-        
         beginObserving()
         refreshToggleState()
         refreshTitleToggle()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        titleToggle.frame.size.width = view.bounds.width / 2
     }
     
     // MARK: - Helpers
@@ -75,7 +78,7 @@ class LocationsViewController: UIViewController {
         
         NSNotificationCenter.defaultCenter().addObserver(
             self,
-            selector: #selector(LocationsViewController.cloudSyncComplete),
+            selector: #selector(LocationsViewController.cloudErrorOccurred),
             name: CloudController.kCloudErrorNotificationKey,
             object: nil
         )
@@ -95,8 +98,18 @@ class LocationsViewController: UIViewController {
     }
     
     private func updateMessageLabel(updatedText: String?) {
+        updateMessageLabel(updatedText, shouldClearMessageAfterDelay: false)
+    }
+    
+    private func updateMessageLabel(updatedText: String?, shouldClearMessageAfterDelay: Bool) {
         messageLabel.text = updatedText ?? ""
         messageLabel.sizeToFit()
+        
+        if shouldClearMessageAfterDelay {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(3)), dispatch_get_main_queue()) { [unowned self] in
+                self.updateMessageLabel(nil)
+            }
+        }
     }
     
     private func refreshToggleState() {
@@ -209,7 +222,7 @@ class LocationsViewController: UIViewController {
     }
     
     @objc private func cloudErrorOccurred() {
-        updateMessageLabel("An error occurred")
+        updateMessageLabel("An error occurred", shouldClearMessageAfterDelay: true)
     }
     
 }

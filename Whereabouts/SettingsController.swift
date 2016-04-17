@@ -8,8 +8,6 @@ class SettingsController {
     
     static let sharedController = SettingsController()
     
-    static let kNearbyPhotoRangeKey = "nearbyPhotoRange" // meters
-    static let kUnitStyleKey = "unitStyle" // customary, metric
     static let kShouldMonitorVisits = "shouldMonitorVisits" // user preference
     static let kUserFirstLaunchedKey = "firstLaunched" // date user first installed
     static let kUserHasSubscribedKey = "userSubscribed" // user has subscribed to cloud changes
@@ -19,8 +17,6 @@ class SettingsController {
     
     lazy private var baseDefaults: [String: AnyObject] = {
         return [
-            kNearbyPhotoRangeKey: 250,
-            kUnitStyleKey: true,
             kShouldMonitorVisits: false,
             kUserHasSubscribedKey: false,
             kCloudSyncKey: true
@@ -38,35 +34,6 @@ class SettingsController {
     }
     
     // MARK: - Public
-    func stringForPhotoRange() -> String {
-        switch nearbyPhotoRange {
-        case 50:
-            return isUnitStyleImperial ? "165ft" : "50m"
-            
-        case 250:
-            return isUnitStyleImperial ? "825ft" : "250m"
-            
-        case 1600:
-            return isUnitStyleImperial ? "1mi" : "1.6km"
-            
-        case 5000:
-            return isUnitStyleImperial ? "3mi" : "5km"
-            
-        default:
-            return ""
-        }
-    }
-    
-    var nearbyPhotoRange: Int {
-        get {
-            return defaults.integerForKey(SettingsController.kNearbyPhotoRangeKey)
-        }
-        set {
-            defaults.setInteger(newValue, forKey: SettingsController.kNearbyPhotoRangeKey)
-            defaults.synchronize()
-            NSNotificationCenter.defaultCenter().postNotificationName(kSettingsControllerDidChangeNotification, object: nil)
-        }
-    }
     
     var shouldSyncToCloud: Bool {
         get {
@@ -74,17 +41,6 @@ class SettingsController {
         }
         set {
             defaults.setBool(newValue, forKey: SettingsController.kCloudSyncKey)
-            defaults.synchronize()
-            NSNotificationCenter.defaultCenter().postNotificationName(kSettingsControllerDidChangeNotification, object: nil)
-        }
-    }
-    
-    var isUnitStyleImperial: Bool {
-        get {
-            return defaults.boolForKey(SettingsController.kUnitStyleKey)
-        }
-        set {
-            defaults.setBool(newValue, forKey: SettingsController.kUnitStyleKey)
             defaults.synchronize()
             NSNotificationCenter.defaultCenter().postNotificationName(kSettingsControllerDidChangeNotification, object: nil)
         }

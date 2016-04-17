@@ -1,12 +1,13 @@
 
 import UIKit
 import MapKit
+import Photos
 import SafariServices
 
 class DetailViewController: UITableViewController, EditViewControllerDelegate {
     
     private var locationToDisplay: Location
-    private lazy var nearbyPhotos = [UIImage]()
+    private lazy var nearbyAssets = [PHAsset]()
     
     private var isLoadingHeader = false
     
@@ -79,6 +80,16 @@ class DetailViewController: UITableViewController, EditViewControllerDelegate {
         
         getDistanceFromLocation()
         refreshTitle()
+        
+        getnearbyAssets { [unowned self] images in
+            self.nearbyAssets = images
+            self.tableView.reloadData()
+        }
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        clearsSelectionOnViewWillAppear = true
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -231,6 +242,7 @@ class DetailViewController: UITableViewController, EditViewControllerDelegate {
         tableView.contentInset = UIEdgeInsets(top: top, left: 0, bottom: navigationController?.toolbar.frame.height ?? 0, right: 0)
         tableView.scrollIndicatorInsets = tableView.contentInset
     }
+    
     private func updateMessageLabel(updatedText: NSAttributedString?) {
         messageLabel.attributedText = updatedText
         messageLabel.sizeToFit()
@@ -248,6 +260,38 @@ class DetailViewController: UITableViewController, EditViewControllerDelegate {
         }
         else {
             title = "Location"
+        }
+    }
+    
+    func getnearbyAssets(completion: [PHAsset] -> Void) {
+        var assets = [PHAsset]()
+
+        PHPhotoLibrary.requestAuthorization { status in
+            if status == .Authorized {
+                let options = PHFetchOptions()
+                options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
+                let results = PHAsset.fetchAssetsWithMediaType(.Image, options: options)
+                let manager = PHImageManager.defaultManager()
+                let option = PHImageRequestOptions()
+                option.synchronous = true
+                
+                results.enumerateObjectsUsingBlock { asset, idx, stop in
+                    guard let assetWithLocationData = asset as? PHAsset where assetWithLocationData.location != nil else {
+                        return
+                    }
+                    
+                    if assetWithLocationData.location!.distanceFromLocation(self.locationToDisplay.location) < 150 {
+                        assets.append(assetWithLocationData)
+                    }
+                }
+                
+            }
+            
+            defer {
+                dispatch_async(dispatch_get_main_queue()) {
+                    completion(assets)
+                }
+            }
         }
     }
     
@@ -328,11 +372,11 @@ class DetailViewController: UITableViewController, EditViewControllerDelegate {
     }
     
     override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return (section == 0 && (nearbyPhotos.count > 0 || locationToDisplay.textContent?.characters.count > 0)) ? 32.0 : 0.0001
+        return (section == 0 && (nearbyAssets.count > 0 || locationToDisplay.textContent?.characters.count > 0)) ? 32.0 : 0.0001
     }
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return (nearbyPhotos.count > 0 || locationToDisplay.textContent?.characters.count > 0) ? 2 : 1
+        return (nearbyAssets.count > 0 || locationToDisplay.textContent?.characters.count > 0) ? 2 : 1
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -350,7 +394,7 @@ class DetailViewController: UITableViewController, EditViewControllerDelegate {
         else if section == 1 {
             var rows = 0
             
-            if nearbyPhotos.count > 0 {
+            if nearbyAssets.count > 0 {
                 rows += 1
             }
                 
@@ -375,7 +419,7 @@ class DetailViewController: UITableViewController, EditViewControllerDelegate {
             }
         }
         else if indexPath.section == 1 {
-            if nearbyPhotos.count > 0 && indexPath.row == 0 {
+            if nearbyAssets.count > 0 && indexPath.row == 0 {
                 return true
             }
             else {
@@ -533,7 +577,7 @@ class DetailViewController: UITableViewController, EditViewControllerDelegate {
             }
         }
         else if indexPath.section == 1 {
-            if nearbyPhotos.count > 0 && locationToDisplay.textContent?.characters.count > 0 {
+            if nearbyAssets.count > 0 && locationToDisplay.textContent?.characters.count > 0 {
                 if indexPath.row == 0 {
                     let photoCellIndetifier = "photoCell"
                     
@@ -544,7 +588,7 @@ class DetailViewController: UITableViewController, EditViewControllerDelegate {
                         cell?.accessoryType = .DisclosureIndicator
                     }
                     
-                    cell?.detailTextLabel?.text = String(nearbyPhotos.count)
+                    cell?.detailTextLabel?.text = String(nearbyAssets.count)
                     
                     return cell!
                 }
@@ -561,7 +605,7 @@ class DetailViewController: UITableViewController, EditViewControllerDelegate {
                     fatalError("Failed to handle row: \(indexPath.row) in 'cellForRowAtIndexPath'.")
                 }
             }
-            else if nearbyPhotos.count > 0 {
+            else if nearbyAssets.count > 0 {
                 let photoCellIndetifier = "photoCell"
                 
                 var cell = tableView.dequeueReusableCellWithIdentifier(photoCellIndetifier)
@@ -571,7 +615,7 @@ class DetailViewController: UITableViewController, EditViewControllerDelegate {
                     cell?.accessoryType = .DisclosureIndicator
                 }
                 
-                cell?.detailTextLabel?.text = String(nearbyPhotos.count)
+                cell?.detailTextLabel?.text = String(nearbyAssets.count)
                 
                 return cell!
             }
@@ -617,7 +661,7 @@ class DetailViewController: UITableViewController, EditViewControllerDelegate {
             }
         }
         else if indexPath.section == 1 {
-            if nearbyPhotos.count > 0 && locationToDisplay.textContent?.characters.count > 0 {
+            if nearbyAssets.count > 0 && locationToDisplay.textContent?.characters.count > 0 {
                 if indexPath.row == 0 {
                     return 44.0
                 }
@@ -628,7 +672,7 @@ class DetailViewController: UITableViewController, EditViewControllerDelegate {
                     fatalError("Failed to handle row: \(indexPath.row) in 'estimatedHeightForRowAtIndexPath'.")
                 }
             }
-            else if nearbyPhotos.count > 0 {
+            else if nearbyAssets.count > 0 {
                 return 44.0
             }
             else if locationToDisplay.textContent?.characters.count > 0 {
@@ -667,7 +711,7 @@ class DetailViewController: UITableViewController, EditViewControllerDelegate {
             }
         }
         else if indexPath.section == 1 {
-            if nearbyPhotos.count > 0 && locationToDisplay.textContent?.characters.count > 0 {
+            if nearbyAssets.count > 0 && locationToDisplay.textContent?.characters.count > 0 {
                 if indexPath.row == 0 {
                     return 44.0
                 }
@@ -678,7 +722,7 @@ class DetailViewController: UITableViewController, EditViewControllerDelegate {
                     fatalError("Failed to handle row: \(indexPath.row) in 'heightForRowAtIndexPath'.")
                 }
             }
-            else if nearbyPhotos.count > 0 {
+            else if nearbyAssets.count > 0 {
                 return 44.0
             }
             else if locationToDisplay.textContent?.characters.count > 0 {

@@ -5,7 +5,6 @@ import MessageUI
 class SettingsViewController: UITableViewController {
 
     enum UserSectionRows: Int {
-        case UnitStyleRow
         case CloudSyncRow
         case PocketTrackRow
         case TotalRows
@@ -87,11 +86,6 @@ class SettingsViewController: UITableViewController {
     func switchWasToggled(sender: UISwitch) {
         switch sender.tag {
             
-        case SettingSwitchTag.UnitStyleSwitch.rawValue:
-            SettingsController.sharedController.isUnitStyleImperial = !sender.on
-            tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)], withRowAnimation: .Automatic)
-            break
-            
         case SettingSwitchTag.CloudSyncSwitch.rawValue:
             SettingsController.sharedController.shouldSyncToCloud = sender.on
             tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 2, inSection: 0)], withRowAnimation: .Automatic)
@@ -102,18 +96,6 @@ class SettingsViewController: UITableViewController {
         }
     }
     
-    @objc private func segmentWasChanged(sender: UISegmentedControl) {
-        if sender.selectedSegmentIndex == 0 {
-            SettingsController.sharedController.isUnitStyleImperial = false
-        }
-        else if sender.selectedSegmentIndex == 1 {
-            SettingsController.sharedController.isUnitStyleImperial = true
-        }
-        else {
-            print("WARNING: Failed to handle selected segment index: \(sender.selectedSegmentIndex)")
-        }
-    }
-
     // MARK: - UITableViewDataSource
     override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 32.0
@@ -154,23 +136,6 @@ class SettingsViewController: UITableViewController {
         
         if indexPath.section == TableSections.UserSection.rawValue {
             switch indexPath.row {
-            case UserSectionRows.UnitStyleRow.rawValue:
-                let unitSegmentedControl = UISegmentedControl(items: ["Kilometers", "Miles"])
-                unitSegmentedControl.selectedSegmentIndex = SettingsController.sharedController.isUnitStyleImperial ? 1 : 0
-                unitSegmentedControl.tintColor = StyleController.sharedController.mainTintColor
-                unitSegmentedControl.translatesAutoresizingMaskIntoConstraints = false
-                unitSegmentedControl.momentary = false
-                
-                unitSegmentedControl.addTarget(
-                    self,
-                    action: #selector(SettingsViewController.segmentWasChanged(_:)),
-                    forControlEvents: .ValueChanged
-                )
-                
-                cell.addSubview(unitSegmentedControl)
-                cell.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-44-[view]-44-|", options: [], metrics: nil, views: ["view": unitSegmentedControl]))
-                cell.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-[view(<=28)]-|", options: [], metrics: nil, views: ["view": unitSegmentedControl]))
-                break
                 
             case UserSectionRows.CloudSyncRow.rawValue:
                 cell.textLabel?.text = "iCloud Sync"

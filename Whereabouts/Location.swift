@@ -18,6 +18,13 @@ class Location: NSObject {
     private var itemPhoneNumber: String?
     private var itemWebLink: String?
     
+    private lazy var dateFormatter: NSDateFormatter = {
+        let formatter = NSDateFormatter()
+        formatter.timeStyle = .NoStyle
+        formatter.dateStyle = .ShortStyle
+        return formatter
+    }()
+    
     var mapItem: MKMapItem? {
         guard let place = placemark, let name = itemName else {
             return nil
@@ -119,7 +126,10 @@ class Location: NSObject {
 extension Location: MKAnnotation {
     
     var title: String? {
-        if let item = mapItem {
+        if let locationTitle = locationTitle {
+            return locationTitle
+        }
+        else if let item = mapItem {
             return item.name
         }
         else if let place = placemark {
@@ -159,7 +169,7 @@ extension Location {
         attr.country = placemark?.country
         attr.stateOrProvince = placemark?.administrativeArea
         attr.namedLocation = mapItem?.name
-        attr.contentDescription = textContent ?? mapItem?.phoneNumber
+        attr.contentDescription = textContent ?? mapItem?.phoneNumber ?? ("Created on: " + dateFormatter.stringFromDate(date))
         attr.altitude = NSNumber(double: location.altitude)
         attr.latitude = NSNumber(double: coordinate.latitude)
         attr.longitude = NSNumber(double: coordinate.longitude)

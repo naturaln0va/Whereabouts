@@ -55,6 +55,43 @@ class CloudController {
                     self.cloudLocations.removeAll()
                     NSNotificationCenter.defaultCenter().postNotificationName(CloudController.kSyncCompleteNotificationKey, object: nil)
                 })
+                
+                let fetchChangesOperation = CKFetchNotificationChangesOperation()
+                fetchChangesOperation.allowsCellularAccess = true
+                fetchChangesOperation.qualityOfService = .UserInitiated
+                
+                fetchChangesOperation.notificationChangedBlock = { notification in
+                    if let queryNotification = notification as? CKQueryNotification where notification.notificationType == .Query {
+                        self.handleNotification(queryNotification)
+                        
+                        if let notificationID = queryNotification.notificationID {
+                            self.fetchedNotificationIDs.append(notificationID)
+                        }
+                    }
+                }
+                
+                fetchChangesOperation.fetchNotificationChangesCompletionBlock = { token, error in
+                    if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: Finished fetching notifications with error: \(error?.localizedDescription).") }
+                    
+                    if self.fetchedNotificationIDs.count > 0 {
+                        let markOperation = CKMarkNotificationsReadOperation(notificationIDsToMarkRead: self.fetchedNotificationIDs)
+                        markOperation.allowsCellularAccess = true
+                        markOperation.qualityOfService = .Utility
+                        
+                        markOperation.markNotificationsReadCompletionBlock = { notificationIDs, error in
+                            if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: Marked notifications as read with error: \(error?.localizedDescription).") }
+                            self.fetchedNotificationIDs.removeAll()
+                            
+                            dispatch_async(dispatch_get_main_queue()) {
+                                NSNotificationCenter.defaultCenter().postNotificationName(CloudController.kSyncCompleteNotificationKey, object: nil)
+                            }
+                        }
+                        
+                        self.container.addOperation(markOperation)
+                    }
+                }
+                
+                self.container.addOperation(fetchChangesOperation)
             }
         }
     }
@@ -96,55 +133,6 @@ class CloudController {
                         }
                     }
                 }
-            }
-        }
-    }
-    
-    func getChanges() {
-        dispatch_async(cloudSyncQueue) {
-            self.getAuthentication { hasAuth, error in
-                guard hasAuth else {
-                    NSNotificationCenter.defaultCenter().postNotificationName(CloudController.kCloudErrorNotificationKey, object: error)
-                    if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: Error getting auth for the cloud: \(error?.localizedDescription)") }
-                    return
-                }
-                
-                let fetchChangesOperation = CKFetchNotificationChangesOperation()
-                fetchChangesOperation.allowsCellularAccess = true
-                fetchChangesOperation.qualityOfService = .UserInitiated
-                
-                fetchChangesOperation.notificationChangedBlock = { notification in
-                    if let queryNotification = notification as? CKQueryNotification where notification.notificationType == .Query {
-                        self.handleNotification(queryNotification)
-                        
-                        if let notificationID = queryNotification.notificationID {
-                            self.fetchedNotificationIDs.append(notificationID)
-                        }
-                    }
-                }
-                
-                fetchChangesOperation.fetchNotificationChangesCompletionBlock = { token, error in
-                    if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: Finished fetching notifications with error: \(error?.localizedDescription).") }
-                    
-                    if self.fetchedNotificationIDs.count > 0 {
-                        let markOperation = CKMarkNotificationsReadOperation(notificationIDsToMarkRead: self.fetchedNotificationIDs)
-                        markOperation.allowsCellularAccess = true
-                        markOperation.qualityOfService = .Utility
-                        
-                        markOperation.markNotificationsReadCompletionBlock = { notificationIDs, error in
-                            if self.DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: Marked notifications as read with error: \(error?.localizedDescription).") }
-                            self.fetchedNotificationIDs.removeAll()
-                            
-                            dispatch_async(dispatch_get_main_queue()) {
-                                NSNotificationCenter.defaultCenter().postNotificationName(CloudController.kSyncCompleteNotificationKey, object: nil)
-                            }
-                        }
-                        
-                        self.container.addOperation(markOperation)
-                    }
-                }
-                
-                self.container.addOperation(fetchChangesOperation)
             }
         }
     }

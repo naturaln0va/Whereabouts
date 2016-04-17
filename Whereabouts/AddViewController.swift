@@ -200,9 +200,7 @@ class AddViewController: UITableViewController {
                 
                 if let location = place.location, let currentLocation = self.location {
                     let formatter = MKDistanceFormatter()
-                    
                     formatter.unitStyle = .Abbreviated
-                    formatter.units = SettingsController.sharedController.isUnitStyleImperial ? .Imperial : .Metric
                     
                     cell.distanceLabel.text = formatter.stringFromDistance(currentLocation.distanceFromLocation(location))
                 }
@@ -211,7 +209,7 @@ class AddViewController: UITableViewController {
                 }
             }
             else {
-                cell.addressLabel.text = "\(searchedMapItems?[indexPath.row].url)"
+                cell.addressLabel.text = searchedMapItems?[indexPath.row].url?.absoluteString ?? "No address"
                 cell.distanceLabel.text = ""
             }
             
