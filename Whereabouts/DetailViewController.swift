@@ -179,7 +179,7 @@ class DetailViewController: UITableViewController, EditViewControllerDelegate {
     
     // MARK: - Actions
     @objc private func editButtonPressed() {
-        let vc = EditViewController(location: locationToDisplay)
+        let vc = EditViewController(location: locationToDisplay, isCurrentLocation: false)
         vc.delegate = self
         navigationController?.pushViewController(vc, animated: true)
     }

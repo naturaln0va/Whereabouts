@@ -107,7 +107,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let type = shortcutItem.type.componentsSeparatedByString(".").last {
             if type == "Add" {
                 MenuController.sharedController.presenterViewController?.presentViewController(
-                    StyledNavigationController(rootViewController: EditViewController(location: nil)),
+                    StyledNavigationController(rootViewController: EditViewController(location: nil, isCurrentLocation: true)),
                     animated: true,
                     completion: nil
                 )
@@ -128,7 +128,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 }
                 
                 MenuController.sharedController.presenterViewController?.presentViewController(
-                    StyledNavigationController(rootViewController: EditViewController(location: locationFromVisit)),
+                    StyledNavigationController(rootViewController: EditViewController(location: locationFromVisit, isCurrentLocation: false)),
                     animated: true,
                     completion: nil
                 )

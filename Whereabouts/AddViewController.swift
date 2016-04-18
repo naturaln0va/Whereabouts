@@ -74,6 +74,25 @@ class AddViewController: UITableViewController {
     private lazy var assistant = LocationAssistant()
     private var isFirstApperance = true
     
+    private let specifiedRegionToSearch: MKCoordinateRegion?
+    private let shouldShowCurrentLocation: Bool
+    
+    init() {
+        shouldShowCurrentLocation = true
+        self.specifiedRegionToSearch = nil
+        super.init(style: .Grouped)
+    }
+    
+    init(regionToSearch: MKCoordinateRegion) {
+        shouldShowCurrentLocation = false
+        specifiedRegionToSearch = regionToSearch
+        super.init(style: .Grouped)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -113,8 +132,11 @@ class AddViewController: UITableViewController {
         super.viewDidAppear(animated)
         
         if isFirstApperance {
-            assistant.getLocation()
-            isCurrentlyLocating = true
+            
+            if shouldShowCurrentLocation {
+                assistant.getLocation()
+                isCurrentlyLocating = true
+            }
             
             isFirstApperance = false
         }
@@ -133,7 +155,10 @@ class AddViewController: UITableViewController {
     }
     
     private func searchWithRequest(request: MKLocalSearchRequest, completion: MKLocalSearchCompletionHandler) {
-        if let region = regionForSearching {
+        if let specifiedRegion = specifiedRegionToSearch {
+            request.region = specifiedRegion
+        }
+        else if let region = regionForSearching {
             request.region = region
         }
         
@@ -144,6 +169,12 @@ class AddViewController: UITableViewController {
     private func startCompleterWithText(searchText: String) {
         if searchText.characters.count > 0 {
             if #available(iOS 9.3, *) {
+                if let specifiedRegion = specifiedRegionToSearch {
+                    completer.region = specifiedRegion
+                }
+                else if let region = regionForSearching {
+                    completer.region = region
+                }
                 completer.queryFragment = searchText
             }
         }
@@ -249,7 +280,7 @@ class AddViewController: UITableViewController {
                 let newLocation = Location(location: currentLocation)
                 newLocation.placemark = placemark
                 
-                navigationController?.pushViewController(EditViewController(location: newLocation), animated: true)
+                navigationController?.pushViewController(EditViewController(location: newLocation, isCurrentLocation: true), animated: true)
             }
         }
         else if searchType == .Completer {
@@ -272,7 +303,7 @@ class AddViewController: UITableViewController {
         }
         else if let results = searchedMapItems where searchType == .Results {
             if let newLocation = Location(mapItem: results[indexPath.row]) {
-                navigationController?.pushViewController(EditViewController(location: newLocation), animated: true)
+                navigationController?.pushViewController(EditViewController(location: newLocation, isCurrentLocation: false), animated: true)
             }
         }
         else {

@@ -141,15 +141,16 @@ extension Location: MKAnnotation {
     }
     
     var subtitle: String? {
-        if let item = mapItem {
-            return item.placemark.fullFormatedString()
+        if locationTitle != nil || mapItem != nil {
+            if let item = mapItem {
+                return item.placemark.fullFormatedString()
+            }
+            else if let place = placemark {
+                return place.fullFormatedString()
+            }
         }
-        else if let _ = placemark {
-            return stringFromCoordinate(location.coordinate)
-        }
-        else {
-            return nil
-        }
+        
+        return nil
     }
     
     var coordinate: CLLocationCoordinate2D {
