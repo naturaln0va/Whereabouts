@@ -96,10 +96,21 @@ class AddViewController: UITableViewController {
         assistant.delegate = self
     }
     
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         
         titleSearchBar.becomeFirstResponder()
+        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(
+                barButtonSystemItem: .Cancel,
+                target: self,
+                action: #selector(AddViewController.cancelButtonPressed)
+            )
+        }
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
         
         if isFirstApperance {
             assistant.getLocation()
@@ -109,7 +120,18 @@ class AddViewController: UITableViewController {
         }
     }
     
+    // MARK: - Actions
+    @objc private func cancelButtonPressed() {
+        dismiss()
+    }
+    
     // MARK: - Helpers
+    private func dismiss() {
+        titleSearchBar.endEditing(true)
+        
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+    
     private func searchWithRequest(request: MKLocalSearchRequest, completion: MKLocalSearchCompletionHandler) {
         if let region = regionForSearching {
             request.region = region
@@ -353,6 +375,7 @@ extension AddViewController: LocationAssistantDelegate {
     
 }
 
+// MARK: - LocationAccessViewControllerDelegate
 extension AddViewController: LocationAccessViewControllerDelegate {
     
     func locationAccessViewControllerAccessGranted() {
@@ -412,9 +435,7 @@ extension AddViewController: UISearchBarDelegate {
     }
     
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {
-        searchBar.endEditing(true)
-        
-        dismissViewControllerAnimated(true, completion: nil)
+        dismiss()
     }
     
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {

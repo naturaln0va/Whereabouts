@@ -6,6 +6,7 @@ class MapViewController: UIViewController {
     
     lazy var mapView: MKMapView = {
         let mapView = MKMapView()
+        mapView.tintColor = StyleController.sharedController.mainTintColor
         mapView.showsUserLocation = true
         mapView.showsCompass = true
         mapView.showsScale = true
@@ -17,8 +18,10 @@ class MapViewController: UIViewController {
         
         title = "Map"
         
-        navigationItem.leftBarButtonItem = MKUserTrackingBarButtonItem(mapView: mapView)
-        navigationItem.leftBarButtonItem?.enabled = false
+        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+            navigationItem.rightBarButtonItem = MKUserTrackingBarButtonItem(mapView: mapView)
+            navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem()
+        }
         
         view.translatesAutoresizingMaskIntoConstraints = true
         mapView.translatesAutoresizingMaskIntoConstraints = false

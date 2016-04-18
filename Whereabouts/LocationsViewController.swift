@@ -51,7 +51,10 @@ class LocationsViewController: UIViewController {
         
         navigationItem.rightBarButtonItem = rightBarButtonItem
         navigationItem.leftBarButtonItem = leftBarButtonItem
-        navigationItem.titleView = titleToggle
+        
+        if UIDevice.currentDevice().userInterfaceIdiom == .Phone {
+            navigationItem.titleView = titleToggle
+        }
         
         navigationController?.toolbarHidden = false
         toolbarItems = [editBarButton, spaceBarButtonItem, messageBarButtonItem, spaceBarButtonItem]
@@ -195,11 +198,22 @@ class LocationsViewController: UIViewController {
     @objc private func locateBarButtonWasPressed() {
         let nvc = StyledNavigationController(rootViewController: AddViewController())
         nvc.lowPowerCapable = true
+        
+        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+            nvc.modalPresentationStyle = .FormSheet
+        }
+        
         presentViewController(nvc, animated: true, completion: nil)
     }
     
     @objc private func settingsBarButtonWasPressed() {
-        presentViewController(StyledNavigationController(rootViewController: SettingsViewController()), animated: true, completion: nil)
+        let nvc = StyledNavigationController(rootViewController: SettingsViewController())
+        
+        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+            nvc.modalPresentationStyle = .FormSheet
+        }
+
+        presentViewController(nvc, animated: true, completion: nil)
     }
     
     @objc private func editButtonPressed() {

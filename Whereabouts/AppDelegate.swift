@@ -10,7 +10,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
-        MenuController.setupMenuWithViewController(
+        MenuController.sharedController.setupMenuWithViewController(
             StyledNavigationController(rootViewController: LocationsViewController()),
             andWindow: UIWindow(frame: UIScreen.mainScreen().bounds)
         )
@@ -83,8 +83,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
             let location = locations[indexOfLocation]
             
+            let nvc = StyledNavigationController(rootViewController: DetailViewController(location: location))
+            
+            if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+                nvc.modalPresentationStyle = .FormSheet
+            }
+            
             MenuController.sharedController.presenterViewController?.presentViewController(
-                StyledNavigationController(rootViewController: DetailViewController(location: location)),
+                nvc,
                 animated: true,
                 completion: nil
             )

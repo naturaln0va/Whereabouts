@@ -42,6 +42,7 @@
 		488BE6431CABF3EF00BA24C8 /* SearchCompleterCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 488BE6411CABF3EF00BA24C8 /* SearchCompleterCell.xib */; };
 		488BE6461CABF41100BA24C8 /* SearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488BE6441CABF41100BA24C8 /* SearchResultCell.swift */; };
 		488BE6471CABF41100BA24C8 /* SearchResultCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 488BE6451CABF41100BA24C8 /* SearchResultCell.xib */; };
+		48BCEE2D1CC4FA6900A51AAB /* StyledSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48BCEE2C1CC4FA6900A51AAB /* StyledSplitViewController.swift */; };
 		48C7636419F59D230096B27A /* RHAUtilExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C7636319F59D230096B27A /* RHAUtilExtensions.swift */; };
 		48CD67801CC294E70032A47E /* SearchIndexController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48CD677F1CC294E70032A47E /* SearchIndexController.swift */; };
 		48D225881A02F908008A419B /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 48D2258A1A02F908008A419B /* MainInterface.storyboard */; };
@@ -147,6 +148,7 @@
 		488BE6411CABF3EF00BA24C8 /* SearchCompleterCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchCompleterCell.xib; sourceTree = "<group>"; };
 		488BE6441CABF41100BA24C8 /* SearchResultCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultCell.swift; sourceTree = "<group>"; };
 		488BE6451CABF41100BA24C8 /* SearchResultCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchResultCell.xib; sourceTree = "<group>"; };
+		48BCEE2C1CC4FA6900A51AAB /* StyledSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledSplitViewController.swift; sourceTree = "<group>"; };
 		48C7636319F59D230096B27A /* RHAUtilExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RHAUtilExtensions.swift; sourceTree = "<group>"; };
 		48CD677F1CC294E70032A47E /* SearchIndexController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchIndexController.swift; sourceTree = "<group>"; };
 		48D225891A02F908008A419B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
@@ -263,6 +265,7 @@
 				48759B491CC102B500789DB8 /* PocketTrackViewController.xib */,
 				69B7A3B81BFCD6FE000BEBA0 /* SettingsViewController.swift */,
 				48F763401CA8778700BCE740 /* StyledNavigationController.swift */,
+				48BCEE2C1CC4FA6900A51AAB /* StyledSplitViewController.swift */,
 				48E3B85B1B1951AA003DD726 /* StyledViewController.swift */,
 			);
 			name = ViewControllers;
@@ -627,6 +630,7 @@
 				69E367E01CADAD3E00604790 /* EditViewController.swift in Sources */,
 				488A81291CBC6F0800452101 /* CLLocation+VCard.swift in Sources */,
 				6924A6471C6B9D4100D5F0E6 /* NSDate+Relative.swift in Sources */,
+				48BCEE2D1CC4FA6900A51AAB /* StyledSplitViewController.swift in Sources */,
 				4863E6FA1CAD3C800072C304 /* CurrentLocationCell.swift in Sources */,
 				69B7A3BB1BFCD76B000BEBA0 /* SettingsController.swift in Sources */,
 				4882D9D51B1A99FD00BAADAD /* RHACLStringExtensions.swift in Sources */,
@@ -776,6 +780,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "net.naturaln0va.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Distribution;
 		};
@@ -893,6 +898,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "net.naturaln0va.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -912,6 +918,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "net.naturaln0va.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

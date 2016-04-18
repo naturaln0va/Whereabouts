@@ -35,7 +35,7 @@ class SettingsViewController: UITableViewController {
     }
     
     private lazy var footerView: UIView = {
-        let footerView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: CGRectGetWidth(UIScreen.mainScreen().bounds), height: 130.0))
+        let footerView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: CGRectGetWidth(self.view.bounds), height: 130.0))
         footerView.backgroundColor = UIColor.clearColor()
         
         let logoImageview = UIImageView(frame: CGRect(x: 0.0, y: 0.0, width: 80.0, height: 80.0))
@@ -68,7 +68,6 @@ class SettingsViewController: UITableViewController {
 
         tableView = UITableView(frame: CGRect.zero, style: .Grouped)
         tableView.backgroundColor = StyleController.sharedController.backgroundColor
-        tableView.tableFooterView = footerView
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             title: "Done",
@@ -76,6 +75,14 @@ class SettingsViewController: UITableViewController {
             target: self,
             action: #selector(SettingsViewController.doneButtonPressed)
         )
+    }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        
+        if tableView.tableFooterView == nil {
+            tableView.tableFooterView = footerView
+        }
     }
     
     // MARK: - Actions
@@ -107,6 +114,9 @@ class SettingsViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, shouldHighlightRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         if indexPath.section == TableSections.UserSection.rawValue && indexPath.row == UserSectionRows.PocketTrackRow.rawValue {
+            return true
+        }
+        else if indexPath.section == TableSections.GeneralSection.rawValue {
             return true
         }
         else {

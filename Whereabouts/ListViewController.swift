@@ -24,7 +24,7 @@ class ListViewController: UITableViewController {
     private var currentLocaiton: CLLocation? {
         didSet {
             let set = NSIndexSet(index: 0)
-            tableView.reloadSections(set, withRowAnimation: .Automatic)
+            tableView.reloadSections(set, withRowAnimation: .None)
         }
     }
     
@@ -98,7 +98,17 @@ class ListViewController: UITableViewController {
         
         if let location = fetchedResultsController.objectAtIndexPath(indexPath) as? DatabaseLocation {
             let vc = DetailViewController(location: Location(dbLocation: location))
-            navigationController?.pushViewController(vc, animated: true)
+            
+            if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+                let nvc = StyledNavigationController(rootViewController: vc)
+                
+                nvc.modalPresentationStyle = .FormSheet
+                
+                presentViewController(nvc, animated: true, completion: nil)
+            }
+            else {
+                navigationController?.pushViewController(vc, animated: true)
+            }
         }
     }
     

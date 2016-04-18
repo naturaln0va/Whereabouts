@@ -8,11 +8,31 @@ class MenuController: NSObject
     private(set) var presenterViewController: UIViewController?
     private(set) var window: UIWindow?
     
-    static func setupMenuWithViewController(viewController: UIViewController, andWindow window: UIWindow) {
-        sharedController.presenterViewController = viewController
-        sharedController.window = window
-        sharedController.window?.rootViewController = viewController
+    func setupMenuWithViewController(viewController: UIViewController, andWindow window: UIWindow) {
+        self.window = window
+        
+        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+            let splitVC = StyledSplitViewController()
+            
+            splitVC.delegate = self
+            splitVC.addChildViewController(viewController)
+            
+            let mapNVC = StyledNavigationController(rootViewController: MapViewController())
+            splitVC.addChildViewController(mapNVC)
+            
+            splitVC.view.backgroundColor = StyleController.sharedController.mainTintColor
+            
+            presenterViewController = splitVC
+            self.window?.rootViewController = splitVC
+        }
+        else {
+            presenterViewController = viewController
+            self.window?.rootViewController = viewController
+        }
+        
         window.makeKeyAndVisible()
     }
     
 }
+
+extension MenuController: UISplitViewControllerDelegate {}

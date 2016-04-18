@@ -85,6 +85,10 @@ class DetailViewController: UITableViewController, EditViewControllerDelegate {
             self.nearbyAssets = images
             self.tableView.reloadData()
         }
+        
+        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+            navigationController?.setToolbarHidden(false, animated: true)
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
