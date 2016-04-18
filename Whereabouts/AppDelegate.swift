@@ -1,5 +1,6 @@
 
 import UIKit
+import CoreLocation
 import CoreSpotlight
 
 @UIApplicationMain
@@ -43,8 +44,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             object: nil
         )
         
+        NSNotificationCenter.defaultCenter().addObserver(
+            self,
+            selector: #selector(AppDelegate.visitsDidUpdate),
+            name: PersistentController.PersistentControllerDidUpdateVists,
+            object: nil
+        )
+        
         if SettingsController.sharedController.shouldMonitorVisits {
             assistant.startVisitsMonitoring()
+            updateVisitsActionItem(application)
         }
         
         return true
@@ -106,6 +115,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     completion: nil
                 )
             }
+            else if type == "Visits" {
+                var locationFromVisit: Location?
+                if let location = shortcutItem.userInfo?["location"] as? CLLocation {
+                    locationFromVisit = Location(location: location)
+                }
+                
+                MenuController.sharedController.presenterViewController?.presentViewController(
+                    StyledNavigationController(rootViewController: EditViewController(location: locationFromVisit)),
+                    animated: true,
+                    completion: nil
+                )
+            }
             else {
                 return false
             }
@@ -118,7 +139,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         completionHandler(handleShortcutItem(shortcutItem))
     }
     
+    func updateVisitsActionItem(application: UIApplication) {
+        if let latestVisit = PersistentController.sharedController.visits().last {
+            var icon: UIApplicationShortcutIcon
+            if #available(iOS 9.1, *) {
+                icon = UIApplicationShortcutIcon(type: .MarkLocation)
+            } else {
+                icon = UIApplicationShortcutIcon(templateImageName: "action-pin")
+            }
+            
+            let item = UIApplicationShortcutItem(
+                type: "\(NSBundle.mainBundle().bundleIdentifier).Visits",
+                localizedTitle: "Last Visit",
+                localizedSubtitle: latestVisit.address?.fullFormatedString(),
+                icon: icon,
+                userInfo: ["location": latestVisit.location]
+            )
+            application.shortcutItems = [item]
+        }
+    }
+    
     // MARK: - Notifications
+    
+    @objc private func visitsDidUpdate() {
+        guard SettingsController.sharedController.shouldMonitorVisits else { return }
+        updateVisitsActionItem(UIApplication.sharedApplication())
+    }
     
     @objc private func settingsDidChange() {
         if SettingsController.sharedController.shouldMonitorVisits {

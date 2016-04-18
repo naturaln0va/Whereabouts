@@ -9,6 +9,8 @@ class PersistentController {
     static let sharedController = PersistentController()
     private let kMigratedLegacyDataKey: String = "migratedLegacyData"
     
+    static let PersistentControllerDidUpdateVists: String = "persistentControllerDidUpdateVists"
+    
     private let DEBUG_DATABASE = false
     
     //MARK: - Legacy Model
@@ -350,22 +352,6 @@ class PersistentController {
         }
     }
     
-    func deleteVisit(visitToDelete: DatabaseVisit) {
-        moc.deleteObject(visitToDelete)
-        
-        if moc.hasChanges {
-            moc.performBlockAndWait { [unowned self] in
-                do {
-                    try self.moc.save()
-                }
-                    
-                catch {
-                    fatalError("Error deleting visit: \(error)")
-                }
-            }
-        }
-    }
-    
     func deleteVisits(visitsToDelete: [DatabaseVisit]) {
         for visit in visitsToDelete {
             moc.deleteObject(visit)
@@ -373,6 +359,7 @@ class PersistentController {
         
         if moc.hasChanges {
             do {
+                NSNotificationCenter.defaultCenter().postNotificationName(PersistentController.PersistentControllerDidUpdateVists, object: nil)
                 try self.moc.save()
             }
                 
@@ -384,7 +371,7 @@ class PersistentController {
     
     func saveVisit(visitToSave: Visit) {
         guard let dataToSave = NSEntityDescription.insertNewObjectForEntityForName(DatabaseVisit.entityName(), inManagedObjectContext: moc) as? DatabaseVisit else {
-            fatalError("Expected to insert and entity of type 'Visit'.")
+            fatalError("Expected to insert and entity of type 'DatabaseVisit'.")
         }
         
         dataToSave.identifier = visitToSave.identifier
@@ -398,6 +385,7 @@ class PersistentController {
         if moc.hasChanges {
             moc.performBlockAndWait { [unowned self] in
                 do {
+                    NSNotificationCenter.defaultCenter().postNotificationName(PersistentController.PersistentControllerDidUpdateVists, object: nil)
                     try self.moc.save()
                 }
                     
@@ -417,6 +405,7 @@ class PersistentController {
                 if moc.hasChanges {
                     moc.performBlockAndWait { [unowned self] in
                         do {
+                            NSNotificationCenter.defaultCenter().postNotificationName(PersistentController.PersistentControllerDidUpdateVists, object: nil)
                             try self.moc.save()
                         }
                             

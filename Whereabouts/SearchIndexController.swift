@@ -5,7 +5,7 @@ import CoreSpotlight
 class SearchIndexController {
     
     static let sharedController = SearchIndexController()
-    static let DEBUG_SEARCH = true
+    static let DEBUG_SEARCH = false
     
     var canUseCoreSpotlight: Bool {
         return CSSearchableIndex.isIndexingAvailable()
