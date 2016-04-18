@@ -43,6 +43,7 @@
 		488BE6461CABF41100BA24C8 /* SearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488BE6441CABF41100BA24C8 /* SearchResultCell.swift */; };
 		488BE6471CABF41100BA24C8 /* SearchResultCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 488BE6451CABF41100BA24C8 /* SearchResultCell.xib */; };
 		48BCEE2D1CC4FA6900A51AAB /* StyledSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48BCEE2C1CC4FA6900A51AAB /* StyledSplitViewController.swift */; };
+		48BCEE2F1CC519C400A51AAB /* DroppedAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48BCEE2E1CC519C400A51AAB /* DroppedAnnotation.swift */; };
 		48C7636419F59D230096B27A /* RHAUtilExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C7636319F59D230096B27A /* RHAUtilExtensions.swift */; };
 		48CD67801CC294E70032A47E /* SearchIndexController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48CD677F1CC294E70032A47E /* SearchIndexController.swift */; };
 		48D225881A02F908008A419B /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 48D2258A1A02F908008A419B /* MainInterface.storyboard */; };
@@ -149,6 +150,7 @@
 		488BE6441CABF41100BA24C8 /* SearchResultCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultCell.swift; sourceTree = "<group>"; };
 		488BE6451CABF41100BA24C8 /* SearchResultCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchResultCell.xib; sourceTree = "<group>"; };
 		48BCEE2C1CC4FA6900A51AAB /* StyledSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledSplitViewController.swift; sourceTree = "<group>"; };
+		48BCEE2E1CC519C400A51AAB /* DroppedAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DroppedAnnotation.swift; sourceTree = "<group>"; };
 		48C7636319F59D230096B27A /* RHAUtilExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RHAUtilExtensions.swift; sourceTree = "<group>"; };
 		48CD677F1CC294E70032A47E /* SearchIndexController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchIndexController.swift; sourceTree = "<group>"; };
 		48D225891A02F908008A419B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
@@ -417,6 +419,7 @@
 			children = (
 				693AF7981C1B38AE003AFB24 /* DataModels */,
 				48759B441CBDBE6100789DB8 /* DatabaseLocation.swift */,
+				48BCEE2E1CC519C400A51AAB /* DroppedAnnotation.swift */,
 				48F763451CA890D200BCE740 /* CloudLocation.swift */,
 				698AF39A1BF79A4D00F1E745 /* Fetchable.swift */,
 				698E782E1CAED0B3004A4178 /* Location.swift */,
@@ -637,6 +640,7 @@
 				69E367E71CAE8E3E00604790 /* MapItemCell.swift in Sources */,
 				48D73D6B1C012AA900B1A9B5 /* LocationModel.xcdatamodeld in Sources */,
 				69E367E31CAE0B2D00604790 /* LocationInfoDisplayCell.swift in Sources */,
+				48BCEE2F1CC519C400A51AAB /* DroppedAnnotation.swift in Sources */,
 				488BE6461CABF41100BA24C8 /* SearchResultCell.swift in Sources */,
 				48F763461CA890D200BCE740 /* CloudLocation.swift in Sources */,
 				48759B451CBDBE6100789DB8 /* DatabaseLocation.swift in Sources */,

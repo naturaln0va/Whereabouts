@@ -8,6 +8,7 @@ protocol EditViewControllerDelegate: class {
 
 class EditViewController: UITableViewController {
     
+    private let isCurrentLocation: Bool
     private var locationToEdit: Location?
     private var shouldContinueUpdatingUserLocaiton = true
     
@@ -42,7 +43,8 @@ class EditViewController: UITableViewController {
     
     weak var delegate: EditViewControllerDelegate?
     
-    init(location: Location?) {
+    init(location: Location?, isCurrentLocation: Bool) {
+        self.isCurrentLocation = isCurrentLocation
         super.init(nibName: nil, bundle: nil)
         
         self.locationToEdit = location
@@ -97,7 +99,7 @@ class EditViewController: UITableViewController {
             mapView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 145)
             tableView.tableHeaderView = mapView
             
-            if let location = locationToEdit, let _ = locationToEdit?.mapItem {
+            if let location = locationToEdit where locationToEdit?.mapItem != nil || !isCurrentLocation {
                 mapView.addAnnotation(location)
                 mapView.showAnnotations(mapView.annotations, animated: false)
             }
