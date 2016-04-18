@@ -32,14 +32,22 @@ class MapViewController: UIViewController {
         view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[map]|", options: [], metrics: nil, views: views))
         view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[map]|", options: [], metrics: nil, views: views))
         
+        NSNotificationCenter.defaultCenter().addObserver(
+            self,
+            selector: #selector(MapViewController.loadLocationsAndDisplay),
+            name: PersistentController.PersistentControllerLocationsDidUpdate,
+            object: nil
+        )
+        
         loadLocationsAndDisplay()
     }
     
     // MARK: Helpers
-    private func loadLocationsAndDisplay() {
+    @objc private func loadLocationsAndDisplay() {
         let locations = PersistentController.sharedController.locations()
         
         if locations.count > 0 {
+            if mapView.annotations.count > 0 { mapView.removeAnnotations(mapView.annotations) }
             mapView.addAnnotations(locations)
             mapView.showAnnotations(locations, animated: true)
         }

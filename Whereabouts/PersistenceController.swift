@@ -9,7 +9,8 @@ class PersistentController {
     static let sharedController = PersistentController()
     private let kMigratedLegacyDataKey: String = "migratedLegacyData"
     
-    static let PersistentControllerDidUpdateVists: String = "persistentControllerDidUpdateVists"
+    static let PersistentControllerVistsDidUpdate: String = "persistentControllerVistsDidUpdate"
+    static let PersistentControllerLocationsDidUpdate: String = "persistentControllerLocationsDidUpdate"
     
     private let DEBUG_DATABASE = false
     
@@ -172,6 +173,7 @@ class PersistentController {
         if moc.hasChanges {
             moc.performBlockAndWait { [unowned self] in
                 do {
+                    NSNotificationCenter.defaultCenter().postNotificationName(PersistentController.PersistentControllerLocationsDidUpdate, object: nil)
                     try self.moc.save()
                 }
                     
@@ -212,6 +214,7 @@ class PersistentController {
         if moc.hasChanges {
             moc.performBlockAndWait { [unowned self] in
                 do {
+                    NSNotificationCenter.defaultCenter().postNotificationName(PersistentController.PersistentControllerLocationsDidUpdate, object: nil)
                     try self.moc.save()
                 }
                     
@@ -232,6 +235,7 @@ class PersistentController {
         if moc.hasChanges {
             moc.performBlockAndWait { [unowned self] in
                 do {
+                    NSNotificationCenter.defaultCenter().postNotificationName(PersistentController.PersistentControllerLocationsDidUpdate, object: nil)
                     try self.moc.save()
                 }
                     
@@ -317,6 +321,7 @@ class PersistentController {
         if moc.hasChanges {
             moc.performBlockAndWait { [unowned self] in
                 do {
+                    NSNotificationCenter.defaultCenter().postNotificationName(PersistentController.PersistentControllerLocationsDidUpdate, object: nil)
                     try self.moc.save()
                 }
                     
@@ -359,7 +364,7 @@ class PersistentController {
         
         if moc.hasChanges {
             do {
-                NSNotificationCenter.defaultCenter().postNotificationName(PersistentController.PersistentControllerDidUpdateVists, object: nil)
+                NSNotificationCenter.defaultCenter().postNotificationName(PersistentController.PersistentControllerVistsDidUpdate, object: nil)
                 try self.moc.save()
             }
                 
@@ -385,7 +390,7 @@ class PersistentController {
         if moc.hasChanges {
             moc.performBlockAndWait { [unowned self] in
                 do {
-                    NSNotificationCenter.defaultCenter().postNotificationName(PersistentController.PersistentControllerDidUpdateVists, object: nil)
+                    NSNotificationCenter.defaultCenter().postNotificationName(PersistentController.PersistentControllerVistsDidUpdate, object: nil)
                     try self.moc.save()
                 }
                     
@@ -405,7 +410,7 @@ class PersistentController {
                 if moc.hasChanges {
                     moc.performBlockAndWait { [unowned self] in
                         do {
-                            NSNotificationCenter.defaultCenter().postNotificationName(PersistentController.PersistentControllerDidUpdateVists, object: nil)
+                            NSNotificationCenter.defaultCenter().postNotificationName(PersistentController.PersistentControllerVistsDidUpdate, object: nil)
                             try self.moc.save()
                         }
                             

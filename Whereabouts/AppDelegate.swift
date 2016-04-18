@@ -47,7 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         NSNotificationCenter.defaultCenter().addObserver(
             self,
             selector: #selector(AppDelegate.visitsDidUpdate),
-            name: PersistentController.PersistentControllerDidUpdateVists,
+            name: PersistentController.PersistentControllerVistsDidUpdate,
             object: nil
         )
         
