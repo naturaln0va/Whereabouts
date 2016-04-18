@@ -17,12 +17,13 @@ extension CLLocation {
         let vCardString = [
             "BEGIN:VCARD",
             "VERSION:3.0",
+            "PRODID:-//Apple Inc.//iOS 9.3.1//EN",
             "N:;Shared Location;;;",
             "FN:Shared Location",
-            "item1.URL;type=pref:http://maps.apple.com/?ll=\(coordinate.latitude),\(coordinate.longitude)",
+            "item1.URL;type=pref:http://maps.apple.com/?address=&ll=\(coordinate.latitude)\\,\(coordinate.longitude)&q=\(coordinate.latitude)\\,\(coordinate.longitude)&t=m",
             "item1.X-ABLabel:map url",
             "END:VCARD"
-            ].joinWithSeparator("\n")
+        ].joinWithSeparator("\n")
         
         let vCardFilePath = (cachesPathString as NSString).stringByAppendingPathComponent("vCard.loc.vcf")
         
