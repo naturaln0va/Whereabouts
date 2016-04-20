@@ -53,6 +53,10 @@
 		48E3B8561B193FA3003DD726 /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E3B8551B193FA3003DD726 /* MenuController.swift */; };
 		48E3B85C1B1951AA003DD726 /* StyledViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E3B85B1B1951AA003DD726 /* StyledViewController.swift */; };
 		48E3B8601B195896003DD726 /* StyleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E3B85F1B195896003DD726 /* StyleController.swift */; };
+		48F114BE1CC7A6B1008AD097 /* ConcurrentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F114BD1CC7A6B1008AD097 /* ConcurrentOperation.swift */; };
+		48F114C11CC7A7AD008AD097 /* CloudSyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F114C01CC7A7AD008AD097 /* CloudSyncOperation.swift */; };
+		48F114C31CC7AB02008AD097 /* NotificationFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F114C21CC7AB02008AD097 /* NotificationFetchOperation.swift */; };
+		48F114C51CC7AE5C008AD097 /* NotificationMarkOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F114C41CC7AE5C008AD097 /* NotificationMarkOperation.swift */; };
 		48F763411CA8778700BCE740 /* StyledNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F763401CA8778700BCE740 /* StyledNavigationController.swift */; };
 		48F763431CA87FF500BCE740 /* CloudController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F763421CA87FF500BCE740 /* CloudController.swift */; };
 		48F763461CA890D200BCE740 /* CloudLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F763451CA890D200BCE740 /* CloudLocation.swift */; };
@@ -162,6 +166,10 @@
 		48E3B8551B193FA3003DD726 /* MenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
 		48E3B85B1B1951AA003DD726 /* StyledViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledViewController.swift; sourceTree = "<group>"; };
 		48E3B85F1B195896003DD726 /* StyleController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleController.swift; sourceTree = "<group>"; };
+		48F114BD1CC7A6B1008AD097 /* ConcurrentOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConcurrentOperation.swift; sourceTree = "<group>"; };
+		48F114C01CC7A7AD008AD097 /* CloudSyncOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudSyncOperation.swift; sourceTree = "<group>"; };
+		48F114C21CC7AB02008AD097 /* NotificationFetchOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationFetchOperation.swift; sourceTree = "<group>"; };
+		48F114C41CC7AE5C008AD097 /* NotificationMarkOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationMarkOperation.swift; sourceTree = "<group>"; };
 		48F763401CA8778700BCE740 /* StyledNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledNavigationController.swift; sourceTree = "<group>"; };
 		48F763421CA87FF500BCE740 /* CloudController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudController.swift; sourceTree = "<group>"; };
 		48F763451CA890D200BCE740 /* CloudLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudLocation.swift; sourceTree = "<group>"; };
@@ -338,12 +346,24 @@
 				48FF04FD1AD036C700A2FA34 /* Extensions */,
 				69CEA4A81BF63AC200F5022B /* Frameworks */,
 				48D4FFE71BF7D125006DA09C /* Layouts */,
+				48F114BF1CC7A6B4008AD097 /* Operations */,
 				48FF05011AD0372400A2FA34 /* Resources */,
 				697FBD721C19D24B00743212 /* Transitions */,
 				4849BD021B093A44003A40AF /* ViewControllers */,
 				482FBFEB1CB292E500E30EF2 /* Views */,
 			);
 			path = Whereabouts;
+			sourceTree = "<group>";
+		};
+		48F114BF1CC7A6B4008AD097 /* Operations */ = {
+			isa = PBXGroup;
+			children = (
+				48F114BD1CC7A6B1008AD097 /* ConcurrentOperation.swift */,
+				48F114C01CC7A7AD008AD097 /* CloudSyncOperation.swift */,
+				48F114C21CC7AB02008AD097 /* NotificationFetchOperation.swift */,
+				48F114C41CC7AE5C008AD097 /* NotificationMarkOperation.swift */,
+			);
+			name = Operations;
 			sourceTree = "<group>";
 		};
 		48FF04FB1AD036A000A2FA34 /* Controllers */ = {
@@ -623,12 +643,14 @@
 				698AF38C1BF6D66D00F1E745 /* TextEntryCell.swift in Sources */,
 				69F7CEE61CAAF286007EB03F /* ListViewController.swift in Sources */,
 				482FBFE71CB291BE00E30EF2 /* TextContentCell.swift in Sources */,
+				48F114C11CC7A7AD008AD097 /* CloudSyncOperation.swift in Sources */,
 				48E3B85C1B1951AA003DD726 /* StyledViewController.swift in Sources */,
 				69E367EA1CAE979C00604790 /* CLPlacemark+Display.swift in Sources */,
 				48642D0F1BAE166F00935358 /* LocationsViewController.swift in Sources */,
 				4863ACAE1B24EF4D009F008F /* LocationCell.swift in Sources */,
 				48F763411CA8778700BCE740 /* StyledNavigationController.swift in Sources */,
 				69EA5BBA1BFE4E1A0009B709 /* UIDevice+Addition.swift in Sources */,
+				48F114BE1CC7A6B1008AD097 /* ConcurrentOperation.swift in Sources */,
 				48E3B8561B193FA3003DD726 /* MenuController.swift in Sources */,
 				69E367E01CADAD3E00604790 /* EditViewController.swift in Sources */,
 				488A81291CBC6F0800452101 /* CLLocation+VCard.swift in Sources */,
@@ -642,6 +664,7 @@
 				69E367E31CAE0B2D00604790 /* LocationInfoDisplayCell.swift in Sources */,
 				48BCEE2F1CC519C400A51AAB /* DroppedAnnotation.swift in Sources */,
 				488BE6461CABF41100BA24C8 /* SearchResultCell.swift in Sources */,
+				48F114C51CC7AE5C008AD097 /* NotificationMarkOperation.swift in Sources */,
 				48F763461CA890D200BCE740 /* CloudLocation.swift in Sources */,
 				48759B451CBDBE6100789DB8 /* DatabaseLocation.swift in Sources */,
 				48C7636419F59D230096B27A /* RHAUtilExtensions.swift in Sources */,
@@ -655,6 +678,7 @@
 				69B7A3B91BFCD6FE000BEBA0 /* SettingsViewController.swift in Sources */,
 				48707CCC1CAA96090003F792 /* UIColor+Hex.swift in Sources */,
 				488BE6421CABF3EF00BA24C8 /* SearchCompleterCell.swift in Sources */,
+				48F114C31CC7AB02008AD097 /* NotificationFetchOperation.swift in Sources */,
 				48DEDA3719F592F80094CB8F /* AppDelegate.swift in Sources */,
 				48759B4A1CC102B500789DB8 /* PocketTrackViewController.swift in Sources */,
 				48642D111BAE1E0400935358 /* LocationAssistant.swift in Sources */,

@@ -273,6 +273,10 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate {
     
     func locationManager(manager: CLLocationManager, didVisit visit: CLVisit) {
         #if MAIN_APP
+            let notification = UILocalNotification()
+            notification.alertBody = "Tried to do a visit thing."
+            UIApplication.sharedApplication().presentLocalNotificationNow(notification)
+            
             var visitNotificationString = ""
             if visit.departureDate.isEqualToDate(NSDate.distantFuture()) {
                 visitNotificationString += "😸→📍Arrived at: "
