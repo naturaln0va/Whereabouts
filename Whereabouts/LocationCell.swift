@@ -9,10 +9,24 @@ class LocationCell: UITableViewCell {
     @IBOutlet private weak var addressLabel: UILabel!
     @IBOutlet private weak var createdDateLabel: UILabel!
     @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet weak var distanceLabel: UILabel!
+    @IBOutlet private weak var distanceLabel: UILabel!
+    
+    func setDistanceText(text: String) {
+        distanceLabel.text = text
+        
+        if text.characters.count > 0 {
+            UIView.animateWithDuration(0.3) { [unowned self] in
+                self.distanceLabel.alpha = 1
+            }
+        }
+    }
     
     func configureCellWithLocation(locationToDisplay: Location) {
-        distanceLabel.text = ""
+        if distanceLabel.text?.characters.count == 0 {
+            distanceLabel.text = ""
+            distanceLabel.alpha = 0
+        }
+        
         createdDateLabel.text = locationToDisplay.date.relativeString()
         
         if let item = locationToDisplay.mapItem where item.name?.characters.count > 0 {

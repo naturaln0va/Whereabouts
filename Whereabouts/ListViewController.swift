@@ -23,8 +23,9 @@ class ListViewController: UITableViewController {
     private lazy var assistant = LocationAssistant()
     private var currentLocaiton: CLLocation? {
         didSet {
-            let set = NSIndexSet(index: 0)
-            tableView.reloadSections(set, withRowAnimation: .None)
+            if let indexPaths = tableView.indexPathsForVisibleRows {
+                tableView.reloadRowsAtIndexPaths(indexPaths, withRowAnimation: .None)
+            }
         }
     }
     
@@ -86,7 +87,7 @@ class ListViewController: UITableViewController {
             cell.configureCellWithLocation(Location(dbLocation: location))
             
             if let currentLoc = currentLocaiton {
-                cell.distanceLabel.text = distanceFormatter.stringFromDistance(currentLoc.distanceFromLocation(location.location))
+                cell.setDistanceText(distanceFormatter.stringFromDistance(currentLoc.distanceFromLocation(location.location)))
             }
         }
         
@@ -156,7 +157,7 @@ extension ListViewController: NSFetchedResultsControllerDelegate {
                     cell.configureCellWithLocation(Location(dbLocation: location))
                     
                     if let currentLoc = currentLocaiton {
-                        cell.distanceLabel.text = distanceFormatter.stringFromDistance(currentLoc.distanceFromLocation(location.location))
+                        cell.setDistanceText(distanceFormatter.stringFromDistance(currentLoc.distanceFromLocation(location.location)))
                     }
                 }
             }

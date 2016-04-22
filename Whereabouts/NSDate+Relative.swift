@@ -30,10 +30,10 @@ extension NSDate
         let daysAgo = NSDate().daysSince(self)
         let hoursAgo = Int(intervalDifference / NSTimeInterval(60 * 60))
         
-        if daysAgo < 1 {
+        if daysAgo <= 1 {
             return "\(hoursAgo)h"
         }
-        else if daysAgo < 6 {
+        else if daysAgo <= 6 {
             return "\(daysAgo)d"
         }
         
