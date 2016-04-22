@@ -40,12 +40,7 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate {
     private var reverseGeocoding = false
     
     private var shouldReducePowerConsumption: Bool {
-        if #available(iOSApplicationExtension 9.0, *) {
-            return NSProcessInfo.processInfo().lowPowerModeEnabled
-        }
-        else {
-            return false
-        }
+        return NSProcessInfo.processInfo().lowPowerModeEnabled
     }
     
     // MARK: - Init
@@ -55,14 +50,12 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate {
     }
     
     private func commonInit() {
-        if #available(iOSApplicationExtension 9.0, *) {
-            NSNotificationCenter.defaultCenter().addObserver(
-                self,
-                selector: #selector(LocationAssistant.lowPowerModeChanged),
-                name: NSProcessInfoPowerStateDidChangeNotification,
-                object: nil
-            )
-        }
+        NSNotificationCenter.defaultCenter().addObserver(
+            self,
+            selector: #selector(LocationAssistant.lowPowerModeChanged),
+            name: NSProcessInfoPowerStateDidChangeNotification,
+            object: nil
+        )
     }
     
     // MARK: - Public Methods
@@ -219,7 +212,7 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate {
         if CLLocationManager.locationServicesEnabled() {
             manager.delegate = self
             manager.desiredAccuracy = shouldReducePowerConsumption ? kCLLocationAccuracyKilometer : kHorizontalAccuracyGood
-            manager.startUpdatingLocation()
+            manager.requestLocation()
             updatingLocation = true
             
             let interval = NSTimeInterval(shouldReducePowerConsumption ? kLocationTimeoutShort : kLocationTimeoutNormal)
@@ -287,7 +280,7 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate {
                     PersistentController.sharedController.visitWasVisited(visit)
                     
                     let notification = UILocalNotification()
-                    notification.alertBody = "You have now visited \(visit.address == nil ? visit.coordinate.formattedString() : stringFromAddress(visit.address!, withNewLine: false)) \(visit.totalVisits) time(s)"
+                    notification.alertBody = visitNotificationString + (visit.address?.fullFormatedString() ?? visit.coordinate.formattedString())
                     UIApplication.sharedApplication().presentLocalNotificationNow(notification)
                     return
                 }

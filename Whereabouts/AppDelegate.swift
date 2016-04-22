@@ -165,8 +165,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - Notifications
     
     @objc private func visitsDidUpdate() {
-        guard SettingsController.sharedController.shouldMonitorVisits else { return }
-        updateVisitsActionItem(UIApplication.sharedApplication())
+        if SettingsController.sharedController.shouldMonitorVisits {
+            updateVisitsActionItem(UIApplication.sharedApplication())
+        }
     }
     
     @objc private func settingsDidChange() {
