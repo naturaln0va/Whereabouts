@@ -5,9 +5,9 @@ import CoreLocation
 
 class DatabaseVisit: NSManagedObject {
 
-    @NSManaged var totalVisits: Int
+    @NSManaged var totalVisits: NSNumber
     @NSManaged var identifier: String
-    @NSManaged var coordinate: CLLocationCoordinate2D
+    @NSManaged var location: CLLocation
     @NSManaged var address: CLPlacemark?
     @NSManaged var horizontalAccuracy: Double
     @NSManaged var arrivalDate: NSDate

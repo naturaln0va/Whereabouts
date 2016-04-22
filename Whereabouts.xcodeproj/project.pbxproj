@@ -438,12 +438,12 @@
 			isa = PBXGroup;
 			children = (
 				693AF7981C1B38AE003AFB24 /* DataModels */,
-				48759B441CBDBE6100789DB8 /* DatabaseLocation.swift */,
-				48BCEE2E1CC519C400A51AAB /* DroppedAnnotation.swift */,
 				48F763451CA890D200BCE740 /* CloudLocation.swift */,
+				48759B441CBDBE6100789DB8 /* DatabaseLocation.swift */,
+				48759B461CBDBE7100789DB8 /* DatabaseVisit.swift */,
+				48BCEE2E1CC519C400A51AAB /* DroppedAnnotation.swift */,
 				698AF39A1BF79A4D00F1E745 /* Fetchable.swift */,
 				698E782E1CAED0B3004A4178 /* Location.swift */,
-				48759B461CBDBE7100789DB8 /* DatabaseVisit.swift */,
 				696C6A4D1CC18D9500F42B24 /* Visit.swift */,
 			);
 			name = Model;

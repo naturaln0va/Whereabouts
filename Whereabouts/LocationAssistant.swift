@@ -273,15 +273,11 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate {
     
     func locationManager(manager: CLLocationManager, didVisit visit: CLVisit) {
         #if MAIN_APP
-            let notification = UILocalNotification()
-            notification.alertBody = "Tried to do a visit thing."
-            UIApplication.sharedApplication().presentLocalNotificationNow(notification)
-            
             var visitNotificationString = ""
             if visit.departureDate.isEqualToDate(NSDate.distantFuture()) {
-                visitNotificationString += "😸→📍Arrived at: "
+                visitNotificationString += "📍Arrived at: "
             } else {
-                visitNotificationString += "😸←📍Departed from: "
+                visitNotificationString += "📍Departed from: "
             }
             
             let locationOfVisit = CLLocation(latitude: visit.coordinate.latitude, longitude: visit.coordinate.longitude)
@@ -291,7 +287,6 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate {
                     PersistentController.sharedController.visitWasVisited(visit)
                     
                     let notification = UILocalNotification()
-                    notification.alertAction = nil
                     notification.alertBody = "You have now visited \(visit.address == nil ? stringFromCoordinate(visit.coordinate) : stringFromAddress(visit.address!, withNewLine: false)) \(visit.totalVisits) time(s)"
                     UIApplication.sharedApplication().presentLocalNotificationNow(notification)
                     return
@@ -299,23 +294,21 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate {
             }
             
             geocoder.reverseGeocodeLocation(locationOfVisit) { placemarks, error in
-                defer {
-                    let notification = UILocalNotification()
-                    notification.alertAction = nil
-                    notification.alertBody = visitNotificationString
-                    UIApplication.sharedApplication().presentLocalNotificationNow(notification)
-                    PersistentController.sharedController.saveVisit(visitToSave)
-                }
-                
                 let visitToSave = Visit(visit: visit)
                 
                 if let visitedAddress = placemarks?.last where error == nil {
                     visitToSave.address = visitedAddress
-                    visitNotificationString += stringFromAddress(visitedAddress, withNewLine: true)
+                    visitNotificationString += visitedAddress.fullFormatedString()
                 }
                 else {
                     visitNotificationString += stringFromCoordinate(visit.coordinate)
                 }
+                
+                PersistentController.sharedController.saveVisit(visitToSave)
+                
+                let notification = UILocalNotification()
+                notification.alertBody = visitNotificationString
+                UIApplication.sharedApplication().presentLocalNotificationNow(notification)
             }
         #endif
     }

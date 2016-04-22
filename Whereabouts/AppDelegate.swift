@@ -9,7 +9,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private lazy var assistant = LocationAssistant()
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        
         MenuController.sharedController.setupMenuWithViewController(
             StyledNavigationController(rootViewController: LocationsViewController()),
             andWindow: UIWindow(frame: UIScreen.mainScreen().bounds)

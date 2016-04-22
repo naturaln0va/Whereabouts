@@ -5,9 +5,10 @@ import MapKit
 
 class Visit: NSObject {
     
-    var totalVisits: Int
-    var identifier: String
-    var coordinate: CLLocationCoordinate2D
+    let identifier: String
+    let location: CLLocation
+    
+    var totalVisits: Int = 0
     var address: CLPlacemark?
     var horizontalAccuracy: Double
     var arrivalDate: NSDate
@@ -20,14 +21,10 @@ class Visit: NSObject {
         return formatter
     }()
     
-    var location: CLLocation {
-        return CLLocation(coordinate: coordinate, altitude: 0, horizontalAccuracy: kCLLocationAccuracyBest, verticalAccuracy: kCLLocationAccuracyBest, timestamp: arrivalDate)
-    }
-    
     init(dbVisit: DatabaseVisit) {
-        totalVisits = dbVisit.totalVisits
+        totalVisits = dbVisit.totalVisits.integerValue
         identifier = dbVisit.identifier
-        coordinate = dbVisit.coordinate
+        location = dbVisit.location
         address = dbVisit.address
         horizontalAccuracy = dbVisit.horizontalAccuracy
         arrivalDate = dbVisit.arrivalDate
@@ -36,10 +33,19 @@ class Visit: NSObject {
         super.init()
     }
     
+    init(location: CLLocation) {
+        self.location = location
+        identifier = "\(NSDate().hashValue)+\(location.coordinate.latitude)+\(location.coordinate.longitude)"
+        totalVisits = 1
+        horizontalAccuracy = 0.0
+        arrivalDate = NSDate.distantPast()
+        departureDate = NSDate.distantFuture()
+    }
+    
     init(visit: CLVisit) {
         identifier = "\(NSUUID().UUIDString)+\(visit.hashValue)+\(visit.arrivalDate.hashValue)+\(visit.departureDate.hashValue)"
         totalVisits = 1
-        coordinate = visit.coordinate
+        location = CLLocation(coordinate: visit.coordinate, altitude: 0, horizontalAccuracy: visit.horizontalAccuracy, verticalAccuracy: 0, timestamp: NSDate())
         horizontalAccuracy = visit.horizontalAccuracy
         arrivalDate = visit.arrivalDate
         departureDate = visit.departureDate
@@ -57,6 +63,10 @@ extension Visit: MKAnnotation {
     
     var subtitle: String? {
         return address != nil ? stringFromAddress(address!, withNewLine: true) : stringFromCoordinate(coordinate)
+    }
+    
+    var coordinate: CLLocationCoordinate2D {
+        return location.coordinate
     }
     
 }

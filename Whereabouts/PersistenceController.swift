@@ -384,7 +384,7 @@ class PersistentController {
         dataToSave.arrivalDate = visitToSave.arrivalDate
         dataToSave.departureDate = visitToSave.departureDate
         dataToSave.horizontalAccuracy = visitToSave.horizontalAccuracy
-        dataToSave.coordinate = visitToSave.coordinate
+        dataToSave.location = visitToSave.location
         dataToSave.address = visitToSave.address
         
         if moc.hasChanges {
@@ -405,7 +405,7 @@ class PersistentController {
         if let result = try? DatabaseVisit.singleObjectInContext(moc, predicate: NSPredicate(format: "identifier == [c] %@", visit.identifier), sortedBy: nil, ascending: false) {
             
             if let visitToUpdate = result {
-                visitToUpdate.totalVisits = visitToUpdate.totalVisits + 1
+                visitToUpdate.totalVisits = NSNumber(integer: visitToUpdate.totalVisits.integerValue + 1)
                 
                 if moc.hasChanges {
                     moc.performBlockAndWait { [unowned self] in
