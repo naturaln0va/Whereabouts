@@ -9,7 +9,7 @@ class DatabaseVisit: NSManagedObject {
     @NSManaged var identifier: String
     @NSManaged var location: CLLocation
     @NSManaged var address: CLPlacemark?
-    @NSManaged var horizontalAccuracy: Double
+    @NSManaged var horizontalAccuracy: NSNumber
     @NSManaged var arrivalDate: NSDate
     @NSManaged var departureDate: NSDate
     

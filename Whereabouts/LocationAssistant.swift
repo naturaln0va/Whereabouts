@@ -287,7 +287,7 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate {
                     PersistentController.sharedController.visitWasVisited(visit)
                     
                     let notification = UILocalNotification()
-                    notification.alertBody = "You have now visited \(visit.address == nil ? stringFromCoordinate(visit.coordinate) : stringFromAddress(visit.address!, withNewLine: false)) \(visit.totalVisits) time(s)"
+                    notification.alertBody = "You have now visited \(visit.address == nil ? visit.coordinate.formattedString() : stringFromAddress(visit.address!, withNewLine: false)) \(visit.totalVisits) time(s)"
                     UIApplication.sharedApplication().presentLocalNotificationNow(notification)
                     return
                 }
@@ -301,7 +301,7 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate {
                     visitNotificationString += visitedAddress.fullFormatedString()
                 }
                 else {
-                    visitNotificationString += stringFromCoordinate(visit.coordinate)
+                    visitNotificationString += visit.coordinate.formattedString()
                 }
                 
                 PersistentController.sharedController.saveVisit(visitToSave)

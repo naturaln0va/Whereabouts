@@ -14,6 +14,9 @@
 		482CABE019FF565300B5F1E2 /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482CABDF19FF565300B5F1E2 /* TodayViewController.swift */; };
 		482CABE519FF565300B5F1E2 /* Quick Location.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 482CABD819FF565200B5F1E2 /* Quick Location.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		482CE19F19FD9F9A00682940 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 482CE19E19FD9F9A00682940 /* MapKit.framework */; };
+		482E60701CCA52F100ED102F /* CLLocationCoordinate2D+Format.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482E606F1CCA52F100ED102F /* CLLocationCoordinate2D+Format.swift */; };
+		482E60711CCA543800ED102F /* CLPlacemark+Display.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69E367E91CAE979C00604790 /* CLPlacemark+Display.swift */; };
+		482E60721CCA547200ED102F /* CLLocationCoordinate2D+Format.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482E606F1CCA52F100ED102F /* CLLocationCoordinate2D+Format.swift */; };
 		482FBFE71CB291BE00E30EF2 /* TextContentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FBFE51CB291BE00E30EF2 /* TextContentCell.swift */; };
 		482FBFE81CB291BE00E30EF2 /* TextContentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 482FBFE61CB291BE00E30EF2 /* TextContentCell.xib */; };
 		482FBFEA1CB292E100E30EF2 /* PlaceholderTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FBFE91CB292E100E30EF2 /* PlaceholderTextView.swift */; };
@@ -123,6 +126,7 @@
 		482CABDE19FF565300B5F1E2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		482CABDF19FF565300B5F1E2 /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
 		482CE19E19FD9F9A00682940 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		482E606F1CCA52F100ED102F /* CLLocationCoordinate2D+Format.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CLLocationCoordinate2D+Format.swift"; sourceTree = "<group>"; };
 		482FBFE51CB291BE00E30EF2 /* TextContentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextContentCell.swift; sourceTree = "<group>"; };
 		482FBFE61CB291BE00E30EF2 /* TextContentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TextContentCell.xib; sourceTree = "<group>"; };
 		482FBFE91CB292E100E30EF2 /* PlaceholderTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaceholderTextView.swift; sourceTree = "<group>"; };
@@ -393,6 +397,7 @@
 				48707CCB1CAA96090003F792 /* UIColor+Hex.swift */,
 				69E367E91CAE979C00604790 /* CLPlacemark+Display.swift */,
 				488A81281CBC6F0800452101 /* CLLocation+VCard.swift */,
+				482E606F1CCA52F100ED102F /* CLLocationCoordinate2D+Format.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -616,9 +621,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				482E60711CCA543800ED102F /* CLPlacemark+Display.swift in Sources */,
 				6937217E1C038C2B00A5C8BC /* SettingsController.swift in Sources */,
 				482CABE019FF565300B5F1E2 /* TodayViewController.swift in Sources */,
 				6937217B1C038AA400A5C8BC /* RHACLStringExtensions.swift in Sources */,
+				482E60721CCA547200ED102F /* CLLocationCoordinate2D+Format.swift in Sources */,
 				6937217A1C03877100A5C8BC /* LocationAssistant.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -673,6 +680,7 @@
 				698E782F1CAED0B3004A4178 /* Location.swift in Sources */,
 				692275A81CBE9ADE007C9BA2 /* CacheController.swift in Sources */,
 				483AF54D1B0BFF2700A00BED /* PersistenceController.swift in Sources */,
+				482E60701CCA52F100ED102F /* CLLocationCoordinate2D+Format.swift in Sources */,
 				48CD67801CC294E70032A47E /* SearchIndexController.swift in Sources */,
 				690667721C11E83800862742 /* DataModel.xcdatamodeld in Sources */,
 				69B7A3B91BFCD6FE000BEBA0 /* SettingsViewController.swift in Sources */,

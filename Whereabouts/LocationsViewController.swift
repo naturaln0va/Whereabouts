@@ -17,9 +17,6 @@ class LocationsViewController: UIViewController {
     
     private lazy var titleToggle: UISegmentedControl = {
         let control = UISegmentedControl(items: ["List", "Map"])
-        if PersistentController.sharedController.visits().count > 0 {
-            control.insertSegmentWithTitle("Visits", atIndex: 2, animated: false)
-        }
         control.selectedSegmentIndex = 0
         control.tintColor = StyleController.sharedController.navBarTintColor
         control.addTarget(self, action: #selector(LocationsViewController.toggleWasChanged), forControlEvents: .ValueChanged)
@@ -61,7 +58,6 @@ class LocationsViewController: UIViewController {
         
         beginObserving()
         refreshToggleState()
-        refreshTitleToggle()
     }
     
     override func viewDidLayoutSubviews() {
@@ -85,19 +81,6 @@ class LocationsViewController: UIViewController {
             name: CloudController.kCloudErrorNotificationKey,
             object: nil
         )
-    }
-    
-    private func refreshTitleToggle() {
-        if PersistentController.sharedController.visits().count > 0 {
-            if titleToggle.numberOfSegments == 2 {
-                titleToggle.insertSegmentWithTitle("Visits", atIndex: 2, animated: true)
-            }
-        }
-        else {
-            if titleToggle.numberOfSegments == 3 {
-                titleToggle.removeSegmentAtIndex(2, animated: true)
-            }
-        }
     }
     
     private func updateMessageLabel(updatedText: String?) {

@@ -2,7 +2,7 @@
 import UIKit
 import CloudKit
 
-let DEBUG_CLOUD = true
+let DEBUG_CLOUD = false
 
 class CloudController {
     

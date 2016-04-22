@@ -337,12 +337,17 @@ class PersistentController {
     // MARK: Public
     
     func visits() -> [Visit] {
-        if let visits = try? DatabaseVisit.objectsInContext(moc) {
+        do {
+            let visits = try DatabaseVisit.objectsInContext(moc)
             return visits.map { dbVisit in
                 return Visit(dbVisit: dbVisit)
             }
         }
-        return []
+        
+        catch let error {
+            if self.DEBUG_DATABASE { debugPrint("***PERSISTENTCONTROLLER: Error getting all visits: \(error).") }
+            return []
+        }
     }
     
     func cleanUpVisits() {
@@ -353,6 +358,7 @@ class PersistentController {
                     visitsToDelete.append(visit)
                 }
             }
+            if self.DEBUG_DATABASE { debugPrint("***PERSISTENTCONTROLLER: Cleaning up \(visitsToDelete.count) visits.") }
             deleteVisits(visitsToDelete)
         }
     }
@@ -363,6 +369,7 @@ class PersistentController {
         }
         
         if moc.hasChanges {
+            if self.DEBUG_DATABASE { debugPrint("***PERSISTENTCONTROLLER: Visit was deleted.") }
             do {
                 NSNotificationCenter.defaultCenter().postNotificationName(PersistentController.PersistentControllerVistsDidUpdate, object: nil)
                 try self.moc.save()
@@ -389,6 +396,7 @@ class PersistentController {
         
         if moc.hasChanges {
             moc.performBlockAndWait { [unowned self] in
+                if self.DEBUG_DATABASE { debugPrint("***PERSISTENTCONTROLLER: Visit: \(visitToSave) was was saved.") }
                 do {
                     NSNotificationCenter.defaultCenter().postNotificationName(PersistentController.PersistentControllerVistsDidUpdate, object: nil)
                     try self.moc.save()
@@ -409,6 +417,7 @@ class PersistentController {
                 
                 if moc.hasChanges {
                     moc.performBlockAndWait { [unowned self] in
+                        if self.DEBUG_DATABASE { debugPrint("***PERSISTENTCONTROLLER: Visit: \(visit) was visited.") }
                         do {
                             NSNotificationCenter.defaultCenter().postNotificationName(PersistentController.PersistentControllerVistsDidUpdate, object: nil)
                             try self.moc.save()

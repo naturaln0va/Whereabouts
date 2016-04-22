@@ -112,7 +112,7 @@ class Location: NSObject {
             shareString += stringFromAddress(place, withNewLine: false)
         }
         else {
-            shareString += stringFromCoordinate(location.coordinate)
+            shareString += location.coordinate.formattedString()
         }
         
         shareString += "\nvia Whereabouts: (http://appstore.com/whereaboutslocationutility)"
@@ -136,7 +136,7 @@ extension Location: MKAnnotation {
             return place.fullFormatedString()
         }
         else {
-            return stringFromCoordinate(location.coordinate)
+            return location.coordinate.formattedString()
         }
     }
     

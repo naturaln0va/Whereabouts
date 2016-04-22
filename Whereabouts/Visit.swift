@@ -26,7 +26,7 @@ class Visit: NSObject {
         identifier = dbVisit.identifier
         location = dbVisit.location
         address = dbVisit.address
-        horizontalAccuracy = dbVisit.horizontalAccuracy
+        horizontalAccuracy = dbVisit.horizontalAccuracy.doubleValue
         arrivalDate = dbVisit.arrivalDate
         departureDate = dbVisit.departureDate
         
@@ -62,7 +62,7 @@ extension Visit: MKAnnotation {
     }
     
     var subtitle: String? {
-        return address != nil ? stringFromAddress(address!, withNewLine: true) : stringFromCoordinate(coordinate)
+        return address != nil ? stringFromAddress(address!, withNewLine: true) : coordinate.formattedString()
     }
     
     var coordinate: CLLocationCoordinate2D {

@@ -213,7 +213,7 @@ class AddViewController: UITableViewController {
                 cell.locationLabel.text = stringFromAddress(place, withNewLine: true)
             }
             else if let location = location {
-                cell.locationLabel.text = stringFromCoordinate(location.coordinate)
+                cell.locationLabel.text = location.coordinate.formattedString()
             }
             else {
                 cell.locationLabel.text = "Location Error"

@@ -64,7 +64,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
         guard let location = location else {
             return
         }
-        locationLabel.text = stringFromCoordinate(location.coordinate)
+        locationLabel.text = location.coordinate.formattedString()
         altitudeLabel.text = altitudeString(location.altitude)
         
         guard let address = placemark else {

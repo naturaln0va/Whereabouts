@@ -176,7 +176,7 @@ class EditViewController: UITableViewController {
                         
                         var locationInfo = [String]()
                         
-                        locationInfo.append("Coordinate: \(stringFromCoordinate(location.location.coordinate))")
+                        locationInfo.append("Coordinate: \(location.coordinate.formattedString())")
                         locationInfo.append("Altitude: \(altitudeString(location.location.altitude))")
                         locationInfo.append("Timestamp: \(dateTimeFormatter.stringFromDate(location.date))")
                         
@@ -203,7 +203,7 @@ class EditViewController: UITableViewController {
                     
                     var locationInfo = [String]()
                     
-                    locationInfo.append("Coordinate: \(stringFromCoordinate(location.location.coordinate))")
+                    locationInfo.append("Coordinate: \(location.coordinate.formattedString())")
                     locationInfo.append("Altitude: \(altitudeString(location.location.altitude))")
                     locationInfo.append("Timestamp: \(dateTimeFormatter.stringFromDate(location.date))")
                     
@@ -221,7 +221,7 @@ class EditViewController: UITableViewController {
                 
                 var locationInfo = [String]()
                 
-                locationInfo.append("Coordinate: \(stringFromCoordinate(location.location.coordinate))")
+                locationInfo.append("Coordinate: \(location.coordinate.formattedString())")
                 locationInfo.append("Altitude: \(altitudeString(location.location.altitude))")
                 locationInfo.append("Timestamp: \(dateTimeFormatter.stringFromDate(location.date))")
                 

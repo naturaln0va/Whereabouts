@@ -9,6 +9,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private lazy var assistant = LocationAssistant()
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+        
         MenuController.sharedController.setupMenuWithViewController(
             StyledNavigationController(rootViewController: LocationsViewController()),
             andWindow: UIWindow(frame: UIScreen.mainScreen().bounds)
@@ -31,10 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             CloudController.sharedController.subscribeToChanges()
         }
         
-        StyleController.sharedController
-        
         PersistentController.sharedController.migrateLegacyData()
-        PersistentController.sharedController.cleanUpVisits()
         
         NSNotificationCenter.defaultCenter().addObserver(
             self,
@@ -122,7 +120,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
             else if type == "Visits" {
                 var locationFromVisit: Location?
-                if let location = shortcutItem.userInfo?["location"] as? CLLocation {
+                if let locationData = shortcutItem.userInfo?["location"] as? NSData, let location = NSKeyedUnarchiver.unarchiveObjectWithData(locationData) as? CLLocation {
                     locationFromVisit = Location(location: location)
                 }
                 
@@ -156,9 +154,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let item = UIApplicationShortcutItem(
                 type: "\(NSBundle.mainBundle().bundleIdentifier).Visits",
                 localizedTitle: "Last Visit",
-                localizedSubtitle: latestVisit.address?.fullFormatedString(),
+                localizedSubtitle: latestVisit.address?.fullFormatedString() ?? latestVisit.coordinate.formattedString(),
                 icon: icon,
-                userInfo: ["location": latestVisit.location]
+                userInfo: ["location": NSKeyedArchiver.archivedDataWithRootObject(latestVisit.location)]
             )
             application.shortcutItems = [item]
         }

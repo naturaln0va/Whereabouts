@@ -24,7 +24,7 @@ extension DroppedAnnotation: MKAnnotation {
             return place.fullFormatedString()
         }
         else {
-            return stringFromCoordinate(location.coordinate)
+            return location.coordinate.formattedString()
         }
     }
     

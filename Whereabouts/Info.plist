@@ -76,6 +76,8 @@
 		<string>armv7</string>
 		<string>location-services</string>
 	</array>
+	<key>UIRequiresFullScreen</key>
+	<true/>
 	<key>UIStatusBarHidden</key>
 	<false/>
 	<key>UIStatusBarStyle</key>

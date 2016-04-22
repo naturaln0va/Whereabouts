@@ -39,17 +39,17 @@ class LocationCell: UITableViewCell {
                 }
                 else {
                     titleLabel.text = place.partialFormatedString()
-                    addressLabel.text = stringFromCoordinate(locationToDisplay.coordinate)
+                    addressLabel.text = locationToDisplay.coordinate.formattedString()
                 }
             }
         }
         else {
             if let title = locationToDisplay.locationTitle where title.characters.count > 0 {
                 titleLabel.text = title
-                addressLabel.text = stringFromCoordinate(locationToDisplay.location.coordinate)
+                addressLabel.text = locationToDisplay.coordinate.formattedString()
             }
             else {
-                titleLabel.text = stringFromCoordinate(locationToDisplay.location.coordinate)
+                titleLabel.text = locationToDisplay.coordinate.formattedString()
                 addressLabel.text = "No address found."
             }
         }
