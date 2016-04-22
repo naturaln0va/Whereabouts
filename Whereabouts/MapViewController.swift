@@ -18,6 +18,7 @@ class MapViewController: UIViewController {
     private var shouldAddDroppedPin = true
     private var droppedAnnotation: DroppedAnnotation?
     private var locations = [Location]()
+    private var visits = [Visit]()
     
     private lazy var geocoder = CLGeocoder()
     
@@ -92,12 +93,16 @@ class MapViewController: UIViewController {
     // MARK: Helpers
     @objc private func loadLocationsAndDisplay() {
         let locations = PersistentController.sharedController.locations()
-        self.locations = locations
+        let visits = PersistentController.sharedController.visits()
         
-        if locations.count > 0 {
+        self.locations = locations
+        self.visits = visits
+        
+        if locations.count > 0 || visits.count > 0 {
             if mapView.annotations.count > 0 { mapView.removeAnnotations(mapView.annotations) }
             mapView.addAnnotations(locations)
-            mapView.showAnnotations(locations, animated: true)
+            mapView.addAnnotations(visits)
+            mapView.showAnnotations(mapView.annotations, animated: true)
         }
     }
     
@@ -113,6 +118,10 @@ extension MapViewController: MKMapViewDelegate {
             if annotation is DroppedAnnotation {
                 pinView.animatesDrop = true
                 pinView.pinTintColor = MKPinAnnotationView.purplePinColor()
+            }
+            else if annotation is Visit {
+                pinView.animatesDrop = false
+                pinView.pinTintColor = MKPinAnnotationView.greenPinColor()
             }
             
             let rightButton = UIButton(type: .DetailDisclosure)

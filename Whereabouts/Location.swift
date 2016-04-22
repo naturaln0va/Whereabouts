@@ -44,6 +44,8 @@ class Location: NSObject {
         return item
     }
     
+    // MARK: - Initializers
+    
     init(dbLocation: DatabaseLocation) {
         date = dbLocation.date
         identifier = dbLocation.identifier
@@ -101,6 +103,8 @@ class Location: NSObject {
         super.init()
     }
     
+    // MARK: - Helpers
+    
     var shareableString: String {
         var shareString = ""
         
@@ -115,7 +119,7 @@ class Location: NSObject {
             shareString += location.coordinate.formattedString()
         }
         
-        shareString += "\nvia Whereabouts: (http://appstore.com/whereaboutslocationutility)"
+        shareString += "\nvia Whereabouts: http://appstore.com/whereaboutslocationutility"
         
         return shareString
     }

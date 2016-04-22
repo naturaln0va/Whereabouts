@@ -58,11 +58,11 @@ class Visit: NSObject {
 extension Visit: MKAnnotation {
     
     var title: String? {
-        return (totalVisits == 1 ? "Visited on: " : "\(totalVisits) since ") + dateFormatter.stringFromDate(arrivalDate)
+        return address != nil ? stringFromAddress(address!, withNewLine: true) : coordinate.formattedString()
     }
     
     var subtitle: String? {
-        return address != nil ? stringFromAddress(address!, withNewLine: true) : coordinate.formattedString()
+        return (totalVisits == 1 ? "Visited on: " : "\(totalVisits) since ") + dateFormatter.stringFromDate(arrivalDate)
     }
     
     var coordinate: CLLocationCoordinate2D {
