@@ -23,8 +23,12 @@ class ListViewController: UITableViewController {
     private lazy var assistant = LocationAssistant()
     private var currentLocaiton: CLLocation? {
         didSet {
-            if let indexPaths = tableView.indexPathsForVisibleRows {
-                tableView.reloadRowsAtIndexPaths(indexPaths, withRowAnimation: .None)
+            guard let indexPaths = tableView.indexPathsForVisibleRows, let currentLoc = currentLocaiton else { return }
+            
+            for indexPath in indexPaths {
+                if let location = fetchedResultsController.objectAtIndexPath(indexPath) as? DatabaseLocation, let cell = tableView.cellForRowAtIndexPath(indexPath) as? LocationCell {
+                    cell.setDistanceText(distanceFormatter.stringFromDistance(currentLoc.distanceFromLocation(location.location)))
+                }
             }
         }
     }
