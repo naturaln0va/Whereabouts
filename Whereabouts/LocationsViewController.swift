@@ -70,6 +70,13 @@ class LocationsViewController: UIViewController {
     func beginObserving() {
         NSNotificationCenter.defaultCenter().addObserver(
             self,
+            selector: #selector(LocationsViewController.cloudSyncStarted),
+            name: CloudController.kSyncDidStartNotificationKey,
+            object: nil
+        )
+        
+        NSNotificationCenter.defaultCenter().addObserver(
+            self,
             selector: #selector(LocationsViewController.cloudSyncComplete),
             name: CloudController.kSyncCompleteNotificationKey,
             object: nil
@@ -214,6 +221,9 @@ class LocationsViewController: UIViewController {
     }
     
     // MARK: - Notifications
+    @objc private func cloudSyncStarted() {
+        updateMessageLabel(CloudController.sharedController.syncing ? "Syncing with iCloud" : nil)
+    }
     @objc private func cloudSyncComplete() {
         updateMessageLabel(nil)
     }

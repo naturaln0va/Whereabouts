@@ -7,6 +7,7 @@ let DEBUG_CLOUD = false
 class CloudController {
     
     static let sharedController = CloudController()
+    static let kSyncDidStartNotificationKey = "syncStarted"
     static let kSyncCompleteNotificationKey = "syncComplete"
     static let kCloudErrorNotificationKey = "cloudError"
     
@@ -20,6 +21,7 @@ class CloudController {
     // MARK: - Public
     func sync() {
         syncing = true
+        NSNotificationCenter.defaultCenter().postNotificationName(CloudController.kSyncDidStartNotificationKey, object: nil)
         dispatch_async(cloudSyncQueue) { [weak self] in
             self?.getAuthentication { hasAuth, error in
                 guard hasAuth else {

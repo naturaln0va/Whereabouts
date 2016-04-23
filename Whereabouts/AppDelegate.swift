@@ -61,7 +61,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func applicationDidBecomeActive(application: UIApplication) {
         let minutesSinceLastCloudSync = NSDate().minutesSince(SettingsController.sharedController.lastCloudSync)
-        print("Minutes since: \(minutesSinceLastCloudSync)")
         if minutesSinceLastCloudSync > 14 {
             CloudController.sharedController.sync()
         }
