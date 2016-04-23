@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         )
         
         application.registerUserNotificationSettings(
-            UIUserNotificationSettings(forTypes: .Alert, categories: nil)
+            UIUserNotificationSettings(forTypes: [.Alert, .Sound], categories: nil)
         )
         
         application.registerForRemoteNotifications()

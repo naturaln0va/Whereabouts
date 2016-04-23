@@ -281,6 +281,7 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate {
                     PersistentController.sharedController.visitWasVisited(visit)
                     
                     let notification = UILocalNotification()
+                    notification.soundName = "ping.wav"
                     notification.alertBody = visitNotificationString + (visit.address?.fullFormatedString() ?? visit.coordinate.formattedString())
                     UIApplication.sharedApplication().presentLocalNotificationNow(notification)
                     return
@@ -301,6 +302,7 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate {
                 PersistentController.sharedController.saveVisit(visitToSave)
                 
                 let notification = UILocalNotification()
+                notification.soundName = "ping.wav"
                 notification.alertBody = visitNotificationString
                 UIApplication.sharedApplication().presentLocalNotificationNow(notification)
             }
