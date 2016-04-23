@@ -115,18 +115,24 @@ extension MapViewController: MKMapViewDelegate {
             let pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: String(annotation.hash))
             pinView.canShowCallout = true
             
+            let rightButton = UIButton(type: .DetailDisclosure)
+            
             if annotation is DroppedAnnotation {
                 pinView.animatesDrop = true
                 pinView.pinTintColor = MKPinAnnotationView.purplePinColor()
+                rightButton.setImage(UIImage(named: "add-plus"), forState: .Normal)
             }
             else if annotation is Visit {
                 pinView.animatesDrop = false
                 pinView.pinTintColor = MKPinAnnotationView.greenPinColor()
+                rightButton.setImage(UIImage(named: "add-plus"), forState: .Normal)
+            }
+            else {
+                rightButton.setImage(UIImage(named: "detail-arrow"), forState: .Normal)
             }
             
-            let rightButton = UIButton(type: .DetailDisclosure)
-            rightButton.tintColor = StyleController.sharedController.mainTintColor
             rightButton.tag = annotation.hash
+            rightButton.tintColor = StyleController.sharedController.mainTintColor
             pinView.rightCalloutAccessoryView = rightButton
             
             return pinView
