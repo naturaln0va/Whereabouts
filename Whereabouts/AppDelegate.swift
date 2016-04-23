@@ -59,7 +59,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
-    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {        
+    func applicationDidBecomeActive(application: UIApplication) {
+        let minutesSinceLastCloudSync = NSDate().minutesSince(SettingsController.sharedController.lastCloudSync)
+        print("Minutes since: \(minutesSinceLastCloudSync)")
+        if minutesSinceLastCloudSync > 14 {
+            CloudController.sharedController.sync()
+        }
+    }
+    
+    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
         CloudController.sharedController.handleNotificationInfo(userInfo, completion: completionHandler)
     }
     

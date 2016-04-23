@@ -10,6 +10,7 @@ class SettingsController {
     
     static let kShouldMonitorVisits = "shouldMonitorVisits" // user preference
     static let kUserFirstLaunchedKey = "firstLaunched" // date user first installed
+    static let kLastCloudSyncDateKey = "lastSyncDate" // last time the app synced with icloud
     static let kUserHasSubscribedKey = "userSubscribed" // user has subscribed to cloud changes
     static let kCloudSyncKey = "cloudSync" // user watns backups to iCloud
     
@@ -64,6 +65,21 @@ class SettingsController {
         set {
             defaults.setBool(newValue, forKey: SettingsController.kUserHasSubscribedKey)
             defaults.synchronize()
+        }
+    }
+    
+    var lastCloudSync: NSDate {
+        get {
+            let timeInterval = defaults.doubleForKey(SettingsController.kLastCloudSyncDateKey)
+            if timeInterval == 0 {
+                return NSDate.distantPast()
+            }
+            else {
+                return NSDate(timeIntervalSince1970: timeInterval)
+            }
+        }
+        set {
+            defaults.setDouble(newValue.timeIntervalSince1970, forKey: SettingsController.kLastCloudSyncDateKey)
         }
     }
     

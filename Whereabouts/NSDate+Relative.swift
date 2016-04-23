@@ -5,6 +5,10 @@ import Foundation
 extension NSDate
 {
     
+    func minutesSince(date: NSDate) -> Int {
+        return NSCalendar.currentCalendar().components(.Minute, fromDate: date, toDate: self, options: []).minute
+    }
+    
     func hoursSince(date: NSDate) -> Int {
         return NSCalendar.currentCalendar().components(.Hour, fromDate: date, toDate: self, options: []).hour
     }

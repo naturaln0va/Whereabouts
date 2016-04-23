@@ -41,6 +41,7 @@ class CloudController {
                 syncOperation.completionBlock = {
                     self?.syncing = false
                     if DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: Cloud sync complete.") }
+                    SettingsController.sharedController.lastCloudSync = NSDate()
                     dispatch_async(dispatch_get_main_queue()) { NSNotificationCenter.defaultCenter().postNotificationName(CloudController.kSyncCompleteNotificationKey, object: nil) }
                 }
                 
