@@ -42,9 +42,9 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>This app monitors changes to your location in the background.</string>
+	<string>Pocket Track is a battery efficient way to keep track of places you have been. This requires the location access to be set to &apos;Always&apos; since Whereabouts will monitor location changes even when the app is not open.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>This app uses your device&apos;s GPS to provide you with detailed information about your surroundings. </string>
+	<string>Whereabouts uses your location to show you where you are.</string>
 	<key>UIApplicationShortcutItems</key>
 	<array>
 		<dict>
