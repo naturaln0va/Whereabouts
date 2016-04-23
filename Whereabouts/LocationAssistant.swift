@@ -213,7 +213,7 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate {
         if CLLocationManager.locationServicesEnabled() {
             manager.delegate = self
             manager.desiredAccuracy = shouldReducePowerConsumption ? kCLLocationAccuracyKilometer : kHorizontalAccuracyGood
-            manager.requestLocation()
+            manager.startUpdatingLocation()
             updatingLocation = true
             
             let interval = NSTimeInterval(shouldReducePowerConsumption ? kLocationTimeoutShort : kLocationTimeoutNormal)
