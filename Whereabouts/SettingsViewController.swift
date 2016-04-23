@@ -1,6 +1,7 @@
 
 import UIKit
 import MessageUI
+import SafariServices
 
 class SettingsViewController: UITableViewController {
 
@@ -16,21 +17,20 @@ class SettingsViewController: UITableViewController {
         case TotalRows
     }
     
+    enum ExtraSectionRows: Int {
+        case Privacy
+        case Permissions
+        case TotalRows
+    }
+    
     enum TableSections: Int {
         case UserSection
         case GeneralSection
+        case ExtraSection
         case TotalSections
     }
     
-    enum PickerViewControllerTags: Int {
-        case AccuracyTag
-        case TimeoutTag
-        case PhotoRangeTag
-        case UnitStyleTag
-    }
-    
     enum SettingSwitchTag: Int {
-        case UnitStyleSwitch
         case CloudSyncSwitch
     }
     
@@ -122,7 +122,7 @@ class SettingsViewController: UITableViewController {
         if indexPath.section == TableSections.UserSection.rawValue && indexPath.row == UserSectionRows.PocketTrackRow.rawValue {
             return true
         }
-        else if indexPath.section == TableSections.GeneralSection.rawValue {
+        else if indexPath.section == TableSections.GeneralSection.rawValue || indexPath.section == TableSections.ExtraSection.rawValue {
             return true
         }
         else {
@@ -140,6 +140,9 @@ class SettingsViewController: UITableViewController {
         }
         else if section == TableSections.UserSection.rawValue {
             return UserSectionRows.TotalRows.rawValue
+        }
+        else if section == TableSections.ExtraSection.rawValue {
+            return ExtraSectionRows.TotalRows.rawValue
         }
         else {
             return 0
@@ -196,6 +199,22 @@ class SettingsViewController: UITableViewController {
                 break
             }
         }
+        else if indexPath.section == TableSections.ExtraSection.rawValue {
+            switch indexPath.row {
+            case ExtraSectionRows.Privacy.rawValue:
+                cell.textLabel?.text = "Privacy"
+                cell.accessoryType = .DisclosureIndicator
+                break
+                
+            case ExtraSectionRows.Permissions.rawValue:
+                cell.textLabel?.text = "App Permissions"
+                cell.accessoryType = .DisclosureIndicator
+                break
+                
+            default:
+                break
+            }
+        }
         
         return cell
     }
@@ -226,6 +245,26 @@ class SettingsViewController: UITableViewController {
         else if indexPath.section == TableSections.UserSection.rawValue && indexPath.row == UserSectionRows.PocketTrackRow.rawValue {
             let vc = PocketTrackViewController()
             navigationController?.pushViewController(vc, animated: true)
+        }
+        else if indexPath.section == TableSections.ExtraSection.rawValue {
+            switch indexPath.row {
+            case ExtraSectionRows.Privacy.rawValue:
+                if let url = NSURL(string: "http://www.ackermann.io/privacy") {
+                    let safariVC = SFSafariViewController(URL: url)
+                    safariVC.view.tintColor = StyleController.sharedController.mainTintColor
+                    presentViewController(safariVC, animated: true, completion: nil)
+                }
+                break
+                
+            case ExtraSectionRows.Permissions.rawValue:
+                if let url = NSURL(string: UIApplicationOpenSettingsURLString) {
+                    UIApplication.sharedApplication().openURL(url)
+                }
+                break
+                
+            default:
+                break
+            }
         }
     }
     

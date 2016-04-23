@@ -38,6 +38,7 @@
 		48759B4A1CC102B500789DB8 /* PocketTrackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48759B481CC102B500789DB8 /* PocketTrackViewController.swift */; };
 		48759B4B1CC102B500789DB8 /* PocketTrackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48759B491CC102B500789DB8 /* PocketTrackViewController.xib */; };
 		4882D9D51B1A99FD00BAADAD /* RHACLStringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4882D9D41B1A99FD00BAADAD /* RHACLStringExtensions.swift */; };
+		4888E80D1CCC074B00B6EB42 /* ping.wav in Resources */ = {isa = PBXBuildFile; fileRef = 4888E80C1CCC074B00B6EB42 /* ping.wav */; };
 		488A81261CBC606A00452101 /* ContentDisplayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488A81241CBC606A00452101 /* ContentDisplayCell.swift */; };
 		488A81271CBC606A00452101 /* ContentDisplayCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 488A81251CBC606A00452101 /* ContentDisplayCell.xib */; };
 		488A81291CBC6F0800452101 /* CLLocation+VCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488A81281CBC6F0800452101 /* CLLocation+VCard.swift */; };
@@ -150,6 +151,7 @@
 		4880D47F1A5331960077E68B /* Whereabouts.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Whereabouts.entitlements; path = Whereabouts/Whereabouts.entitlements; sourceTree = SOURCE_ROOT; };
 		4880D4801A5331DA0077E68B /* Quick Location.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = "Quick Location.entitlements"; path = "Quick Location/Quick Location.entitlements"; sourceTree = SOURCE_ROOT; };
 		4882D9D41B1A99FD00BAADAD /* RHACLStringExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RHACLStringExtensions.swift; sourceTree = "<group>"; };
+		4888E80C1CCC074B00B6EB42 /* ping.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ping.wav; sourceTree = "<group>"; };
 		488A81241CBC606A00452101 /* ContentDisplayCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentDisplayCell.swift; sourceTree = "<group>"; };
 		488A81251CBC606A00452101 /* ContentDisplayCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContentDisplayCell.xib; sourceTree = "<group>"; };
 		488A81281CBC6F0800452101 /* CLLocation+VCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CLLocation+VCard.swift"; sourceTree = "<group>"; };
@@ -409,6 +411,7 @@
 				48DEDA3F19F592F80094CB8F /* LaunchScreen.xib */,
 				69D590F91C74DCEE00481E44 /* Images.xcassets */,
 				4880D47F1A5331960077E68B /* Whereabouts.entitlements */,
+				4888E80C1CCC074B00B6EB42 /* ping.wav */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -579,6 +582,7 @@
 				69E367E41CAE0B2D00604790 /* LocationInfoDisplayCell.xib in Resources */,
 				488BE6471CABF41100BA24C8 /* SearchResultCell.xib in Resources */,
 				698AF38D1BF6D66D00F1E745 /* TextEntryCell.xib in Resources */,
+				4888E80D1CCC074B00B6EB42 /* ping.wav in Resources */,
 				48642D151BAE27D300935358 /* LocationAccessViewController.xib in Resources */,
 				488A81271CBC606A00452101 /* ContentDisplayCell.xib in Resources */,
 				488BE6431CABF3EF00BA24C8 /* SearchCompleterCell.xib in Resources */,
