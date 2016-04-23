@@ -20,6 +20,7 @@ class ListViewController: UITableViewController {
         return formatter
     }()
     
+    private lazy var visits = [Visit]()
     private lazy var assistant = LocationAssistant()
     private var currentLocaiton: CLLocation? {
         didSet {
@@ -46,8 +47,19 @@ class ListViewController: UITableViewController {
         tableView.estimatedRowHeight = LocationCell.cellHeight
         tableView.registerNib(UINib(nibName: LocationCell.reuseIdentifier, bundle: nil), forCellReuseIdentifier: LocationCell.reuseIdentifier)
         
+        NSNotificationCenter.defaultCenter().addObserver(
+            self,
+            selector: #selector(ListViewController.visitsChanged),
+            name: PersistentController.PersistentControllerVistsDidUpdate,
+            object: nil
+        )
+        
         fetchedResultsController.delegate = self
         fetchLocations()
+        
+        if SettingsController.sharedController.shouldMonitorVisits {
+            visits = PersistentController.sharedController.visits()
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -73,16 +85,37 @@ class ListViewController: UITableViewController {
         }
     }
     
+    // MARK: - Notifications
+    
+    @objc private func visitsChanged() {
+        visits = PersistentController.sharedController.visits()
+        tableView.reloadData()
+    }
+    
     // MARK: - UITableViewDelegate
     override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 0.0001
     }
     
     override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if section == 0 && visits.count > 0 {
+            return 12.0
+        }
+        
         return 0.0001
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        if indexPath.section == 0 && visits.count > 0 {
+            let cell = UITableViewCell(style: .Value1, reuseIdentifier: "defaultCell")
+            
+            cell.textLabel?.text = "This week's visited locations"
+            cell.detailTextLabel?.text = String(visits.count)
+            cell.accessoryType = .DisclosureIndicator
+            
+            return cell
+        }
+        
         guard let cell = tableView.dequeueReusableCellWithIdentifier(LocationCell.reuseIdentifier) as? LocationCell else {
             fatalError("Expected to dequeue a 'LocationCell'.")
         }
@@ -101,6 +134,10 @@ class ListViewController: UITableViewController {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
+        if indexPath.section == 0 && visits.count > 0 {
+            return
+        }
+        
         if let location = fetchedResultsController.objectAtIndexPath(indexPath) as? DatabaseLocation {
             let vc = DetailViewController(location: Location(dbLocation: location))
             
@@ -118,10 +155,17 @@ class ListViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
+        if indexPath.section == 0 && visits.count > 0 {
+            return .None
+        }
         return .Delete
     }
     
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if indexPath.section == 0 && visits.count > 0 {
+            return
+        }
+        
         if let location = self.fetchedResultsController.objectAtIndexPath(indexPath) as? DatabaseLocation {
             CloudController.sharedController.deleteLocationFromCloud(location) { success in
                 if !success {
@@ -132,8 +176,24 @@ class ListViewController: UITableViewController {
         }
     }
     
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        if indexPath.section == 0 && visits.count > 0 {
+            return 44.0
+        }
+        
+        return UITableViewAutomaticDimension
+    }
+    
     // MARK: - UITableViewDataSource
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return visits.count > 0 ? 2 : 1
+    }
+    
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if section == 0 && visits.count > 0 {
+            return 1
+        }
+        
         let section = fetchedResultsController.sections?[section]
         
         return section?.numberOfObjects ?? 0

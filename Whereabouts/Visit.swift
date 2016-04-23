@@ -17,7 +17,7 @@ class Visit: NSObject {
     
     private lazy var dateFormatter: NSDateFormatter = {
         let formatter = NSDateFormatter()
-        formatter.timeStyle = .ShortStyle
+        formatter.timeStyle = .NoStyle
         formatter.dateStyle = .MediumStyle
         return formatter
     }()
@@ -63,7 +63,7 @@ extension Visit: MKAnnotation {
     }
     
     var subtitle: String? {
-        return (totalVisits == 1 ? "Visited on: " : "\(totalVisits) since ") + dateFormatter.stringFromDate(arrivalDate)
+        return (totalVisits == 1 ? "Visited on: " : "\(totalVisits) since ") + dateFormatter.stringFromDate(createdDate)
     }
     
     var coordinate: CLLocationCoordinate2D {
