@@ -15,6 +15,7 @@
     <entity name="Visit" representedClassName=".DatabaseVisit" syncable="YES">
         <attribute name="address" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="arrivalDate" attributeType="Date" syncable="YES"/>
+        <attribute name="createdDate" attributeType="Date" syncable="YES"/>
         <attribute name="departureDate" attributeType="Date" syncable="YES"/>
         <attribute name="horizontalAccuracy" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <attribute name="identifier" attributeType="String" syncable="YES"/>
@@ -23,6 +24,6 @@
     </entity>
     <elements>
         <element name="Location" positionX="-63" positionY="-18" width="128" height="195"/>
-        <element name="Visit" positionX="-54" positionY="63" width="128" height="150"/>
+        <element name="Visit" positionX="-54" positionY="63" width="128" height="165"/>
     </elements>
 </model>

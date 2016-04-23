@@ -7,6 +7,7 @@ class Visit: NSObject {
     
     let identifier: String
     let location: CLLocation
+    let createdDate: NSDate
     
     var totalVisits: Int = 0
     var address: CLPlacemark?
@@ -22,6 +23,7 @@ class Visit: NSObject {
     }()
     
     init(dbVisit: DatabaseVisit) {
+        createdDate = dbVisit.createdDate
         totalVisits = dbVisit.totalVisits.integerValue
         identifier = dbVisit.identifier
         location = dbVisit.location
@@ -33,20 +35,19 @@ class Visit: NSObject {
         super.init()
     }
     
-    init(location: CLLocation) {
-        self.location = location
-        identifier = "\(NSDate().hashValue)+\(location.coordinate.latitude)+\(location.coordinate.longitude)"
-        totalVisits = 1
-        horizontalAccuracy = 0.0
-        arrivalDate = NSDate.distantPast()
-        departureDate = NSDate.distantFuture()
-    }
-    
     init(visit: CLVisit) {
         identifier = "\(NSUUID().UUIDString)+\(visit.hashValue)+\(visit.arrivalDate.hashValue)+\(visit.departureDate.hashValue)"
         totalVisits = 1
         location = CLLocation(coordinate: visit.coordinate, altitude: 0, horizontalAccuracy: visit.horizontalAccuracy, verticalAccuracy: 0, timestamp: NSDate())
         horizontalAccuracy = visit.horizontalAccuracy
+        
+        if visit.departureDate.isEqualToDate(NSDate.distantFuture()) {
+            createdDate = visit.arrivalDate
+        }
+        else {
+            createdDate = visit.departureDate
+        }
+        
         arrivalDate = visit.arrivalDate
         departureDate = visit.departureDate
         

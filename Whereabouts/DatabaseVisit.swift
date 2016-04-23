@@ -12,6 +12,7 @@ class DatabaseVisit: NSManagedObject {
     @NSManaged var horizontalAccuracy: NSNumber
     @NSManaged var arrivalDate: NSDate
     @NSManaged var departureDate: NSDate
+    @NSManaged var createdDate: NSDate
     
 }
 

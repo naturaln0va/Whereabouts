@@ -7,6 +7,7 @@ import CoreSpotlight
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     private lazy var assistant = LocationAssistant()
+    private let manager = CLLocationManager()
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
@@ -50,8 +51,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         if SettingsController.sharedController.shouldMonitorVisits {
             assistant.startVisitsMonitoring()
-            updateVisitsActionItem(application)
         }
+        
+        updateShortcutItems(application)
+        manager.delegate = self
         
         return true
     }
@@ -142,7 +145,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         completionHandler(handleShortcutItem(shortcutItem))
     }
     
-    func updateVisitsActionItem(application: UIApplication) {
+    func updateShortcutItems(application: UIApplication) {
+        var items = [UIApplicationShortcutItem]()
+        
+        if let currentLocationItem = currentLocationShortcutItem() {
+            items.append(currentLocationItem)
+        }
+        
+        if let visitItem = visitShortcutItem() where SettingsController.sharedController.shouldMonitorVisits {
+            items.append(visitItem)
+        }
+        
+        if items.count > 0 {
+            application.shortcutItems = items
+        }
+    }
+    
+    func visitShortcutItem() -> UIApplicationShortcutItem? {
         if let latestVisit = PersistentController.sharedController.visits().last {
             var icon: UIApplicationShortcutIcon
             if #available(iOS 9.1, *) {
@@ -151,14 +170,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 icon = UIApplicationShortcutIcon(templateImageName: "action-pin")
             }
             
-            let item = UIApplicationShortcutItem(
+            return UIApplicationShortcutItem(
                 type: "\(NSBundle.mainBundle().bundleIdentifier).Visits",
                 localizedTitle: "Last Visit",
                 localizedSubtitle: latestVisit.address?.fullFormatedString() ?? latestVisit.coordinate.formattedString(),
                 icon: icon,
                 userInfo: ["location": NSKeyedArchiver.archivedDataWithRootObject(latestVisit.location)]
             )
-            application.shortcutItems = [item]
+        }
+        else {
+            return nil
+        }
+    }
+    
+    func currentLocationShortcutItem() -> UIApplicationShortcutItem? {
+        let authStatus = CLLocationManager.authorizationStatus()
+        if authStatus == .AuthorizedAlways || authStatus == .AuthorizedWhenInUse {
+            return UIApplicationShortcutItem(
+                type: "\(NSBundle.mainBundle().bundleIdentifier).Add",
+                localizedTitle: "Current Location",
+                localizedSubtitle: nil,
+                icon: UIApplicationShortcutIcon(type: .Location),
+                userInfo: nil
+            )
+        }
+        else {
+            return nil
         }
     }
     
@@ -166,7 +203,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     @objc private func visitsDidUpdate() {
         if SettingsController.sharedController.shouldMonitorVisits {
-            updateVisitsActionItem(UIApplication.sharedApplication())
+            updateShortcutItems(UIApplication.sharedApplication())
         }
     }
     
@@ -179,5 +216,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
+}
+
+extension AppDelegate: CLLocationManagerDelegate {
+    
+    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+        switch status {
+            
+        case .AuthorizedAlways, .AuthorizedWhenInUse:
+            updateShortcutItems(UIApplication.sharedApplication())
+            
+        default: break
+            
+        }
+    }
+    
 }
 

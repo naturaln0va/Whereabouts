@@ -75,8 +75,9 @@ class EditViewController: UITableViewController {
         }
         
         tableView = UITableView(frame: CGRect.zero, style: .Grouped)
-        tableView.keyboardDismissMode = .OnDrag
         tableView.backgroundColor = view.backgroundColor
+        tableView.keyboardDismissMode = .OnDrag
+        
         tableView.registerNib(UINib(nibName: String(MapItemCell), bundle: nil), forCellReuseIdentifier: String(MapItemCell))
         tableView.registerNib(UINib(nibName: String(LocationInfoDisplayCell), bundle: nil), forCellReuseIdentifier: String(LocationInfoDisplayCell))
         tableView.registerNib(UINib(nibName: String(TextContentCell), bundle: nil), forCellReuseIdentifier: String(TextContentCell))
@@ -86,8 +87,15 @@ class EditViewController: UITableViewController {
         if locationToEdit == nil || locationToEdit?.placemark == nil {
             navigationItem.rightBarButtonItem?.enabled = false
             assistant.delegate = self
-            assistant.getLocation()
-            title = "Locating..."
+            
+            if let locationToEdit = locationToEdit where !isCurrentLocation || locationToEdit.placemark == nil {
+                assistant.getAddressForLocation(locationToEdit.location)
+                title = "Getting Address..."
+            }
+            else {
+                assistant.getLocation()
+                title = "Locating..."
+            }
         }
     }
     

@@ -338,7 +338,7 @@ class PersistentController {
     
     func visits() -> [Visit] {
         do {
-            let visits = try DatabaseVisit.objectsInContext(moc)
+            let visits = try DatabaseVisit.objectsInContext(moc, predicate: nil, sortedBy: "createdDate", ascending: false)
             return visits.map { dbVisit in
                 return Visit(dbVisit: dbVisit)
             }
@@ -386,6 +386,7 @@ class PersistentController {
             fatalError("Expected to insert and entity of type 'DatabaseVisit'.")
         }
         
+        dataToSave.createdDate = visitToSave.createdDate
         dataToSave.identifier = visitToSave.identifier
         dataToSave.totalVisits = visitToSave.totalVisits
         dataToSave.arrivalDate = visitToSave.arrivalDate

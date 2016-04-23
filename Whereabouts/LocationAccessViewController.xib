@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <objects>
@@ -37,20 +36,6 @@
                                             <color key="textColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pli-LI-Q3x">
-                                            <rect key="frame" x="32" y="125" width="311" height="56"/>
-                                            <color key="backgroundColor" red="0.93333333333333335" green="0.93333333333333335" blue="0.93333333333333335" alpha="1" colorSpace="calibratedRGB"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="56" id="Hwp-Aa-vxQ"/>
-                                            </constraints>
-                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
-                                            <state key="normal" title="Allow Access">
-                                                <color key="titleColor" red="0.1803921568627451" green="0.1803921568627451" blue="0.1803921568627451" alpha="1" colorSpace="calibratedRGB"/>
-                                            </state>
-                                            <connections>
-                                                <action selector="accessButtonPressed:" destination="-1" eventType="touchUpInside" id="uvo-ha-pxQ"/>
-                                            </connections>
-                                        </button>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ReB-S4-RaU">
                                             <rect key="frame" x="32" y="16" width="311" height="24"/>
                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
@@ -69,16 +54,11 @@
                                         </button>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="pli-LI-Q3x" firstAttribute="top" secondItem="Ofi-hF-sSQ" secondAttribute="bottom" constant="16" id="1ma-dA-e8s"/>
-                                        <constraint firstItem="pli-LI-Q3x" firstAttribute="leading" secondItem="35U-2t-bmK" secondAttribute="leading" constant="32" id="6BN-JZ-znn"/>
                                         <constraint firstAttribute="trailing" secondItem="Ofi-hF-sSQ" secondAttribute="trailing" constant="32" id="6ES-YU-s0A"/>
                                         <constraint firstAttribute="trailing" secondItem="ReB-S4-RaU" secondAttribute="trailing" constant="32" id="Bov-hs-yIs"/>
-                                        <constraint firstItem="8YO-CM-F9S" firstAttribute="top" secondItem="pli-LI-Q3x" secondAttribute="bottom" constant="24" id="Crr-23-Sz9"/>
                                         <constraint firstItem="8YO-CM-F9S" firstAttribute="centerX" secondItem="35U-2t-bmK" secondAttribute="centerX" id="H1F-e2-Lef"/>
                                         <constraint firstItem="ReB-S4-RaU" firstAttribute="leading" secondItem="35U-2t-bmK" secondAttribute="leading" constant="32" id="KAE-BQ-5oy"/>
                                         <constraint firstItem="ReB-S4-RaU" firstAttribute="top" secondItem="35U-2t-bmK" secondAttribute="top" constant="16" id="OkU-IB-Bqv"/>
-                                        <constraint firstItem="pli-LI-Q3x" firstAttribute="top" secondItem="Ofi-hF-sSQ" secondAttribute="bottom" constant="16" id="WFL-fX-LDz"/>
-                                        <constraint firstAttribute="trailing" secondItem="pli-LI-Q3x" secondAttribute="trailing" constant="32" id="ir2-Lj-BXz"/>
                                         <constraint firstItem="Ofi-hF-sSQ" firstAttribute="leading" secondItem="35U-2t-bmK" secondAttribute="leading" constant="32" id="msX-yT-ZiG"/>
                                         <constraint firstItem="Ofi-hF-sSQ" firstAttribute="top" secondItem="ReB-S4-RaU" secondAttribute="bottom" constant="8" id="p7A-Zm-uSX"/>
                                         <constraint firstAttribute="bottom" secondItem="8YO-CM-F9S" secondAttribute="bottom" constant="16" id="zqH-OA-Sl9"/>
@@ -98,16 +78,34 @@
                     </view>
                     <blurEffect style="dark"/>
                 </visualEffectView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pli-LI-Q3x">
+                    <rect key="frame" x="32" y="549" width="311" height="56"/>
+                    <color key="backgroundColor" red="0.93333333333333335" green="0.93333333333333335" blue="0.93333333333333335" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="56" id="Hwp-Aa-vxQ"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
+                    <state key="normal" title="Allow Access">
+                        <color key="titleColor" red="0.1803921568627451" green="0.1803921568627451" blue="0.1803921568627451" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="accessButtonPressed:" destination="-1" eventType="touchUpInside" id="uvo-ha-pxQ"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="0.23921568627450979" green="0.23921568627450979" blue="0.23921568627450979" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
+                <constraint firstAttribute="trailing" secondItem="pli-LI-Q3x" secondAttribute="trailing" constant="32" id="4WD-eN-QuW"/>
+                <constraint firstItem="pli-LI-Q3x" firstAttribute="top" secondItem="Ofi-hF-sSQ" secondAttribute="bottom" constant="24" id="6zV-TW-Ehx"/>
                 <constraint firstAttribute="trailing" secondItem="GCS-CK-93N" secondAttribute="trailing" id="DVA-rG-GJR"/>
                 <constraint firstAttribute="bottom" secondItem="EUI-nS-tNc" secondAttribute="bottom" id="Gz0-9U-i0b"/>
                 <constraint firstAttribute="bottom" secondItem="GCS-CK-93N" secondAttribute="bottom" id="IBA-lJ-vRY"/>
                 <constraint firstItem="EUI-nS-tNc" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Ivj-SU-x8r"/>
+                <constraint firstItem="8YO-CM-F9S" firstAttribute="top" secondItem="pli-LI-Q3x" secondAttribute="bottom" constant="16" id="KT5-BT-JhG"/>
                 <constraint firstItem="GCS-CK-93N" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="UfL-CX-w5K"/>
                 <constraint firstAttribute="trailing" secondItem="EUI-nS-tNc" secondAttribute="trailing" id="WFH-p1-6rF"/>
                 <constraint firstItem="EUI-nS-tNc" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="bV9-Nr-wfN"/>
+                <constraint firstItem="pli-LI-Q3x" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="32" id="iet-KL-xF4"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
             <point key="canvasLocation" x="238.5" y="256.5"/>

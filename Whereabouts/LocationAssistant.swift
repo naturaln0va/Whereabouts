@@ -2,7 +2,6 @@
 import UIKit
 import CoreLocation
 
-
 let kHorizontalAccuracyPoor:    CLLocationAccuracy = 5000.0
 let kHorizontalAccuracyFair:    CLLocationAccuracy = 2500.0
 let kHorizontalAccuracyAverage: CLLocationAccuracy = 150.0
@@ -17,6 +16,7 @@ let kLocationTimeoutVeryLong:   Int = 45
 @objc protocol LocationAssistantDelegate {
     func locationAssistantReceivedLocation(location: CLLocation, finished: Bool)
     optional func locationAssistantReceivedAddress(placemark: CLPlacemark)
+    optional func locationAssistantAuthorizationChanged()
     optional func locationAssistantAuthorizationDenied()
     optional func locationAssistantAuthorizationNeeded()
     optional func locationAssistantFailedToGetLocation()
@@ -197,7 +197,8 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate {
     
     private func locationAccess() -> Bool {
         if (CLLocationManager.authorizationStatus() == .Denied ||
-            CLLocationManager.authorizationStatus() == .Restricted)
+            CLLocationManager.authorizationStatus() == .Restricted ||
+            CLLocationManager.authorizationStatus() == .NotDetermined)
             && !CLLocationManager.locationServicesEnabled() {
                 return false
         }
@@ -347,6 +348,7 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate {
         switch status {
             
         case .AuthorizedAlways, .AuthorizedWhenInUse:
+            delegate?.locationAssistantAuthorizationChanged?()
             if wasLocating { getLocation() }
             
         default:
