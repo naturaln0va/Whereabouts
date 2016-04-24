@@ -30,19 +30,21 @@ platform :ios do
       type: "adhoc",
       app_identifier: "net.naturaln0va.Whereabouts",
       readonly: true)
-
     match(git_url: "https://github.com/naturaln0va/certificates.git",
       type: "adhoc",
       app_identifier: "net.naturaln0va.Whereabouts.Quick-Location",
       readonly: true)
 
-    sigh(force: true)
+    sigh(force: true, output_path: "./build")
 
     gym(scheme: "Whereabouts",
       output_directory: "./build", 
       clean: true)
 
-    pilot(distribute_external: false)
+    pilot(distribute_external: false, wait_processing_interval: 5)
+
+    # git_commit
+    #push_to_git_remote
   end
 
   desc "Deploy a new version to the App Store"
