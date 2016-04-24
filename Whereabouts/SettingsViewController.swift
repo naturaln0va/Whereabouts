@@ -145,7 +145,13 @@ class SettingsViewController: UITableViewController {
             return GeneralSectionRows.TotalRows.rawValue
         }
         else if section == TableSections.UserSection.rawValue {
-            return UserSectionRows.TotalRows.rawValue
+            var phoneRows = UserSectionRows.TotalRows.rawValue
+            
+            if UIDevice.currentDevice().isPad {
+                phoneRows -= 1
+            }
+            
+            return phoneRows
         }
         else if section == TableSections.ExtraSection.rawValue {
             return ExtraSectionRows.TotalRows.rawValue

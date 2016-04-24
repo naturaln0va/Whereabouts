@@ -73,4 +73,8 @@ extension UIDevice {
         return UIDevice.currentDevice().systemVersion
     }
     
+    var isPad: Bool {
+        return userInterfaceIdiom == .Pad
+    }
+    
 }
