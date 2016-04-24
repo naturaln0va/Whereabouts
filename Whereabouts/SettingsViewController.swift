@@ -101,7 +101,13 @@ class SettingsViewController: UITableViewController {
             
         case SettingSwitchTag.CloudSyncSwitch.rawValue:
             SettingsController.sharedController.shouldSyncToCloud = sender.on
-            tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 2, inSection: 0)], withRowAnimation: .Automatic)
+            
+            if sender.on {
+                let minutesSinceLastCloudSync = NSDate().minutesSince(SettingsController.sharedController.lastCloudSync)
+                if minutesSinceLastCloudSync > 14 {
+                    CloudController.sharedController.sync()
+                }
+            }
             break
             
         default:

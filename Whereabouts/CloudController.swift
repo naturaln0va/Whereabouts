@@ -21,6 +21,14 @@ class CloudController {
     // MARK: - Public
     func sync() {
         syncing = true
+        
+        if !SettingsController.sharedController.shouldSyncToCloud {
+            if DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: Cloud syncing disabled") }
+            NSNotificationCenter.defaultCenter().postNotificationName(CloudController.kSyncCompleteNotificationKey, object: nil)
+            syncing = false
+            return
+        }
+        
         NSNotificationCenter.defaultCenter().postNotificationName(CloudController.kSyncDidStartNotificationKey, object: nil)
         dispatch_async(cloudSyncQueue) { [weak self] in
             self?.getAuthentication { hasAuth, error in
@@ -58,6 +66,11 @@ class CloudController {
     }
     
     func subscribeToChanges() {
+        if !SettingsController.sharedController.shouldSyncToCloud {
+            if DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: Cloud syncing disabled") }
+            return
+        }
+        
         dispatch_async(cloudSyncQueue) {
             self.getAuthentication { hasAuth, error in
                 guard hasAuth else {
@@ -99,6 +112,11 @@ class CloudController {
     }
     
     func saveLocalLocationToCloud(location: Location, completion: (CloudLocation? -> Void)?) {
+        if !SettingsController.sharedController.shouldSyncToCloud {
+            if DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: Cloud syncing disabled") }
+            return
+        }
+        
         dispatch_async(cloudSyncQueue) {
             self.getAuthentication { hasAuth, error in
                 guard hasAuth else {
@@ -127,6 +145,11 @@ class CloudController {
     }
     
     func deleteLocationFromCloud(location: DatabaseLocation, completion: (Bool -> Void)?) {
+        if !SettingsController.sharedController.shouldSyncToCloud {
+            if DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: Cloud syncing disabled") }
+            return
+        }
+        
         guard let data = location.cloudRecordIdentifierData, let recordID = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? CKRecordID else {
             print("Failed to parse location's record id. Data: \(location.cloudRecordIdentifierData)")
             completion?(false)
@@ -156,6 +179,11 @@ class CloudController {
     }
     
     func updateLocationOnCloud(location: DatabaseLocation, completion: (Bool -> Void)?) {
+        if !SettingsController.sharedController.shouldSyncToCloud {
+            if DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: Cloud syncing disabled") }
+            return
+        }
+        
         guard let data = location.cloudRecordIdentifierData, let _ = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? CKRecordID else {
             print("Failed to parse location's record id. Data: \(location.cloudRecordIdentifierData)")
             completion?(false)
@@ -192,6 +220,11 @@ class CloudController {
     }
     
     func handleNotificationInfo(notificationInfo: [NSObject : AnyObject], completion: (UIBackgroundFetchResult -> Void)) {
+        if !SettingsController.sharedController.shouldSyncToCloud {
+            if DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: Cloud syncing disabled") }
+            return
+        }
+        
         guard let info = notificationInfo as? [String: NSObject] else {
             completion(.Failed)
             return
@@ -217,6 +250,11 @@ class CloudController {
     }
     
     func handleNotification(notification: CKQueryNotification) {
+        if !SettingsController.sharedController.shouldSyncToCloud {
+            if DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: Cloud syncing disabled") }
+            return
+        }
+        
         guard let recordID = notification.recordID else {
             if DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: No record id in the notification. We can't do anything with that.") }
             return

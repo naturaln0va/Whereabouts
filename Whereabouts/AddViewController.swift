@@ -216,7 +216,7 @@ class AddViewController: UITableViewController {
             }
             
             if let place = placemark {
-                cell.locationLabel.text = place.fullFormatedString()
+                cell.locationLabel.text = place.partialFormatedString()
             }
             else if let location = location {
                 cell.locationLabel.text = location.coordinate.formattedString()
