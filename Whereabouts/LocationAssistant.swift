@@ -154,6 +154,7 @@ class LocationAssistant: NSObject, CLLocationManagerDelegate {
     func terminate() {
         delegate = nil
         stopLocationManager()
+        
         if monitoringLocationUpdates {
             manager.stopMonitoringVisits()
             monitoringLocationUpdates = false

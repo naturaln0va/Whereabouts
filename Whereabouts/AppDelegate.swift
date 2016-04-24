@@ -6,10 +6,14 @@ import CoreSpotlight
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-    private lazy var assistant = LocationAssistant()
+    private let assistant = LocationAssistant()
     private let manager = CLLocationManager()
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+        
+        if SettingsController.sharedController.shouldMonitorVisits {
+            assistant.startVisitsMonitoring()
+        }
         
         MenuController.sharedController.setupMenuWithViewController(
             StyledNavigationController(rootViewController: LocationsViewController()),
@@ -48,10 +52,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             name: PersistentController.PersistentControllerVistsDidUpdate,
             object: nil
         )
-        
-        if SettingsController.sharedController.shouldMonitorVisits {
-            assistant.startVisitsMonitoring()
-        }
         
         updateShortcutItems(application)
         manager.delegate = self

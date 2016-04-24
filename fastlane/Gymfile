@@ -1,0 +1,10 @@
+# For more information about this configuration visit
+# https://github.com/fastlane/gym#gymfile
+
+# In general, you can use the options available
+# gym --help
+
+clean true
+
+output_directory "./build"    # store the ipa in this folder
+output_name "Whereabouts"           # the name of the ipa file

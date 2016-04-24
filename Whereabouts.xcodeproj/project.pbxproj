@@ -749,7 +749,7 @@
 				"OTHER_SWIFT_FLAGS[arch=*]" = "-DTODAY_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.naturaln0va.Whereabouts.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "35aa2f76-cb1e-480a-990c-d1f4a47c7142";
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
@@ -758,15 +758,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = "Quick Location/Quick Location.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				INFOPLIST_FILE = "Quick Location/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				"OTHER_SWIFT_FLAGS[arch=*]" = "-DTODAY_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.naturaln0va.Whereabouts.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "710becfc-7c9e-438c-b780-05bd0b3e0798";
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
@@ -813,8 +813,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Whereabouts/Whereabouts.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = NO;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = Whereabouts/Info.plist;
@@ -823,7 +823,7 @@
 				"OTHER_SWIFT_FLAGS[arch=*]" = "-DMAIN_APP";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.naturaln0va.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "bef4ca0b-4a3f-463a-bfd1-06197eeaff18";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Distribution;
@@ -832,15 +832,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = "Quick Location/Quick Location.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				INFOPLIST_FILE = "Quick Location/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				"OTHER_SWIFT_FLAGS[arch=*]" = "-DTODAY_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.naturaln0va.Whereabouts.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "ecbaea84-4538-4b6a-a51b-29ca44192b85";
 				SKIP_INSTALL = YES;
 			};
 			name = Distribution;
@@ -941,7 +941,7 @@
 				"OTHER_SWIFT_FLAGS[arch=*]" = "-DMAIN_APP";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.naturaln0va.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "1b5e7d76-1516-424f-8508-42286eb524c0";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -951,8 +951,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Whereabouts/Whereabouts.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = NO;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = Whereabouts/Info.plist;
@@ -961,7 +961,7 @@
 				"OTHER_SWIFT_FLAGS[arch=*]" = "-DMAIN_APP";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.naturaln0va.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "a94b7abb-d05c-4864-9c29-3cf841e89a05";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
