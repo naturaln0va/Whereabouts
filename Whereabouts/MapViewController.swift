@@ -8,14 +8,16 @@ class MapViewController: UIViewController {
         let mapView = MKMapView()
         mapView.tintColor = StyleController.sharedController.mainTintColor
         mapView.translatesAutoresizingMaskIntoConstraints = false
-        mapView.showsUserLocation = true
         mapView.showsCompass = true
         mapView.showsScale = true
         mapView.delegate = self
         return mapView
     }()
     
+    let manager = CLLocationManager()
+    
     private var shouldAddDroppedPin = true
+    private var shouldCheckAuthorization = true
     private var droppedAnnotation: DroppedAnnotation?
     private var locations = [Location]()
     private var visits = [Visit]()
@@ -49,6 +51,26 @@ class MapViewController: UIViewController {
         )
         
         loadLocationsAndDisplay()
+        
+        manager.delegate = self
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if shouldCheckAuthorization {
+            let authStatus = CLLocationManager.authorizationStatus()
+            if authStatus == .NotDetermined {
+                let vc = LocationAccessViewController()
+                vc.delegate = self
+                presentViewController(vc, animated: true, completion: nil)
+            }
+            else if authStatus == .AuthorizedAlways || authStatus == .AuthorizedAlways {
+                mapView.showsUserLocation = true
+            }
+            
+            shouldCheckAuthorization = false
+        }
     }
     
     // MARK: - Actions
@@ -108,6 +130,7 @@ class MapViewController: UIViewController {
     
 }
 
+// MARK: - MKMapViewDelegate
 extension MapViewController: MKMapViewDelegate {
     
     func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
@@ -207,6 +230,33 @@ extension MapViewController: MKMapViewDelegate {
                     navigationController?.pushViewController(vc, animated: true)
                 }
             }
+        }
+    }
+    
+}
+
+// MARK: - LocationAccessViewControllerDelegate
+extension MapViewController: LocationAccessViewControllerDelegate {
+    
+    func locationAccessViewControllerAccessGranted() {
+        dismissViewControllerAnimated(true) {
+            dispatch_async(dispatch_get_main_queue()) { [weak self] in
+                self?.manager.requestWhenInUseAuthorization()
+            }
+        }
+    }
+    
+    func locationAccessViewControllerAccessDenied() {
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+}
+
+extension MapViewController: CLLocationManagerDelegate {
+    
+    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+        if status == .AuthorizedWhenInUse {
+            mapView.showsUserLocation = true
         }
     }
     
