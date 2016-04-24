@@ -59,7 +59,7 @@ class Visit: NSObject {
 extension Visit: MKAnnotation {
     
     var title: String? {
-        return address != nil ? stringFromAddress(address!, withNewLine: true) : coordinate.formattedString()
+        return address != nil ? address!.fullFormatedString() : coordinate.formattedString()
     }
     
     var subtitle: String? {

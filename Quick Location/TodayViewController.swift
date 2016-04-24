@@ -65,12 +65,12 @@ class TodayViewController: UIViewController, NCWidgetProviding {
             return
         }
         locationLabel.text = location.coordinate.formattedString()
-        altitudeLabel.text = altitudeString(location.altitude)
+        altitudeLabel.text = "\(location.altitude.formattedString()) \(location.altitude > 0 ? " above sea level" : " below sea level")"
         
         guard let address = placemark else {
             return
         }
-        locationLabel.text = stringFromAddress(address, withNewLine: true)
+        locationLabel.text = address.fullFormatedString()
     }
     
     func widgetMarginInsetsForProposedMarginInsets(defaultMarginInsets: UIEdgeInsets) -> UIEdgeInsets {

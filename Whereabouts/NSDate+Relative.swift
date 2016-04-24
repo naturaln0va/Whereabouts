@@ -50,5 +50,5 @@ extension NSDate
             self, dateStyle: .ShortStyle, timeStyle: .NoStyle
         )
     }
-    
+        
 }

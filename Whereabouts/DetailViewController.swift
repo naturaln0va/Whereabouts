@@ -75,7 +75,7 @@ class DetailViewController: UITableViewController, EditViewControllerDelegate {
         toolbarItems = [navigateBarButtonItem, spaceBarButtonItem, messageBarButtonItem, spaceBarButtonItem, actionBarButtonItem]
         
         if let crowFlyDistance = MKMapItem.mapItemForCurrentLocation().placemark.location?.distanceFromLocation(locationToDisplay.location) {
-            updateMessageLabel(NSAttributedString(string: distanceString(crowFlyDistance)))
+            updateMessageLabel(NSAttributedString(string: crowFlyDistance.formattedString()))
         }
         
         getDistanceFromLocation()
@@ -311,9 +311,9 @@ class DetailViewController: UITableViewController, EditViewControllerDelegate {
             
             if let response = response {
                 var responseString = ""
-                responseString += distanceString(response.distance)
+                responseString += response.distance.formattedString()
                 
-                let timeString = timeStringFromSeconds(response.expectedTravelTime)
+                let timeString = response.expectedTravelTime.relativeString()
                 if timeString.characters.count > 0 {
                     
                     let hasDistance = responseString.characters.count > 0
@@ -518,7 +518,7 @@ class DetailViewController: UITableViewController, EditViewControllerDelegate {
                     var locationInfo = [String]()
                     
                     locationInfo.append("Coordinate: \(locationToDisplay.coordinate.formattedString())")
-                    locationInfo.append("Altitude: \(altitudeString(locationToDisplay.location.altitude))")
+                    locationInfo.append("Altitude: \("\(locationToDisplay.location.altitude.formattedString()) \(locationToDisplay.location.altitude > 0 ? " above sea level" : " below sea level")")")
                     locationInfo.append("Timestamp: \(dateTimeFormatter.stringFromDate(locationToDisplay.date))")
                     
                     cell.locationLabel.text = locationInfo.joinWithSeparator("\n")
@@ -550,7 +550,7 @@ class DetailViewController: UITableViewController, EditViewControllerDelegate {
                     var locationInfo = [String]()
                     
                     locationInfo.append("Coordinate: \(locationToDisplay.coordinate.formattedString())")
-                    locationInfo.append("Altitude: \(altitudeString(locationToDisplay.location.altitude))")
+                    locationInfo.append("Altitude: \("\(locationToDisplay.location.altitude.formattedString()) \(locationToDisplay.location.altitude > 0 ? " above sea level" : " below sea level")")")
                     locationInfo.append("Timestamp: \(dateTimeFormatter.stringFromDate(locationToDisplay.date))")
                     
                     cell.locationLabel.text = locationInfo.joinWithSeparator("\n")
@@ -567,7 +567,7 @@ class DetailViewController: UITableViewController, EditViewControllerDelegate {
                     var locationInfo = [String]()
                     
                     locationInfo.append("Coordinate: \(locationToDisplay.coordinate.formattedString())")
-                    locationInfo.append("Altitude: \(altitudeString(locationToDisplay.location.altitude))")
+                    locationInfo.append("Altitude: \("\(locationToDisplay.location.altitude.formattedString()) \(locationToDisplay.location.altitude > 0 ? " above sea level" : " below sea level")")")
                     locationInfo.append("Timestamp: \(dateTimeFormatter.stringFromDate(locationToDisplay.date))")
                     
                     cell.locationLabel.text = locationInfo.joinWithSeparator("\n")

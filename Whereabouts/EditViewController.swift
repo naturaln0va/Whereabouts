@@ -8,6 +8,7 @@ protocol EditViewControllerDelegate: class {
 
 class EditViewController: UITableViewController {
     
+    private var visit: Visit?
     private let isCurrentLocation: Bool
     private var locationToEdit: Location?
     private var shouldContinueUpdatingUserLocaiton = true
@@ -48,6 +49,21 @@ class EditViewController: UITableViewController {
         super.init(nibName: nil, bundle: nil)
         
         self.locationToEdit = location
+    }
+    
+    init(visit: Visit) {
+        isCurrentLocation = false
+        super.init(nibName: nil, bundle: nil)
+        
+        self.visit = visit
+        
+        let locationToSave = Location(location: visit.location)
+        
+        if let visitedAddress = visit.address {
+            locationToSave.placemark = visitedAddress
+        }
+        
+        locationToEdit = locationToSave
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -133,6 +149,10 @@ class EditViewController: UITableViewController {
             delegate?.editViewControllerDidEditLocation(self, editedLocation: location)
             dismiss()
         }
+        
+        if let visitToDelete = visit {
+            PersistentController.sharedController.deleteVisit(visitToDelete)
+        }
     }
     
     // MARK: - Helpers
@@ -185,7 +205,7 @@ class EditViewController: UITableViewController {
                         var locationInfo = [String]()
                         
                         locationInfo.append("Coordinate: \(location.coordinate.formattedString())")
-                        locationInfo.append("Altitude: \(altitudeString(location.location.altitude))")
+                        locationInfo.append("Altitude: \("\(location.location.altitude.formattedString()) \(location.location.altitude > 0 ? " above sea level" : " below sea level")")")
                         locationInfo.append("Timestamp: \(dateTimeFormatter.stringFromDate(location.date))")
                         
                         cell.locationLabel.text = locationInfo.joinWithSeparator("\n")
@@ -212,7 +232,7 @@ class EditViewController: UITableViewController {
                     var locationInfo = [String]()
                     
                     locationInfo.append("Coordinate: \(location.coordinate.formattedString())")
-                    locationInfo.append("Altitude: \(altitudeString(location.location.altitude))")
+                    locationInfo.append("Altitude: \("\(location.location.altitude.formattedString()) \(location.location.altitude > 0 ? " above sea level" : " below sea level")")")
                     locationInfo.append("Timestamp: \(dateTimeFormatter.stringFromDate(location.date))")
                     
                     cell.locationLabel.text = locationInfo.joinWithSeparator("\n")
@@ -230,7 +250,7 @@ class EditViewController: UITableViewController {
                 var locationInfo = [String]()
                 
                 locationInfo.append("Coordinate: \(location.coordinate.formattedString())")
-                locationInfo.append("Altitude: \(altitudeString(location.location.altitude))")
+                locationInfo.append("Altitude: \("\(location.location.altitude.formattedString()) \(location.location.altitude > 0 ? " above sea level" : " below sea level")")")
                 locationInfo.append("Timestamp: \(dateTimeFormatter.stringFromDate(location.date))")
                 
                 cell.locationLabel.text = locationInfo.joinWithSeparator("\n")

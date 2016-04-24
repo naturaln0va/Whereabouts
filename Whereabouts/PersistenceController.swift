@@ -363,6 +363,17 @@ class PersistentController {
         }
     }
     
+    func deleteVisit(visitToDelete: Visit) {
+        if let visit = try? DatabaseVisit.singleObjectInContext(moc, predicate: NSPredicate(format: "identifier == [c] %@", visitToDelete.identifier), sortedBy: nil, ascending: false) {
+            if let nonNilVisit = visit {
+                deleteVisits([nonNilVisit])
+            }
+        }
+        else {
+            if self.DEBUG_DATABASE { debugPrint("***PERSISTENTCONTROLLER: Failed to delete visit with id \(visitToDelete.identifier).") }
+        }
+    }
+    
     func deleteVisits(visitsToDelete: [DatabaseVisit]) {
         for visit in visitsToDelete {
             moc.deleteObject(visit)

@@ -113,7 +113,7 @@ class Location: NSObject {
         }
         
         if let place = placemark {
-            shareString += stringFromAddress(place, withNewLine: false)
+            shareString += place.fullFormatedString()
         }
         else {
             shareString += location.coordinate.formattedString()

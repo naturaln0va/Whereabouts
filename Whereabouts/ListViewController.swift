@@ -135,7 +135,8 @@ class ListViewController: UITableViewController {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
         if indexPath.section == 0 && visits.count > 0 {
-            return
+            let vc = VisitsViewController(visits: visits, location: currentLocaiton)
+            navigationController?.pushViewController(vc, animated: true)
         }
         
         if let location = fetchedResultsController.objectAtIndexPath(indexPath) as? DatabaseLocation {

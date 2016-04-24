@@ -14,6 +14,12 @@ class AddViewController: UITableViewController {
         return bar
     }()
     
+    private lazy var distanceFormatter: MKDistanceFormatter = {
+        let formatter = MKDistanceFormatter()
+        formatter.unitStyle = .Abbreviated
+        return formatter
+    }()
+    
     @available(iOS 9.3, *)
     private lazy var completer: MKLocalSearchCompleter = {
         let completer = MKLocalSearchCompleter()
@@ -210,7 +216,7 @@ class AddViewController: UITableViewController {
             }
             
             if let place = placemark {
-                cell.locationLabel.text = stringFromAddress(place, withNewLine: true)
+                cell.locationLabel.text = place.fullFormatedString()
             }
             else if let location = location {
                 cell.locationLabel.text = location.coordinate.formattedString()
@@ -249,13 +255,10 @@ class AddViewController: UITableViewController {
             cell.websiteLabel.text = searchedMapItems?[indexPath.row].url?.absoluteString ?? searchedMapItems?[indexPath.row].phoneNumber ?? "No Additional Info"
             
             if let place = searchedMapItems?[indexPath.row].placemark {
-                cell.addressLabel.text = stringFromAddress(place, withNewLine: false)
+                cell.addressLabel.text = place.fullFormatedString()
                 
                 if let location = place.location, let currentLocation = self.location {
-                    let formatter = MKDistanceFormatter()
-                    formatter.unitStyle = .Abbreviated
-                    
-                    cell.distanceLabel.text = formatter.stringFromDistance(currentLocation.distanceFromLocation(location))
+                    cell.distanceLabel.text = distanceFormatter.stringFromDistance(currentLocation.distanceFromLocation(location))
                 }
                 else {
                     cell.distanceLabel.text = ""

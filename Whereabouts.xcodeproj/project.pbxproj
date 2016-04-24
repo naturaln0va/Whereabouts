@@ -23,7 +23,6 @@
 		483AF54D1B0BFF2700A00BED /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483AF54C1B0BFF2700A00BED /* PersistenceController.swift */; };
 		483BBE491C1CE4DB002E5DB2 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483BBE471C1CE4DB002E5DB2 /* MapViewController.swift */; };
 		4847F22B1CB9A0CF007EE1A5 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4847F22A1CB9A0CF007EE1A5 /* DetailViewController.swift */; };
-		48510BEB1BF7F3D10041C7C1 /* String+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48510BEA1BF7F3D10041C7C1 /* String+Additions.swift */; };
 		4863ACAE1B24EF4D009F008F /* LocationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4863ACAC1B24EF4D009F008F /* LocationCell.swift */; };
 		4863ACAF1B24EF4D009F008F /* LocationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4863ACAD1B24EF4D009F008F /* LocationCell.xib */; };
 		4863E6FA1CAD3C800072C304 /* CurrentLocationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4863E6F81CAD3C800072C304 /* CurrentLocationCell.swift */; };
@@ -32,12 +31,10 @@
 		48642D111BAE1E0400935358 /* LocationAssistant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48642D101BAE1E0400935358 /* LocationAssistant.swift */; };
 		48642D141BAE27D300935358 /* LocationAccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48642D121BAE27D300935358 /* LocationAccessViewController.swift */; };
 		48642D151BAE27D300935358 /* LocationAccessViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48642D131BAE27D300935358 /* LocationAccessViewController.xib */; };
-		48707CCC1CAA96090003F792 /* UIColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48707CCB1CAA96090003F792 /* UIColor+Hex.swift */; };
 		48759B451CBDBE6100789DB8 /* DatabaseLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48759B441CBDBE6100789DB8 /* DatabaseLocation.swift */; };
 		48759B471CBDBE7100789DB8 /* DatabaseVisit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48759B461CBDBE7100789DB8 /* DatabaseVisit.swift */; };
 		48759B4A1CC102B500789DB8 /* PocketTrackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48759B481CC102B500789DB8 /* PocketTrackViewController.swift */; };
 		48759B4B1CC102B500789DB8 /* PocketTrackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48759B491CC102B500789DB8 /* PocketTrackViewController.xib */; };
-		4882D9D51B1A99FD00BAADAD /* RHACLStringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4882D9D41B1A99FD00BAADAD /* RHACLStringExtensions.swift */; };
 		4888E80D1CCC074B00B6EB42 /* ping.wav in Resources */ = {isa = PBXBuildFile; fileRef = 4888E80C1CCC074B00B6EB42 /* ping.wav */; };
 		488A81261CBC606A00452101 /* ContentDisplayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488A81241CBC606A00452101 /* ContentDisplayCell.swift */; };
 		488A81271CBC606A00452101 /* ContentDisplayCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 488A81251CBC606A00452101 /* ContentDisplayCell.xib */; };
@@ -48,7 +45,12 @@
 		488BE6471CABF41100BA24C8 /* SearchResultCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 488BE6451CABF41100BA24C8 /* SearchResultCell.xib */; };
 		48BCEE2D1CC4FA6900A51AAB /* StyledSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48BCEE2C1CC4FA6900A51AAB /* StyledSplitViewController.swift */; };
 		48BCEE2F1CC519C400A51AAB /* DroppedAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48BCEE2E1CC519C400A51AAB /* DroppedAnnotation.swift */; };
-		48C7636419F59D230096B27A /* RHAUtilExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C7636319F59D230096B27A /* RHAUtilExtensions.swift */; };
+		48C706971CCD17D000D832A7 /* VisitCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C706951CCD17D000D832A7 /* VisitCell.swift */; };
+		48C706981CCD17D000D832A7 /* VisitCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48C706961CCD17D000D832A7 /* VisitCell.xib */; };
+		48C7069A1CCD1B9C00D832A7 /* VisitsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C706991CCD1B9C00D832A7 /* VisitsViewController.swift */; };
+		48C7069C1CCD1FE100D832A7 /* CLLocationDistance+Format.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C7069B1CCD1FE100D832A7 /* CLLocationDistance+Format.swift */; };
+		48C7069D1CCD21A800D832A7 /* CLLocationDistance+Format.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C7069B1CCD1FE100D832A7 /* CLLocationDistance+Format.swift */; };
+		48C7069F1CCD22D100D832A7 /* NSTimeInterval+Relative.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C7069E1CCD22D100D832A7 /* NSTimeInterval+Relative.swift */; };
 		48CD67801CC294E70032A47E /* SearchIndexController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48CD677F1CC294E70032A47E /* SearchIndexController.swift */; };
 		48D225881A02F908008A419B /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 48D2258A1A02F908008A419B /* MainInterface.storyboard */; };
 		48D73D6B1C012AA900B1A9B5 /* LocationModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 48D73D691C012AA900B1A9B5 /* LocationModel.xcdatamodeld */; };
@@ -68,7 +70,6 @@
 		692275A81CBE9ADE007C9BA2 /* CacheController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 692275A71CBE9ADE007C9BA2 /* CacheController.swift */; };
 		6924A6471C6B9D4100D5F0E6 /* NSDate+Relative.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6924A6461C6B9D4100D5F0E6 /* NSDate+Relative.swift */; };
 		6937217A1C03877100A5C8BC /* LocationAssistant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48642D101BAE1E0400935358 /* LocationAssistant.swift */; };
-		6937217B1C038AA400A5C8BC /* RHACLStringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4882D9D41B1A99FD00BAADAD /* RHACLStringExtensions.swift */; };
 		6937217E1C038C2B00A5C8BC /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69B7A3BA1BFCD76B000BEBA0 /* SettingsController.swift */; };
 		6954E20B1C177BD500106EB0 /* PhotoTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6954E20A1C177BD500106EB0 /* PhotoTransition.swift */; };
 		69640E931BFBCEA60050722D /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69640E911BFBCEA60050722D /* PhotoCell.swift */; };
@@ -134,7 +135,6 @@
 		483AF54C1B0BFF2700A00BED /* PersistenceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
 		483BBE471C1CE4DB002E5DB2 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		4847F22A1CB9A0CF007EE1A5 /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
-		48510BEA1BF7F3D10041C7C1 /* String+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Additions.swift"; sourceTree = "<group>"; };
 		4863ACAC1B24EF4D009F008F /* LocationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationCell.swift; sourceTree = "<group>"; };
 		4863ACAD1B24EF4D009F008F /* LocationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LocationCell.xib; sourceTree = "<group>"; };
 		4863E6F81CAD3C800072C304 /* CurrentLocationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentLocationCell.swift; sourceTree = "<group>"; };
@@ -143,14 +143,12 @@
 		48642D101BAE1E0400935358 /* LocationAssistant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationAssistant.swift; sourceTree = "<group>"; };
 		48642D121BAE27D300935358 /* LocationAccessViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationAccessViewController.swift; sourceTree = "<group>"; };
 		48642D131BAE27D300935358 /* LocationAccessViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LocationAccessViewController.xib; sourceTree = "<group>"; };
-		48707CCB1CAA96090003F792 /* UIColor+Hex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Hex.swift"; sourceTree = "<group>"; };
 		48759B441CBDBE6100789DB8 /* DatabaseLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseLocation.swift; sourceTree = "<group>"; };
 		48759B461CBDBE7100789DB8 /* DatabaseVisit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseVisit.swift; sourceTree = "<group>"; };
 		48759B481CC102B500789DB8 /* PocketTrackViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PocketTrackViewController.swift; sourceTree = "<group>"; };
 		48759B491CC102B500789DB8 /* PocketTrackViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PocketTrackViewController.xib; sourceTree = "<group>"; };
 		4880D47F1A5331960077E68B /* Whereabouts.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Whereabouts.entitlements; path = Whereabouts/Whereabouts.entitlements; sourceTree = SOURCE_ROOT; };
 		4880D4801A5331DA0077E68B /* Quick Location.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = "Quick Location.entitlements"; path = "Quick Location/Quick Location.entitlements"; sourceTree = SOURCE_ROOT; };
-		4882D9D41B1A99FD00BAADAD /* RHACLStringExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RHACLStringExtensions.swift; sourceTree = "<group>"; };
 		4888E80C1CCC074B00B6EB42 /* ping.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ping.wav; sourceTree = "<group>"; };
 		488A81241CBC606A00452101 /* ContentDisplayCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentDisplayCell.swift; sourceTree = "<group>"; };
 		488A81251CBC606A00452101 /* ContentDisplayCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContentDisplayCell.xib; sourceTree = "<group>"; };
@@ -161,7 +159,11 @@
 		488BE6451CABF41100BA24C8 /* SearchResultCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchResultCell.xib; sourceTree = "<group>"; };
 		48BCEE2C1CC4FA6900A51AAB /* StyledSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledSplitViewController.swift; sourceTree = "<group>"; };
 		48BCEE2E1CC519C400A51AAB /* DroppedAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DroppedAnnotation.swift; sourceTree = "<group>"; };
-		48C7636319F59D230096B27A /* RHAUtilExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RHAUtilExtensions.swift; sourceTree = "<group>"; };
+		48C706951CCD17D000D832A7 /* VisitCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisitCell.swift; sourceTree = "<group>"; };
+		48C706961CCD17D000D832A7 /* VisitCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VisitCell.xib; sourceTree = "<group>"; };
+		48C706991CCD1B9C00D832A7 /* VisitsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisitsViewController.swift; sourceTree = "<group>"; };
+		48C7069B1CCD1FE100D832A7 /* CLLocationDistance+Format.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CLLocationDistance+Format.swift"; sourceTree = "<group>"; };
+		48C7069E1CCD22D100D832A7 /* NSTimeInterval+Relative.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSTimeInterval+Relative.swift"; sourceTree = "<group>"; };
 		48CD677F1CC294E70032A47E /* SearchIndexController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchIndexController.swift; sourceTree = "<group>"; };
 		48D225891A02F908008A419B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		48D73D6A1C012AA900B1A9B5 /* LocationModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = LocationModel.xcdatamodel; sourceTree = "<group>"; };
@@ -283,6 +285,7 @@
 				48F763401CA8778700BCE740 /* StyledNavigationController.swift */,
 				48BCEE2C1CC4FA6900A51AAB /* StyledSplitViewController.swift */,
 				48E3B85B1B1951AA003DD726 /* StyledViewController.swift */,
+				48C706991CCD1B9C00D832A7 /* VisitsViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -312,6 +315,8 @@
 				488BE6411CABF3EF00BA24C8 /* SearchCompleterCell.xib */,
 				488BE6441CABF41100BA24C8 /* SearchResultCell.swift */,
 				488BE6451CABF41100BA24C8 /* SearchResultCell.xib */,
+				48C706951CCD17D000D832A7 /* VisitCell.swift */,
+				48C706961CCD17D000D832A7 /* VisitCell.xib */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -391,15 +396,13 @@
 		48FF04FD1AD036C700A2FA34 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				48C7636319F59D230096B27A /* RHAUtilExtensions.swift */,
-				4882D9D41B1A99FD00BAADAD /* RHACLStringExtensions.swift */,
-				48510BEA1BF7F3D10041C7C1 /* String+Additions.swift */,
 				69EA5BB91BFE4E1A0009B709 /* UIDevice+Addition.swift */,
 				6924A6461C6B9D4100D5F0E6 /* NSDate+Relative.swift */,
-				48707CCB1CAA96090003F792 /* UIColor+Hex.swift */,
 				69E367E91CAE979C00604790 /* CLPlacemark+Display.swift */,
 				488A81281CBC6F0800452101 /* CLLocation+VCard.swift */,
 				482E606F1CCA52F100ED102F /* CLLocationCoordinate2D+Format.swift */,
+				48C7069B1CCD1FE100D832A7 /* CLLocationDistance+Format.swift */,
+				48C7069E1CCD22D100D832A7 /* NSTimeInterval+Relative.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -573,6 +576,7 @@
 				69D590FA1C74DCEE00481E44 /* Images.xcassets in Resources */,
 				698AF3951BF7910100F1E745 /* ColorPreviewCell.xib in Resources */,
 				4863E6FB1CAD3C800072C304 /* CurrentLocationCell.xib in Resources */,
+				48C706981CCD17D000D832A7 /* VisitCell.xib in Resources */,
 				48DEDA4119F592F80094CB8F /* LaunchScreen.xib in Resources */,
 				4863ACAF1B24EF4D009F008F /* LocationCell.xib in Resources */,
 				482FBFE81CB291BE00E30EF2 /* TextContentCell.xib in Resources */,
@@ -628,9 +632,9 @@
 				482E60711CCA543800ED102F /* CLPlacemark+Display.swift in Sources */,
 				6937217E1C038C2B00A5C8BC /* SettingsController.swift in Sources */,
 				482CABE019FF565300B5F1E2 /* TodayViewController.swift in Sources */,
-				6937217B1C038AA400A5C8BC /* RHACLStringExtensions.swift in Sources */,
 				482E60721CCA547200ED102F /* CLLocationCoordinate2D+Format.swift in Sources */,
 				6937217A1C03877100A5C8BC /* LocationAssistant.swift in Sources */,
+				48C7069D1CCD21A800D832A7 /* CLLocationDistance+Format.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -640,8 +644,8 @@
 			files = (
 				483BBE491C1CE4DB002E5DB2 /* MapViewController.swift in Sources */,
 				48759B471CBDBE7100789DB8 /* DatabaseVisit.swift in Sources */,
+				48C7069A1CCD1B9C00D832A7 /* VisitsViewController.swift in Sources */,
 				698AF39B1BF79A4D00F1E745 /* Fetchable.swift in Sources */,
-				48510BEB1BF7F3D10041C7C1 /* String+Additions.swift in Sources */,
 				48E3B8601B195896003DD726 /* StyleController.swift in Sources */,
 				48F763431CA87FF500BCE740 /* CloudController.swift in Sources */,
 				69640E931BFBCEA60050722D /* PhotoCell.swift in Sources */,
@@ -653,6 +657,7 @@
 				4847F22B1CB9A0CF007EE1A5 /* DetailViewController.swift in Sources */,
 				698AF38C1BF6D66D00F1E745 /* TextEntryCell.swift in Sources */,
 				69F7CEE61CAAF286007EB03F /* ListViewController.swift in Sources */,
+				48C7069C1CCD1FE100D832A7 /* CLLocationDistance+Format.swift in Sources */,
 				482FBFE71CB291BE00E30EF2 /* TextContentCell.swift in Sources */,
 				48F114C11CC7A7AD008AD097 /* CloudSyncOperation.swift in Sources */,
 				48E3B85C1B1951AA003DD726 /* StyledViewController.swift in Sources */,
@@ -669,7 +674,6 @@
 				48BCEE2D1CC4FA6900A51AAB /* StyledSplitViewController.swift in Sources */,
 				4863E6FA1CAD3C800072C304 /* CurrentLocationCell.swift in Sources */,
 				69B7A3BB1BFCD76B000BEBA0 /* SettingsController.swift in Sources */,
-				4882D9D51B1A99FD00BAADAD /* RHACLStringExtensions.swift in Sources */,
 				69E367E71CAE8E3E00604790 /* MapItemCell.swift in Sources */,
 				48D73D6B1C012AA900B1A9B5 /* LocationModel.xcdatamodeld in Sources */,
 				69E367E31CAE0B2D00604790 /* LocationInfoDisplayCell.swift in Sources */,
@@ -678,7 +682,6 @@
 				48F114C51CC7AE5C008AD097 /* NotificationMarkOperation.swift in Sources */,
 				48F763461CA890D200BCE740 /* CloudLocation.swift in Sources */,
 				48759B451CBDBE6100789DB8 /* DatabaseLocation.swift in Sources */,
-				48C7636419F59D230096B27A /* RHAUtilExtensions.swift in Sources */,
 				6954E20B1C177BD500106EB0 /* PhotoTransition.swift in Sources */,
 				481BB0FA1CC41820009B80FA /* GridLayout.swift in Sources */,
 				698E782F1CAED0B3004A4178 /* Location.swift in Sources */,
@@ -688,9 +691,10 @@
 				48CD67801CC294E70032A47E /* SearchIndexController.swift in Sources */,
 				690667721C11E83800862742 /* DataModel.xcdatamodeld in Sources */,
 				69B7A3B91BFCD6FE000BEBA0 /* SettingsViewController.swift in Sources */,
-				48707CCC1CAA96090003F792 /* UIColor+Hex.swift in Sources */,
 				488BE6421CABF3EF00BA24C8 /* SearchCompleterCell.swift in Sources */,
 				48F114C31CC7AB02008AD097 /* NotificationFetchOperation.swift in Sources */,
+				48C706971CCD17D000D832A7 /* VisitCell.swift in Sources */,
+				48C7069F1CCD22D100D832A7 /* NSTimeInterval+Relative.swift in Sources */,
 				48DEDA3719F592F80094CB8F /* AppDelegate.swift in Sources */,
 				48759B4A1CC102B500789DB8 /* PocketTrackViewController.swift in Sources */,
 				48642D111BAE1E0400935358 /* LocationAssistant.swift in Sources */,
