@@ -135,6 +135,15 @@ class PersistentController {
         return []
     }
     
+    func locationForIdentifier(identifier: String) -> DatabaseLocation? {
+        if let location = try? DatabaseLocation.singleObjectInContext(moc, predicate: NSPredicate(format: "identifier == [c] %@", identifier), sortedBy: nil, ascending: false) {
+            return location
+        }
+        else {
+            return nil
+        }
+    }
+    
     func saveLocation(location: Location) {
         if let dbLocation = locationForIdentifier(location.identifier) {
             updateDatabaseLocationWithLocation(dbLocation, location: location)
@@ -225,6 +234,12 @@ class PersistentController {
         }
     }
     
+    func deleteLocation(locationToDelete: Location) {
+        if let location = locationForIdentifier(locationToDelete.identifier) {
+            deleteLocation(location)
+        }
+    }
+    
     func deleteLocation(locationToDelete: DatabaseLocation) {
         SearchIndexController.sharedController.removeLocationFromIndex(Location(dbLocation: locationToDelete))
         
@@ -266,15 +281,6 @@ class PersistentController {
     }
     
     // MARK: Private
-    
-    private func locationForIdentifier(identifier: String) -> DatabaseLocation? {
-        if let location = try? DatabaseLocation.singleObjectInContext(moc, predicate: NSPredicate(format: "identifier == [c] %@", identifier), sortedBy: nil, ascending: false) {
-            return location
-        }
-        else {
-            return nil
-        }
-    }
     
     private func updateDatabaseLocationWithID(identifier: String, cloudID: CKRecordID) {
         guard let locationToUpdate = locationForIdentifier(identifier) else {

@@ -6,19 +6,19 @@ extension NSDate
 {
     
     func minutesSince(date: NSDate) -> Int {
-        return NSCalendar.currentCalendar().components(.Minute, fromDate: date, toDate: self, options: []).minute
+        return abs(NSCalendar.currentCalendar().components(.Minute, fromDate: date, toDate: self, options: []).minute)
     }
     
     func hoursSince(date: NSDate) -> Int {
-        return NSCalendar.currentCalendar().components(.Hour, fromDate: date, toDate: self, options: []).hour
+        return abs(NSCalendar.currentCalendar().components(.Hour, fromDate: date, toDate: self, options: []).hour)
     }
     
     func daysSince(date: NSDate) -> Int {
-        return NSCalendar.currentCalendar().components(.Day, fromDate: date, toDate: self, options: []).day
+        return abs(NSCalendar.currentCalendar().components(.Day, fromDate: date, toDate: self, options: []).day)
     }
     
     func isMoreThanAWeekOld() -> Bool {
-        return NSCalendar.currentCalendar().components(.Day, fromDate: self, toDate: NSDate(), options: []).day > 7
+        return abs(NSCalendar.currentCalendar().components(.Day, fromDate: self, toDate: NSDate(), options: []).day) > 7
     }
     
     func relativeString() -> String {

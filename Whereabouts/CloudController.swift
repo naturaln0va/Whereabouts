@@ -144,7 +144,12 @@ class CloudController {
         }
     }
     
-    func deleteLocationFromCloud(location: DatabaseLocation, completion: (Bool -> Void)?) {
+    func deleteLocationFromCloudWithIdentifier(identifier: String, completion: (Bool -> Void)?) {
+        guard let location = PersistentController.sharedController.locationForIdentifier(identifier) else {
+            if DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: Failed to get location from the database to delete.") }
+            return
+        }
+        
         if !SettingsController.sharedController.shouldSyncToCloud {
             if DEBUG_CLOUD { debugPrint("***CLOUDCONTROLLER: Cloud syncing disabled") }
             return

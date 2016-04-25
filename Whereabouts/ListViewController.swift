@@ -5,6 +5,29 @@ import MapKit
 
 class ListViewController: UITableViewController {
 
+    enum FilterScope: String {
+        case All
+        case Recent
+        case Nearby
+        
+        static func scopeForIndex(index: Int) -> FilterScope {
+            switch index {
+                
+            case 0:
+                return .All
+                
+            case 1:
+                return .Recent
+                
+            case 2:
+                return .Nearby
+                
+            default:
+                return .All
+            }
+        }
+    }
+    
     private lazy var fetchedResultsController: NSFetchedResultsController = {
         let moc = PersistentController.sharedController.moc
         
@@ -14,6 +37,21 @@ class ListViewController: UITableViewController {
         return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: "locations")
     }()
     
+    private lazy var searchController: UISearchController = {
+        let sc = UISearchController(searchResultsController: nil)
+        sc.hidesNavigationBarDuringPresentation = false
+        sc.dimsBackgroundDuringPresentation = false
+        
+        sc.searchBar.delegate = self
+        sc.searchBar.searchBarStyle = .Prominent
+        sc.searchBar.scopeButtonTitles = ["All", "Recent"]
+        sc.searchBar.layer.borderWidth = 1
+        sc.searchBar.layer.borderColor = StyleController.sharedController.backgroundColor.CGColor
+        sc.searchBar.barTintColor = StyleController.sharedController.backgroundColor
+        sc.searchBar.tintColor = StyleController.sharedController.mainTintColor
+        return sc
+    }()
+    
     private lazy var distanceFormatter: MKDistanceFormatter = {
         let formatter = MKDistanceFormatter()
         formatter.unitStyle = .Abbreviated
@@ -21,10 +59,14 @@ class ListViewController: UITableViewController {
     }()
     
     private lazy var visits = [Visit]()
+    private lazy var filteredLocations = [Location]()
+    
     private lazy var assistant = LocationAssistant()
     private var currentLocaiton: CLLocation? {
         didSet {
             guard let indexPaths = tableView.indexPathsForVisibleRows, let currentLoc = currentLocaiton else { return }
+            
+            searchController.searchBar.scopeButtonTitles = ["All", "Recent", "Nearby"]
             
             for indexPath in indexPaths {
                 if let location = fetchedResultsController.objectAtIndexPath(indexPath) as? DatabaseLocation, let cell = tableView.cellForRowAtIndexPath(indexPath) as? LocationCell {
@@ -41,11 +83,17 @@ class ListViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        definesPresentationContext = true
+        
         tableView = UITableView(frame: CGRect.zero, style: .Grouped)
+        tableView.keyboardDismissMode = .OnDrag
         tableView.backgroundColor = view.backgroundColor
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = LocationCell.cellHeight
         tableView.registerNib(UINib(nibName: LocationCell.reuseIdentifier, bundle: nil), forCellReuseIdentifier: LocationCell.reuseIdentifier)
+        
+        searchController.searchResultsUpdater = self
+        tableView.tableHeaderView = searchController.searchBar
         
         NSNotificationCenter.defaultCenter().addObserver(
             self,
@@ -92,6 +140,58 @@ class ListViewController: UITableViewController {
         tableView.reloadData()
     }
     
+    // MARK: - Helpers
+    
+    func filterContentForSearchText(searchText: String, filterScope: FilterScope) {
+        guard let databaseLocations = fetchedResultsController.fetchedObjects as? [DatabaseLocation] else {
+            return
+        }
+        
+        let locations = databaseLocations.map { return Location(dbLocation: $0) }
+        let searchString = searchText.lowercaseString
+        
+        let preFilteredLocations = locations.filter { location in
+            var titleString = ""
+            var subtitleString = ""
+            var contentString = ""
+            
+            if let title = location.title {
+                titleString = title.lowercaseString
+            }
+            else if let subtitle = location.subtitle {
+                subtitleString = subtitle.lowercaseString
+            }
+            else if let content = location.textContent {
+                contentString = content.lowercaseString
+            }
+            
+            return titleString.containsString(searchString) || subtitleString.containsString(searchString) || contentString.containsString(searchString)
+        }
+        
+        switch filterScope {
+            
+        case .All:
+            filteredLocations = preFilteredLocations
+            
+        case .Recent:
+            let locationsToFilter = preFilteredLocations.count == 0 ? locations : preFilteredLocations
+            filteredLocations = locationsToFilter.filter { location in
+                return NSDate().daysSince(location.date) < 2
+            }
+            
+        case .Nearby:
+            guard let currentLocaiton = currentLocaiton else { return }
+            
+            let locationsToFilter = preFilteredLocations.count == 0 ? locations : preFilteredLocations
+            filteredLocations = locationsToFilter.filter { location in
+                return currentLocaiton.distanceFromLocation(location.location) < 1000
+            }
+            
+        }
+        
+        tableView.reloadData()
+    }
+    
     // MARK: - UITableViewDelegate
     override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 0.0001
@@ -120,12 +220,22 @@ class ListViewController: UITableViewController {
             fatalError("Expected to dequeue a 'LocationCell'.")
         }
         
-        if let location = fetchedResultsController.objectAtIndexPath(indexPath) as? DatabaseLocation {
-            cell.configureCellWithLocation(Location(dbLocation: location))
-            
-            if let currentLoc = currentLocaiton {
-                cell.setDistanceText(distanceFormatter.stringFromDistance(currentLoc.distanceFromLocation(location.location)))
-            }
+        var locationToConfigure: Location
+        
+        if searchController.active {
+            locationToConfigure = filteredLocations[indexPath.row]
+        }
+        else if let location = fetchedResultsController.objectAtIndexPath(indexPath) as? DatabaseLocation {
+            locationToConfigure = Location(dbLocation: location)
+        }
+        else {
+            fatalError("ERROR: Failed to parse a location to display.")
+        }
+        
+        cell.configureCellWithLocation(locationToConfigure)
+        
+        if let currentLoc = currentLocaiton {
+            cell.setDistanceText(distanceFormatter.stringFromDistance(currentLoc.distanceFromLocation(locationToConfigure.location)))
         }
         
         return cell
@@ -139,24 +249,34 @@ class ListViewController: UITableViewController {
             navigationController?.pushViewController(vc, animated: true)
         }
         
-        if let location = fetchedResultsController.objectAtIndexPath(indexPath) as? DatabaseLocation {
-            let vc = DetailViewController(location: Location(dbLocation: location))
+        var locationToConfigure: Location
+        
+        if searchController.active {
+            locationToConfigure = filteredLocations[indexPath.row]
+        }
+        else if let location = fetchedResultsController.objectAtIndexPath(indexPath) as? DatabaseLocation {
+            locationToConfigure = Location(dbLocation: location)
+        }
+        else {
+            fatalError("ERROR: Failed to parse a location to display.")
+        }
+
+        let vc = DetailViewController(location: locationToConfigure)
+        
+        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+            let nvc = StyledNavigationController(rootViewController: vc)
             
-            if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
-                let nvc = StyledNavigationController(rootViewController: vc)
-                
-                nvc.modalPresentationStyle = .FormSheet
-                
-                presentViewController(nvc, animated: true, completion: nil)
-            }
-            else {
-                navigationController?.pushViewController(vc, animated: true)
-            }
+            nvc.modalPresentationStyle = .FormSheet
+            
+            presentViewController(nvc, animated: true, completion: nil)
+        }
+        else {
+            navigationController?.pushViewController(vc, animated: true)
         }
     }
     
     override func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
-        if indexPath.section == 0 && visits.count > 0 {
+        if (indexPath.section == 0 && visits.count > 0) || searchController.active {
             return .None
         }
         return .Delete
@@ -167,8 +287,8 @@ class ListViewController: UITableViewController {
             return
         }
         
-        if let location = self.fetchedResultsController.objectAtIndexPath(indexPath) as? DatabaseLocation {
-            CloudController.sharedController.deleteLocationFromCloud(location) { success in
+        if let location = fetchedResultsController.objectAtIndexPath(indexPath) as? DatabaseLocation {
+            CloudController.sharedController.deleteLocationFromCloudWithIdentifier(location.identifier) { success in
                 if !success {
                     PersistentController.sharedController.saveLocation(Location(dbLocation: location))
                 }
@@ -195,13 +315,19 @@ class ListViewController: UITableViewController {
             return 1
         }
         
-        let section = fetchedResultsController.sections?[section]
-        
-        return section?.numberOfObjects ?? 0
+        if searchController.active {
+            return filteredLocations.count
+        }
+        else {
+            let section = fetchedResultsController.sections?[section]
+            
+            return section?.numberOfObjects ?? 0
+        }
     }
     
 }
 
+// MARK: - NSFetchedResultsControllerDelegate
 extension ListViewController: NSFetchedResultsControllerDelegate {
     
     func controllerWillChangeContent(controller: NSFetchedResultsController) {
@@ -239,11 +365,31 @@ extension ListViewController: NSFetchedResultsControllerDelegate {
     
 }
 
+// MARK: - LocationAssistantDelegate
 extension ListViewController: LocationAssistantDelegate {
     
     func locationAssistantReceivedLocation(location: CLLocation, finished: Bool) {
         currentLocaiton = location
         assistant.terminate()
+    }
+    
+}
+
+// MARK: - UISearchResultsUpdating
+extension ListViewController: UISearchResultsUpdating {
+    
+    func updateSearchResultsForSearchController(searchController: UISearchController) {
+        let scope = FilterScope.scopeForIndex(searchController.searchBar.selectedScopeButtonIndex)
+        filterContentForSearchText(searchController.searchBar.text ?? "", filterScope: scope)
+    }
+    
+}
+
+extension ListViewController: UISearchBarDelegate {
+    
+    func searchBar(searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
+        let scope = FilterScope.scopeForIndex(selectedScope)
+        filterContentForSearchText(searchController.searchBar.text ?? "", filterScope: scope)
     }
     
 }
