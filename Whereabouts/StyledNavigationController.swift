@@ -12,6 +12,9 @@ class StyledNavigationController: UINavigationController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        navigationBar.shadowImage = UIImage()
+        navigationBar.setBackgroundImage(UIImage(), forBarMetrics: .Default)
+        
         toolbar.clipsToBounds = true
         navigationBar.translucent = false
                 
@@ -23,7 +26,6 @@ class StyledNavigationController: UINavigationController {
     }
     
     // MARK: - Helpers
-    
     private func refreshColors() {
         let primaryColor = StyleController.sharedController.mainTintColor
         

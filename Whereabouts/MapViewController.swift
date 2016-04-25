@@ -14,8 +14,21 @@ class MapViewController: UIViewController {
         return mapView
     }()
     
+    lazy var timeDialView: KCHorizontalDial = {
+        let dial = KCHorizontalDial()
+        dial.translatesAutoresizingMaskIntoConstraints = false
+        dial.delegate = self
+        dial.padding = 14.0
+        dial.enableRange = true
+        dial.markColor = StyleController.sharedController.navBarTintColor.colorWithAlphaComponent(0.75)
+        dial.centerMarkColor = StyleController.sharedController.navBarTintColor
+        dial.backgroundColor = StyleController.sharedController.mainTintColor
+        return dial
+    }()
+    
     let manager = CLLocationManager()
     
+    private var firstMapLoad = true
     private var shouldAddDroppedPin = true
     private var shouldCheckAuthorization = true
     private var droppedAnnotation: DroppedAnnotation?
@@ -37,11 +50,22 @@ class MapViewController: UIViewController {
         let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(MapViewController.mapWasLongPressed(_:)))
         mapView.addGestureRecognizer(longPressGesture)
         
-        view.addSubview(mapView)
-        let views = ["map": mapView]
-        
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[map]|", options: [], metrics: nil, views: views))
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[map]|", options: [], metrics: nil, views: views))
+        if PersistentController.sharedController.locations().count > 0 {
+            view.addSubview(timeDialView)
+            view.addSubview(mapView)
+            let views = ["map": mapView, "time": timeDialView]
+            
+            view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[time(==60)][map]|", options: [], metrics: nil, views: views))
+            view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[time]|", options: [], metrics: nil, views: views))
+            view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[map]|", options: [], metrics: nil, views: views))
+        }
+        else  {
+            view.addSubview(mapView)
+            let views = ["map": mapView]
+            
+            view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[map]|", options: [], metrics: nil, views: views))
+            view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[map]|", options: [], metrics: nil, views: views))
+        }
         
         NSNotificationCenter.defaultCenter().addObserver(
             self,
@@ -71,6 +95,12 @@ class MapViewController: UIViewController {
             
             shouldCheckAuthorization = false
         }
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        filterLocationsToDisplayWithNumberOfDaysSince(0)
     }
     
     // MARK: - Actions
@@ -112,10 +142,34 @@ class MapViewController: UIViewController {
         }
     }
     
-    // MARK: Helpers
+    // MARK: - Helpers
     @objc private func loadLocationsAndDisplay() {
         let locations = PersistentController.sharedController.locations()
         let visits = PersistentController.sharedController.visits()
+        
+        if locations.count > 0 {
+            let sortedLocations = locations.sort { locationOne, locationTwo in
+                return locationOne.date.compare(locationTwo.date) == .OrderedAscending
+            }
+            
+            var minDaysSince = 0
+            var maxDaysSince = 0
+            
+            if let lastLocation = sortedLocations.last {
+                minDaysSince = NSDate().daysSince(lastLocation.date)
+            }
+            
+            if let firstLocation = sortedLocations.first {
+                maxDaysSince = NSDate().daysSince(firstLocation.date)
+            }
+            
+            timeDialView.minimumValue = Double(minDaysSince)
+            timeDialView.maximumValue = Double(maxDaysSince)
+            
+            if firstMapLoad {
+                timeDialView.value = timeDialView.minimumValue
+            }
+        }
         
         self.locations = locations
         self.visits = visits
@@ -124,6 +178,31 @@ class MapViewController: UIViewController {
             if mapView.annotations.count > 0 { mapView.removeAnnotations(mapView.annotations) }
             mapView.addAnnotations(locations)
             mapView.addAnnotations(visits)
+            mapView.showAnnotations(mapView.annotations, animated: true)
+        }
+        
+        firstMapLoad = false
+    }
+    
+    private func filterLocationsToDisplayWithNumberOfDaysSince(daysSince: Int) {
+        let locations = PersistentController.sharedController.locations()
+        let visits = PersistentController.sharedController.visits()
+        
+        let filteredLocations = locations.filter { location in
+            return NSDate().daysSince(location.date) >= daysSince
+        }
+        
+        let filteredVisits = visits.filter { visit in
+            return NSDate().daysSince(visit.createdDate) >= daysSince
+        }
+        
+        self.locations = filteredLocations
+        self.visits = filteredVisits
+        
+        if filteredLocations.count > 0 || filteredVisits.count > 0 {
+            if mapView.annotations.count > 0 { mapView.removeAnnotations(mapView.annotations) }
+            mapView.addAnnotations(filteredLocations)
+            mapView.addAnnotations(filteredVisits)
             mapView.showAnnotations(mapView.annotations, animated: true)
         }
     }
@@ -252,12 +331,22 @@ extension MapViewController: LocationAccessViewControllerDelegate {
     
 }
 
+// MARK: - CLLocationManagerDelegate
 extension MapViewController: CLLocationManagerDelegate {
     
     func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
         if status == .AuthorizedWhenInUse {
             mapView.showsUserLocation = true
         }
+    }
+    
+}
+
+// MARK: - KCHorizontalDialDelegate
+extension MapViewController: KCHorizontalDialDelegate {
+    
+    func horizontalDialDidEndScroll(horizontalDial: KCHorizontalDial) {
+        filterLocationsToDisplayWithNumberOfDaysSince(Int(horizontalDial.value))
     }
     
 }

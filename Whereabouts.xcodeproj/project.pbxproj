@@ -35,6 +35,7 @@
 		48759B471CBDBE7100789DB8 /* DatabaseVisit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48759B461CBDBE7100789DB8 /* DatabaseVisit.swift */; };
 		48759B4A1CC102B500789DB8 /* PocketTrackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48759B481CC102B500789DB8 /* PocketTrackViewController.swift */; };
 		48759B4B1CC102B500789DB8 /* PocketTrackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48759B491CC102B500789DB8 /* PocketTrackViewController.xib */; };
+		48769CC61CCE34A7001C069D /* KCHorizontalDial.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48769CC51CCE34A7001C069D /* KCHorizontalDial.swift */; };
 		4888E80D1CCC074B00B6EB42 /* ping.wav in Resources */ = {isa = PBXBuildFile; fileRef = 4888E80C1CCC074B00B6EB42 /* ping.wav */; };
 		488A81261CBC606A00452101 /* ContentDisplayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488A81241CBC606A00452101 /* ContentDisplayCell.swift */; };
 		488A81271CBC606A00452101 /* ContentDisplayCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 488A81251CBC606A00452101 /* ContentDisplayCell.xib */; };
@@ -147,6 +148,7 @@
 		48759B461CBDBE7100789DB8 /* DatabaseVisit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseVisit.swift; sourceTree = "<group>"; };
 		48759B481CC102B500789DB8 /* PocketTrackViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PocketTrackViewController.swift; sourceTree = "<group>"; };
 		48759B491CC102B500789DB8 /* PocketTrackViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PocketTrackViewController.xib; sourceTree = "<group>"; };
+		48769CC51CCE34A7001C069D /* KCHorizontalDial.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KCHorizontalDial.swift; sourceTree = "<group>"; };
 		4880D47F1A5331960077E68B /* Whereabouts.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Whereabouts.entitlements; path = Whereabouts/Whereabouts.entitlements; sourceTree = SOURCE_ROOT; };
 		4880D4801A5331DA0077E68B /* Quick Location.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = "Quick Location.entitlements"; path = "Quick Location/Quick Location.entitlements"; sourceTree = SOURCE_ROOT; };
 		4888E80C1CCC074B00B6EB42 /* ping.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ping.wav; sourceTree = "<group>"; };
@@ -262,6 +264,7 @@
 		482FBFEB1CB292E500E30EF2 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				48769CC51CCE34A7001C069D /* KCHorizontalDial.swift */,
 				482FBFE91CB292E100E30EF2 /* PlaceholderTextView.swift */,
 			);
 			name = Views;
@@ -694,6 +697,7 @@
 				488BE6421CABF3EF00BA24C8 /* SearchCompleterCell.swift in Sources */,
 				48F114C31CC7AB02008AD097 /* NotificationFetchOperation.swift in Sources */,
 				48C706971CCD17D000D832A7 /* VisitCell.swift in Sources */,
+				48769CC61CCE34A7001C069D /* KCHorizontalDial.swift in Sources */,
 				48C7069F1CCD22D100D832A7 /* NSTimeInterval+Relative.swift in Sources */,
 				48DEDA3719F592F80094CB8F /* AppDelegate.swift in Sources */,
 				48759B4A1CC102B500789DB8 /* PocketTrackViewController.swift in Sources */,
