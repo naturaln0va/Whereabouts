@@ -25,6 +25,11 @@ platform :ios do
   desc "This will also make sure the profile is up to date"
   lane :beta do
     ensure_git_status_clean
+
+    changelog = prompt(
+      text: "Changelog: ",
+      multi_line_end_keyword: "END"
+    )
     
     match(git_url: "https://github.com/naturaln0va/certificates.git",
       type: "adhoc",
@@ -41,10 +46,12 @@ platform :ios do
       output_directory: "./build", 
       clean: true)
 
-    pilot(distribute_external: false, wait_processing_interval: 5)
+    pilot(changelog: changelog, distribute_external: false)
 
-    # git_commit
-    #push_to_git_remote
+    report_path = "fastlane/report.xml"
+    git_add(path: report_path)
+    git_commit(path: report_path, message: "beta report")
+    push_to_git_remote
   end
 
   desc "Deploy a new version to the App Store"
