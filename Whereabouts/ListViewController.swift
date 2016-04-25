@@ -76,6 +76,20 @@ class ListViewController: UITableViewController {
         }
     }
     
+    private var shouldDisplayFilteredLocations: Bool {
+        guard searchController.active else { return false }
+        
+        if filteredLocations.count > 0 && searchController.searchBar.selectedScopeButtonIndex != 0 {
+            return true
+        }
+        else if searchController.searchBar.text?.characters.count > 0 && searchController.searchBar.selectedScopeButtonIndex == 0 {
+            return true
+        }
+        else {
+            return false
+        }
+    }
+    
     deinit {
         fetchedResultsController.delegate = nil
     }
@@ -222,7 +236,7 @@ class ListViewController: UITableViewController {
         
         var locationToConfigure: Location
         
-        if searchController.active {
+        if shouldDisplayFilteredLocations {
             locationToConfigure = filteredLocations[indexPath.row]
         }
         else if let location = fetchedResultsController.objectAtIndexPath(indexPath) as? DatabaseLocation {
@@ -251,7 +265,7 @@ class ListViewController: UITableViewController {
         
         var locationToConfigure: Location
         
-        if searchController.active {
+        if shouldDisplayFilteredLocations {
             locationToConfigure = filteredLocations[indexPath.row]
         }
         else if let location = fetchedResultsController.objectAtIndexPath(indexPath) as? DatabaseLocation {
@@ -315,7 +329,7 @@ class ListViewController: UITableViewController {
             return 1
         }
         
-        if searchController.active {
+        if shouldDisplayFilteredLocations {
             return filteredLocations.count
         }
         else {
