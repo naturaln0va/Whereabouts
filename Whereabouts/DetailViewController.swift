@@ -311,7 +311,8 @@ class DetailViewController: UITableViewController, EditViewControllerDelegate {
             
             if let response = response {
                 var responseString = ""
-                responseString += response.distance.formattedString()
+                
+                responseString += MKDistanceFormatter().stringFromDistance(response.distance)
                 
                 let timeString = response.expectedTravelTime.relativeString()
                 if timeString.characters.count > 0 {
