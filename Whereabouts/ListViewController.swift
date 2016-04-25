@@ -106,6 +106,10 @@ class ListViewController: UITableViewController {
         tableView.estimatedRowHeight = LocationCell.cellHeight
         tableView.registerNib(UINib(nibName: LocationCell.reuseIdentifier, bundle: nil), forCellReuseIdentifier: LocationCell.reuseIdentifier)
         
+        if PersistentController.sharedController.locations().count < 6 {
+            tableView.contentOffset.y = searchController.searchBar.bounds.height
+        }
+        
         searchController.searchResultsUpdater = self
         tableView.tableHeaderView = searchController.searchBar
         
@@ -134,6 +138,9 @@ class ListViewController: UITableViewController {
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         
+        searchController.searchBar.endEditing(true)
+        searchController.active = false
+        
         assistant.terminate()
     }
 
@@ -148,14 +155,12 @@ class ListViewController: UITableViewController {
     }
     
     // MARK: - Notifications
-    
     @objc private func visitsChanged() {
         visits = PersistentController.sharedController.visits()
         tableView.reloadData()
     }
     
     // MARK: - Helpers
-    
     func filterContentForSearchText(searchText: String, filterScope: FilterScope) {
         guard let databaseLocations = fetchedResultsController.fetchedObjects as? [DatabaseLocation] else {
             return
@@ -404,6 +409,18 @@ extension ListViewController: UISearchBarDelegate {
     func searchBar(searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
         let scope = FilterScope.scopeForIndex(selectedScope)
         filterContentForSearchText(searchController.searchBar.text ?? "", filterScope: scope)
+    }
+    
+    func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
+        tableView.scrollIndicatorInsets.top = searchBar.frame.height
+    }
+    
+    func searchBarTextDidEndEditing(searchBar: UISearchBar) {
+        tableView.scrollIndicatorInsets.top = searchBar.frame.height
+    }
+    
+    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+        tableView.scrollIndicatorInsets.top = searchBar.frame.height
     }
     
 }
