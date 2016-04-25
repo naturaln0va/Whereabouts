@@ -28,6 +28,11 @@ Creates all profiles if nessacary
 fastlane ios xcode
 ```
 Make sure that XCode doesn't break everything
+### ios badge
+```
+fastlane ios badge
+```
+Adds icon badging to the app
 
 ----
 
