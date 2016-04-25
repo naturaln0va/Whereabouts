@@ -11,8 +11,6 @@ sudo gem install fastlane
 fastlane ios beta
 ```
 Submit a new Beta Build to Apple TestFlight
-
-This will also make sure the profile is up to date
 ### ios appstore
 ```
 fastlane ios appstore
@@ -27,12 +25,7 @@ Creates all profiles if nessacary
 ```
 fastlane ios xcode
 ```
-Make sure that XCode doesn't break everything
-### ios badge
-```
-fastlane ios badge
-```
-Adds icon badging to the app
+Make sure that Xcode doesn't break everything
 
 ----
 

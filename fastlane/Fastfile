@@ -34,6 +34,8 @@ platform :ios do
       app_identifier: "net.naturaln0va.Whereabouts.Quick-Location",
       readonly: true)
 
+    sigh(force: true, output_path: "./build")
+
     gym(scheme: "Whereabouts",
       output_directory: "./build", 
       clean: true)
