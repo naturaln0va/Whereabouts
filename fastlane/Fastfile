@@ -17,20 +17,14 @@ default_platform :ios
 
 platform :ios do
   before_all do
-    # ENV["SLACK_URL"] = "https://hooks.slack.com/services/..."
-    
   end
 
   desc "Submit a new Beta Build to Apple TestFlight"
-  desc "This will also make sure the profile is up to date"
   lane :beta do
     ensure_git_status_clean
 
-    changelog = prompt(
-      text: "Changelog: ",
-      multi_line_end_keyword: "END"
-    )
-    
+    badge
+
     match(git_url: "https://github.com/naturaln0va/certificates.git",
       type: "adhoc",
       app_identifier: "net.naturaln0va.Whereabouts",
@@ -40,18 +34,11 @@ platform :ios do
       app_identifier: "net.naturaln0va.Whereabouts.Quick-Location",
       readonly: true)
 
-    sigh(force: true, output_path: "./build")
-
     gym(scheme: "Whereabouts",
       output_directory: "./build", 
       clean: true)
 
-    pilot(changelog: changelog, distribute_external: false)
-
-    report_path = "fastlane/report.xml"
-    git_add(path: report_path)
-    git_commit(path: report_path, message: "beta report")
-    push_to_git_remote
+    pilot(changelog: File.exist?('metadata/beta-changelog.txt') ? File.read('metadata/beta-changelog.txt') : '', distribute_external: false, wait_processing_interval: 120)
   end
 
   desc "Deploy a new version to the App Store"
@@ -103,23 +90,15 @@ platform :ios do
       readonly: false)
   end
 
-  desc "Make sure that XCode doesn't break everything"
+  desc "Make sure that Xcode doesn't break everything"
   lane :xcode do
     install_xcode_plugin(
       url: "https://github.com/fastlane/FixCode/releases/download/0.5.0/FixCode.xcplugin.zip"
     )
   end
 
-  desc "Adds icon badging to the app"
-  lane :badge do
-
-  end
-
 end
 
-
-# More information about multiple platforms in fastlane: https://github.com/fastlane/fastlane/blob/master/docs/Platforms.md
-# All available actions: https://github.com/fastlane/fastlane/blob/master/fastlane/docs/Actions.md
-
-# fastlane reports which actions are used
-# No personal data is recorded. Learn more at https://github.com/fastlane/enhancer
+after_all do |lane|
+  notification(subtitle:"fastlane finished '#{lane}'") # Mac OS X Notification
+end
