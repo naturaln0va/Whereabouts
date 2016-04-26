@@ -106,10 +106,6 @@ class ListViewController: UITableViewController {
         tableView.estimatedRowHeight = LocationCell.cellHeight
         tableView.registerNib(UINib(nibName: LocationCell.reuseIdentifier, bundle: nil), forCellReuseIdentifier: LocationCell.reuseIdentifier)
         
-        if PersistentController.sharedController.locations().count < 6 {
-            tableView.contentOffset.y = searchController.searchBar.bounds.height
-        }
-        
         searchController.searchResultsUpdater = self
         tableView.tableHeaderView = searchController.searchBar
         
