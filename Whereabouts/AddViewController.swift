@@ -124,7 +124,6 @@ class AddViewController: UITableViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        titleSearchBar.becomeFirstResponder()
         if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
             navigationItem.rightBarButtonItem = UIBarButtonItem(
                 barButtonSystemItem: .Cancel,
@@ -132,6 +131,12 @@ class AddViewController: UITableViewController {
                 action: #selector(AddViewController.cancelButtonPressed)
             )
         }
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        titleSearchBar.endEditing(true)
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -146,6 +151,8 @@ class AddViewController: UITableViewController {
             
             isFirstApperance = false
         }
+        
+        titleSearchBar.becomeFirstResponder()
     }
     
     // MARK: - Actions
