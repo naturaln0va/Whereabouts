@@ -79,7 +79,7 @@ class ListViewController: UITableViewController {
     private var shouldDisplayFilteredLocations: Bool {
         guard searchController.active else { return false }
         
-        if searchController.searchBar.selectedScopeButtonIndex != 0 {
+        if filteredLocations.count > 0 || searchController.searchBar.selectedScopeButtonIndex != 0 {
             return true
         }
         else if searchController.searchBar.text?.characters.count > 0 && searchController.searchBar.selectedScopeButtonIndex == 0 {
@@ -177,10 +177,10 @@ class ListViewController: UITableViewController {
             if let title = location.title {
                 titleString = title.lowercaseString
             }
-            else if let subtitle = location.subtitle {
+            if let subtitle = location.subtitle {
                 subtitleString = subtitle.lowercaseString
             }
-            else if let content = location.textContent {
+            if let content = location.textContent {
                 contentString = content.lowercaseString
             }
             
@@ -193,7 +193,7 @@ class ListViewController: UITableViewController {
             filteredLocations = preFilteredLocations
             
         case .Recent:
-            let locationsToFilter = preFilteredLocations.count == 0 ? locations : preFilteredLocations
+            let locationsToFilter = (preFilteredLocations.count == 0 && searchString.characters.count == 0) ? locations : preFilteredLocations
             filteredLocations = locationsToFilter.filter { location in
                 return NSDate().daysSince(location.date) < 2
             }
@@ -201,7 +201,7 @@ class ListViewController: UITableViewController {
         case .Nearby:
             guard let currentLocaiton = currentLocaiton else { return }
             
-            let locationsToFilter = preFilteredLocations.count == 0 ? locations : preFilteredLocations
+            let locationsToFilter = (preFilteredLocations.count == 0 && searchString.characters.count == 0) ? locations : preFilteredLocations
             filteredLocations = locationsToFilter.filter { location in
                 return currentLocaiton.distanceFromLocation(location.location) < 1000
             }

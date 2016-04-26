@@ -130,11 +130,11 @@ class Location: NSObject {
 extension Location: MKAnnotation {
     
     var title: String? {
-        if let locationTitle = locationTitle {
+        if let locationTitle = locationTitle where locationTitle.characters.count > 0 {
             return locationTitle
         }
-        else if let item = mapItem {
-            return item.name
+        else if let itemName = mapItem?.name where itemName.characters.count > 0 {
+            return itemName
         }
         else if let place = placemark {
             return place.fullFormatedString()
