@@ -297,6 +297,7 @@ extension MapViewController: MKMapViewDelegate {
         else {
             if let indexOfLocation = locations.indexOf({ return $0.hash == annotation.hash }) {
                 let vc = DetailViewController(location: locations[indexOfLocation])
+                vc.currentLocation = mapView.userLocation.location
                 
                 if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
                     let nvc = StyledNavigationController(rootViewController: vc)

@@ -6,6 +6,8 @@ import SafariServices
 
 class DetailViewController: UITableViewController, EditViewControllerDelegate {
     
+    var currentLocation: CLLocation?
+    
     private var locationToDisplay: Location
     private lazy var nearbyAssets = [PHAsset]()
     
@@ -24,16 +26,7 @@ class DetailViewController: UITableViewController, EditViewControllerDelegate {
         formatter.dateStyle = .MediumStyle
         return formatter
     }()
-    private lazy var messageLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFontOfSize(11.0, weight: UIFontWeightRegular)
-        label.textAlignment = .Center
-        label.numberOfLines = 2
-        label.text = ""
-        label.sizeToFit()
-        return label
-    }()
-    private lazy var messageBarButtonItem: UIBarButtonItem = UIBarButtonItem(customView: self.messageLabel)
+    
     private lazy var actionBarButtonItem: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Action, target: self, action: #selector(DetailViewController.actionButtonPressed))
     private lazy var spaceBarButtonItem: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
     private lazy var navigateBarButtonItem: UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "directions-arrow"), style: .Plain, target: self, action: #selector(DetailViewController.navigateButtonPressed))
@@ -72,11 +65,7 @@ class DetailViewController: UITableViewController, EditViewControllerDelegate {
         tableView.registerNib(UINib(nibName: String(ContentDisplayCell), bundle: nil), forCellReuseIdentifier: String(ContentDisplayCell))
         tableView.registerNib(UINib(nibName: String(LocationInfoDisplayCell), bundle: nil), forCellReuseIdentifier: String(LocationInfoDisplayCell))
         
-        toolbarItems = [navigateBarButtonItem, spaceBarButtonItem, messageBarButtonItem, spaceBarButtonItem, actionBarButtonItem]
-        
-        if let crowFlyDistance = MKMapItem.mapItemForCurrentLocation().placemark.location?.distanceFromLocation(locationToDisplay.location) {
-            updateMessageLabel(NSAttributedString(string: crowFlyDistance.formattedString()))
-        }
+        toolbarItems = [navigateBarButtonItem, spaceBarButtonItem, spaceBarButtonItem, actionBarButtonItem]
         
         getDistanceFromLocation()
         refreshTitle()
@@ -248,8 +237,14 @@ class DetailViewController: UITableViewController, EditViewControllerDelegate {
     }
     
     private func updateMessageLabel(updatedText: NSAttributedString?) {
-        messageLabel.attributedText = updatedText
-        messageLabel.sizeToFit()
+        let label = UILabel()
+        label.font = UIFont.systemFontOfSize(11.0, weight: UIFontWeightRegular)
+        label.textAlignment = .Center
+        label.numberOfLines = 2
+        label.attributedText = updatedText
+        label.sizeToFit()
+
+        toolbarItems = [navigateBarButtonItem, spaceBarButtonItem, UIBarButtonItem(customView: label), spaceBarButtonItem, actionBarButtonItem]
     }
     
     private func refreshTitle() {
@@ -296,6 +291,10 @@ class DetailViewController: UITableViewController, EditViewControllerDelegate {
     }
     
     private func getDistanceFromLocation() {
+        if let crowFlyDistance = currentLocation?.distanceFromLocation(locationToDisplay.location) {
+            updateMessageLabel(NSAttributedString(string: MKDistanceFormatter().stringFromDistance(crowFlyDistance)))
+        }
+        
         let request = MKDirectionsRequest()
         
         request.source = MKMapItem.mapItemForCurrentLocation()
@@ -335,7 +334,9 @@ class DetailViewController: UITableViewController, EditViewControllerDelegate {
                             ]))
                     }
                     
-                    self.updateMessageLabel(mut)
+                    dispatch_async(dispatch_get_main_queue()) {
+                        self.updateMessageLabel(mut)
+                    }
                 }
             }
         }

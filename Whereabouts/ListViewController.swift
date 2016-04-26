@@ -79,7 +79,7 @@ class ListViewController: UITableViewController {
     private var shouldDisplayFilteredLocations: Bool {
         guard searchController.active else { return false }
         
-        if filteredLocations.count > 0 && searchController.searchBar.selectedScopeButtonIndex != 0 {
+        if searchController.searchBar.selectedScopeButtonIndex != 0 {
             return true
         }
         else if searchController.searchBar.text?.characters.count > 0 && searchController.searchBar.selectedScopeButtonIndex == 0 {
@@ -281,6 +281,7 @@ class ListViewController: UITableViewController {
         }
 
         let vc = DetailViewController(location: locationToConfigure)
+        vc.currentLocation = currentLocaiton
         
         if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
             let nvc = StyledNavigationController(rootViewController: vc)
